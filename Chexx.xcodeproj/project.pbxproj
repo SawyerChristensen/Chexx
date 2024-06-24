@@ -15,6 +15,7 @@
 		BE76A9BB2C2A2602009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BA2C2A2602009113B4 /* Base */; };
 		BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BC2C2A2603009113B4 /* Assets.xcassets */; };
 		BE76A9C02C2A2603009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BF2C2A2603009113B4 /* Base */; };
+		BE76A9C72C2A3DF2009113B4 /* avatar.jpg in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9C62C2A3DF2009113B4 /* avatar.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +28,7 @@
 		BE76A9BA2C2A2602009113B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BE76A9BC2C2A2603009113B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BE76A9BF2C2A2603009113B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		BE76A9C62C2A3DF2009113B4 /* avatar.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = avatar.jpg; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,7 @@
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
+				BE76A9C62C2A3DF2009113B4 /* avatar.jpg */,
 			);
 			path = Chexx;
 			sourceTree = "<group>";
@@ -131,6 +134,7 @@
 			files = (
 				BE76A9B22C2A2602009113B4 /* GameScene.sks in Resources */,
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
+				BE76A9C72C2A3DF2009113B4 /* avatar.jpg in Resources */,
 				BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */,
 				BE76A9B42C2A2602009113B4 /* Actions.sks in Resources */,
 				BE76A9C02C2A2603009113B4 /* Base in Resources */,
