@@ -67,7 +67,6 @@ class HexagonNode: SKShapeNode {
 }
 
 
-
 class GameScene: SKScene {
     
     var entities = [GKEntity]()
@@ -86,11 +85,11 @@ class GameScene: SKScene {
 
         self.lastUpdateTime = 0
         
-        // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
-        hexagonSize = min(self.size.width, self.size.height) * 0.045
+        // Calculate hexagon size based on screen size (currently 4% of the smallest screen dimension, in case of screen rotation)
+        hexagonSize = min(self.size.width, self.size.height) * 0.04
         
-        // Create hexagon grid
-        createHexagonGrid(rows: 11, columns: 12)
+        // Generate and add hexagon tiles to the scene
+        generateHexTiles(radius: hexagonSize, scene: self)
         
         // Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
@@ -105,28 +104,164 @@ class GameScene: SKScene {
                                               SKAction.removeFromParent()]))
         }
     }
+    
+    enum Direction { //for use with calcualte new center
+        case above
+        case below
+        case upperLeft
+        case bottomLeft
+        case upperRight
+        case bottomRight
+        case none
+    }
 
-    func createHexagonGrid(rows: Int, columns: Int) {
-        for row in 0..<rows {
-            for col in 0..<columns {
-                
-                // Use predefined colors
-                let color: UIColor
-                if (row + col) % 3 == 0 {
-                    color = light
-                } else if (row + col) % 3 == 1 {
-                    color = grey
-                } else {
-                    color = dark
-                }
-                
-                let hexagon = HexagonNode(size: hexagonSize, color: color)
-                let xOffset = hexagonSize * 1.5 * CGFloat(col)
-                let yOffset = hexagonSize * sqrt(3) * CGFloat(row) + (col % 2 == 0 ? 0 : hexagonSize * sqrt(3) / 2)
-                hexagon.position = CGPoint(x: xOffset, y: yOffset)
-                hexagon.name = "hex_\(row)_\(col)"
-                addChild(hexagon)
-            }
+    func calculateNewCenter(x: CGFloat, y: CGFloat, radius: CGFloat, direction: Direction) -> CGPoint { //helper function for manually creating the hexagon board (yuck)
+        let angle = CGFloat.pi / 3 // 60 degrees
+        switch direction {
+        case .above:
+            return CGPoint(x: x, y: y - 2 * radius * sin(angle))
+        case .below:
+            return CGPoint(x: x, y: y + 2 * radius * sin(angle))
+        case .upperLeft:
+            return CGPoint(x: x - radius * (1 + cos(angle)), y: y - radius * sin(angle))
+        case .bottomLeft:
+            return CGPoint(x: x - radius * (1 + cos(angle)), y: y + radius * sin(angle))
+        case .upperRight:
+            return CGPoint(x: x + radius * (1 + cos(angle)), y: y - radius * sin(angle))
+        case .bottomRight:
+            return CGPoint(x: x + radius * (1 + cos(angle)), y: y + radius * sin(angle))
+        case .none:
+            return CGPoint(x: x, y: y)
+        }
+    }
+
+    func generateHexTiles(radius: CGFloat, scene: SKScene) {
+        // Define hexagon colors
+        let grey = UIColor(hex: "#e8ab6f")
+        let light = UIColor(hex: "#ffce9e")
+        let dark = UIColor(hex: "#d18b47")
+        
+        // Define a list of directions to generate hexagons around the center
+        let directions: [(String, Direction, UIColor)] = [
+            ("f7", .above, dark),
+            ("e6", .bottomLeft, light),
+            ("e5", .below, dark),
+            ("f5", .bottomRight, light),
+            ("g5", .upperRight, dark),
+            ("g6", .above, light),
+            ("g7", .above, grey),
+            ("f8", .upperLeft, light),
+            ("e7", .bottomLeft, grey),
+            ("d6", .bottomLeft, dark),
+            ("d5", .below, grey),
+            ("d4", .below, light),
+            ("e4", .bottomRight, grey),
+            ("f4", .bottomRight, dark),
+            ("g4", .upperRight, grey),
+            ("h4", .upperRight, light),
+            ("h5", .above, grey),
+            ("h6", .above, dark),
+            ("h7", .above, light),
+            ("g8", .upperLeft, dark),
+            ("f9", .upperLeft, grey),
+            ("e8", .bottomLeft, dark),
+            ("d7", .bottomLeft, light),
+            ("c6", .bottomLeft, grey),
+            ("c5", .below, light),
+            ("c4", .below, dark),
+            ("c3", .below, grey),
+            ("d3", .bottomRight, dark),
+            ("e3", .bottomRight, light),
+            ("f3", .bottomRight, grey),
+            ("g3", .upperRight, light),
+            ("h3", .upperRight, dark),
+            ("i3", .upperRight, grey),
+            ("i4", .above, dark),
+            ("i5", .above, light),
+            ("i6", .above, grey),
+            ("i7", .above, dark),
+            ("h8", .upperLeft, grey),
+            ("g9", .upperLeft, light),
+            ("f10", .upperLeft, dark),
+            ("e9", .bottomLeft, light),
+            ("d8", .bottomLeft, grey),
+            ("c7", .bottomLeft, dark),
+            ("b6", .bottomLeft, light),
+            ("b5", .below, dark),
+            ("b4", .below, grey),
+            ("b3", .below, light),
+            ("b2", .below, dark),
+            ("c2", .bottomRight, light),
+            ("d2", .bottomRight, grey),
+            ("e2", .bottomRight, dark),
+            ("f2", .bottomRight, light),
+            ("g2", .upperRight, dark),
+            ("h2", .upperRight, grey),
+            ("i2", .upperRight, light),
+            ("k2", .upperRight, dark),
+            ("k3", .above, light),
+            ("k4", .above, grey),
+            ("k5", .above, dark),
+            ("k6", .above, light),
+            ("k7", .above, grey),
+            ("i8", .upperLeft, light),
+            ("h9", .upperLeft, dark),
+            ("g10", .upperLeft, grey),
+            ("f11", .upperLeft, light),
+            ("e10", .bottomLeft, grey),
+            ("d9", .bottomLeft, dark),
+            ("c8", .bottomLeft, light),
+            ("b7", .bottomLeft, grey),
+            ("a6", .bottomLeft, dark),
+            ("a5", .below, grey),
+            ("a4", .below, light),
+            ("a3", .below, dark),
+            ("a2", .below, grey),
+            ("a1", .below, light),
+            ("b1", .bottomRight, grey),
+            ("c1", .bottomRight, dark),
+            ("d1", .bottomRight, light),
+            ("e1", .bottomRight, grey),
+            ("f1", .bottomRight, dark),
+            ("g1", .upperRight, grey),
+            ("h1", .upperRight, light),
+            ("i1", .upperRight, dark),
+            ("k1", .upperRight, grey),
+            ("l1", .upperRight, light),
+            ("l2", .above, grey),
+            ("l3", .above, dark),
+            ("l4", .above, light),
+            ("l5", .above, grey),
+            ("l6", .above, dark)
+        ]
+        
+        //initialize currentx & y position at the center of the screen
+        var currentX = CGFloat(0)
+        var currentY = CGFloat(0)
+        
+        // Hexagon array that will be added to the scene
+        var hexagons: [HexagonNode] = []
+        
+        // Add initial center hexagon
+        let initialHexagon = HexagonNode(size: radius, color: grey)
+        initialHexagon.position = CGPoint(x: currentX, y: currentY)
+        hexagons.append(initialHexagon)
+        
+        // Generate hexagons based on directions and colors
+        for (key, direction, color) in directions {
+            
+            let newCenter = calculateNewCenter(x: currentX, y: currentY, radius: radius, direction: direction)
+            currentX = newCenter.x
+            currentY = newCenter.y
+            
+            let hexagon = HexagonNode(size: radius, color: color)
+            hexagon.position = CGPoint(x: currentX, y: currentY)
+            hexagons.append(hexagon)
+        }
+        
+        // Add all hexagons to the scene
+        for hexagon in hexagons {
+            scene.addChild(hexagon)
         }
     }
     
