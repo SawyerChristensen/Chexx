@@ -245,6 +245,7 @@ class GameScene: SKScene {
         // Add initial center hexagon
         let initialHexagon = HexagonNode(size: radius, color: grey)
         initialHexagon.position = CGPoint(x: currentX, y: currentY)
+        initialHexagon.name = "f6"
         hexagons.append(initialHexagon)
         
         // Generate hexagons based on directions and colors
@@ -256,6 +257,7 @@ class GameScene: SKScene {
             
             let hexagon = HexagonNode(size: radius, color: color)
             hexagon.position = CGPoint(x: currentX, y: currentY)
+            hexagon.name = key
             hexagons.append(hexagon)
         }
         
