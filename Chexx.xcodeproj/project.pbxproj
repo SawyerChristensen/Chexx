@@ -57,6 +57,7 @@
 		BE76AA1F2C2A3EF5009113B4 /* Piece.js in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA0D2C2A3EF5009113B4 /* Piece.js */; };
 		BE76AA202C2A3EF5009113B4 /* Settings.js in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA0E2C2A3EF5009113B4 /* Settings.js */; };
 		BE76AA212C2A3EF5009113B4 /* UtilityFunctions.js in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA0F2C2A3EF5009113B4 /* UtilityFunctions.js */; };
+		BE76AA232C2A41FF009113B4 /* context.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA222C2A41FF009113B4 /* context.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -111,6 +112,7 @@
 		BE76AA0D2C2A3EF5009113B4 /* Piece.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Piece.js; sourceTree = "<group>"; };
 		BE76AA0E2C2A3EF5009113B4 /* Settings.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = Settings.js; sourceTree = "<group>"; };
 		BE76AA0F2C2A3EF5009113B4 /* UtilityFunctions.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = UtilityFunctions.js; sourceTree = "<group>"; };
+		BE76AA222C2A41FF009113B4 /* context.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = context.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -206,6 +208,7 @@
 		BE76A9E42C2A3EDA009113B4 /* chess_assets */ = {
 			isa = PBXGroup;
 			children = (
+				BE76AA222C2A41FF009113B4 /* context.txt */,
 				BE76A9D42C2A3EDA009113B4 /* images */,
 				BE76A9E12C2A3EDA009113B4 /* secondary_images */,
 				BE76A9E32C2A3EDA009113B4 /* songs */,
@@ -333,6 +336,7 @@
 				BE76A9F12C2A3EDA009113B4 /* bb.png in Resources */,
 				BE76A9FA2C2A3EDA009113B4 /* wp.png in Resources */,
 				BE76AA212C2A3EF5009113B4 /* UtilityFunctions.js in Resources */,
+				BE76AA232C2A41FF009113B4 /* context.txt in Resources */,
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
 				BE76A9E62C2A3EDA009113B4 /* black_king.png in Resources */,
 				BE76A9F52C2A3EDA009113B4 /* bq.png in Resources */,

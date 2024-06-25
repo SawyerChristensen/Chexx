@@ -1,0 +1,3 @@
+Light tile: #ffce9e
+"Grey" tile: #e8ab6f
+Dark tile: #d18b47
