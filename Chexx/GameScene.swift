@@ -7,11 +7,37 @@
 
 import SpriteKit
 import GameplayKit
+import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
+
+extension UIColor {
+    convenience init(hex: String) {
+        let hexString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        
+        if hexString.hasPrefix("#") {
+            scanner.currentIndex = hexString.index(after: hexString.startIndex)
+        }
+        
+        var color: UInt64 = 0
+        scanner.scanHexInt64(&color)
+        
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+}
+
 
 class HexagonNode: SKShapeNode {
-    init(size: CGFloat) {
-        super.init()
-        
+    
+    static func createHexagonPath(size: CGFloat) -> CGPath {
         let path = UIBezierPath()
         let angle: CGFloat = .pi / 3
         for i in 0..<6 {
@@ -24,11 +50,15 @@ class HexagonNode: SKShapeNode {
             }
         }
         path.close()
-        
-        self.path = path.cgPath
-        self.fillColor = .cyan
+        return path.cgPath
+    }
+    
+    init(size: CGFloat, color: UIColor) {
+        super.init()
+        self.path = HexagonNode.createHexagonPath(size: size)
+        self.fillColor = color
         self.strokeColor = .black
-        self.lineWidth = 2
+        self.lineWidth = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -37,31 +67,30 @@ class HexagonNode: SKShapeNode {
 }
 
 
+
 class GameScene: SKScene {
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
-    private var label : SKLabelNode?
-    private var spinnyNode : SKShapeNode?
+    private var spinnyNode : SKShapeNode? //JUST FOR MOUSE INTERACTION VISUALIZATION IN XCoDE, REMOVE LATER AND ALL LATER REFERENCES IN DEPLOYMENT
     
-    let hexagonSize: CGFloat = 50
+    var hexagonSize: CGFloat = 50 //50 is arbitrary & and just for init, changed later when screen size is retrieved
+    let light = UIColor(hex: "#ffce9e")
+    let grey = UIColor(hex: "#e8ab6f")
+    let dark = UIColor(hex: "#d18b47")
     
     override func sceneDidLoad() {
         super.sceneDidLoad()
 
         self.lastUpdateTime = 0
         
-        // Get label node from scene and store it for use later
-        self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
-        if let label = self.label {
-            label.alpha = 0.0
-            label.run(SKAction.fadeIn(withDuration: 2.0))
-        }
+        // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
+        hexagonSize = min(self.size.width, self.size.height) * 0.045
         
         // Create hexagon grid
-        createHexagonGrid(rows: 10, columns: 10)
+        createHexagonGrid(rows: 11, columns: 12)
         
         // Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
@@ -76,11 +105,23 @@ class GameScene: SKScene {
                                               SKAction.removeFromParent()]))
         }
     }
-    
+
     func createHexagonGrid(rows: Int, columns: Int) {
             for row in 0..<rows {
                 for col in 0..<columns {
-                    let hexagon = HexagonNode(size: hexagonSize)
+                    
+                    // Use predefined colors
+                    let color: UIColor
+                    if (row + col) % 3 == 0 {
+                        color = light
+                    } else if (row + col) % 3 == 1 {
+                        color = grey
+                    } else {
+                        color = dark
+                    }
+                                    
+                    
+                    let hexagon = HexagonNode(size: hexagonSize, color: color)
                     let xOffset = hexagonSize * 1.5 * CGFloat(col)
                     let yOffset = hexagonSize * sqrt(3) * CGFloat(row) + (col % 2 == 0 ? 0 : hexagonSize * sqrt(3) / 2)
                     hexagon.position = CGPoint(x: xOffset, y: yOffset)
@@ -90,7 +131,7 @@ class GameScene: SKScene {
             }
         }
     
-    
+
     func touchDown(atPoint pos : CGPoint) {
         if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
@@ -123,10 +164,6 @@ class GameScene: SKScene {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        if let label = self.label {
-            label.run(SKAction.init(named: "Pulse")!, withKey: "fadeInOut")
-        }
-        
         for t in touches { self.touchDown(atPoint: t.location(in: self)) }
     }
     
