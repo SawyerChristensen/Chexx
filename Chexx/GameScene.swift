@@ -107,29 +107,28 @@ class GameScene: SKScene {
     }
 
     func createHexagonGrid(rows: Int, columns: Int) {
-            for row in 0..<rows {
-                for col in 0..<columns {
-                    
-                    // Use predefined colors
-                    let color: UIColor
-                    if (row + col) % 3 == 0 {
-                        color = light
-                    } else if (row + col) % 3 == 1 {
-                        color = grey
-                    } else {
-                        color = dark
-                    }
-                                    
-                    
-                    let hexagon = HexagonNode(size: hexagonSize, color: color)
-                    let xOffset = hexagonSize * 1.5 * CGFloat(col)
-                    let yOffset = hexagonSize * sqrt(3) * CGFloat(row) + (col % 2 == 0 ? 0 : hexagonSize * sqrt(3) / 2)
-                    hexagon.position = CGPoint(x: xOffset, y: yOffset)
-                    hexagon.name = "hex_\(row)_\(col)"
-                    addChild(hexagon)
+        for row in 0..<rows {
+            for col in 0..<columns {
+                
+                // Use predefined colors
+                let color: UIColor
+                if (row + col) % 3 == 0 {
+                    color = light
+                } else if (row + col) % 3 == 1 {
+                    color = grey
+                } else {
+                    color = dark
                 }
+                
+                let hexagon = HexagonNode(size: hexagonSize, color: color)
+                let xOffset = hexagonSize * 1.5 * CGFloat(col)
+                let yOffset = hexagonSize * sqrt(3) * CGFloat(row) + (col % 2 == 0 ? 0 : hexagonSize * sqrt(3) / 2)
+                hexagon.position = CGPoint(x: xOffset, y: yOffset)
+                hexagon.name = "hex_\(row)_\(col)"
+                addChild(hexagon)
             }
         }
+    }
     
 
     func touchDown(atPoint pos : CGPoint) {
