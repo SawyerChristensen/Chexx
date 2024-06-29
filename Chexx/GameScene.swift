@@ -57,8 +57,8 @@ class HexagonNode: SKShapeNode {
         super.init()
         self.path = HexagonNode.createHexagonPath(size: size)
         self.fillColor = color
-        self.strokeColor = .black
-        self.lineWidth = 1
+        self.strokeColor = color
+        //self.lineWidth = 1
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -91,7 +91,7 @@ class GameScene: SKScene {
         // Generate and add hexagon tiles to the scene
         generateHexTiles(radius: hexagonSize, scene: self)
         
-        // Create shape node to use during mouse interaction
+        /*// Create shape node to use during mouse interaction
         let w = (self.size.width + self.size.height) * 0.05
         self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
         
@@ -102,7 +102,7 @@ class GameScene: SKScene {
             spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
                                               SKAction.fadeOut(withDuration: 0.5),
                                               SKAction.removeFromParent()]))
-        }
+        }*/
     }
     
     enum Direction { //for use with calcualte new center
@@ -269,11 +269,11 @@ class GameScene: SKScene {
     
 
     func touchDown(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
+        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.green
             self.addChild(n)
-        }
+        }*/
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let hexagon = node as? HexagonNode {
@@ -284,19 +284,19 @@ class GameScene: SKScene {
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
+        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.blue
             self.addChild(n)
-        }
+        }*/
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        if let n = self.spinnyNode?.copy() as! SKShapeNode? {
+        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
             n.position = pos
             n.strokeColor = SKColor.red
             self.addChild(n)
-        }
+        }*/
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
