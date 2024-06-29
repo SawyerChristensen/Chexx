@@ -64,6 +64,15 @@ class HexagonNode: SKShapeNode {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    func addPieceImage(named imageName: String) {
+        let texture = SKTexture(imageNamed: imageName)
+        let pieceNode = SKSpriteNode(texture: texture)
+        pieceNode.size = CGSize(width: self.frame.size.width * 0.8, height: self.frame.size.height * 0.8)
+        pieceNode.position = CGPoint(x: 0, y: 0)
+        pieceNode.zPosition = 1
+        self.addChild(pieceNode)
+    }
 }
 
 
@@ -278,6 +287,7 @@ class GameScene: SKScene {
         for node in nodesAtPoint {
             if let hexagon = node as? HexagonNode {
                 hexagon.fillColor = .yellow  // Example interaction: change color
+                hexagon.strokeColor = .yellow
                 print("Hexagon touched: \(hexagon.name ?? "unknown")")
             }
         }
