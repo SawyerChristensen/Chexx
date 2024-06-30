@@ -41,6 +41,7 @@
 		BE76A9FC2C2A3EDA009113B4 /* wr.png in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E02C2A3EDA009113B4 /* wr.png */; };
 		BE76A9FD2C2A3EDA009113B4 /* Carmen-habanera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E22C2A3EDA009113B4 /* Carmen-habanera.mp3 */; };
 		BE76AA232C2A41FF009113B4 /* context.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA222C2A41FF009113B4 /* context.txt */; };
+		BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +80,7 @@
 		BE76A9E02C2A3EDA009113B4 /* wr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wr.png; sourceTree = "<group>"; };
 		BE76A9E22C2A3EDA009113B4 /* Carmen-habanera.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Carmen-habanera.mp3"; sourceTree = "<group>"; };
 		BE76AA222C2A41FF009113B4 /* context.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = context.txt; sourceTree = "<group>"; };
+		BE76AA3D2C30DF82009113B4 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +117,7 @@
 				BE76A9B12C2A2602009113B4 /* GameScene.sks */,
 				BE76A9B32C2A2602009113B4 /* Actions.sks */,
 				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
+				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
 				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
@@ -281,6 +284,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */,
+				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */,
 			);

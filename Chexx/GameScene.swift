@@ -82,10 +82,13 @@ class GameScene: SKScene {
     var graphs = [String : GKGraph]()
     
     private var lastUpdateTime : TimeInterval = 0
-    private var spinnyNode : SKShapeNode? //JUST FOR MOUSE INTERACTION VISUALIZATION IN XCoDE, REMOVE LATER AND ALL LATER REFERENCES IN DEPLOYMENT
     
     var hexagonSize: CGFloat = 50 //50 is arbitrary & and just for init, changed later when screen size is retrieved
-    let light = UIColor(hex: "#ffce9e")
+    
+    var selectedPiece: SKSpriteNode?
+    var originalPosition: CGPoint?
+    
+    let light = UIColor(hex: "#ffce9e") //can maybe import this later depending on user color settings in app? high contrast options? red black and white?
     let grey = UIColor(hex: "#e8ab6f")
     let dark = UIColor(hex: "#d18b47")
     
@@ -94,24 +97,18 @@ class GameScene: SKScene {
 
         self.lastUpdateTime = 0
         
+        //load saved game state
+        let gameState = loadGameState(from: "currentGameState") ?? initialGameState()
+        
         // Calculate hexagon size based on screen size (currently 4% of the smallest screen dimension, in case of screen rotation)
         hexagonSize = min(self.size.width, self.size.height) * 0.04
         
-        // Generate and add hexagon tiles to the scene
+        //generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
         
-        /*// Create shape node to use during mouse interaction
-        let w = (self.size.width + self.size.height) * 0.05
-        self.spinnyNode = SKShapeNode.init(rectOf: CGSize.init(width: w, height: w), cornerRadius: w * 0.3)
+        //place the pieces in the saved game state on the board
+        placePieces(scene: self, gameState: gameState)
         
-        if let spinnyNode = self.spinnyNode {
-            spinnyNode.lineWidth = 2.5
-            
-            spinnyNode.run(SKAction.repeatForever(SKAction.rotate(byAngle: CGFloat(Double.pi), duration: 1)))
-            spinnyNode.run(SKAction.sequence([SKAction.wait(forDuration: 0.5),
-                                              SKAction.fadeOut(withDuration: 0.5),
-                                              SKAction.removeFromParent()]))
-        }*/
     }
     
     enum Direction { //for use with calcualte new center
@@ -128,17 +125,17 @@ class GameScene: SKScene {
         let angle = CGFloat.pi / 3 // 60 degrees
         switch direction {
         case .above:
-            return CGPoint(x: x, y: y - 2 * radius * sin(angle))
-        case .below:
             return CGPoint(x: x, y: y + 2 * radius * sin(angle))
+        case .below:
+            return CGPoint(x: x, y: y - 2 * radius * sin(angle))
         case .upperLeft:
-            return CGPoint(x: x - radius * (1 + cos(angle)), y: y - radius * sin(angle))
-        case .bottomLeft:
             return CGPoint(x: x - radius * (1 + cos(angle)), y: y + radius * sin(angle))
+        case .bottomLeft:
+            return CGPoint(x: x - radius * (1 + cos(angle)), y: y - radius * sin(angle))
         case .upperRight:
-            return CGPoint(x: x + radius * (1 + cos(angle)), y: y - radius * sin(angle))
-        case .bottomRight:
             return CGPoint(x: x + radius * (1 + cos(angle)), y: y + radius * sin(angle))
+        case .bottomRight:
+            return CGPoint(x: x + radius * (1 + cos(angle)), y: y - radius * sin(angle))
         case .none:
             return CGPoint(x: x, y: y)
         }
@@ -152,96 +149,97 @@ class GameScene: SKScene {
         
         // Define a list of directions to generate hexagons around the center
         let directions: [(String, Direction, UIColor)] = [
-            ("f7", .above, dark),
-            ("e6", .bottomLeft, light),
-            ("e5", .below, dark),
-            ("f5", .bottomRight, light),
-            ("g5", .upperRight, dark),
-            ("g6", .above, light),
+            ("f6", .none, grey),
+            ("f7", .above, light),
+            ("e6", .bottomLeft, dark),
+            ("e5", .below, light),
+            ("f5", .bottomRight, dark),
+            ("g5", .upperRight, light),
+            ("g6", .above, dark),
             ("g7", .above, grey),
-            ("f8", .upperLeft, light),
+            ("f8", .upperLeft, dark),
             ("e7", .bottomLeft, grey),
-            ("d6", .bottomLeft, dark),
+            ("d6", .bottomLeft, light),
             ("d5", .below, grey),
-            ("d4", .below, light),
+            ("d4", .below, dark),
             ("e4", .bottomRight, grey),
-            ("f4", .bottomRight, dark),
+            ("f4", .bottomRight, light),
             ("g4", .upperRight, grey),
-            ("h4", .upperRight, light),
+            ("h4", .upperRight, dark),
             ("h5", .above, grey),
-            ("h6", .above, dark),
-            ("h7", .above, light),
-            ("g8", .upperLeft, dark),
+            ("h6", .above, light),
+            ("h7", .above, dark),
+            ("g8", .upperLeft, light),
             ("f9", .upperLeft, grey),
-            ("e8", .bottomLeft, dark),
-            ("d7", .bottomLeft, light),
+            ("e8", .bottomLeft, light),
+            ("d7", .bottomLeft, dark),
             ("c6", .bottomLeft, grey),
-            ("c5", .below, light),
-            ("c4", .below, dark),
+            ("c5", .below, dark),
+            ("c4", .below, light),
             ("c3", .below, grey),
-            ("d3", .bottomRight, dark),
-            ("e3", .bottomRight, light),
+            ("d3", .bottomRight, light),
+            ("e3", .bottomRight, dark),
             ("f3", .bottomRight, grey),
-            ("g3", .upperRight, light),
-            ("h3", .upperRight, dark),
+            ("g3", .upperRight, dark),
+            ("h3", .upperRight, light),
             ("i3", .upperRight, grey),
-            ("i4", .above, dark),
-            ("i5", .above, light),
+            ("i4", .above, light),
+            ("i5", .above, dark),
             ("i6", .above, grey),
-            ("i7", .above, dark),
+            ("i7", .above, light),
             ("h8", .upperLeft, grey),
-            ("g9", .upperLeft, light),
-            ("f10", .upperLeft, dark),
-            ("e9", .bottomLeft, light),
+            ("g9", .upperLeft, dark),
+            ("f10", .upperLeft, light),
+            ("e9", .bottomLeft, dark),
             ("d8", .bottomLeft, grey),
-            ("c7", .bottomLeft, dark),
-            ("b6", .bottomLeft, light),
-            ("b5", .below, dark),
+            ("c7", .bottomLeft, light),
+            ("b6", .bottomLeft, dark),
+            ("b5", .below, light),
             ("b4", .below, grey),
-            ("b3", .below, light),
-            ("b2", .below, dark),
-            ("c2", .bottomRight, light),
+            ("b3", .below, dark),
+            ("b2", .below, light),
+            ("c2", .bottomRight, dark),
             ("d2", .bottomRight, grey),
-            ("e2", .bottomRight, dark),
-            ("f2", .bottomRight, light),
-            ("g2", .upperRight, dark),
+            ("e2", .bottomRight, light),
+            ("f2", .bottomRight, dark),
+            ("g2", .upperRight, light),
             ("h2", .upperRight, grey),
-            ("i2", .upperRight, light),
-            ("k2", .upperRight, dark),
-            ("k3", .above, light),
+            ("i2", .upperRight, dark),
+            ("k2", .upperRight, light),
+            ("k3", .above, dark),
             ("k4", .above, grey),
-            ("k5", .above, dark),
-            ("k6", .above, light),
+            ("k5", .above, light),
+            ("k6", .above, dark),
             ("k7", .above, grey),
-            ("i8", .upperLeft, light),
-            ("h9", .upperLeft, dark),
+            ("i8", .upperLeft, dark),
+            ("h9", .upperLeft, light),
             ("g10", .upperLeft, grey),
-            ("f11", .upperLeft, light),
+            ("f11", .upperLeft, dark),
             ("e10", .bottomLeft, grey),
-            ("d9", .bottomLeft, dark),
-            ("c8", .bottomLeft, light),
+            ("d9", .bottomLeft, light),
+            ("c8", .bottomLeft, dark),
             ("b7", .bottomLeft, grey),
-            ("a6", .bottomLeft, dark),
+            ("a6", .bottomLeft, light),
             ("a5", .below, grey),
-            ("a4", .below, light),
-            ("a3", .below, dark),
+            ("a4", .below, dark),
+            ("a3", .below, light),
             ("a2", .below, grey),
-            ("a1", .below, light),
+            ("a1", .below, dark),
             ("b1", .bottomRight, grey),
-            ("c1", .bottomRight, dark),
-            ("d1", .bottomRight, light),
+            ("c1", .bottomRight, light),
+            ("d1", .bottomRight, dark),
             ("e1", .bottomRight, grey),
-            ("f1", .bottomRight, dark),
+            ("f1", .bottomRight, light),
             ("g1", .upperRight, grey),
-            ("h1", .upperRight, light),
-            ("i1", .upperRight, dark),
+            ("h1", .upperRight, dark),
+            ("i1", .upperRight, light),
             ("k1", .upperRight, grey),
-            ("l1", .upperRight, light),
+            ("l1", .upperRight, dark),
             ("l2", .above, grey),
-            ("l3", .above, dark),
-            ("l4", .above, light),
+            ("l3", .above, light),
+            ("l4", .above, dark),
             ("l5", .above, grey),
-            ("l6", .above, dark)
+            ("l6", .above, light)
         ]
         
         //initialize currentx & y position at the center of the screen
@@ -250,12 +248,6 @@ class GameScene: SKScene {
         
         // Hexagon array that will be added to the scene
         var hexagons: [HexagonNode] = []
-        
-        // Add initial center hexagon
-        let initialHexagon = HexagonNode(size: radius, color: grey)
-        initialHexagon.position = CGPoint(x: currentX, y: currentY)
-        initialHexagon.name = "f6"
-        hexagons.append(initialHexagon)
         
         // Generate hexagons based on directions and colors
         for (key, direction, color) in directions {
@@ -276,37 +268,45 @@ class GameScene: SKScene {
         }
     }
     
+    func placePieces(scene: SKScene, gameState: GameState? = nil) {
+        // Load pieces from game state if available, else use initial game state
+        let state = gameState ?? initialGameState()
+        
+        for (position, pieceImage) in state.pieces {
+            if let hexagon = scene.childNode(withName: position) as? HexagonNode {
+                hexagon.addPieceImage(named: pieceImage)
+            }
+        }
+    }
+    
+    func saveCurrentGameState() {
+            // Create a game state from the current positions
+            var pieces: [String: String] = [:]
+            for hexagon in self.children.compactMap({ $0 as? HexagonNode }) {
+                if let pieceNode = hexagon.children.first as? SKSpriteNode {
+                    pieces[hexagon.name!] = pieceNode.texture?.description
+                }
+            }
+            let gameState = GameState(pieces: pieces)
+            saveGameState(gameState, to: "currentGameState")
+        }
+    
 
     func touchDown(atPoint pos : CGPoint) {
-        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.green
-            self.addChild(n)
-        }*/
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let hexagon = node as? HexagonNode {
-                hexagon.fillColor = .yellow  // Example interaction: change color
-                hexagon.strokeColor = .yellow
+                //hexagon.fillColor = .yellow  // Example interaction: change color
+                //hexagon.strokeColor = .yellow
                 print("Hexagon touched: \(hexagon.name ?? "unknown")")
             }
         }
     }
     
     func touchMoved(toPoint pos : CGPoint) {
-        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.blue
-            self.addChild(n)
-        }*/
     }
     
     func touchUp(atPoint pos : CGPoint) {
-        /*if let n = self.spinnyNode?.copy() as! SKShapeNode? {
-            n.position = pos
-            n.strokeColor = SKColor.red
-            self.addChild(n)
-        }*/
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
