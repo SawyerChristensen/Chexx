@@ -58,7 +58,7 @@ func initialGameState() -> GameState {
         "f10": "black_bishop",
         "f9": "black_bishop",
         "g10": "black_king",
-        "h9": "black_bishop",
+        "h9": "black_knight",
         "c1": "white_rook",
         "d1": "white_knight",
         "e1": "white_queen",

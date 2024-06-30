@@ -68,7 +68,21 @@ class HexagonNode: SKShapeNode {
     func addPieceImage(named imageName: String) {
         let texture = SKTexture(imageNamed: imageName)
         let pieceNode = SKSpriteNode(texture: texture)
-        pieceNode.size = CGSize(width: self.frame.size.width * 0.8, height: self.frame.size.height * 0.8)
+        // Calculate the aspect ratio
+        let aspectRatio = texture.size().width / texture.size().height
+        
+        // Calculate the size maintaining the aspect ratio
+        let hexWidth = self.frame.size.width * 0.9
+        let hexHeight = self.frame.size.height * 0.9
+        
+        if aspectRatio > 1 {
+            // Wider than tall
+            pieceNode.size = CGSize(width: hexWidth, height: hexWidth / aspectRatio)
+        } else {
+            // Taller than wide or square
+            pieceNode.size = CGSize(width: hexHeight * aspectRatio, height: hexHeight)
+        }
+        
         pieceNode.position = CGPoint(x: 0, y: 0)
         pieceNode.zPosition = 1
         self.addChild(pieceNode)
@@ -100,8 +114,8 @@ class GameScene: SKScene {
         //load saved game state
         let gameState = loadGameState(from: "currentGameState") ?? initialGameState()
         
-        // Calculate hexagon size based on screen size (currently 4% of the smallest screen dimension, in case of screen rotation)
-        hexagonSize = min(self.size.width, self.size.height) * 0.04
+        // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
+        hexagonSize = min(self.size.width, self.size.height) * 0.045
         
         //generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
