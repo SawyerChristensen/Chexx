@@ -162,7 +162,7 @@ class GameScene: SKScene {
         let dark = UIColor(hex: "#d18b47")
         
         // Define a list of directions to generate hexagons around the center
-        let directions: [(String, Direction, UIColor)] = [
+        let directions: [(String, Direction, UIColor)] = [ //every hexagons name is SEPERATE from the gamestate data structure. every hexagons string address should remain a string
             ("f6", .none, grey),
             ("f7", .above, light),
             ("e6", .bottomLeft, dark),
@@ -282,6 +282,7 @@ class GameScene: SKScene {
         }
     }
     
+    //this needs to be modified when we change the game state structure
     func placePieces(scene: SKScene, gameState: GameState? = nil) {
         // Load pieces from game state if available, else use initial game state
         let state = gameState ?? initialGameState()
@@ -310,8 +311,9 @@ class GameScene: SKScene {
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let hexagon = node as? HexagonNode {
-                //hexagon.fillColor = .yellow  // Example interaction: change color
-                //hexagon.strokeColor = .yellow
+                //comment out the next two lines to remove the hexagons changing yellow whenever you tap a hexagon. in the future, we should maybe be tapping pieces instead of the hexagons the pieces are stored in
+                hexagon.fillColor = .yellow  // Example interaction: change color
+                hexagon.strokeColor = .yellow
                 print("Hexagon touched: \(hexagon.name ?? "unknown")")
             }
         }
