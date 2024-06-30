@@ -91,6 +91,10 @@ class HexagonNode: SKShapeNode {
 
 
 class GameScene: SKScene {
+    /*
+    override func didMove(to view: SKView) {
+            self.backgroundColor = SKColor.black
+        }*/ //makes the background black, uncomment to make the background black. will maybe try and have the background be grey but have a vignette effect in the future, but thats not very neccesary right now
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
