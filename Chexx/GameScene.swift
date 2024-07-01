@@ -106,7 +106,7 @@ class GameScene: SKScene {
     var selectedPiece: SKSpriteNode?
     var originalPosition: CGPoint?
     
-    let light = UIColor(hex: "#ffce9e") //can maybe import this later depending on user color settings in app? high contrast options? red black and white?
+    let light = UIColor(hex: "#ffce9e") //can  import this later depending on user color settings in app? high contrast options? red black and white? this is a bad place to initialize this anyway
     let grey = UIColor(hex: "#e8ab6f")
     let dark = UIColor(hex: "#d18b47")
     
@@ -116,7 +116,7 @@ class GameScene: SKScene {
         self.lastUpdateTime = 0
         
         //load saved game state
-        let gameState = loadGameState(from: "currentGameState") ?? initialGameState()
+        let gameState = loadGameState(from: "currentGameState") ?? GameState()
         
         // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
         hexagonSize = min(self.size.width, self.size.height) * 0.045
@@ -286,30 +286,24 @@ class GameScene: SKScene {
         }
     }
     
-    //this needs to be modified when we change the game state structure
     func placePieces(scene: SKScene, gameState: GameState? = nil) {
-        // Load pieces from game state if available, else use initial game state
-        let state = gameState ?? initialGameState()
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
-        for (position, pieceImage) in state.pieces {
-            if let hexagon = scene.childNode(withName: position) as? HexagonNode {
-                hexagon.addPieceImage(named: pieceImage)
+        // load pieces from game state if available, else use initial game state
+        let state = gameState ?? GameState()
+
+        for (colIndex, column) in state.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece {
+                    let position = "\(columns[colIndex])\(rowIndex + 1)" //need to + 1 because the gameState board uses 0 based indexing
+                    if let hexagon = scene.childNode(withName: position) as? HexagonNode {
+                        let pieceImage = "\(piece.color)_\(piece.type)"
+                        hexagon.addPieceImage(named: pieceImage)
+                    }
+                }
             }
         }
     }
-    
-    func saveCurrentGameState() {
-            // Create a game state from the current positions
-            var pieces: [String: String] = [:]
-            for hexagon in self.children.compactMap({ $0 as? HexagonNode }) {
-                if let pieceNode = hexagon.children.first as? SKSpriteNode {
-                    pieces[hexagon.name!] = pieceNode.texture?.description
-                }
-            }
-            let gameState = GameState(pieces: pieces)
-            saveGameState(gameState, to: "currentGameState")
-        }
-    
 
     func touchDown(atPoint pos : CGPoint) {
         let nodesAtPoint = nodes(at: pos)
