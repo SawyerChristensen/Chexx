@@ -91,7 +91,9 @@ struct GameState: Codable {
 //this could cut down the game file save by like 10x
 //would also need to change the load game state file to accept algebraic notation from the save file
 //can do later though https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
-func saveGameState(_ gameState: GameState, to filename: String) {
+
+
+func saveGameStateToFile(_ gameState: GameState, to filename: String) { // i think this saves it to a file? this isnt used rn but need to implement later
     let encoder = JSONEncoder()
     if let encoded = try? encoder.encode(gameState) {
         let url = getDocumentsDirectory().appendingPathComponent(filename)
@@ -104,7 +106,7 @@ func saveGameState(_ gameState: GameState, to filename: String) {
     }
 }
 
-func loadGameState(from filename: String) -> GameState? {
+func loadGameStateFromFile(from filename: String) -> GameState? {
     let url = getDocumentsDirectory().appendingPathComponent(filename)
     if let data = try? Data(contentsOf: url) {
         let decoder = JSONDecoder()

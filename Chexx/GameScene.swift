@@ -65,21 +65,18 @@ class HexagonNode: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addPieceImage(named imageName: String) {
+    func addPieceImage(named imageName: String, identifier: String) {
         let texture = SKTexture(imageNamed: imageName)
         let pieceNode = SKSpriteNode(texture: texture)
-        // Calculate the aspect ratio
-        let aspectRatio = texture.size().width / texture.size().height
+        pieceNode.name = identifier
         
-        // Calculate the size maintaining the aspect ratio
+        let aspectRatio = texture.size().width / texture.size().height
         let hexWidth = self.frame.size.width * 0.9
         let hexHeight = self.frame.size.height * 0.9
         
         if aspectRatio > 1 {
-            // Wider than tall
             pieceNode.size = CGSize(width: hexWidth, height: hexWidth / aspectRatio)
         } else {
-            // Taller than wide or square
             pieceNode.size = CGSize(width: hexHeight * aspectRatio, height: hexHeight)
         }
         
@@ -91,13 +88,16 @@ class HexagonNode: SKShapeNode {
 
 
 class GameScene: SKScene {
-    /*
+    
     override func didMove(to view: SKView) {
-            self.backgroundColor = SKColor.black
-        }*/ //makes the background black, uncomment to make the background black. will maybe try and have the background be grey but have a vignette effect in the future, but thats not very neccesary right now
+        super.didMove(to: view)
+        anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        //self.backgroundColor = SKColor.black
+        }
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
+    var gameState: GameState!
     
     private var lastUpdateTime : TimeInterval = 0
     
@@ -116,7 +116,7 @@ class GameScene: SKScene {
         self.lastUpdateTime = 0
         
         //load saved game state
-        let gameState = loadGameState(from: "currentGameState") ?? GameState()
+        let gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
         
         // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
         hexagonSize = min(self.size.width, self.size.height) * 0.045
@@ -288,57 +288,139 @@ class GameScene: SKScene {
     
     func placePieces(scene: SKScene, gameState: GameState? = nil) {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        
-        // load pieces from game state if available, else use initial game state
+
         let state = gameState ?? GameState()
 
         for (colIndex, column) in state.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece {
-                    let position = "\(columns[colIndex])\(rowIndex + 1)" //need to + 1 because the gameState board uses 0 based indexing
+                    let position = "\(columns[colIndex])\(rowIndex + 1)"
+                    let identifier = "\(position)_\(piece.color)_\(piece.type)"
                     if let hexagon = scene.childNode(withName: position) as? HexagonNode {
                         let pieceImage = "\(piece.color)_\(piece.type)"
-                        hexagon.addPieceImage(named: pieceImage)
+                        hexagon.addPieceImage(named: pieceImage, identifier: identifier)
                     }
                 }
             }
         }
     }
 
-    func touchDown(atPoint pos : CGPoint) {
+    func touchDown(atPoint pos: CGPoint) {
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
-            if let hexagon = node as? HexagonNode {
-                //comment out the next two lines to remove the hexagons changing yellow whenever you tap a hexagon. in the future, we should maybe be tapping pieces instead of the hexagons the pieces are stored in
-                hexagon.fillColor = .yellow  // Example interaction: change color
-                hexagon.strokeColor = .yellow
-                print("Hexagon touched: \(hexagon.name ?? "unknown")")
+            if let pieceNode = node as? SKSpriteNode {
+                selectedPiece = pieceNode
+                originalPosition = pieceNode.position
+                break
             }
         }
     }
-    
-    func touchMoved(toPoint pos : CGPoint) {
+
+    func touchMoved(toPoint pos: CGPoint) {
+        guard let selectedPiece = selectedPiece else { return }
+        if let parent = selectedPiece.parent {
+            let convertedPos = convert(pos, to: parent)
+            selectedPiece.position = convertedPos
+        }
     }
-    
-    func touchUp(atPoint pos : CGPoint) {
+
+    func touchUp(atPoint pos: CGPoint) {
+        guard let selectedPiece = selectedPiece else { return }
+        if let parent = selectedPiece.parent {
+            let convertedPos = convert(pos, to: parent)
+            if let nearestHexagon = findNearestHexagon(to: convertedPos) {
+                selectedPiece.position = nearestHexagon.position
+                // updateGameState(with: selectedPiece, at: nearestHexagon.name)
+            } else {
+                selectedPiece.position = originalPosition!
+            }
+            self.selectedPiece = nil
+        }
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchDown(atPoint: t.location(in: self)) }
+        for t in touches {
+            self.touchDown(atPoint: t.location(in: self))
+        }
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchMoved(toPoint: t.location(in: self)) }
+        for t in touches {
+            self.touchMoved(toPoint: t.location(in: self))
+        }
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        for t in touches {
+            self.touchUp(atPoint: t.location(in: self))
+        }
     }
-    
+
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for t in touches { self.touchUp(atPoint: t.location(in: self)) }
+        if let selectedPiece = selectedPiece {
+            selectedPiece.position = originalPosition!
+            self.selectedPiece = nil
+        }
+    }
+
+    func findNearestHexagon(to position: CGPoint) -> HexagonNode? {
+        var closestHexagon: HexagonNode?
+        var minDistance = CGFloat.greatestFiniteMagnitude
+        for node in children {
+            if let hexagon = node as? HexagonNode {
+                let distance = hypot(hexagon.position.x - position.x, hexagon.position.y - position.y)
+                if distance < minDistance {
+                    minDistance = distance
+                    closestHexagon = hexagon
+                }
+            }
+        }
+        return closestHexagon
     }
     
+    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) {
+        guard let hexagonName = hexagonName else { return }
+
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columnLetter = hexagonName.prefix(1)
+        let rowIndexString = hexagonName.suffix(1)
+        
+        guard let colIndex = columns.firstIndex(of: String(columnLetter)),
+              let rowIndex = Int(rowIndexString) else { return }
+
+        // Parse identifier to find the original position and piece details
+        let identifierParts = pieceNode.name?.split(separator: "_")
+        guard let originalPosition = identifierParts?.first,
+              let originalColLetter = originalPosition.first,
+              let originalRowIndexString = originalPosition.last,
+              let originalColIndex = columns.firstIndex(of: String(originalColLetter)),
+              let originalRowIndex = Int(String(originalRowIndexString)) else { return }
+        
+        print("Moving piece from \(originalPosition) to \(hexagonName)")
+
+        // Remove piece from its original position
+        gameState.board[originalColIndex][originalRowIndex - 1] = nil
+
+        // Add piece to the new position
+        let pieceDetails = identifierParts![1...]
+        let color = String(pieceDetails[0])
+        let type = String(pieceDetails[1])
+        gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type)
+        
+        printGameState()
+    }
+    
+    func printGameState() { //just for bug fixing
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece {
+                    print("Piece at \(colIndex),\(rowIndex): \(piece.color) \(piece.type)")
+                } else {
+                    print("No piece at \(colIndex),\(rowIndex)")
+                }
+            }
+        }
+    }
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
