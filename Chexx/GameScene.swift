@@ -406,31 +406,53 @@ class GameScene: SKScene {
             return
         }
         
-        print("Moving piece from \(originalPosition) to \(hexagonName)")
-        
         // Get piece details from identifier
         let color = String(pieceDetails[1])
         let type = String(pieceDetails[2])
         
-        // Remove piece from its original position
+        //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
+        
+        // Check if there's a piece at the destination and remove it
+        if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {
+            //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
+            // Find and remove the captured piece from the scene
+            if let capturedPieceNode = findPieceNode(at: hexagonName) {
+                capturedPieceNode.removeFromParent()
+            }
+        }
+        
+        // Remove piece from its original position (originalRowIndex is not 0 indexed, have to - 1)
         gameState.board[originalColIndex][originalRowIndex - 1] = nil //removing from ORIGINAL FIRST PLACE ON BOARD NOT THE NEW PLACE
         
-        // Add piece to the new position
+        // Add piece to the new position (rowIndex is not 0 indexed, have to - 1)
         gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type)
         
         // Update pieceNode's name to reflect the new position
         pieceNode.name = "\(hexagonName)_\(color)_\(type)"
-        
+        //printGameState()
+    }
+    
+    func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
+        for node in children {
+            if let hexagon = node as? HexagonNode,
+               hexagon.name == hexagonName,
+               let pieceNode = hexagon.children.first as? SKSpriteNode {
+                return pieceNode
+            }
+        }
+        return nil
     }
     
     func printGameState() { //just for bug fixing
-        print("////////////////////////////////////////")
+        print("********** CURRENT GAME STATE: **********")
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece {
-                    print("Piece at \(colIndex),\(rowIndex): \(piece.color) \(piece.type)")
+                    print("Piece at \(columns[colIndex])\(rowIndex + 1): \(piece.color) \(piece.type)")
                 } else {
-                    print("No piece at \(colIndex),\(rowIndex)")
+                    print("No piece at \(columns[colIndex])\(rowIndex + 1)")
                 }
             }
         }
