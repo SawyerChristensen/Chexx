@@ -89,11 +89,9 @@ class HexagonNode: SKShapeNode {
 
 class GameScene: SKScene {
     
-    override func didMove(to view: SKView) {
-        super.didMove(to: view)
-        anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        //self.backgroundColor = SKColor.black
-        }
+    //override func didMove(to view: SKView) {
+    //    self.backgroundColor = SKColor.black
+     //   }
     
     var entities = [GKEntity]()
     var graphs = [String : GKGraph]()
@@ -328,13 +326,13 @@ class GameScene: SKScene {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
             let convertedPos = convert(pos, to: parent)
-            if let nearestHexagon = findNearestHexagon(to: convertedPos) {
-                selectedPiece.position = nearestHexagon.position
-                // updateGameState(with: selectedPiece, at: nearestHexagon.name)
+            if let nearestHexagon = findNearestHexagon(to: pos) {
+                selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
+                //updateGameState(with: selectedPiece, at: nearestHexagon.name)
             } else {
                 selectedPiece.position = originalPosition!
             }
-            self.selectedPiece = nil
+            self.selectedPiece = nil //i dont think this is needed, can comment out with no effect on code but here just in case
         }
     }
 
@@ -379,7 +377,10 @@ class GameScene: SKScene {
     }
     
     func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) {
-        guard let hexagonName = hexagonName else { return }
+        guard let hexagonName = hexagonName else {
+                print("Hexagon name is nil")
+                return
+            }
 
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let columnLetter = hexagonName.prefix(1)
