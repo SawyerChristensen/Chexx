@@ -379,7 +379,7 @@ class GameScene: SKScene {
         }
     }
     
-    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) {
+    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) { //still need to implement player turn status and game status such as "ongoing" or "ended"
         guard let hexagonName = hexagonName else {
             print("Hexagon name is nil")
             return
