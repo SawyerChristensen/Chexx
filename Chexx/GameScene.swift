@@ -114,7 +114,7 @@ class GameScene: SKScene {
         self.lastUpdateTime = 0
         
         //load saved game state
-        let gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
+        gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
         
         // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
         hexagonSize = min(self.size.width, self.size.height) * 0.045
@@ -124,6 +124,7 @@ class GameScene: SKScene {
         
         //place the pieces in the saved game state on the board
         placePieces(scene: self, gameState: gameState)
+        printGameState()
         
     }
     
@@ -286,7 +287,6 @@ class GameScene: SKScene {
     
     func placePieces(scene: SKScene, gameState: GameState? = nil) {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-
         let state = gameState ?? GameState()
 
         for (colIndex, column) in state.board.enumerated() {
@@ -325,10 +325,9 @@ class GameScene: SKScene {
     func touchUp(atPoint pos: CGPoint) {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
-            let convertedPos = convert(pos, to: parent)
             if let nearestHexagon = findNearestHexagon(to: pos) {
                 selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
-                //updateGameState(with: selectedPiece, at: nearestHexagon.name)
+                updateGameState(with: selectedPiece, at: nearestHexagon.name)
             } else {
                 selectedPiece.position = originalPosition!
             }
@@ -378,40 +377,50 @@ class GameScene: SKScene {
     
     func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) {
         guard let hexagonName = hexagonName else {
-                print("Hexagon name is nil")
-                return
-            }
-
+            print("Hexagon name is nil")
+            return
+        }
+        
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let columnLetter = hexagonName.prefix(1)
         let rowIndexString = hexagonName.suffix(1)
         
         guard let colIndex = columns.firstIndex(of: String(columnLetter)),
               let rowIndex = Int(rowIndexString) else { return }
-
-        // Parse identifier to find the original position and piece details
-        let identifierParts = pieceNode.name?.split(separator: "_")
-        guard let originalPosition = identifierParts?.first,
-              let originalColLetter = originalPosition.first,
-              let originalRowIndexString = originalPosition.last,
-              let originalColIndex = columns.firstIndex(of: String(originalColLetter)),
-              let originalRowIndex = Int(String(originalRowIndexString)) else { return }
+        
+        // Check if pieceNode.name is not nil and split it to find original position
+        guard let pieceDetails = pieceNode.name?.split(separator: "_"),
+            pieceDetails.count == 3 else {
+            print("Invalid piece identifier")
+            return
+        }
+        
+        let originalPosition = pieceDetails[0]
+        guard let originalColIndex = columns.firstIndex(of: String(originalPosition.first!)),
+              let originalRowIndex = Int(String(originalPosition.last!)) else {
+            print("Invalid original position")
+            return
+        }
         
         print("Moving piece from \(originalPosition) to \(hexagonName)")
-
+        
+        // Get piece details from identifier
+        let color = String(pieceDetails[1])
+        let type = String(pieceDetails[2])
+        
         // Remove piece from its original position
-        gameState.board[originalColIndex][originalRowIndex - 1] = nil
-
+        gameState.board[originalColIndex][originalRowIndex - 1] = nil //removing from ORIGINAL FIRST PLACE ON BOARD NOT THE NEW PLACE
+        
         // Add piece to the new position
-        let pieceDetails = identifierParts![1...]
-        let color = String(pieceDetails[0])
-        let type = String(pieceDetails[1])
         gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type)
         
-        printGameState()
+        // Update pieceNode's name to reflect the new position
+        pieceNode.name = "\(hexagonName)_\(color)_\(type)"
+        
     }
     
     func printGameState() { //just for bug fixing
+        print("////////////////////////////////////////")
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece {
