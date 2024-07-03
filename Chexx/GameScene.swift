@@ -124,8 +124,7 @@ class GameScene: SKScene {
         
         //place the pieces in the saved game state on the board
         placePieces(scene: self, gameState: gameState)
-        printGameState()
-        
+        //printGameState()
     }
     
     enum Direction { //for use with calcualte new center
@@ -372,7 +371,12 @@ class GameScene: SKScene {
                 }
             }
         }
-        return closestHexagon
+        // Check if the closest hexagon is within the size of a hexagon
+        if minDistance <= hexagonSize {
+            return closestHexagon
+        } else {
+            return nil
+        }
     }
     
     func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) {
