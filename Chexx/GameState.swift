@@ -10,6 +10,7 @@ import Foundation
 struct Piece: Codable {
     var color: String // "white" or "black"
     var type: String // "pawn" or "rook" etc
+    var hasMoved: Bool // True or False depending on if the piece has moved
 }
 
 struct GameState: Codable {
@@ -41,42 +42,42 @@ struct GameState: Codable {
     
     mutating func setInitialPiecePositions() {
         let initialPositions: [((Int, Int), Piece)] = [
-            ((1, 6), Piece(color: "black", type: "pawn")),
-            ((2, 6), Piece(color: "black", type: "pawn")),
-            ((3, 6), Piece(color: "black", type: "pawn")),
-            ((4, 6), Piece(color: "black", type: "pawn")),
-            ((5, 6), Piece(color: "black", type: "pawn")),
-            ((6, 6), Piece(color: "black", type: "pawn")),
-            ((7, 6), Piece(color: "black", type: "pawn")),
-            ((8, 6), Piece(color: "black", type: "pawn")),
-            ((9, 6), Piece(color: "black", type: "pawn")),
-            ((1, 0), Piece(color: "white", type: "pawn")),
-            ((2, 1), Piece(color: "white", type: "pawn")),
-            ((3, 2), Piece(color: "white", type: "pawn")),
-            ((4, 3), Piece(color: "white", type: "pawn")),
-            ((5, 4), Piece(color: "white", type: "pawn")),
-            ((6, 3), Piece(color: "white", type: "pawn")),
-            ((7, 2), Piece(color: "white", type: "pawn")),
-            ((8, 1), Piece(color: "white", type: "pawn")),
-            ((9, 0), Piece(color: "white", type: "pawn")),
-            ((2, 7), Piece(color: "black", type: "rook")),
-            ((8, 7), Piece(color: "black", type: "rook")),
-            ((3, 8), Piece(color: "black", type: "knight")),
-            ((4, 9), Piece(color: "black", type: "queen")),
-            ((5, 10), Piece(color: "black", type: "bishop")),
-            ((5, 9), Piece(color: "black", type: "bishop")),
-            ((5, 8), Piece(color: "black", type: "bishop")),
-            ((6, 9), Piece(color: "black", type: "king")),
-            ((7, 8), Piece(color: "black", type: "knight")),
-            ((2, 0), Piece(color: "white", type: "rook")),
-            ((3, 0), Piece(color: "white", type: "knight")),
-            ((4, 0), Piece(color: "white", type: "queen")),
-            ((5, 0), Piece(color: "white", type: "bishop")),
-            ((5, 1), Piece(color: "white", type: "bishop")),
-            ((5, 2), Piece(color: "white", type: "bishop")),
-            ((6, 0), Piece(color: "white", type: "king")),
-            ((7, 0), Piece(color: "white", type: "knight")),
-            ((8, 0), Piece(color: "white", type: "rook"))
+            ((1, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((2, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((3, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((4, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((5, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((6, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((7, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((8, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((9, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
+            ((1, 0), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((2, 1), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((3, 2), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((4, 3), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((5, 4), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((6, 3), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((7, 2), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((8, 1), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((9, 0), Piece(color: "white", type: "pawn", hasMoved: false)),
+            ((2, 7), Piece(color: "black", type: "rook", hasMoved: false)),
+            ((8, 7), Piece(color: "black", type: "rook", hasMoved: false)),
+            ((3, 8), Piece(color: "black", type: "knight", hasMoved: false)),
+            ((4, 9), Piece(color: "black", type: "queen", hasMoved: false)),
+            ((5, 10), Piece(color: "black", type: "bishop", hasMoved: false)),
+            ((5, 9), Piece(color: "black", type: "bishop", hasMoved: false)),
+            ((5, 8), Piece(color: "black", type: "bishop", hasMoved: false)),
+            ((6, 9), Piece(color: "black", type: "king", hasMoved: false)),
+            ((7, 8), Piece(color: "black", type: "knight", hasMoved: false)),
+            ((2, 0), Piece(color: "white", type: "rook", hasMoved: false)),
+            ((3, 0), Piece(color: "white", type: "knight", hasMoved: false)),
+            ((4, 0), Piece(color: "white", type: "queen", hasMoved: false)),
+            ((5, 0), Piece(color: "white", type: "bishop", hasMoved: false)),
+            ((5, 1), Piece(color: "white", type: "bishop", hasMoved: false)),
+            ((5, 2), Piece(color: "white", type: "bishop", hasMoved: false)),
+            ((6, 0), Piece(color: "white", type: "king", hasMoved: false)),
+            ((7, 0), Piece(color: "white", type: "knight", hasMoved: false)),
+            ((8, 0), Piece(color: "white", type: "rook", hasMoved: false))
         ]
         
         for ((col, row), piece) in initialPositions {
@@ -88,7 +89,7 @@ struct GameState: Codable {
 //we can kind of ignore these two functions for now, might modify later
 //rn is saves the game state in a bulky format, it stores the dictionary struct gamestate
 //before launch we should have it convert the game state to algebraic chess notation, then save that in a json file or whatever
-//this could cut down the game file save by like 10x
+//this could cut down the game file save by like 20x, probably more. must implement this before launch
 //would also need to change the load game state file to accept algebraic notation from the save file
 //can do later though https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
 

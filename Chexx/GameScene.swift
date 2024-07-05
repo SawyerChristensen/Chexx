@@ -324,9 +324,10 @@ class GameScene: SKScene {
     func touchUp(atPoint pos: CGPoint) {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
-            if let nearestHexagon = findNearestHexagon(to: pos) {
-                selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
+            if let nearestHexagon = findNearestHexagon(to: pos), validMovesForPiece(selectedPiece, in: gameState).contains(nearestHexagon.name ?? "not_found") {//who wrote this garbage bruh (me I wrote this garbage)
+                //we can also maybe get the valid moves list when we pick up the piece so it can be generating the list while the player is moving it around? might be good for performance but also this is so simple it probaby doesn't matter
                 updateGameState(with: selectedPiece, at: nearestHexagon.name)
+                selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
             } else {
                 selectedPiece.position = originalPosition!
             }
@@ -413,19 +414,19 @@ class GameScene: SKScene {
         //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
         
         // Check if there's a piece at the destination and remove it
-        if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {
+        if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             // Find and remove the captured piece from the scene
-            if let capturedPieceNode = findPieceNode(at: hexagonName) {
+            if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
                 capturedPieceNode.removeFromParent()
             }
         }
         
         // Remove piece from its original position (originalRowIndex is not 0 indexed, have to - 1)
-        gameState.board[originalColIndex][originalRowIndex - 1] = nil //removing from ORIGINAL FIRST PLACE ON BOARD NOT THE NEW PLACE
+        gameState.board[originalColIndex][originalRowIndex - 1] = nil
         
         // Add piece to the new position (rowIndex is not 0 indexed, have to - 1)
-        gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type)
+        gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type, hasMoved: true)
         
         // Update pieceNode's name to reflect the new position
         pieceNode.name = "\(hexagonName)_\(color)_\(type)"
