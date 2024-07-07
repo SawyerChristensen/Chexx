@@ -308,6 +308,7 @@ class GameScene: SKScene {
             if let pieceNode = node as? SKSpriteNode {
                 selectedPiece = pieceNode
                 originalPosition = pieceNode.position
+                print(validMovesForPiece(selectedPiece!, in: gameState))
                 break
             }
         }
@@ -388,10 +389,11 @@ class GameScene: SKScene {
         
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let columnLetter = hexagonName.prefix(1)
-        let rowIndexString = hexagonName.suffix(1)
+        let rowIndexString = hexagonName.dropFirst()
         
         guard let colIndex = columns.firstIndex(of: String(columnLetter)),
-              let rowIndex = Int(rowIndexString) else { return }
+              var rowIndex = Int(rowIndexString) else { return }
+        rowIndex = rowIndex - 1 //rowIndex is originally not 0 indexed, have to - 1
         
         // Check if pieceNode.name is not nil and split it to find original position
         guard let pieceDetails = pieceNode.name?.split(separator: "_"),
@@ -402,31 +404,32 @@ class GameScene: SKScene {
         
         let originalPosition = pieceDetails[0]
         guard let originalColIndex = columns.firstIndex(of: String(originalPosition.first!)),
-              let originalRowIndex = Int(String(originalPosition.last!)) else {
+              var originalRowIndex = Int(String(originalPosition.dropFirst())) else {
             print("Invalid original position")
             return
         }
+        originalRowIndex = originalRowIndex - 1 //originalRowIndex is originally not 0 indexed, have to - 1)
         
         // Get piece details from identifier
         let color = String(pieceDetails[1])
         let type = String(pieceDetails[2])
         
-        //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
+        print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
         
-        // Check if there's a piece at the destination and remove it
-        if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
+        //if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
-            // Find and remove the captured piece from the scene
-            if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
-                capturedPieceNode.removeFromParent()
-            }
+        //}
+
+        //remove the piecenode if there is one at the desination hexagon, "capturing" it
+        if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
+            capturedPieceNode.removeFromParent()
         }
         
-        // Remove piece from its original position (originalRowIndex is not 0 indexed, have to - 1)
-        gameState.board[originalColIndex][originalRowIndex - 1] = nil
+        // Remove piece from its original position
+        gameState.board[originalColIndex][originalRowIndex] = nil
         
-        // Add piece to the new position (rowIndex is not 0 indexed, have to - 1)
-        gameState.board[colIndex][rowIndex - 1] = Piece(color: color, type: type, hasMoved: true)
+        // Add piece to the new position
+        gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true)
         
         // Update pieceNode's name to reflect the new position
         pieceNode.name = "\(hexagonName)_\(color)_\(type)"
