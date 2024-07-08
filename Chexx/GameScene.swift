@@ -416,14 +416,15 @@ class GameScene: SKScene {
         
         print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
         
-        //if let capturedPiece = gameState.board[colIndex][rowIndex - 1] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
-            //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
-        //}
-
-        //remove the piecenode if there is one at the desination hexagon, "capturing" it
-        if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
-            capturedPieceNode.removeFromParent()
+        if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
+            print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
+            
+            //remove the piecenode if there is one at the desination hexagon, "capturing" it
+            if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
+                capturedPieceNode.removeFromParent()
+            }
         }
+
         
         // Remove piece from its original position
         gameState.board[originalColIndex][originalRowIndex] = nil

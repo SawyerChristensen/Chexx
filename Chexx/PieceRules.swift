@@ -45,6 +45,12 @@ func validMovesForPiece(_ piece: SKSpriteNode, in gameState: GameState) -> [Stri
         return validMovesForPawn(color, at: String(pieceDetails[0]), in: gameState)
     case "rook":
         return validMovesForRook(color, at: String(pieceDetails[0]), in: gameState)
+    case "bishop":
+        return validMovesForBishop(color, at: String(pieceDetails[0]), in: gameState)
+    case "queen":
+        let rookMoves = validMovesForRook(color, at: String(pieceDetails[0]), in: gameState)
+        let bishopMoves = validMovesForBishop(color, at: String(pieceDetails[0]), in: gameState)
+        return Array(Set(rookMoves + bishopMoves))
     // Add other piece types here as needed
     default:
         return []
@@ -162,7 +168,7 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
           let colIndex = columns.firstIndex(of: String(columnLetter)) else {
-        print("Position only has string length of 1!")
+        print("Position only has string length of 1??")
         return boardToHex(validBoardMoves)
     }
     rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
@@ -213,9 +219,8 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
             counter += 1
         }
 
-        var new_starting_row = rowIndex + counter - 1
-
         // ...on the middle/left side of the board
+        var new_starting_row = rowIndex + counter - 1
         while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row, in: gameState) {
             if gameState.board[colIndex - counter][new_starting_row] == nil {
                 validBoardMoves.append((colIndex - counter, new_starting_row))
@@ -244,9 +249,8 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
             counter += 1
         }
 
-        new_starting_row = rowIndex + counter - 1
-
         // ...on the middle/right side of the board
+        new_starting_row = rowIndex + counter - 1
         while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row, in: gameState) {
             if gameState.board[colIndex + counter][new_starting_row] == nil {
                 validBoardMoves.append((colIndex + counter, new_starting_row))
@@ -275,8 +279,8 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
             counter += 1
         }
 
-        new_starting_row = rowIndex + counter - 1
         // ...on the middle/left side of the board
+        new_starting_row = rowIndex + counter - 1
         while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row - counter, in: gameState) {
             if gameState.board[colIndex - counter][new_starting_row - counter] == nil {
                 validBoardMoves.append((colIndex - counter, new_starting_row - counter))
@@ -304,10 +308,9 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
             }
             counter += 1
         }
-
-        new_starting_row = rowIndex + counter - 1
     
         // ...on the middle/right side of the board
+        new_starting_row = rowIndex + counter - 1
         while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row - counter, in: gameState) {
             if gameState.board[colIndex + counter][new_starting_row - counter] == nil {
                 validBoardMoves.append((colIndex + counter, new_starting_row - counter))
@@ -315,6 +318,232 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
                 break
             } else {
                 validBoardMoves.append((colIndex + counter, new_starting_row - counter))
+                break
+            }
+            counter += 1
+        }
+
+    return boardToHex(validBoardMoves)
+}
+
+private func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
+    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    var validBoardMoves: [(Int, Int)] = []
+    
+    guard position.count >= 2,
+          let columnLetter = position.first,
+          var rowIndex = Int(String(position.dropFirst())),
+          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+        print("Position only has string length of 1!")
+        return boardToHex(validBoardMoves)
+    }
+    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    
+    // Bishop moves in six diagonal directions: up left, up right, down left, down right, perfect left, perfect right
+    
+    // Move up left diagonal...
+    var counter = 1
+    
+        // ...on the right side of the board
+        while colIndex - counter >= 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: rowIndex + (counter * 2), in: gameState) {
+            if gameState.board[colIndex - counter][rowIndex + (counter * 2)] == nil {
+                validBoardMoves.append((colIndex - counter, rowIndex + (counter * 2)))
+            } else if gameState.board[colIndex - counter][rowIndex + (counter * 2)]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - counter, rowIndex + (counter * 2)))
+                break
+            }
+            counter += 1
+        }
+        
+        // ...on the middle/left side of the board
+        var new_starting_row = rowIndex + counter - 1
+        while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row + counter, in: gameState) {
+            if gameState.board[colIndex - counter][new_starting_row + counter] == nil {
+                validBoardMoves.append((colIndex - counter, new_starting_row + counter))
+            } else if gameState.board[colIndex - counter][new_starting_row + counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - counter, new_starting_row + counter))
+                break
+            }
+            counter += 1
+        }
+    
+    // Move up right diagonal...
+    counter = 1
+    
+        // ...on the left side of the board
+        while colIndex + counter <= 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: rowIndex + (counter * 2), in: gameState) {
+            if gameState.board[colIndex + counter][rowIndex + (counter * 2)] == nil {
+                validBoardMoves.append((colIndex + counter, rowIndex + (counter * 2)))
+            } else if gameState.board[colIndex + counter][rowIndex + (counter * 2)]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + counter, rowIndex + (counter * 2)))
+                break
+            }
+            counter += 1
+        }
+
+        // ...on the middle/right side of the board
+        new_starting_row = rowIndex + counter - 1
+        while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row + counter, in: gameState) {
+            if gameState.board[colIndex + counter][new_starting_row + counter] == nil {
+                validBoardMoves.append((colIndex + counter, new_starting_row + counter))
+            } else if gameState.board[colIndex + counter][new_starting_row + counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + counter, new_starting_row + counter))
+                break
+            }
+            counter += 1
+        }
+    
+    // Move down left diagonal...
+    counter = 1
+    
+        // ...on the right side of the board
+        while colIndex - counter >= 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: rowIndex - counter, in: gameState) {
+            if gameState.board[colIndex - counter][rowIndex - counter] == nil {
+                validBoardMoves.append((colIndex - counter, rowIndex - counter))
+            } else if gameState.board[colIndex - counter][rowIndex - counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - counter, rowIndex - counter))
+                break
+            }
+            counter += 1
+        }
+
+        // ...on the middle/left side of the board
+        new_starting_row = rowIndex - counter + 1
+        while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row - (counter * 2), in: gameState) {
+            if gameState.board[colIndex - counter][new_starting_row - (counter * 2)] == nil {
+                validBoardMoves.append((colIndex - counter, new_starting_row - (counter * 2)))
+            } else if gameState.board[colIndex - counter][new_starting_row - (counter * 2)]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - counter, new_starting_row - (counter * 2)))
+                break
+            }
+            counter += 1
+        }
+    
+    // Move down right diagonal...
+    counter = 1
+    
+        // ...on the left side of the board
+        while colIndex + counter <= 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: rowIndex - counter, in: gameState) {
+            if gameState.board[colIndex + counter][rowIndex - counter] == nil {
+                validBoardMoves.append((colIndex + counter, rowIndex - counter))
+            } else if gameState.board[colIndex + counter][rowIndex - counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + counter, rowIndex - counter))
+                break
+            }
+            counter += 1
+        }
+
+        // ...on the middle/right side of the board
+        new_starting_row = rowIndex - counter + 1
+        while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row - (counter * 2), in: gameState) {
+            if gameState.board[colIndex + counter][new_starting_row - (counter * 2)] == nil {
+                validBoardMoves.append((colIndex + counter, new_starting_row - (counter * 2)))
+            } else if gameState.board[colIndex + counter][new_starting_row - (counter * 2)]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + counter, new_starting_row - (counter * 2)))
+                break
+            }
+            counter += 1
+        }
+    
+    // Move perfectly left...
+    counter = 1
+    
+        // ...on the right side of the board
+        while colIndex - (counter * 2) > 4 && isValidPosition(columnToCheck: colIndex - (counter * 2), rowToCheck: rowIndex + counter, in: gameState) {
+            if gameState.board[colIndex - (counter * 2)][rowIndex + counter] == nil {
+                validBoardMoves.append((colIndex - (counter * 2), rowIndex + counter))
+            } else if gameState.board[colIndex - (counter * 2)][rowIndex + counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - (counter * 2), rowIndex + counter))
+                break
+            }
+            counter += 1
+        }
+
+        // ...crossing the middle column
+        new_starting_row = rowIndex + counter - 1
+        while colIndex - (counter * 2) == 4 && isValidPosition(columnToCheck: colIndex - (counter * 2), rowToCheck: new_starting_row, in: gameState) {
+            if gameState.board[colIndex - (counter * 2)][new_starting_row] == nil {
+                validBoardMoves.append((colIndex - (counter * 2), new_starting_row))
+            } else if gameState.board[colIndex - (counter * 2)][new_starting_row]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - (counter * 2), new_starting_row))
+                break
+            }
+            counter += 1
+        }
+
+        // ...on the left side of the board
+        new_starting_row = new_starting_row + counter - 1
+        while colIndex - (counter * 2) < 4 && isValidPosition(columnToCheck: colIndex - (counter * 2), rowToCheck: new_starting_row - counter, in: gameState) {
+            if gameState.board[colIndex - (counter * 2)][new_starting_row - counter] == nil {
+                validBoardMoves.append((colIndex - (counter * 2), new_starting_row - counter))
+            } else if gameState.board[colIndex - (counter * 2)][new_starting_row - counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex - (counter * 2), new_starting_row - counter))
+                break
+            }
+            counter += 1
+        }
+    
+    // Move perfectly right...
+    counter = 1
+    
+        // ...on the left side of the board
+        while colIndex + (counter * 2) < 6 && isValidPosition(columnToCheck: colIndex + (counter * 2), rowToCheck: rowIndex + counter, in: gameState) {
+            if gameState.board[colIndex + (counter * 2)][rowIndex + counter] == nil {
+                validBoardMoves.append((colIndex + (counter * 2), rowIndex + counter))
+            } else if gameState.board[colIndex + (counter * 2)][rowIndex + counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + (counter * 2), rowIndex + counter))
+                break
+            }
+            counter += 1
+        }
+
+        // ...crossing the middle column
+        new_starting_row = rowIndex + counter - 1
+        while colIndex + (counter * 2) == 6 && isValidPosition(columnToCheck: colIndex + (counter * 2), rowToCheck: new_starting_row, in: gameState) {
+            if gameState.board[colIndex + (counter * 2)][new_starting_row] == nil {
+                validBoardMoves.append((colIndex + (counter * 2), new_starting_row))
+            } else if gameState.board[colIndex + (counter * 2)][new_starting_row]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + (counter * 2), new_starting_row))
+                break
+            }
+            counter += 1
+        }
+
+        // ...on the right side of the board
+        new_starting_row = new_starting_row + counter - 1
+        while colIndex + (counter * 2) > 6 && isValidPosition(columnToCheck: colIndex + (counter * 2), rowToCheck: new_starting_row - counter, in: gameState) {
+            if gameState.board[colIndex + (counter * 2)][new_starting_row - counter] == nil {
+                validBoardMoves.append((colIndex + (counter * 2), new_starting_row - counter))
+            } else if gameState.board[colIndex + (counter * 2)][new_starting_row - counter]?.color == color {
+                break
+            } else {
+                validBoardMoves.append((colIndex + (counter * 2), new_starting_row - counter))
                 break
             }
             counter += 1
