@@ -53,6 +53,8 @@ func validMovesForPiece(_ piece: SKSpriteNode, in gameState: GameState) -> [Stri
         return Array(Set(rookMoves + bishopMoves))
     case "king":
         return validMovesForKing(color, at: String(pieceDetails[0]), in: gameState)
+    case "knight":
+        return validMovesForKnight(color, at: String(pieceDetails[0]), in: gameState)
     default:
         return []
     }
@@ -700,5 +702,331 @@ private func validMovesForKing(_ color: String, at position: String, in gameStat
         }
     }
     
+    return boardToHex(validBoardMoves)
+}
+
+private func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
+    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    var validBoardMoves: [(Int, Int)] = []
+
+    guard position.count >= 2,
+          let columnLetter = position.first,
+          var rowIndex = Int(String(position.dropFirst())),
+          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+        print("Position only has string length of 1!")
+        return boardToHex(validBoardMoves)
+    }
+    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    
+    //this is the most complicated piece, a diagram of knight movement can be found at:
+    //https://en.wikipedia.org/wiki/File:Glinski_Chess_Knight.svg
+    //Refectoring possibility: put into individual "if" cases per col index, not per move (would be faster and less error prone)
+    //but would also be signifigantly harder to understand from an understanding the rules perspective. really only needed if performance
+    //is an issue, which for this game is highly unlikely (only if I mess something up drastically)
+
+// Move UP 2, UPPER LEFT 1...
+    if colIndex > 5 {// ...on the right side of board
+        if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 3, in: gameState) {
+            if gameState.board[colIndex - 1][rowIndex + 3] == nil || gameState.board[colIndex - 1][rowIndex + 3]?.color != color {
+                validBoardMoves.append((colIndex - 1, rowIndex + 3))
+            }
+        }
+    }
+    if colIndex <= 5 {// ...on the left side/center of the board
+        if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex - 1][rowIndex + 2] == nil || gameState.board[colIndex - 1][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex - 1, rowIndex + 2))
+            }
+        }
+    }
+    
+// Move UP 2, UPPER RIGHT 1
+    if colIndex >= 5 {// ...on the right side/center of the board
+        if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex + 1][rowIndex + 2] == nil || gameState.board[colIndex + 1][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex + 1, rowIndex + 2))
+            }
+        }
+    }
+    if colIndex < 5 {// ...on the left side of the board
+        if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 3, in: gameState) {
+            if gameState.board[colIndex + 1][rowIndex + 3] == nil || gameState.board[colIndex + 1][rowIndex + 3]?.color != color {
+                validBoardMoves.append((colIndex + 1, rowIndex + 3))
+            }
+        }
+    }
+    
+// Move UPPER LEFT 2, UP 1
+    // ...on the left/center side of the board
+    if colIndex <= 5 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex + 1] == nil || gameState.board[colIndex - 2][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex + 1))
+            }
+        }
+    }
+    // on column g
+    if colIndex == 6 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex + 2] == nil || gameState.board[colIndex - 2][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex + 2))
+            }
+        }
+    }
+    // right of or on column h
+    if colIndex >= 6 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex + 3, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex + 3] == nil || gameState.board[colIndex - 2][rowIndex + 3]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex + 3))
+            }
+        }
+    }
+    
+// Move UPPER RIGHT 2, UP 1
+    // ...on the right/center side of the board
+    if colIndex >= 5 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex + 1] == nil || gameState.board[colIndex + 2][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex + 1))
+            }
+        }
+    }
+    // on column e
+    if colIndex == 4 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex + 2] == nil || gameState.board[colIndex + 2][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex + 2))
+            }
+        }
+    }
+    // left of or on column d
+    if colIndex <= 4 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex + 3, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex + 3] == nil || gameState.board[colIndex + 2][rowIndex + 3]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex + 3))
+            }
+        }
+    }
+    
+//Move UPPER LEFT 2, BOTTOM LEFT 1
+    // ...on the left/center side of the board
+    if colIndex <= 5 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex - 1] == nil || gameState.board[colIndex - 3][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex - 1))
+            }
+        }
+    }
+    // ...on column g
+    if colIndex == 6 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex] == nil || gameState.board[colIndex - 3][rowIndex]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex))
+            }
+        }
+    }
+    // ...on column h
+    if colIndex == 7 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex + 1] == nil || gameState.board[colIndex - 3][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex + 1))
+            }
+        }
+    }
+    // ...right of or on column i
+    if colIndex >= 8 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex + 2] == nil || gameState.board[colIndex - 3][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex + 2))
+            }
+        }
+    }
+
+//Move UPPER RIGHT 2, BOTTOM RIGHT 1
+    // ...on the right/center side of the board
+    if colIndex >= 5 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex - 1] == nil || gameState.board[colIndex + 3][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex - 1))
+            }
+        }
+    }
+    // ...on column e
+    if colIndex == 4 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex] == nil || gameState.board[colIndex + 3][rowIndex]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex))
+            }
+        }
+    }
+    // ...on column d
+    if colIndex == 3 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex + 1] == nil || gameState.board[colIndex + 3][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex + 1))
+            }
+        }
+    }
+    // ...right of or on column c
+    if colIndex <= 2 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex + 2, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex + 2] == nil || gameState.board[colIndex + 3][rowIndex + 2]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex + 2))
+            }
+        }
+    }
+
+//Move LOWER LEFT 2, UPPER LEFT 1
+    // ...on the left/center side of the board
+    if colIndex <= 5 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex - 2] == nil || gameState.board[colIndex - 3][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex - 2))
+            }
+        }
+    }
+    // ...on column g
+    if colIndex == 6 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex - 1] == nil || gameState.board[colIndex - 3][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex - 1))
+            }
+        }
+    }
+    // ...on column h
+    if colIndex == 7 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex] == nil || gameState.board[colIndex - 3][rowIndex]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex))
+            }
+        }
+    }
+    // ...right of or on column i
+    if colIndex >= 8 {
+        if isValidPosition(columnToCheck: colIndex - 3, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex - 3][rowIndex + 1] == nil || gameState.board[colIndex - 3][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex - 3, rowIndex + 1))
+            }
+        }
+    }
+    
+//Move LOWER RIGHT 2, UPPER RIGHT 1
+    // ...on the right/center side of the board
+    if colIndex >= 5 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex - 2] == nil || gameState.board[colIndex + 3][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex - 2))
+            }
+        }
+    }
+    // ...on column e
+    if colIndex == 4 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex - 1] == nil || gameState.board[colIndex + 3][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex - 1))
+            }
+        }
+    }
+    // ...on column d
+    if colIndex == 3 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex] == nil || gameState.board[colIndex + 3][rowIndex]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex))
+            }
+        }
+    }
+    // ...right of or on column c
+    if colIndex <= 2 {
+        if isValidPosition(columnToCheck: colIndex + 3, rowToCheck: rowIndex + 1, in: gameState) {
+            if gameState.board[colIndex + 3][rowIndex + 1] == nil || gameState.board[colIndex + 3][rowIndex + 1]?.color != color {
+                validBoardMoves.append((colIndex + 3, rowIndex + 1))
+            }
+        }
+    }
+    
+// Move LOWER LEFT 2, DOWN 1
+    // ...on the left/center side of the board
+    if colIndex <= 5 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex - 3, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex - 3] == nil || gameState.board[colIndex - 2][rowIndex - 3]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex - 3))
+            }
+        }
+    }
+    // on column g
+    if colIndex == 6 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex - 2] == nil || gameState.board[colIndex - 2][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex - 2))
+            }
+        }
+    }
+    // right of or on column h
+    if colIndex >= 6 {
+        if isValidPosition(columnToCheck: colIndex - 2, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex - 2][rowIndex - 1] == nil || gameState.board[colIndex - 2][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex - 2, rowIndex - 1))
+            }
+        }
+    }
+    
+// Move LOWER RIGHT 2, DOWN 1
+    // ...on the right/center side of the board
+    if colIndex >= 5 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex - 3, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex - 3] == nil || gameState.board[colIndex + 2][rowIndex - 3]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex - 3))
+            }
+        }
+    }
+    // on column e
+    if colIndex == 4 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex - 2] == nil || gameState.board[colIndex + 2][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex - 2))
+            }
+        }
+    }
+    // left of or on column d
+    if colIndex <= 4 {
+        if isValidPosition(columnToCheck: colIndex + 2, rowToCheck: rowIndex - 1, in: gameState) {
+            if gameState.board[colIndex + 2][rowIndex - 1] == nil || gameState.board[colIndex + 2][rowIndex - 1]?.color != color {
+                validBoardMoves.append((colIndex + 2, rowIndex - 1))
+            }
+        }
+    }
+    
+// Move DOWN 2, BOTTOM LEFT 1...
+    if colIndex > 5 {// ...on the right side of board
+        if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex - 1][rowIndex - 2] == nil || gameState.board[colIndex - 1][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex - 1, rowIndex - 2))
+            }
+        }
+    }
+    if colIndex <= 5 {// ...on the left side/center of the board
+        if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 3, in: gameState) {
+            if gameState.board[colIndex - 1][rowIndex - 3] == nil || gameState.board[colIndex - 1][rowIndex - 3]?.color != color {
+                validBoardMoves.append((colIndex - 1, rowIndex - 3))
+            }
+        }
+    }
+    
+// Move DOWN 2, LOWER RIGHT 1
+    if colIndex >= 5 {// ...on the right side/center of the board
+        if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 3, in: gameState) {
+            if gameState.board[colIndex + 1][rowIndex - 3] == nil || gameState.board[colIndex + 1][rowIndex - 3]?.color != color {
+                validBoardMoves.append((colIndex + 1, rowIndex - 3))
+            }
+        }
+    }
+    if colIndex < 5 {// ...on the left side of the board
+        if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 2, in: gameState) {
+            if gameState.board[colIndex + 1][rowIndex - 2] == nil || gameState.board[colIndex + 1][rowIndex - 2]?.color != color {
+                validBoardMoves.append((colIndex + 1, rowIndex - 2))
+            }
+        }
+    }
+
     return boardToHex(validBoardMoves)
 }
