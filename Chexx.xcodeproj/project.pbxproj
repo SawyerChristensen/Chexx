@@ -43,6 +43,7 @@
 		BE76AA232C2A41FF009113B4 /* context.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA222C2A41FF009113B4 /* context.txt */; };
 		BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
+		BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* to_do.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,6 +84,7 @@
 		BE76AA222C2A41FF009113B4 /* context.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = context.txt; sourceTree = "<group>"; };
 		BE76AA3D2C30DF82009113B4 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		BE76AA3F2C3720EE009113B4 /* PieceRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRules.swift; sourceTree = "<group>"; };
+		BE76AA412C3E34C6009113B4 /* to_do.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = to_do.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,6 +101,7 @@
 		BE76A9A32C2A2602009113B4 = {
 			isa = PBXGroup;
 			children = (
+				BE76AA412C3E34C6009113B4 /* to_do.txt */,
 				BE76A9AE2C2A2602009113B4 /* Chexx */,
 				BE76A9AD2C2A2602009113B4 /* Products */,
 			);
@@ -257,6 +260,7 @@
 				BE76A9F32C2A3EDA009113B4 /* bn.png in Resources */,
 				BE76A9FB2C2A3EDA009113B4 /* wq.png in Resources */,
 				BE76A9B22C2A2602009113B4 /* GameScene.sks in Resources */,
+				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
 				BE76A9E92C2A3EDA009113B4 /* black_queen.png in Resources */,
 				BE76A9F82C2A3EDA009113B4 /* wk.png in Resources */,
 				BE76A9F72C2A3EDA009113B4 /* wb.png in Resources */,

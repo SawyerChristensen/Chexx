@@ -1,0 +1,29 @@
+
+-implement promotion for pawn when it reaches the other side
+-implement en passant capture for pawn
+
+-tapping and highlighting available movements
+
+-proper rotation of screen so that it doesnt zoom in
+
+-board and piece movement sound effects
+
+a menu with modes:
+1) tabletop
+2) single player vs AI
+3) multiplayer online
+
+obviously implement all of the modes
+
+background music for the menu (and game?)
+
+add algebraic saving for reduced game file sizes? might be more economical for mutliplayer and better for single player app sizes
+
+-launch screen (required)
+
+-app delegate file and figure out the use for all the other template files (theyre there for a reason)
+
+-black king dark mode app icon (need xcode 16 for that) (possibly add with an update)
+
+settings for color scheme?
+-alternate board color schemes in settings?

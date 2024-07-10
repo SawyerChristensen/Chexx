@@ -60,7 +60,7 @@ func validMovesForPiece(_ piece: SKSpriteNode, in gameState: GameState) -> [Stri
     }
 }
 
-//this needs to be changed later to make promotion work!!
+//this needs to be changed later to make promotion work!! AND EN PASSANT
 private func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
