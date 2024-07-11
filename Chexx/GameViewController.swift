@@ -11,33 +11,24 @@ import GameplayKit
 
 class GameViewController: UIViewController {
 
+    var scene: GameScene?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Load 'GameScene.sks' as a GKScene. This provides gameplay related content
-        // including entities and graphs.
-        if let scene = GKScene(fileNamed: "GameScene") {
-            
-            // Get the SKScene from the loaded GKScene
-            if let sceneNode = scene.rootNode as! GameScene? {
-                
-                // Copy gameplay related content over to the scene
-                sceneNode.entities = scene.entities
-                sceneNode.graphs = scene.graphs
-                
-                // Set the scale mode to scale to fit the window
-                sceneNode.scaleMode = .aspectFill
-                
-                // Present the scene
-                if let view = self.view as! SKView? {
-                    view.presentScene(sceneNode)
-                    
-                    view.ignoresSiblingOrder = true
-                    
-                    view.showsFPS = false
-                    view.showsNodeCount = false
-                }
-            }
+
+        // Create and configure the GameScene
+        if let view = self.view as! SKView? {
+            let scene = GameScene(size: view.bounds.size)
+            scene.scaleMode = .aspectFill
+            self.scene = scene
+
+            // Present the scene
+            view.presentScene(scene)
+
+            view.ignoresSiblingOrder = true
+
+            view.showsFPS = false
+            view.showsNodeCount = false
         }
     }
 
@@ -48,8 +39,21 @@ class GameViewController: UIViewController {
             return .all
         }
     }
-
+    
     override var prefersStatusBarHidden: Bool {
         return true
+    }
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        
+        coordinator.animate(alongsideTransition: { _ in
+            if let skView = self.view as? SKView {
+                // Update the scene size
+                self.scene?.size = size
+                self.scene?.scaleMode = .aspectFill
+                skView.presentScene(self.scene)
+            }
+        }, completion: nil)
     }
 }

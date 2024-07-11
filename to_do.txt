@@ -25,5 +25,25 @@ add algebraic saving for reduced game file sizes? might be more economical for m
 
 -black king dark mode app icon (need xcode 16 for that) (possibly add with an update)
 
-settings for color scheme?
+settings for color scheme? (beige, grayscale, black/white/red, other?)
 -alternate board color schemes in settings?
+
+
+
+
+
+
+
+other notes:
+
+Beige colors for board:
+Light tile: #ffce9e
+"Grey" tile: #e8ab6f
+Dark tile: #d18b47
+
+
+need to atribute artist of the chess images somewhere in the app,
+maybe a credits menu in settings?
+the proper attribution:
+"By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
+

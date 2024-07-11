@@ -89,12 +89,14 @@ class HexagonNode: SKShapeNode {
 
 class GameScene: SKScene {
     
-    //override func didMove(to view: SKView) {
-    //    self.backgroundColor = SKColor.black
-     //   }
+    override func didMove(to view: SKView) {
+        // Set the anchor point to the center of the scene
+        anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        
+        // Initialize your game here
+        //backgroundColor = .white
+    }
     
-    var entities = [GKEntity]()
-    var graphs = [String : GKGraph]()
     var gameState: GameState!
     
     private var lastUpdateTime : TimeInterval = 0
@@ -116,8 +118,8 @@ class GameScene: SKScene {
         //load saved game state
         gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
         
-        // Calculate hexagon size based on screen size (currently 4.5% of the smallest screen dimension, in case of screen rotation)
-        hexagonSize = min(self.size.width, self.size.height) * 0.045
+        // Calculate hexagon size based on screen size (currently 5% of the smallest screen dimension, in case of screen rotation)
+        hexagonSize = min(self.size.width, self.size.height) * 0.05
         
         //generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
@@ -465,7 +467,8 @@ class GameScene: SKScene {
     
     override func update(_ currentTime: TimeInterval) {
         // Called before each frame is rendered
-        
+        //probably not needed
+        /*
         // Initialize _lastUpdateTime if it has not already been
         if (self.lastUpdateTime == 0) {
             self.lastUpdateTime = currentTime
@@ -474,11 +477,6 @@ class GameScene: SKScene {
         // Calculate time since last update
         let dt = currentTime - self.lastUpdateTime
         
-        // Update entities
-        for entity in self.entities {
-            entity.update(deltaTime: dt)
-        }
-        
-        self.lastUpdateTime = currentTime
+        self.lastUpdateTime = currentTime*/
     }
 }
