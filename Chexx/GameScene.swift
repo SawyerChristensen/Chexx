@@ -421,22 +421,32 @@ class GameScene: SKScene {
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
-            //remove the piecenode if there is one at the desination hexagon, "capturing" it
+            //remove the piecenode if there is one at the designation hexagon, "capturing" it
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
                 capturedPieceNode.removeFromParent()
             }
         }
 
         
-        // Remove piece from its original position
+        // Remove piece from its original position in the game state
         gameState.board[originalColIndex][originalRowIndex] = nil
         
-        // Add piece to the new position
+        // Add piece to the new position in the game state
         gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true)
+        //printGameState()
         
         // Update pieceNode's name to reflect the new position
         pieceNode.name = "\(hexagonName)_\(color)_\(type)"
-        //printGameState()
+        
+        // Remove pieceNode from its current parent
+        pieceNode.removeFromParent()
+        
+        // Add pieceNode to the new target hexagon
+        if let newHexagon = scene!.childNode(withName: hexagonName) as? HexagonNode {
+            newHexagon.addPieceImage(named: "\(color)_\(type)", identifier: "\(columns[colIndex])\(rowIndex + 1)_\(color)_\(type)")//can maybe be refactored later
+        } else {
+            print("New hexagon not found")
+        }
     }
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
