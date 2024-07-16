@@ -37,7 +37,7 @@
 		BE76A9FA2C2A3EDA009113B4 /* wp.png in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9DE2C2A3EDA009113B4 /* wp.png */; };
 		BE76A9FB2C2A3EDA009113B4 /* wq.png in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9DF2C2A3EDA009113B4 /* wq.png */; };
 		BE76A9FC2C2A3EDA009113B4 /* wr.png in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E02C2A3EDA009113B4 /* wr.png */; };
-		BE76A9FD2C2A3EDA009113B4 /* Carmen-habanera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E22C2A3EDA009113B4 /* Carmen-habanera.mp3 */; };
+		BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */; };
 		BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* to_do.txt */; };
@@ -76,7 +76,7 @@
 		BE76A9DE2C2A3EDA009113B4 /* wp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wp.png; sourceTree = "<group>"; };
 		BE76A9DF2C2A3EDA009113B4 /* wq.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wq.png; sourceTree = "<group>"; };
 		BE76A9E02C2A3EDA009113B4 /* wr.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = wr.png; sourceTree = "<group>"; };
-		BE76A9E22C2A3EDA009113B4 /* Carmen-habanera.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "Carmen-habanera.mp3"; sourceTree = "<group>"; };
+		BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "carmen-habanera.mp3"; sourceTree = "<group>"; };
 		BE76AA3D2C30DF82009113B4 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		BE76AA3F2C3720EE009113B4 /* PieceRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRules.swift; sourceTree = "<group>"; };
 		BE76AA412C3E34C6009113B4 /* to_do.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = to_do.txt; sourceTree = "<group>"; };
@@ -122,6 +122,7 @@
 				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
+				BE76A9E32C2A3EDA009113B4 /* audio */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9E42C2A3EDA009113B4 /* chess_assets */,
 			);
@@ -166,12 +167,12 @@
 			path = secondary_images;
 			sourceTree = "<group>";
 		};
-		BE76A9E32C2A3EDA009113B4 /* songs */ = {
+		BE76A9E32C2A3EDA009113B4 /* audio */ = {
 			isa = PBXGroup;
 			children = (
-				BE76A9E22C2A3EDA009113B4 /* Carmen-habanera.mp3 */,
+				BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */,
 			);
-			path = songs;
+			path = audio;
 			sourceTree = "<group>";
 		};
 		BE76A9E42C2A3EDA009113B4 /* chess_assets */ = {
@@ -179,7 +180,6 @@
 			children = (
 				BE76A9D42C2A3EDA009113B4 /* images */,
 				BE76A9E12C2A3EDA009113B4 /* secondary_images */,
-				BE76A9E32C2A3EDA009113B4 /* songs */,
 			);
 			path = chess_assets;
 			sourceTree = "<group>";
@@ -242,7 +242,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE76A9FD2C2A3EDA009113B4 /* Carmen-habanera.mp3 in Resources */,
+				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
 				BE76A9F92C2A3EDA009113B4 /* wn.png in Resources */,
 				BE76A9EF2C2A3EDA009113B4 /* white_queen.png in Resources */,
 				BE76A9EB2C2A3EDA009113B4 /* white_bishop.png in Resources */,

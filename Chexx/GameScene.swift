@@ -442,8 +442,8 @@ class GameScene: SKScene {
         pieceNode.removeFromParent()
         
         // Add pieceNode to the new target hexagon
-        if let newHexagon = scene!.childNode(withName: hexagonName) as? HexagonNode {
-            newHexagon.addPieceImage(named: "\(color)_\(type)", identifier: "\(columns[colIndex])\(rowIndex + 1)_\(color)_\(type)")//can maybe be refactored later
+        if let newHexagonParent = scene!.childNode(withName: hexagonName) as? HexagonNode {
+            newHexagonParent.addPieceImage(named: "\(color)_\(type)", identifier: pieceNode.name!)//can maybe be refactored later
         } else {
             print("New hexagon not found")
         }
