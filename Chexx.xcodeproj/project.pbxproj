@@ -42,6 +42,9 @@
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* to_do.txt */; };
 		BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA472C3F07F1009113B4 /* MainMenuView.swift */; };
+		BE76AA4E2C4620F9009113B4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsView.swift */; };
+		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
+		BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA512C462765009113B4 /* BackgroundView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -81,6 +84,9 @@
 		BE76AA3F2C3720EE009113B4 /* PieceRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRules.swift; sourceTree = "<group>"; };
 		BE76AA412C3E34C6009113B4 /* to_do.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = to_do.txt; sourceTree = "<group>"; };
 		BE76AA472C3F07F1009113B4 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		BE76AA4D2C4620F9009113B4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		BE76AA512C462765009113B4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -116,6 +122,9 @@
 			children = (
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
+				BE76AA512C462765009113B4 /* BackgroundView.swift */,
+				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
+				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
 				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
 				BE76AA3F2C3720EE009113B4 /* PieceRules.swift */,
 				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
@@ -281,6 +290,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */,
+				BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */,
+				BE76AA4E2C4620F9009113B4 /* SettingsView.swift in Sources */,
 				BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */,
 				BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */,
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,

@@ -13,103 +13,77 @@ struct MainMenuView: View {
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
 
     var body: some View {
-        ZStack {
-            // Change background based on color scheme
-            if colorScheme == .dark {
-                darkModeBackground()
-            } else {
-                lightModeBackground()
-            }
+        NavigationView {
+            ZStack {
+                BackgroundView()
 
-            VStack {
-                Spacer()
-                
-                Image("white_king")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 100, height: 100)
-                    //.padding(.top, 50)
-                    .colorInvertIfDarkMode(colorScheme: colorScheme)
-                
-                Text("Hex Chess")
-                    .font(.system(size: 50, weight: .bold, design: .serif))
-                    .padding(.top, 5)
-                
-                Spacer()
+                VStack {
+                    //Spacer()
+                    
+                    Image("white_king")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 100, height: 100)
+                        .padding(.top, 100)
+                        .colorInvertIfDarkMode(colorScheme: colorScheme)
+                    
+                    Text("Hex Chess")
+                        .font(.system(size: 50, weight: .bold, design: .serif))
+                        .padding(.top, 5)
+                    
+                    Spacer()
 
-                Button(action: {
-                    // Navigate to the game view controller
-                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                       let window = windowScene.windows.first {
-                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                        if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                            window.rootViewController = gameViewController
-                            window.makeKeyAndVisible()
+                    Button(action: {
+                        // Navigate to the game view controller
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                window.rootViewController = gameViewController
+                                window.makeKeyAndVisible()
+                            }
                         }
+                    }) {
+                        Text("New Game")
+                            .font(.system(size: 30, weight: .bold, design: .serif))
+                            .padding()
+                            .frame(width: 200, height: 60)
+                            .background(Color.accentColor)
+                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                            .clipShape(HexagonEdgeRectangleShape())
+                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
                     }
-                }) {
-                    Text("New Game")
-                        .font(.system(size: 30, weight: .bold, design: .serif))
-                        .padding()
-                        .frame(width: 200, height: 60)
-                        .background(Color.accentColor)
-                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                        .clipShape(HexagonEdgeRectangleShape()) // Apply the custom hexagonal edge shape here
-                        //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2)) // Optional: Add a border
+
+                    Spacer()
+                    Spacer()
                 }
-
-                Spacer()
-                Spacer()
+                .onAppear {
+                    playBackgroundMusic()
+                }
+                .onDisappear {
+                    stopBackgroundMusic()
+                }
             }
-            .onAppear {
-                playBackgroundMusic()
-            }
-            .onDisappear {
-                stopBackgroundMusic()
-            }
-        }
-        //.edgesIgnoringSafeArea(.all)
-    }
-    
-    // Background for light mode
-    func lightModeBackground() -> some View {
-        ZStack {
-            Color.white
-                .edgesIgnoringSafeArea(.all)
-/*
-            LinearGradient(
-                gradient: Gradient(colors: [Color.gray.opacity(0.2), Color.white]),
-                startPoint: .top,
-                endPoint: .bottom
+            .navigationBarItems(
+                leading: HStack {
+                    Spacer()
+                    NavigationLink(destination: ProfileView()) {
+                        Image(systemName: "person.crop.circle")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding(5)
+                    }
+                },
+                trailing: HStack {
+                    NavigationLink(destination: SettingsView()) {
+                        Image(systemName: "gearshape.fill")
+                            .resizable()
+                            .frame(width: 40, height: 40)
+                            .padding(5)
+                    }
+                    Spacer()
+                }
             )
-            .edgesIgnoringSafeArea(.all)
-*/
-            Image("marble_white")
-                .resizable()
-                .scaledToFill()
-                .opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
-        }
-    }
-
-    // Background for dark mode
-    func darkModeBackground() -> some View {
-        ZStack {
-            Color.black
-                .edgesIgnoringSafeArea(.all)
-/*
-            LinearGradient(
-                gradient: Gradient(colors: [Color.black, Color.gray]),
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .edgesIgnoringSafeArea(.all)
-*/
-            Image("marble_black")
-                .resizable()
-                .scaledToFill()
-                .opacity(0.5)
-                .edgesIgnoringSafeArea(.all)
         }
     }
     
@@ -124,6 +98,7 @@ struct MainMenuView: View {
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.numberOfLoops = -1 // Loop indefinitely
+            audioPlayer?.volume = 0.3
             audioPlayer?.play()
         } catch {
             print("Could not load file")
@@ -173,6 +148,7 @@ struct ColorInvertIfDarkModeModifier: ViewModifier {
         }
     }
 }
+
 
 struct MainMenuView_Previews: PreviewProvider {
     static var previews: some View {
