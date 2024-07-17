@@ -81,7 +81,6 @@ class HexagonNode: SKShapeNode {
 
 
 class GameScene: SKScene {
-    
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     
     override func didMove(to view: SKView) {
@@ -103,6 +102,7 @@ class GameScene: SKScene {
     var selectedPiece: SKSpriteNode?
     var originalPosition: CGPoint?
     var validMoves: [String] = []
+    var fiftyMoveRule = 0 //************STILL NEED TO IMPLEMENT
     
     override func sceneDidLoad() {
         super.sceneDidLoad()
@@ -302,14 +302,20 @@ class GameScene: SKScene {
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let pieceNode = node as? SKSpriteNode {
-                pieceNode.setScale(1.25)
-                selectedPiece = pieceNode
-                originalPosition = pieceNode.position
-                
-                validMoves = validMovesForPiece(selectedPiece!, in: gameState)
-                print(validMoves)
-                highlightValidMoves(validMoves)
-                break
+                let pieceDetails = pieceNode.name?.split(separator: "_")
+                let pieceColor = pieceDetails?[1]
+                if pieceColor! == gameState.currentPlayer {
+                    pieceNode.setScale(1.25)
+                    selectedPiece = pieceNode
+                    originalPosition = pieceNode.position
+                    
+                    validMoves = validMovesForPiece(selectedPiece!, in: gameState)
+                    highlightValidMoves(validMoves)
+                    print(validMoves)
+                    break
+                } else {
+                    print("It's not \(pieceColor ?? "unknown")'s turn")
+                }
             }
         }
     }
@@ -449,24 +455,51 @@ class GameScene: SKScene {
         let color = String(pieceDetails[1])
         let type = String(pieceDetails[2])
         
-        print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
         
+        // Ensure the move is made by the current player (touchDown should catch this first!)
+        guard color == gameState.currentPlayer else {
+            print("It's not \(color)'s turn")
+            return
+        }
+        print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
+
+        if type == "pawn" {
+            fiftyMoveRule = 0
+        }
+        
+        //Capturing?
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
-            //remove the piecenode if there is one at the designation hexagon, "capturing" it
+            //remove the piecenode at the designation hexagon, note this is different than updating the board state, but we take care of that later
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
                 capturedPieceNode.removeFromParent()
             }
+            fiftyMoveRule = 0
+        }
+        //Capturing logic for En Passant
+        if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
+            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
+                capturedPieceNode.removeFromParent()
+                gameState.board[colIndex][rowIndex - 1] = nil //also have to update the board state!
+            }
+        }
+        if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
+            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
+                capturedPieceNode.removeFromParent()
+                gameState.board[colIndex][rowIndex + 1] = nil
+            }
         }
 
-        
         // Remove piece from its original position in the game state
         gameState.board[originalColIndex][originalRowIndex] = nil
         
         // Add piece to the new position in the game state
         gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true)
-        //printGameState()
+        
+        if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
+            gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true, isEnPassantTarget: true)
+        }
         
         // Update pieceNode's name to reflect the new position
         pieceNode.name = "\(hexagonName)_\(color)_\(type)"
@@ -474,12 +507,19 @@ class GameScene: SKScene {
         // Remove pieceNode from its current parent
         pieceNode.removeFromParent()
         
-        // Add pieceNode to the new target hexagon
+        // Add pieceNode to the new target hexagon as a child
         if let newHexagonParent = scene!.childNode(withName: hexagonName) as? HexagonNode {
             newHexagonParent.addPieceImage(named: "\(color)_\(type)", identifier: pieceNode.name!)//can maybe be refactored later
         } else {
             print("New hexagon not found")
         }
+        
+        fiftyMoveRule += 1
+        
+        // Switch the current player
+        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+        
+        resetEnPassant(for: gameState.currentPlayer) //its been a turn and your piece wasn't "en passanted". congrats!
     }
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
@@ -491,6 +531,18 @@ class GameScene: SKScene {
             }
         }
         return nil
+    }
+    
+    func resetEnPassant(for color: String) {
+        print(color)
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if var piece = piece, piece.color == color {
+                    piece.isEnPassantTarget = false
+                    gameState.board[colIndex][rowIndex] = piece
+                }
+            }
+        }
     }
     
     func printGameState() { //just for bug fixing

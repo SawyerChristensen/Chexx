@@ -10,13 +10,14 @@ import Foundation
 struct Piece: Codable {
     var color: String // "white" or "black"
     var type: String // "pawn" or "rook" etc
-    var hasMoved: Bool // True or False depending on if the piece has moved
+    var hasMoved: Bool = false // for pawns to check if they still have their opening two moves
+    var isEnPassantTarget: Bool = false //if they have moved two, it opens them up for temporary en passant capture!!
 }
 
 struct GameState: Codable {
-    var board: [[Piece?]] // 2D array of optional pieces
     var currentPlayer: String // "white" or "black"
     var gameStatus: String // "ongoing" or "ended"
+    var board: [[Piece?]] // 2D array of optional pieces
     
     init() {
         // Initialize the board with nils (empty positions)
@@ -42,42 +43,42 @@ struct GameState: Codable {
     
     mutating func setInitialPiecePositions() {
         let initialPositions: [((Int, Int), Piece)] = [
-            ((1, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((2, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((3, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((4, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((5, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((6, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((7, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((8, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((9, 6), Piece(color: "black", type: "pawn", hasMoved: false)),
-            ((1, 0), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((2, 1), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((3, 2), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((4, 3), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((5, 4), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((6, 3), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((7, 2), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((8, 1), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((9, 0), Piece(color: "white", type: "pawn", hasMoved: false)),
-            ((2, 7), Piece(color: "black", type: "rook", hasMoved: false)),
-            ((8, 7), Piece(color: "black", type: "rook", hasMoved: false)),
-            ((3, 8), Piece(color: "black", type: "knight", hasMoved: false)),
-            ((4, 9), Piece(color: "black", type: "queen", hasMoved: false)),
-            ((5, 10), Piece(color: "black", type: "bishop", hasMoved: false)),
-            ((5, 9), Piece(color: "black", type: "bishop", hasMoved: false)),
-            ((5, 8), Piece(color: "black", type: "bishop", hasMoved: false)),
-            ((6, 9), Piece(color: "black", type: "king", hasMoved: false)),
-            ((7, 8), Piece(color: "black", type: "knight", hasMoved: false)),
-            ((2, 0), Piece(color: "white", type: "rook", hasMoved: false)),
-            ((3, 0), Piece(color: "white", type: "knight", hasMoved: false)),
-            ((4, 0), Piece(color: "white", type: "queen", hasMoved: false)),
-            ((5, 0), Piece(color: "white", type: "bishop", hasMoved: false)),
-            ((5, 1), Piece(color: "white", type: "bishop", hasMoved: false)),
-            ((5, 2), Piece(color: "white", type: "bishop", hasMoved: false)),
-            ((6, 0), Piece(color: "white", type: "king", hasMoved: false)),
-            ((7, 0), Piece(color: "white", type: "knight", hasMoved: false)),
-            ((8, 0), Piece(color: "white", type: "rook", hasMoved: false))
+            ((1, 6), Piece(color: "black", type: "pawn")),
+            ((2, 6), Piece(color: "black", type: "pawn")),
+            ((3, 6), Piece(color: "black", type: "pawn")),
+            ((4, 6), Piece(color: "black", type: "pawn")),
+            ((5, 6), Piece(color: "black", type: "pawn")),
+            ((6, 6), Piece(color: "black", type: "pawn")),
+            ((7, 6), Piece(color: "black", type: "pawn")),
+            ((8, 6), Piece(color: "black", type: "pawn")),
+            ((9, 6), Piece(color: "black", type: "pawn")),
+            ((1, 0), Piece(color: "white", type: "pawn")),
+            ((2, 1), Piece(color: "white", type: "pawn")),
+            ((3, 2), Piece(color: "white", type: "pawn")),
+            ((4, 3), Piece(color: "white", type: "pawn")),
+            ((5, 4), Piece(color: "white", type: "pawn")),
+            ((6, 3), Piece(color: "white", type: "pawn")),
+            ((7, 2), Piece(color: "white", type: "pawn")),
+            ((8, 1), Piece(color: "white", type: "pawn")),
+            ((9, 0), Piece(color: "white", type: "pawn")),
+            ((2, 7), Piece(color: "black", type: "rook")),
+            ((8, 7), Piece(color: "black", type: "rook")),
+            ((3, 8), Piece(color: "black", type: "knight")),
+            ((4, 9), Piece(color: "black", type: "queen")),
+            ((5, 10), Piece(color: "black", type: "bishop")),
+            ((5, 9), Piece(color: "black", type: "bishop")),
+            ((5, 8), Piece(color: "black", type: "bishop")),
+            ((6, 9), Piece(color: "black", type: "king")),
+            ((7, 8), Piece(color: "black", type: "knight")),
+            ((2, 0), Piece(color: "white", type: "rook")),
+            ((3, 0), Piece(color: "white", type: "knight")),
+            ((4, 0), Piece(color: "white", type: "queen")),
+            ((5, 0), Piece(color: "white", type: "bishop")),
+            ((5, 1), Piece(color: "white", type: "bishop")),
+            ((5, 2), Piece(color: "white", type: "bishop")),
+            ((6, 0), Piece(color: "white", type: "king")),
+            ((7, 0), Piece(color: "white", type: "knight")),
+            ((8, 0), Piece(color: "white", type: "rook"))
         ]
         
         for ((col, row), piece) in initialPositions {

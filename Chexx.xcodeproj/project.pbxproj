@@ -192,8 +192,8 @@
 			isa = PBXGroup;
 			children = (
 				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
-				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
 				BE76AA3F2C3720EE009113B4 /* PieceRules.swift */,
+				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
 			);
 			path = "Game Logic";
 			sourceTree = "<group>";

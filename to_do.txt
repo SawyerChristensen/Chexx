@@ -1,10 +1,7 @@
 
 -implement promotion for pawn when it reaches the other side
--implement en passant capture for pawn
-
--tapping and highlighting available movements
-
--proper rotation of screen so that it doesnt zoom in
+-50 move no capture rule for draw
+-threefold repetition rule for draw
 
 -board and piece movement sound effects
 
@@ -17,7 +14,7 @@ obviously implement all of the modes
 
 background music for the menu (and game?)
 
-add algebraic saving for reduced game file sizes? might be more economical for mutliplayer and better for single player app sizes
+add algebraic saving for reduced game file sizes? might be more economical for mutliplayer and better for single player app sizes/AND FOR THREEFOLD RULE (maybe just use a custom hash function?)
 
 -launch screen (required)
 

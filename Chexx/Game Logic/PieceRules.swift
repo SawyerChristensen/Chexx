@@ -88,30 +88,72 @@ private func validMovesForPawn(_ color: String, at position: String, in gameStat
         }
         // Capture logic for left and right
         if colIndex < 5 { // Left side of board
-            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState), //left on left
+            //left on left
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex - 1][rowIndex]?.color == "black" {
                 validBoardMoves.append((colIndex - 1, rowIndex))
             }
-            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 1, in: gameState), //right on left
+            //right on left
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 1, in: gameState),
                gameState.board[colIndex + 1][rowIndex + 1]?.color == "black" {
                 validBoardMoves.append((colIndex + 1, rowIndex + 1))
             }
+            //en passant left on left
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex - 1]?.color == "black" 
+                && gameState.board[colIndex - 1][rowIndex - 1]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex - 1, rowIndex)) //looking below, capturing above
+            }
+            //en passant right on left
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "black"
+                && gameState.board[colIndex + 1][rowIndex]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex + 1, rowIndex + 1))//looking below, capturing above
+            }
         } else if colIndex == 5 { // Center of board
-            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState), //left on center
+            //left on center
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex - 1][rowIndex]?.color == "black" {
                 validBoardMoves.append((colIndex - 1, rowIndex))
             }
-            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState), //right on center
+            //right on center
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex + 1][rowIndex]?.color == "black" {
                 validBoardMoves.append((colIndex + 1, rowIndex))
             }
+            //en passant left on center
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex - 1]?.color == "black"
+                && gameState.board[colIndex - 1][rowIndex - 1]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex - 1, rowIndex))
+            }
+            //en passant right on center
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex - 1]?.color == "black" 
+                && gameState.board[colIndex + 1][rowIndex - 1]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
         } else { // Right side of board
-            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 1, in: gameState), //left on right
+            //left on right
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 1, in: gameState),
                gameState.board[colIndex - 1][rowIndex + 1]?.color == "black" {
                 validBoardMoves.append((colIndex - 1, rowIndex + 1))
             }
-            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState), //right on right
+            //right on right
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex + 1][rowIndex]?.color == "black" {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
+            //en passant left on right
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "black" 
+                && gameState.board[colIndex - 1][rowIndex]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex - 1, rowIndex + 1))
+            }
+            //en passant right on right
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex - 1]?.color == "black" 
+                && gameState.board[colIndex + 1][rowIndex - 1]?.isEnPassantTarget == true {
                 validBoardMoves.append((colIndex + 1, rowIndex))
             }
         }
@@ -131,31 +173,74 @@ private func validMovesForPawn(_ color: String, at position: String, in gameStat
         }
         // Capture logic for left and right
         if colIndex < 5 { // Left side of board
+            //left on left
             if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
                gameState.board[colIndex - 1][rowIndex - 1]?.color == "white" {
                 validBoardMoves.append((colIndex - 1, rowIndex - 1))
             }
+            //right on left
             if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex + 1][rowIndex]?.color == "white" {
                 validBoardMoves.append((colIndex + 1, rowIndex))
             }
+            //en passant left on left
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "white" 
+                && gameState.board[colIndex - 1][rowIndex]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex - 1, rowIndex - 1))
+            }
+            //en passant right on left
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex + 1]?.color == "white"
+                && gameState.board[colIndex + 1][rowIndex + 1]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
         } else if colIndex == 5 { // Center of board
+            //left on center
             if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
                gameState.board[colIndex - 1][rowIndex - 1]?.color == "white" {
                 validBoardMoves.append((colIndex - 1, rowIndex - 1))
             }
+            //right on center
             if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
                gameState.board[colIndex + 1][rowIndex - 1]?.color == "white" {
                 validBoardMoves.append((colIndex + 1, rowIndex - 1))
             }
+            //en passant left on center
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "white" 
+                && gameState.board[colIndex - 1][rowIndex]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex - 1, rowIndex - 1))
+            }
+            //en passant right on center
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "white"
+                && gameState.board[colIndex + 1][rowIndex]?.isEnPassantTarget == true {
+                validBoardMoves.append((colIndex + 1, rowIndex - 1))
+            }
         } else { // Right side of board
+            //left on right
             if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
                gameState.board[colIndex - 1][rowIndex]?.color == "white" {
                 validBoardMoves.append((colIndex - 1, rowIndex))
             }
+            //right on right
             if colIndex + 1 < columns.count,
                isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
                gameState.board[colIndex + 1][rowIndex - 1]?.color == "white" {
+                validBoardMoves.append((colIndex + 1, rowIndex - 1))
+            }
+            //en passant left on right
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex + 1]?.color == "white" 
+                && gameState.board[colIndex - 1][rowIndex + 1]?.isEnPassantTarget == true  {
+                validBoardMoves.append((colIndex - 1, rowIndex))
+            }
+            //en passant right on right
+            if colIndex + 1 < columns.count,
+               isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "white" 
+                && gameState.board[colIndex + 1][rowIndex]?.isEnPassantTarget == true  {
                 validBoardMoves.append((colIndex + 1, rowIndex - 1))
             }
         }
