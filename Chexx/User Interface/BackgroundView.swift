@@ -23,16 +23,22 @@ struct BackgroundView: View {
 
     // Background for light mode
     func lightModeBackground() -> some View {
-        Image("marble_white")
-            .resizable()
-            .scaledToFill()
+        ZStack {
+            Image("marble_white")
+                .resizable()
+                .scaledToFill()
+            Color.white.opacity(0.6) // Adjust the opacity as needed
+        }
     }
 
     // Background for dark mode
     func darkModeBackground() -> some View {
-        Image("marble_black")
-            .resizable()
-            .scaledToFill()
+        ZStack {
+            Image("marble_black")
+                .resizable()
+                .scaledToFill()
+            Color.black.opacity(0.7) // Adjust the opacity as needed
+        }
     }
 }
 

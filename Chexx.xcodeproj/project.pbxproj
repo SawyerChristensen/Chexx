@@ -121,19 +121,13 @@
 			isa = PBXGroup;
 			children = (
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
-				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
-				BE76AA512C462765009113B4 /* BackgroundView.swift */,
-				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
-				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
-				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
-				BE76AA3F2C3720EE009113B4 /* PieceRules.swift */,
-				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
-				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
+				BE7EB8C12C47787000D66EB0 /* User Interface */,
+				BE7EB8C02C47778100D66EB0 /* Game Logic */,
+				BE76A9E32C2A3EDA009113B4 /* Audio */,
+				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
-				BE76A9E32C2A3EDA009113B4 /* audio */,
-				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
-				BE76A9E42C2A3EDA009113B4 /* chess_assets */,
+				BE76A9E42C2A3EDA009113B4 /* chess_assets_old */,
 			);
 			path = Chexx;
 			sourceTree = "<group>";
@@ -176,21 +170,59 @@
 			path = secondary_images;
 			sourceTree = "<group>";
 		};
-		BE76A9E32C2A3EDA009113B4 /* audio */ = {
+		BE76A9E32C2A3EDA009113B4 /* Audio */ = {
 			isa = PBXGroup;
 			children = (
-				BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */,
+				BE7EB8C32C4778F700D66EB0 /* Sound Effects */,
+				BE7EB8C22C4778DB00D66EB0 /* Background Music */,
 			);
-			path = audio;
+			path = Audio;
 			sourceTree = "<group>";
 		};
-		BE76A9E42C2A3EDA009113B4 /* chess_assets */ = {
+		BE76A9E42C2A3EDA009113B4 /* chess_assets_old */ = {
 			isa = PBXGroup;
 			children = (
 				BE76A9D42C2A3EDA009113B4 /* images */,
 				BE76A9E12C2A3EDA009113B4 /* secondary_images */,
 			);
-			path = chess_assets;
+			path = chess_assets_old;
+			sourceTree = "<group>";
+		};
+		BE7EB8C02C47778100D66EB0 /* Game Logic */ = {
+			isa = PBXGroup;
+			children = (
+				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
+				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
+				BE76AA3F2C3720EE009113B4 /* PieceRules.swift */,
+			);
+			path = "Game Logic";
+			sourceTree = "<group>";
+		};
+		BE7EB8C12C47787000D66EB0 /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
+				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
+				BE76AA512C462765009113B4 /* BackgroundView.swift */,
+				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
+				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
+		BE7EB8C22C4778DB00D66EB0 /* Background Music */ = {
+			isa = PBXGroup;
+			children = (
+				BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */,
+			);
+			path = "Background Music";
+			sourceTree = "<group>";
+		};
+		BE7EB8C32C4778F700D66EB0 /* Sound Effects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Sound Effects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

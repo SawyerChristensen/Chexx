@@ -24,12 +24,12 @@ struct MainMenuView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 100)
-                        .padding(.top, 100)
+                        .padding(.top, 50)
                         .colorInvertIfDarkMode(colorScheme: colorScheme)
                     
                     Text("Hex Chess")
                         .font(.system(size: 50, weight: .bold, design: .serif))
-                        .padding(.top, 5)
+                        .padding(.top, -5)
                     
                     Spacer()
 
@@ -44,22 +44,65 @@ struct MainMenuView: View {
                             }
                         }
                     }) {
-                        Text("New Game")
-                            .font(.system(size: 30, weight: .bold, design: .serif))
-                            .padding()
-                            .frame(width: 200, height: 60)
+                        Text("Tutorial")
+                            .font(.system(size: 33, weight: .bold, design: .serif))
+                            //.padding()
+                            .frame(width: 233, height: 60)
                             .background(Color.accentColor)
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
                             //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                    }
+                    }.padding(5)
+                    
+                    Button(action: { //GOES TO THE SINGLE PLAYER GAME
+                        // Navigate to the game view controller
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                window.rootViewController = gameViewController
+                                window.makeKeyAndVisible()
+                            }
+                        }
+                    }) {
+                        Text("New Game")
+                            .font(.system(size: 33, weight: .bold, design: .serif))
+                            //.padding()
+                            .frame(width: 233, height: 60)
+                            .background(Color.accentColor)
+                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                            .clipShape(HexagonEdgeRectangleShape())
+                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
+                    }.padding(5)
+                    
+                    Button(action: { //GOES TO THE SINGLE PLAYER GAME
+                        // Navigate to the game view controller
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first {
+                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                window.rootViewController = gameViewController
+                                window.makeKeyAndVisible()
+                            }
+                        }
+                    }) {
+                        Text("Multiplayer")
+                            .font(.system(size: 33, weight: .bold, design: .serif))
+                            //.padding()
+                            .frame(width: 233, height: 60)
+                            .background(Color.accentColor)
+                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                            .clipShape(HexagonEdgeRectangleShape())
+                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
+                    }.padding(5)
+                    
 
                     Spacer()
                     Spacer()
                 }
-                .onAppear {
-                    playBackgroundMusic()
-                }
+                //.onAppear {
+                //    playBackgroundMusic()
+                //}
                 .onDisappear {
                     stopBackgroundMusic()
                 }

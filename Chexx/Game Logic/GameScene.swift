@@ -6,8 +6,8 @@
 //
 
 import SpriteKit
-import GameplayKit
 import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
+import SwiftUI
 
 extension UIColor {
     convenience init(hex: String) {
@@ -58,7 +58,7 @@ class HexagonNode: SKShapeNode {
         self.path = HexagonNode.createHexagonPath(size: size)
         self.fillColor = color
         self.strokeColor = color
-        //self.lineWidth = 1
+        self.lineWidth = 0
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -70,18 +70,11 @@ class HexagonNode: SKShapeNode {
         let pieceNode = SKSpriteNode(texture: texture)
         pieceNode.name = identifier
         
-        let aspectRatio = texture.size().width / texture.size().height
-        let hexWidth = self.frame.size.width * 0.9
-        let hexHeight = self.frame.size.height * 0.9
-        
-        if aspectRatio > 1 {
-            pieceNode.size = CGSize(width: hexWidth, height: hexWidth / aspectRatio)
-        } else {
-            pieceNode.size = CGSize(width: hexHeight * aspectRatio, height: hexHeight)
-        }
-        
+        let hexWidth = self.frame.size.width * 0.85// - lineWidth //need to subtract linewidth if you change the linewidth of the PARENT hexagon, fixed with glowOverlay
+        pieceNode.size = CGSize(width: hexWidth, height: hexWidth)
+        //print(pieceNode.size)
         pieceNode.position = CGPoint(x: 0, y: 0)
-        pieceNode.zPosition = 1
+        pieceNode.zPosition = 2
         self.addChild(pieceNode)
     }
 }
@@ -89,9 +82,12 @@ class HexagonNode: SKShapeNode {
 
 class GameScene: SKScene {
     
+    @AppStorage("highlightEnabled") private var highlightEnabled = true
+    
     override func didMove(to view: SKView) {
         // Set the anchor point to the center of the scene
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        print("Highlight enabled: \(highlightEnabled)")
         
         // Initialize your game here
         //backgroundColor = .white
@@ -99,21 +95,17 @@ class GameScene: SKScene {
     
     var gameState: GameState!
     
-    private var lastUpdateTime : TimeInterval = 0
-    
     var hexagonSize: CGFloat = 50 //50 is arbitrary & and just for init, changed later when screen size is retrieved
-    
-    var selectedPiece: SKSpriteNode?
-    var originalPosition: CGPoint?
-    
     let light = UIColor(hex: "#ffce9e") //can  import this later depending on user color settings in app? high contrast options? red black and white? this is a bad place to initialize this anyway
     let grey = UIColor(hex: "#e8ab6f")
     let dark = UIColor(hex: "#d18b47")
     
+    var selectedPiece: SKSpriteNode?
+    var originalPosition: CGPoint?
+    var validMoves: [String] = []
+    
     override func sceneDidLoad() {
         super.sceneDidLoad()
-
-        self.lastUpdateTime = 0
         
         //load saved game state
         gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
@@ -305,12 +297,18 @@ class GameScene: SKScene {
     }
 
     func touchDown(atPoint pos: CGPoint) {
+        clearHighlights()
+        validMoves.removeAll()
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let pieceNode = node as? SKSpriteNode {
+                pieceNode.setScale(1.25)
                 selectedPiece = pieceNode
                 originalPosition = pieceNode.position
-                print(validMovesForPiece(selectedPiece!, in: gameState))
+                
+                validMoves = validMovesForPiece(selectedPiece!, in: gameState)
+                print(validMoves)
+                highlightValidMoves(validMoves)
                 break
             }
         }
@@ -327,14 +325,16 @@ class GameScene: SKScene {
     func touchUp(atPoint pos: CGPoint) {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
-            if let nearestHexagon = findNearestHexagon(to: pos), validMovesForPiece(selectedPiece, in: gameState).contains(nearestHexagon.name ?? "not_found") {//who wrote this garbage bruh (me I wrote this garbage)
-                //we can also maybe get the valid moves list when we pick up the piece so it can be generating the list while the player is moving it around? might be good for performance but also this is so simple it probaby doesn't matter
+            if let nearestHexagon = findNearestHexagon(to: pos), validMoves.contains(nearestHexagon.name!) {
                 updateGameState(with: selectedPiece, at: nearestHexagon.name)
                 selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
             } else {
                 selectedPiece.position = originalPosition!
             }
-            self.selectedPiece = nil //i dont think this is needed, can comment out with no effect on code but here just in case
+            selectedPiece.setScale(1.0)
+            self.selectedPiece = nil
+            clearHighlights()
+            validMoves.removeAll()
         }
     }
 
@@ -360,6 +360,39 @@ class GameScene: SKScene {
         if let selectedPiece = selectedPiece {
             selectedPiece.position = originalPosition!
             self.selectedPiece = nil
+            clearHighlights()
+        }
+    }
+    
+    func highlightValidMoves(_ validMoves: [String]) {
+        print(highlightEnabled)
+        guard highlightEnabled else { return }
+        
+        for hexTiles in validMoves {
+            if let hexagon = childNode(withName: hexTiles) as? HexagonNode {
+                let glowOverlay = SKShapeNode(path: hexagon.path!)
+                glowOverlay.fillColor = UIColor.yellow.withAlphaComponent(0.3)
+                glowOverlay.strokeColor = UIColor.yellow
+                glowOverlay.lineWidth = 4
+                glowOverlay.zPosition = 1
+                glowOverlay.name = "glowOverlay"
+                
+                hexagon.addChild(glowOverlay)
+                
+                let fadeOut = SKAction.fadeAlpha(to: 0.2, duration: 0.8)
+                let fadeIn = SKAction.fadeAlpha(to: 0.8, duration: 0.8)
+                let pulse = SKAction.sequence([fadeOut, fadeIn])
+                let repeatPulse = SKAction.repeatForever(pulse)
+                glowOverlay.run(repeatPulse)
+            }
+        }
+    }
+
+    func clearHighlights() {
+        for node in children {
+            if let hexagon = node as? HexagonNode {
+                hexagon.childNode(withName: "glowOverlay")?.removeFromParent() // remove the glowing overlay if it exists
+            }
         }
     }
 
@@ -475,18 +508,4 @@ class GameScene: SKScene {
         }
     }
     
-    override func update(_ currentTime: TimeInterval) {
-        // Called before each frame is rendered
-        //probably not needed
-        /*
-        // Initialize _lastUpdateTime if it has not already been
-        if (self.lastUpdateTime == 0) {
-            self.lastUpdateTime = currentTime
-        }
-        
-        // Calculate time since last update
-        let dt = currentTime - self.lastUpdateTime
-        
-        self.lastUpdateTime = currentTime*/
-    }
 }
