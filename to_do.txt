@@ -1,4 +1,3 @@
-
 -implement promotion for pawn when it reaches the other side
 -50 move no capture rule for draw
 -threefold repetition rule for draw
@@ -25,6 +24,7 @@ add algebraic saving for reduced game file sizes? might be more economical for m
 settings for color scheme? (beige, grayscale, black/white/red, other?)
 -alternate board color schemes in settings?
 
+-add stalemate checking/ending
 
 
 

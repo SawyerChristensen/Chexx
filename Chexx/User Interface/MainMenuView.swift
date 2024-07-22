@@ -24,7 +24,7 @@ struct MainMenuView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 100, height: 100)
-                        .padding(.top, 80)
+                        .padding(.top, 100)
                         .colorInvertIfDarkMode(colorScheme: colorScheme)
                     
                     Text("Hex Chess")

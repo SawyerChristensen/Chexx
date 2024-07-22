@@ -86,7 +86,7 @@ class GameScene: SKScene {
     override func didMove(to view: SKView) {
         // Set the anchor point to the center of the scene
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        print("Highlight enabled: \(highlightEnabled)")
+        //print("Highlight enabled: \(highlightEnabled)")
         
         // Initialize your game here
         //backgroundColor = .white
@@ -101,6 +101,7 @@ class GameScene: SKScene {
     
     var selectedPiece: SKSpriteNode?
     var originalPosition: CGPoint?
+    var originalHexagonName: String?
     var validMoves: [String] = []
     var fiftyMoveRule = 0 //************STILL NEED TO IMPLEMENT
     
@@ -296,22 +297,63 @@ class GameScene: SKScene {
         }
     }
 
+    // Touch Down
     func touchDown(atPoint pos: CGPoint) {
-        clearHighlights()
-        validMoves.removeAll()
+        // Deselect the currently selected piece if the tap is outside the board
+        if findNearestHexagon(to: pos) == nil {
+            if let currentSelectedPiece = selectedPiece {
+                currentSelectedPiece.setScale(1.0)
+                currentSelectedPiece.removeAllActions()
+                currentSelectedPiece.zRotation = 0
+                selectedPiece = nil
+                originalHexagonName = nil
+                clearHighlights()
+                validMoves.removeAll()
+            }
+            return
+        }
+        
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
             if let pieceNode = node as? SKSpriteNode {
                 let pieceDetails = pieceNode.name?.split(separator: "_")
                 let pieceColor = pieceDetails?[1]
                 if pieceColor! == gameState.currentPlayer {
-                    pieceNode.setScale(1.25)
-                    selectedPiece = pieceNode
-                    originalPosition = pieceNode.position
-                    
-                    validMoves = validMovesForPiece(selectedPiece!, in: gameState)
-                    highlightValidMoves(validMoves)
-                    print(validMoves)
+                    if selectedPiece == pieceNode { // tapped on the selected piece! deselect it!
+                        selectedPiece?.setScale(1.0)
+                        selectedPiece?.removeAllActions()
+                        selectedPiece?.zRotation = 0
+                        selectedPiece = nil
+                        originalHexagonName = nil
+                        clearHighlights()
+                        validMoves.removeAll()
+                    } else { // tapped on another piece that isnt currently selected
+                        // first deselect the currently selected piece, if any (cant have 2 selected at the same time)
+                        if let currentSelectedPiece = selectedPiece {
+                            currentSelectedPiece.setScale(1.0)
+                            clearHighlights()
+                            validMoves.removeAll()
+                        }
+                        // Select the new piece & follow tap if dragging
+                        pieceNode.setScale(1.25)
+                        selectedPiece = pieceNode
+                        originalPosition = pieceNode.position
+                        
+                        if let parentHexagon = pieceNode.parent as? HexagonNode {
+                            originalHexagonName = parentHexagon.name
+                        }
+                        
+                        validMoves = validMovesForPiece(selectedPiece!, in: gameState)
+                        highlightValidMoves(validMoves)
+                        print(validMoves)
+                        
+                        // Add wobble effect
+                        let wobbleLeft = SKAction.rotate(byAngle: .pi / 64, duration: 0.05)
+                        let wobbleRight = SKAction.rotate(byAngle: -.pi / 64, duration: 0.05)
+                        let wobble = SKAction.sequence([wobbleLeft, wobbleRight, wobbleRight, wobbleLeft])
+                        let wobbleRepeat = SKAction.repeatForever(wobble)
+                        pieceNode.run(wobbleRepeat)
+                    }
                     break
                 } else {
                     print("It's not \(pieceColor ?? "unknown")'s turn")
@@ -319,7 +361,8 @@ class GameScene: SKScene {
             }
         }
     }
-
+    
+    // Touch Moved
     func touchMoved(toPoint pos: CGPoint) {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
@@ -327,51 +370,68 @@ class GameScene: SKScene {
             selectedPiece.position = convertedPos
         }
     }
-
+        
+    // Touch Up
     func touchUp(atPoint pos: CGPoint) {
         guard let selectedPiece = selectedPiece else { return }
         if let parent = selectedPiece.parent {
-            if let nearestHexagon = findNearestHexagon(to: pos), validMoves.contains(nearestHexagon.name!) {
-                updateGameState(with: selectedPiece, at: nearestHexagon.name)
-                selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
-            } else {
+            if let nearestHexagon = findNearestHexagon(to: pos) {
+                if validMoves.contains(nearestHexagon.name!) { // on board, valid destination
+                    // Move to the tapped hexagon
+                    updateGameState(with: selectedPiece, at: nearestHexagon.name)
+                    selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
+                } else if nearestHexagon.name != originalHexagonName { // on board, invalid destination
+                    // Deselect the piece if the tap ends on a non-valid hexagon
+                    selectedPiece.position = originalPosition!
+                } else { // on board, original hexagon
+                    // Keep the piece selected if the tap ends on the original hexagon
+                    selectedPiece.position = originalPosition!
+                    return
+                }
+            } else { // off the board
+                // If the touch ends outside the board, deselect the piece and return to the original position
                 selectedPiece.position = originalPosition!
             }
+            // common actions for deselecting the piece
             selectedPiece.setScale(1.0)
+            selectedPiece.removeAllActions()
+            selectedPiece.zRotation = 0
             self.selectedPiece = nil
+            originalHexagonName = nil
             clearHighlights()
             validMoves.removeAll()
         }
     }
-
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchDown(atPoint: t.location(in: self))
         }
     }
-
+    
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchMoved(toPoint: t.location(in: self))
         }
     }
-
+    
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchUp(atPoint: t.location(in: self))
         }
     }
-
+    
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let selectedPiece = selectedPiece {
             selectedPiece.position = originalPosition!
+            selectedPiece.setScale(1.0)
             self.selectedPiece = nil
+            originalHexagonName = nil
             clearHighlights()
         }
     }
     
     func highlightValidMoves(_ validMoves: [String]) {
-        print(highlightEnabled)
         guard highlightEnabled else { return }
         
         for hexTiles in validMoves {
