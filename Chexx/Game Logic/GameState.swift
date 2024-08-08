@@ -125,6 +125,8 @@ func getDocumentsDirectory() -> URL {
 }
 
 
+
+
 /*
 func initialGameState() -> GameState {//need to change how we initialize the game state. look above under the struct for my notes on how to do this
     return GameState(pieces: [

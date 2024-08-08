@@ -13,7 +13,7 @@ struct SettingsView: View {
 
     var body: some View {
         ZStack {
-            BackgroundView()
+            //BackgroundView()
             VStack {
                 Spacer()
                 //Text("*SETTINGS CONTENT HERE*").font(.system(size: 20, weight: .bold, design: .serif))

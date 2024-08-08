@@ -27,7 +27,8 @@ struct BackgroundView: View {
             Image("marble_white")
                 .resizable()
                 .scaledToFill()
-            Color.white.opacity(0.6) // Adjust the opacity as needed
+                //.rotationEffect(.degrees(180))
+            Color.white.opacity(0.8) // Adjust the opacity as needed
         }
     }
 
@@ -37,7 +38,8 @@ struct BackgroundView: View {
             Image("marble_black")
                 .resizable()
                 .scaledToFill()
-            Color.black.opacity(0.7) // Adjust the opacity as needed
+                //.rotationEffect(.degrees(180))
+            Color.black.opacity(0.9) // Adjust the opacity as needed
         }
     }
 }

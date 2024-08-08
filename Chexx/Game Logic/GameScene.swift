@@ -345,7 +345,7 @@ class GameScene: SKScene {
                         
                         validMoves = validMovesForPiece(selectedPiece!, in: gameState)
                         highlightValidMoves(validMoves)
-                        print(validMoves)
+                        print("Valid moves:", validMoves)
                         
                         // Add wobble effect
                         let wobbleLeft = SKAction.rotate(byAngle: .pi / 64, duration: 0.05)
@@ -482,7 +482,7 @@ class GameScene: SKScene {
         }
     }
     
-    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) { //still need to implement player turn status and game status such as "ongoing" or "ended"
+    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) { //still need to implement game status such as "ongoing" or "ended"
         guard let hexagonName = hexagonName else {
             print("Hexagon name is nil")
             return
@@ -513,7 +513,7 @@ class GameScene: SKScene {
         
         // Get piece details from identifier
         let color = String(pieceDetails[1])
-        let type = String(pieceDetails[2])
+        var type = String(pieceDetails[2]) // would be let, but is var just in case of pawn promotion. that is the *only* time type should change
         
         
         // Ensure the move is made by the current player (touchDown should catch this first!)
@@ -527,7 +527,7 @@ class GameScene: SKScene {
             fiftyMoveRule = 0
         }
         
-        //Capturing?
+        //********** CAPTURING ********** // STILL NEED TO CHECK IF A KING IS CAPTURED & END THE GAME
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
@@ -537,49 +537,66 @@ class GameScene: SKScene {
             }
             fiftyMoveRule = 0
         }
-        //Capturing logic for En Passant
-        if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
-            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
-                capturedPieceNode.removeFromParent()
-                gameState.board[colIndex][rowIndex - 1] = nil //also have to update the board state!
+            //Capturing logic for En Passant
+            if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
+                if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
+                    capturedPieceNode.removeFromParent()
+                    gameState.board[colIndex][rowIndex - 1] = nil //also have to update the board state!
+                    fiftyMoveRule = 0
+                }
             }
-        }
-        if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
-            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
-                capturedPieceNode.removeFromParent()
-                gameState.board[colIndex][rowIndex + 1] = nil
+            if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
+                if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
+                    capturedPieceNode.removeFromParent()
+                    gameState.board[colIndex][rowIndex + 1] = nil
+                    fiftyMoveRule = 0
+                }
             }
+        
+        // Pawn promotion logic without blocking the main thread
+        if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1) ||
+           (color == "black" && type == "pawn" && rowIndex == 0) {
+            presentPromotionOptions { newType in
+                type = newType // Update the piece type to the chosen promotion type
+                self.finalizeMove(pieceNode, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+            }
+            return
         }
 
-        // Remove piece from its original position in the game state
+        // Move logic for non-promotion case
+        finalizeMove(pieceNode, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+    }
+
+    //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
+    func finalizeMove(_ pieceNode: SKSpriteNode, _ type: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int) {
         gameState.board[originalColIndex][originalRowIndex] = nil
-        
-        // Add piece to the new position in the game state
-        gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true)
+        gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
-            gameState.board[colIndex][rowIndex] = Piece(color: color, type: type, hasMoved: true, isEnPassantTarget: true)
+            gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
         }
         
-        // Update pieceNode's name to reflect the new position
-        pieceNode.name = "\(hexagonName)_\(color)_\(type)"
-        
-        // Remove pieceNode from its current parent
+        pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"
         pieceNode.removeFromParent()
         
-        // Add pieceNode to the new target hexagon as a child
-        if let newHexagonParent = scene!.childNode(withName: hexagonName) as? HexagonNode {
-            newHexagonParent.addPieceImage(named: "\(color)_\(type)", identifier: pieceNode.name!)//can maybe be refactored later
+        if let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode {
+            newHexagonParent.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!)
         } else {
             print("New hexagon not found")
         }
-        
+
         fiftyMoveRule += 1
-        
-        // Switch the current player
-        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
-        
-        resetEnPassant(for: gameState.currentPlayer) //its been a turn and your piece wasn't "en passanted". congrats!
+        //gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+        resetEnPassant(for: gameState.currentPlayer)
+    }
+    
+    func presentPromotionOptions(completion: @escaping (String) -> Void) {
+        if let viewController = self.view?.window?.rootViewController {
+            let promotionViewController = UIHostingController(rootView: PromotionView(completion: completion))
+            promotionViewController.modalPresentationStyle = .overCurrentContext
+            promotionViewController.view.backgroundColor = .clear // Make the background transparent
+            viewController.present(promotionViewController, animated: true, completion: nil)
+        }
     }
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
@@ -594,7 +611,6 @@ class GameScene: SKScene {
     }
     
     func resetEnPassant(for color: String) {
-        print(color)
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if var piece = piece, piece.color == color {

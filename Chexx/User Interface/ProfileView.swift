@@ -12,7 +12,7 @@ struct ProfileView: View {
 
     var body: some View {
         ZStack {
-            BackgroundView()
+            //BackgroundView()
             VStack {
                 Text("*PROFILE CONTENT HERE*")
                 // Your settings content goes here

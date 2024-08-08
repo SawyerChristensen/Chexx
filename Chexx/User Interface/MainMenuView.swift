@@ -10,103 +10,144 @@ import AVFoundation //for audio
 
 struct MainMenuView: View {
     @State private var audioPlayer: AVAudioPlayer?//declaring an avaudioplayer instance
+    @State private var singlePlayerOptions = false
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                BackgroundView()
+            NavigationView {
+                ZStack {
+                    //BackgroundView()
 
-                VStack {
-                    //Spacer()
-                    
-                    Image("white_king")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 100, height: 100)
-                        .padding(.top, 100)
-                        .colorInvertIfDarkMode(colorScheme: colorScheme)
-                    
-                    Text("Hex Chess")
-                        .font(.system(size: 50, weight: .bold, design: .serif))
-                        .padding(.top, -5)
-                    
-                    Spacer()
+                    VStack {
+                        //Spacer()
 
-                    Button(action: {
-                        // Navigate to the game view controller
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let window = windowScene.windows.first {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                window.rootViewController = gameViewController
-                                window.makeKeyAndVisible()
-                            }
-                        }
-                    }) {
-                        Text("Tutorial")
-                            .font(.system(size: 33, weight: .bold, design: .serif))
-                            //.padding()
-                            .frame(width: 233, height: 60)
-                            .background(Color.accentColor)
-                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                            .clipShape(HexagonEdgeRectangleShape())
-                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                    }.padding(5)
-                    
-                    Button(action: { //GOES TO THE SINGLE PLAYER GAME
-                        // Navigate to the game view controller
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let window = windowScene.windows.first {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                window.rootViewController = gameViewController
-                                window.makeKeyAndVisible()
-                            }
-                        }
-                    }) {
-                        Text("New Game")
-                            .font(.system(size: 33, weight: .bold, design: .serif))
-                            //.padding()
-                            .frame(width: 233, height: 60)
-                            .background(Color.accentColor)
-                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                            .clipShape(HexagonEdgeRectangleShape())
-                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                    }.padding(5)
-                    
-                    Button(action: { //GOES TO THE SINGLE PLAYER GAME
-                        // Navigate to the game view controller
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let window = windowScene.windows.first {
-                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                            if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                window.rootViewController = gameViewController
-                                window.makeKeyAndVisible()
-                            }
-                        }
-                    }) {
-                        Text("Multiplayer")
-                            .font(.system(size: 33, weight: .bold, design: .serif))
-                            //.padding()
-                            .frame(width: 233, height: 60)
-                            .background(Color.accentColor)
-                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                            .clipShape(HexagonEdgeRectangleShape())
-                            //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                    }.padding(5)
-                    
+                        Image("white_king")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .padding(.top, 100)
+                            .colorInvertIfDarkMode(colorScheme: colorScheme)
 
-                    Spacer()
-                    Spacer()
+                        Text("Hex Chess")
+                            .font(.system(size: 50, weight: .bold, design: .serif))
+                            .padding(.top, -5)
+
+                        Spacer()
+
+                        if singlePlayerOptions {
+                            Button(action: {
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                       let window = windowScene.windows.first {
+                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                        if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                            ///gameViewController.isTabletopMode = true
+                                            window.rootViewController = gameViewController
+                                            window.makeKeyAndVisible()
+                                        }
+                                    }
+                            }) {
+                                Text("Tabletop")
+                                    .font(.system(size: 33, weight: .bold, design: .serif))
+                                    .frame(width: 233, height: 60)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
+                            }.padding(5)
+
+                            Button(action: {
+                                // *INPUT Action for VS CPU*
+                            }) {
+                                Text("vs CPU")
+                                    .font(.system(size: 33, weight: .bold, design: .serif))
+                                    .frame(width: 233, height: 60)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
+                            }.padding(5)
+                            
+                        } else {
+                            // Display the original buttons
+                            Button(action: {
+                                // Navigate to the game view controller
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let window = windowScene.windows.first {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                        window.rootViewController = gameViewController
+                                        window.makeKeyAndVisible()
+                                    }
+                                }
+                            }) {
+                                Text("Tutorial")
+                                    .font(.system(size: 33, weight: .bold, design: .serif))
+                                    //.padding()
+                                    .frame(width: 233, height: 60)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
+                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
+                            }.padding(5)
+
+                            Button(action: {
+                                withAnimation {
+                                    singlePlayerOptions = true
+                                }
+                            }) {
+                                Text("New Game")
+                                    .font(.system(size: 33, weight: .bold, design: .serif))
+                                    //.padding()
+                                    .frame(width: 233, height: 60)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
+                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
+                            }.padding(5)
+
+                            Button(action: {
+                                // Navigate to the multiplayer game view controller
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let window = windowScene.windows.first {
+                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
+                                        window.rootViewController = gameViewController
+                                        window.makeKeyAndVisible()
+                                    }
+                                }
+                            }) {
+                                Text("Multiplayer")
+                                    .font(.system(size: 33, weight: .bold, design: .serif))
+                                    //.padding()
+                                    .frame(width: 233, height: 60)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
+                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
+                            }.padding(5)
+                        }
+
+                        Spacer()
+                        Spacer()
+                    }
+                    VStack {
+                        Spacer()
+                        if singlePlayerOptions {
+                            Button(action: {
+                                // Go back to the original buttons
+                                withAnimation {
+                                    singlePlayerOptions = false
+                                }
+                            }) {
+                                HStack {
+                                    Image(systemName: "arrow.backward")
+                                    //Text("Back")
+                                }
+                                .font(.system(size: 33, weight: .bold, design: .serif))
+                                .frame(width: 233, height: 60)
+                            }
+                            .padding(.bottom, 100) // Adjust the bottom padding as needed
+                        }
+                    }
                 }
-                //.onAppear {
-                //    playBackgroundMusic()
-                //}
-                .onDisappear {
-                    stopBackgroundMusic()
-                }
-            }
             .navigationBarItems(
                 leading: HStack {
                     Spacer()
@@ -114,7 +155,8 @@ struct MainMenuView: View {
                         Image(systemName: "person.crop.circle")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .padding(5)
+                            .padding(.top, 20)
+                            .padding(10)
                     }
                 },
                 trailing: HStack {
@@ -122,11 +164,18 @@ struct MainMenuView: View {
                         Image(systemName: "gearshape.fill")
                             .resizable()
                             .frame(width: 40, height: 40)
-                            .padding(5)
+                            .padding(.top, 20)
+                            .padding(10)
                     }
                     Spacer()
                 }
             )
+        }
+        //.onAppear {
+        //    playBackgroundMusic()
+        //}
+        .onDisappear {
+            stopBackgroundMusic()
         }
     }
     
