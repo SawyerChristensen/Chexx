@@ -6,200 +6,195 @@
 //
 
 import SwiftUI
-import AVFoundation //for audio
 
 struct MainMenuView: View {
-    @State private var audioPlayer: AVAudioPlayer?//declaring an avaudioplayer instance
-    @State private var singlePlayerOptions = false
+    @StateObject private var audioManager = AudioManager()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
+    @State private var isSettingsPresented = false
+    @State private var isProfilePresented = false
+    @State private var singlePlayerOptions = false
 
     var body: some View {
-            NavigationView {
+        NavigationView {
+            GeometryReader { geometry in
+                let screenHeight = geometry.size.height
+                
                 ZStack {
                     //BackgroundView()
-
                     VStack {
-                        //Spacer()
-
+                        
                         Image("white_king")
                             .resizable()
                             .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .padding(.top, 100)
+                            .frame(height: screenHeight * 0.14)
+                            .padding(.top, screenHeight * 0.14)
                             .colorInvertIfDarkMode(colorScheme: colorScheme)
-
+                        
                         Text("Hex Chess")
-                            .font(.system(size: 50, weight: .bold, design: .serif))
+                            .font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
                             .padding(.top, -5)
-
+                        
                         Spacer()
-
+                        
                         if singlePlayerOptions {
-                            Button(action: {
-                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                       let window = windowScene.windows.first {
-                                        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                        if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                            ///gameViewController.isTabletopMode = true
-                                            window.rootViewController = gameViewController
-                                            window.makeKeyAndVisible()
-                                        }
-                                    }
-                            }) {
-                                Text("Tabletop")
-                                    .font(.system(size: 33, weight: .bold, design: .serif))
-                                    .frame(width: 233, height: 60)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
-                            }.padding(5)
-
-                            Button(action: {
-                                // *INPUT Action for VS CPU*
-                            }) {
-                                Text("vs CPU")
-                                    .font(.system(size: 33, weight: .bold, design: .serif))
-                                    .frame(width: 233, height: 60)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
-                            }.padding(5)
-                            
+                            VStack {
+                                NavigationLink(destination: GameView(isTabletopMode: true).onAppear { audioManager.stop() }) {
+                                    Text("Tabletop")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stop() }) {
+                                    Text("vs CPU")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                            }
                         } else {
-                            // Display the original buttons
-                            Button(action: {
-                                // Navigate to the game view controller
-                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                   let window = windowScene.windows.first {
-                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                    if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                        window.rootViewController = gameViewController
-                                        window.makeKeyAndVisible()
-                                    }
+                            VStack {
+                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                    Text("Tutorial")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
                                 }
-                            }) {
-                                Text("Tutorial")
-                                    .font(.system(size: 33, weight: .bold, design: .serif))
-                                    //.padding()
-                                    .frame(width: 233, height: 60)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
-                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                            }.padding(5)
-
-                            Button(action: {
-                                withAnimation {
+                                .padding(5)
+                                
+                                Button(action: {
                                     singlePlayerOptions = true
+                                }) {
+                                    Text("New Game")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
                                 }
-                            }) {
-                                Text("New Game")
-                                    .font(.system(size: 33, weight: .bold, design: .serif))
-                                    //.padding()
-                                    .frame(width: 233, height: 60)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
-                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                            }.padding(5)
-
-                            Button(action: {
-                                // Navigate to the multiplayer game view controller
-                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                   let window = windowScene.windows.first {
-                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                    if let gameViewController = storyboard.instantiateViewController(withIdentifier: "GameViewController") as? GameViewController {
-                                        window.rootViewController = gameViewController
-                                        window.makeKeyAndVisible()
-                                    }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                    Text("Multiplayer")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
                                 }
-                            }) {
-                                Text("Multiplayer")
-                                    .font(.system(size: 33, weight: .bold, design: .serif))
-                                    //.padding()
-                                    .frame(width: 233, height: 60)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
-                                    //.overlay(HexagonEdgeRectangleShape().stroke(Color.white, lineWidth: 2))
-                            }.padding(5)
+                                .padding(5)
+                            }
                         }
-
+                        
                         Spacer()
-                        Spacer()
-                    }
-                    VStack {
-                        Spacer()
+                        
                         if singlePlayerOptions {
                             Button(action: {
-                                // Go back to the original buttons
                                 withAnimation {
                                     singlePlayerOptions = false
                                 }
                             }) {
                                 HStack {
                                     Image(systemName: "arrow.backward")
-                                    //Text("Back")
+                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
                                 }
-                                .font(.system(size: 33, weight: .bold, design: .serif))
-                                .frame(width: 233, height: 60)
                             }
-                            .padding(.bottom, 100) // Adjust the bottom padding as needed
+                            .padding(.bottom, screenHeight * 0.14)
                         }
                     }
+                    // Center everything horizontally
+                    .frame(maxWidth: .infinity, alignment: .center)
                 }
-            .navigationBarItems(
-                leading: HStack {
-                    Spacer()
-                    NavigationLink(destination: ProfileView()) {
+                
+                // Overlay for Profile and Settings Icons
+                HStack {
+                    // Profile icon on the left
+                    Button(action: {
+                        isProfilePresented = true
+                    }) {
                         Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding(.top, 20)
+                            .frame(width: screenHeight / 18, height: screenHeight / 18)
                             .padding(10)
                     }
-                },
-                trailing: HStack {
-                    NavigationLink(destination: SettingsView()) {
+                    .fullScreenCover(isPresented: $isProfilePresented) {
+                        ProfileView()
+                            .background(Color.white.opacity(0.001).edgesIgnoringSafeArea(.all))
+                            .onTapGesture {
+                                isProfilePresented = false
+                            }
+                    }
+                    Spacer() // Push the settings icon to the right
+                }
+                HStack {
+                    Spacer()
+                    // Settings icon on the right
+                    Button(action: {
+                        isSettingsPresented = true
+                    }) {
                         Image(systemName: "gearshape.fill")
                             .resizable()
-                            .frame(width: 40, height: 40)
-                            .padding(.top, 20)
+                            .frame(width: screenHeight / 18, height: screenHeight / 18)
                             .padding(10)
                     }
-                    Spacer()
+                    .fullScreenCover(isPresented: $isSettingsPresented) {
+                        ZStack {
+                                // Transparent background that dismisses the view when tapped
+                                Color.white.opacity(0.001)
+                                    .edgesIgnoringSafeArea(.all)
+                                    .onTapGesture {
+                                        isSettingsPresented = false
+                                    }
+                                
+                                SettingsView(screenHeight: screenHeight)
+                            }
+                            .background(Color.clear) // Make sure background is clear
+                            .edgesIgnoringSafeArea(.all)
+                        }
                 }
-            )
+                Spacer()
+            }
+            //.onAppear {
+            //    audioManager.play()
+            //}
         }
-        //.onAppear {
-        //    playBackgroundMusic()
-        //}
-        .onDisappear {
-            stopBackgroundMusic()
-        }
+        .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
-    
-    // Function to play background music
-    func playBackgroundMusic() {
-        guard let path = Bundle.main.path(forResource: "carmen-habanera", ofType: "mp3") else {
-            return
+}
+
+struct SettingsModalView: View {
+    @Environment(\.colorScheme) var colorScheme
+    @AppStorage("highlightEnabled") private var highlightEnabled = true
+
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("Settings")
+                .font(.headline)
+                .padding()
+
+            Toggle("Enable Highlight", isOn: $highlightEnabled)
+                .padding()
+
+            Button(action: {
+                // Handle other settings actions
+            }) {
+                Text("Other Settings")
+            }
+
+            Spacer()
         }
-
-        let url = URL(fileURLWithPath: path)
-
-        do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.numberOfLoops = -1 // Loop indefinitely
-            audioPlayer?.volume = 0.3
-            audioPlayer?.play()
-        } catch {
-            print("Could not load file")
-        }
-    }
-
-    // Function to stop background music
-    func stopBackgroundMusic() {
-        audioPlayer?.stop()
+        .padding()
+        .background(Color(UIColor.systemBackground))
+        .cornerRadius(15)
+        .shadow(radius: 10)
     }
 }
 

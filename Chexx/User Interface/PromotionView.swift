@@ -13,7 +13,7 @@ struct PromotionView: View {
 
     var body: some View {
         VStack {
-            WaveText(text: "Pawn Promotion!") // Use the custom WaveText view
+            WaveText(text: "Pawn Promotion!", fontSize: 25) // Use the custom WaveText view
                 .padding()
                 //.background(Color.accentColor)
                 //.foregroundColor(Color.primary)
@@ -50,6 +50,7 @@ struct PromotionView: View {
 
 struct WaveText: View {
     let text: String
+    let fontSize: CGFloat
     @State private var waveOffset: CGFloat = 0
     @State private var startWave: Bool = false
     private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
@@ -58,7 +59,7 @@ struct WaveText: View {
         HStack(spacing: 0) {
             ForEach(0..<text.count, id: \.self) { index in
                 Text(String(Array(text)[index]))
-                    .font(.system(size: 25, weight: .bold, design: .serif))
+                    .font(.system(size: fontSize, weight: .bold, design: .serif))
                     .offset(y: startWave ? waveOffset(for: index) : 0) // so the text starts out flat
             }
         }

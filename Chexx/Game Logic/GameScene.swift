@@ -82,44 +82,67 @@ class HexagonNode: SKShapeNode {
 
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
-    
-    override func didMove(to view: SKView) {
-        // Set the anchor point to the center of the scene
-        anchorPoint = CGPoint(x: 0.5, y: 0.5)
-        //print("Highlight enabled: \(highlightEnabled)")
-        
-        // Initialize your game here
-        //backgroundColor = .white
-    }
+    var isVsCPU: Bool = false       // To handle "vs CPU" mode
+    var isTabletopMode: Bool = false // To handle "Tabletop" mode
     
     var gameState: GameState!
-    
-    var hexagonSize: CGFloat = 50 //50 is arbitrary & and just for init, changed later when screen size is retrieved
-    let light = UIColor(hex: "#ffce9e") //can  import this later depending on user color settings in app? high contrast options? red black and white? this is a bad place to initialize this anyway
+    var hexagonSize: CGFloat = 50
+
+    // Colors for hexagon tiles (could be customized or adjusted based on settings)
+    let light = UIColor(hex: "#ffce9e")
     let grey = UIColor(hex: "#e8ab6f")
     let dark = UIColor(hex: "#d18b47")
-    
+
     var selectedPiece: SKSpriteNode?
     var originalPosition: CGPoint?
     var originalHexagonName: String?
     var validMoves: [String] = []
-    var fiftyMoveRule = 0 //************STILL NEED TO IMPLEMENT
+    var fiftyMoveRule = 0 // Still need to implement
     
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
-        //load saved game state
-        gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
+        // Center the scene
+        anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
-        // Calculate hexagon size based on screen size (currently 5% of the smallest screen dimension, in case of screen rotation)
+        // Load the game state (if exists) or create a new one
+        gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
+
+        // Calculate hexagon size based on screen size
         hexagonSize = min(self.size.width, self.size.height) * 0.05
         
-        //generate the board
+        // Generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
         
-        //place the pieces in the saved game state on the board
+        // Place pieces on the board based on the game state
         placePieces(scene: self, gameState: gameState)
-        //printGameState()
+        
+        // Adjust the game for specific modes
+        if isVsCPU {
+            setupVsCPUMode()
+        }
+        
+        if isTabletopMode {
+            setupTabletopMode()
+        }
+    }
+    
+   /* override func sceneDidLoad() {
+        super.sceneDidLoad()
+        
+        // Additional initialization logic if necessary (probably not) (can get rid of this)
+    }*/
+
+    func setupVsCPUMode() {
+        // Set up AI logic or behavior here
+        // For example, decide when the AI should make a move or interact with the gameState
+        print("CPU mode activated")
+    }
+    
+    func setupTabletopMode() {
+        // Adjust the interaction rules or display for tabletop mode
+        // Tabletop mode might allow both players to interact with the board on the same device
+        print("Tabletop mode activated")
     }
     
     enum Direction { //for use with calcualte new center
@@ -586,7 +609,7 @@ class GameScene: SKScene {
         }
 
         fiftyMoveRule += 1
-        //gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
         resetEnPassant(for: gameState.currentPlayer)
     }
     
