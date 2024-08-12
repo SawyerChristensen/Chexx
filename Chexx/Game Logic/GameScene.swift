@@ -226,7 +226,7 @@ class GameScene: SKScene {
                     let identifier = "\(position)_\(piece.color)_\(piece.type)"
                     if let hexagon = scene.childNode(withName: position) as? HexagonNode {
                         let pieceImage = "\(piece.color)_\(piece.type)"
-                        hexagon.addPieceImage(named: pieceImage, identifier: identifier)
+                        hexagon.addPieceImage(named: pieceImage, identifier: identifier, boardIsRotated: isBoardRotated)
                     }
                 }
             }
@@ -235,69 +235,101 @@ class GameScene: SKScene {
 
     // Touch Down
     func touchDown(atPoint pos: CGPoint) {
-        // Deselect the currently selected piece if the tap is outside the board
-        if findNearestHexagon(to: pos) == nil {
-            if let currentSelectedPiece = selectedPiece {
-                currentSelectedPiece.setScale(1.0)
-                currentSelectedPiece.removeAllActions()
-                currentSelectedPiece.zRotation = 0
-                selectedPiece = nil
-                originalHexagonName = nil
-                clearHighlights()
-                validMoves.removeAll()
-            }
+        // Check if the tap is outside the board and deselect the piece if necessary
+        guard findNearestHexagon(to: pos) != nil else {
+            deselectCurrentPiece()
             return
         }
-        
+
         let nodesAtPoint = nodes(at: pos)
         for node in nodesAtPoint {
-            if let pieceNode = node as? SKSpriteNode {
-                let pieceDetails = pieceNode.name?.split(separator: "_")
-                let pieceColor = pieceDetails?[1]
-                if pieceColor! == gameState.currentPlayer {
-                    if selectedPiece == pieceNode { // tapped on the already selected piece! deselect it!
-                        selectedPiece?.setScale(1.0)
-                        selectedPiece?.removeAllActions()
-                        selectedPiece?.zRotation = 0
-                        selectedPiece = nil
-                        originalHexagonName = nil
-                        clearHighlights()
-                        validMoves.removeAll()
-                    } else { // tapped on another piece that isnt currently selected
-                        // first deselect the currently selected piece, if any (cant have 2 selected at the same time)
-                        if let currentSelectedPiece = selectedPiece {
-                            currentSelectedPiece.setScale(1.0)
-                            currentSelectedPiece.removeAllActions()
-                            currentSelectedPiece.zRotation = 0
-                            clearHighlights()
-                            validMoves.removeAll()
-                        }
-                        // Select the new piece & follow tap if dragging
-                        pieceNode.setScale(1.25)
-                        selectedPiece = pieceNode
-                        originalPosition = pieceNode.position
-                        
-                        if let parentHexagon = pieceNode.parent as? HexagonNode {
-                            originalHexagonName = parentHexagon.name
-                        }
-                        
-                        validMoves = validMovesForPiece(selectedPiece!, in: gameState)
-                        highlightValidMoves(validMoves)
-                        print("Valid moves:", validMoves)
-                        
-                        // Add wobble effect
-                        let wobbleLeft = SKAction.rotate(byAngle: .pi / 64, duration: 0.05)
-                        let wobbleRight = SKAction.rotate(byAngle: -.pi / 64, duration: 0.05)
-                        let wobble = SKAction.sequence([wobbleLeft, wobbleRight, wobbleRight, wobbleLeft])
-                        let wobbleRepeat = SKAction.repeatForever(wobble)
-                        pieceNode.run(wobbleRepeat)
+            if let pieceNode = node as? SKSpriteNode,
+               let pieceDetails = pieceNode.name?.split(separator: "_"),
+               pieceDetails.count > 1, // Ensure there is a color component
+               let pieceColor = String(pieceDetails[1]) as String? {
+
+                if pieceColor == gameState.currentPlayer {
+                    if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
+                        deselectCurrentPiece()
+                    } else { // Tapped on a different piece
+                        deselectCurrentPiece()
+                        selectNewPiece(pieceNode)
                     }
                     break
                 } else {
-                    print("It's not \(pieceColor ?? "unknown")'s turn")
+                    print("It's not \(pieceColor)'s turn")
                 }
             }
         }
+    }
+
+    // Touch Up
+    func touchUp(atPoint pos: CGPoint) {
+        guard let selectedPiece = selectedPiece else { return }
+
+        if let parent = selectedPiece.parent, let nearestHexagon = findNearestHexagon(to: pos) {
+            if validMoves.contains(nearestHexagon.name!) { // Valid destination
+                updateGameState(with: selectedPiece, at: nearestHexagon.name)
+                selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
+            } else if nearestHexagon.name != originalHexagonName { // Invalid destination
+                selectedPiece.position = originalPosition!
+            } else { // Original hexagon
+                selectedPiece.position = originalPosition!
+                return
+            }
+        } else { // Off the board
+            selectedPiece.position = originalPosition!
+        }
+
+        // Common actions for deselecting the piece
+        deselectCurrentPiece()
+    }
+    
+    // Helper Methods
+    private func selectNewPiece(_ pieceNode: SKSpriteNode) {
+        // Store initial rotation before applying wobble effect
+        pieceNode.userData = pieceNode.userData ?? NSMutableDictionary()
+        pieceNode.userData?["initialRotation"] = pieceNode.zRotation
+        
+        pieceNode.setScale(1.25)
+        selectedPiece = pieceNode
+        originalPosition = pieceNode.position
+
+        if let parentHexagon = pieceNode.parent as? HexagonNode {
+            originalHexagonName = parentHexagon.name
+        }
+
+        validMoves = validMovesForPiece(selectedPiece!, in: gameState)
+        highlightValidMoves(validMoves)
+        print("Valid moves:", validMoves)
+
+        // Apply wobble effect
+        applyWobbleEffect(to: pieceNode)
+    }
+
+    private func deselectCurrentPiece() {
+        if let currentSelectedPiece = selectedPiece {
+            resetPiece(currentSelectedPiece)
+            selectedPiece = nil
+            originalHexagonName = nil
+            clearHighlights()
+            validMoves.removeAll()
+        }
+    }
+    
+    private func resetPiece(_ pieceNode: SKSpriteNode) {
+        let initialRotation = pieceNode.userData?["initialRotation"] as? CGFloat ?? 0.0
+        pieceNode.setScale(1.0)
+        pieceNode.removeAction(forKey: "wobbleEffect")
+        pieceNode.zRotation = initialRotation
+    }
+
+    private func applyWobbleEffect(to pieceNode: SKSpriteNode) {
+        let wobbleLeft = SKAction.rotate(byAngle: .pi / 64, duration: 0.05)
+        let wobbleRight = SKAction.rotate(byAngle: -.pi / 64, duration: 0.05)
+        let wobble = SKAction.sequence([wobbleLeft, wobbleRight, wobbleRight, wobbleLeft])
+        let wobbleRepeat = SKAction.repeatForever(wobble)
+        pieceNode.run(wobbleRepeat, withKey: "wobbleEffect")
     }
     
     // Touch Moved
@@ -306,38 +338,6 @@ class GameScene: SKScene {
         if let parent = selectedPiece.parent {
             let convertedPos = convert(pos, to: parent)
             selectedPiece.position = convertedPos
-        }
-    }
-        
-    // Touch Up
-    func touchUp(atPoint pos: CGPoint) {
-        guard let selectedPiece = selectedPiece else { return }
-        if let parent = selectedPiece.parent {
-            if let nearestHexagon = findNearestHexagon(to: pos) {
-                if validMoves.contains(nearestHexagon.name!) { // on board, valid destination
-                    // Move to the tapped hexagon
-                    updateGameState(with: selectedPiece, at: nearestHexagon.name)
-                    selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
-                } else if nearestHexagon.name != originalHexagonName { // on board, invalid destination
-                    // Deselect the piece if the tap ends on a non-valid hexagon
-                    selectedPiece.position = originalPosition!
-                } else { // on board, original hexagon
-                    // Keep the piece selected if the tap ends on the original hexagon
-                    selectedPiece.position = originalPosition!
-                    return
-                }
-            } else { // off the board
-                // If the touch ends outside the board, deselect the piece and return to the original position
-                selectedPiece.position = originalPosition!
-            }
-            // common actions for deselecting the piece
-            selectedPiece.setScale(1.0)
-            selectedPiece.removeAllActions()
-            selectedPiece.zRotation = 0
-            self.selectedPiece = nil
-            originalHexagonName = nil
-            clearHighlights()
-            validMoves.removeAll()
         }
     }
     
@@ -518,22 +518,32 @@ class GameScene: SKScene {
         pieceNode.removeFromParent()
         
         if let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode {
-            newHexagonParent.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!)
+            // Add the piece to the new hexagon
+            newHexagonParent.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, boardIsRotated: isBoardRotated)
+
+            // Adjust the piece's rotation based on the board's rotation state
+            if isBoardRotated {
+                pieceNode.zRotation += .pi // Add 180 degrees if the board is rotated
+            }
         } else {
             print("New hexagon not found")
         }
 
-        fiftyMoveRule += 1
-        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
-        resetEnPassant(for: gameState.currentPlayer)
-        
         if isPassAndPlay {
             rotateBoard()
             rotateAllPieces()
         }
+        
+        fiftyMoveRule += 1
+        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+        resetEnPassant(for: gameState.currentPlayer)
+
     }
     
+    var isBoardRotated: Bool = false // This will track if the board is rotated by 180 degrees
+    
     func rotateBoard() {
+        isBoardRotated.toggle()
         UIView.animate(withDuration: 0.5) {
             self.view?.transform = (self.view?.transform.rotated(by: .pi))!
         }
@@ -657,7 +667,7 @@ class HexagonNode: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addPieceImage(named imageName: String, identifier: String) {
+    func addPieceImage(named imageName: String, identifier: String, boardIsRotated: Bool) {
         let texture = SKTexture(imageNamed: imageName)
         let pieceNode = SKSpriteNode(texture: texture)
         pieceNode.name = identifier
@@ -667,6 +677,10 @@ class HexagonNode: SKShapeNode {
         //print(pieceNode.size)
         pieceNode.position = CGPoint(x: 0, y: 0)
         pieceNode.zPosition = 2
+        
+        if boardIsRotated {
+            pieceNode.zRotation = .pi
+        }
         self.addChild(pieceNode)
     }
 }
