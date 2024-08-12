@@ -45,6 +45,7 @@
 		BE76AA4E2C4620F9009113B4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsView.swift */; };
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
 		BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA512C462765009113B4 /* BackgroundView.swift */; };
+		BE94E0EB2C692E3A005DCAD3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE94E0EA2C692E3A005DCAD3 /* SettingsViewController.swift */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
 		BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
@@ -91,6 +92,7 @@
 		BE76AA4D2C4620F9009113B4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		BE76AA512C462765009113B4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		BE94E0EA2C692E3A005DCAD3 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
 		BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViewController.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -135,6 +137,7 @@
 				BE76A9E32C2A3EDA009113B4 /* Audio */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
+				BE94E0EC2C699D36005DCAD3 /* Deprecated */,
 				BE76A9E42C2A3EDA009113B4 /* chess_assets_old */,
 			);
 			path = Chexx;
@@ -210,10 +213,10 @@
 		BE7EB8C12C47787000D66EB0 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
 				BE76AA512C462765009113B4 /* BackgroundView.swift */,
 				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
+				BE94E0EA2C692E3A005DCAD3 /* SettingsViewController.swift */,
 				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
 				BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */,
 				BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */,
@@ -235,6 +238,14 @@
 			children = (
 			);
 			path = "Sound Effects";
+			sourceTree = "<group>";
+		};
+		BE94E0EC2C699D36005DCAD3 /* Deprecated */ = {
+			isa = PBXGroup;
+			children = (
+				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
+			);
+			path = Deprecated;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -343,6 +354,7 @@
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
+				BE94E0EB2C692E3A005DCAD3 /* SettingsViewController.swift in Sources */,
 				BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,
 				BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */,

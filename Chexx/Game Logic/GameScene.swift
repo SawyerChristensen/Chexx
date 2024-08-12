@@ -9,84 +9,13 @@ import SpriteKit
 import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
 import SwiftUI
 
-extension UIColor {
-    convenience init(hex: String) {
-        let hexString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines)
-        let scanner = Scanner(string: hexString)
-        
-        if hexString.hasPrefix("#") {
-            scanner.currentIndex = hexString.index(after: hexString.startIndex)
-        }
-        
-        var color: UInt64 = 0
-        scanner.scanHexInt64(&color)
-        
-        let mask = 0x000000FF
-        let r = Int(color >> 16) & mask
-        let g = Int(color >> 8) & mask
-        let b = Int(color) & mask
-        
-        let red   = CGFloat(r) / 255.0
-        let green = CGFloat(g) / 255.0
-        let blue  = CGFloat(b) / 255.0
-        
-        self.init(red: red, green: green, blue: blue, alpha: 1.0)
-    }
-}
-
-
-class HexagonNode: SKShapeNode {
-    
-    static func createHexagonPath(size: CGFloat) -> CGPath {
-        let path = UIBezierPath()
-        let angle: CGFloat = .pi / 3
-        for i in 0..<6 {
-            let x = size * cos(angle * CGFloat(i))
-            let y = size * sin(angle * CGFloat(i))
-            if i == 0 {
-                path.move(to: CGPoint(x: x, y: y))
-            } else {
-                path.addLine(to: CGPoint(x: x, y: y))
-            }
-        }
-        path.close()
-        return path.cgPath
-    }
-    
-    init(size: CGFloat, color: UIColor) {
-        super.init()
-        self.path = HexagonNode.createHexagonPath(size: size)
-        self.fillColor = color
-        self.strokeColor = color
-        self.lineWidth = 0
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    func addPieceImage(named imageName: String, identifier: String) {
-        let texture = SKTexture(imageNamed: imageName)
-        let pieceNode = SKSpriteNode(texture: texture)
-        pieceNode.name = identifier
-        
-        let hexWidth = self.frame.size.width * 0.85// - lineWidth //need to subtract linewidth if you change the linewidth of the PARENT hexagon, fixed with glowOverlay
-        pieceNode.size = CGSize(width: hexWidth, height: hexWidth)
-        //print(pieceNode.size)
-        pieceNode.position = CGPoint(x: 0, y: 0)
-        pieceNode.zPosition = 2
-        self.addChild(pieceNode)
-    }
-}
-
-
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     var isVsCPU: Bool = false       // To handle "vs CPU" mode
-    var isTabletopMode: Bool = false // To handle "Tabletop" mode
+    var isPassAndPlay: Bool = false // To handle "Pass & Play" mode
     
     var gameState: GameState!
-    var hexagonSize: CGFloat = 50
+    var hexagonSize: CGFloat = 50 //reset later when screen size is found
 
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
     let light = UIColor(hex: "#ffce9e")
@@ -109,7 +38,7 @@ class GameScene: SKScene {
         gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
 
         // Calculate hexagon size based on screen size
-        hexagonSize = min(self.size.width, self.size.height) * 0.05
+        hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
         
         // Generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
@@ -121,28 +50,12 @@ class GameScene: SKScene {
         if isVsCPU {
             setupVsCPUMode()
         }
-        
-        if isTabletopMode {
-            setupTabletopMode()
-        }
     }
     
-   /* override func sceneDidLoad() {
-        super.sceneDidLoad()
-        
-        // Additional initialization logic if necessary (probably not) (can get rid of this)
-    }*/
-
     func setupVsCPUMode() {
         // Set up AI logic or behavior here
         // For example, decide when the AI should make a move or interact with the gameState
         print("CPU mode activated")
-    }
-    
-    func setupTabletopMode() {
-        // Adjust the interaction rules or display for tabletop mode
-        // Tabletop mode might allow both players to interact with the board on the same device
-        print("Tabletop mode activated")
     }
     
     enum Direction { //for use with calcualte new center
@@ -342,7 +255,7 @@ class GameScene: SKScene {
                 let pieceDetails = pieceNode.name?.split(separator: "_")
                 let pieceColor = pieceDetails?[1]
                 if pieceColor! == gameState.currentPlayer {
-                    if selectedPiece == pieceNode { // tapped on the selected piece! deselect it!
+                    if selectedPiece == pieceNode { // tapped on the already selected piece! deselect it!
                         selectedPiece?.setScale(1.0)
                         selectedPiece?.removeAllActions()
                         selectedPiece?.zRotation = 0
@@ -354,6 +267,8 @@ class GameScene: SKScene {
                         // first deselect the currently selected piece, if any (cant have 2 selected at the same time)
                         if let currentSelectedPiece = selectedPiece {
                             currentSelectedPiece.setScale(1.0)
+                            currentSelectedPiece.removeAllActions()
+                            currentSelectedPiece.zRotation = 0
                             clearHighlights()
                             validMoves.removeAll()
                         }
@@ -611,6 +526,31 @@ class GameScene: SKScene {
         fiftyMoveRule += 1
         gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
         resetEnPassant(for: gameState.currentPlayer)
+        
+        if isPassAndPlay {
+            rotateBoard()
+            rotateAllPieces()
+        }
+    }
+    
+    func rotateBoard() {
+        UIView.animate(withDuration: 0.5) {
+            self.view?.transform = (self.view?.transform.rotated(by: .pi))!
+        }
+    }
+    
+    func rotateAllPieces() {
+        let rotateAction = SKAction.rotate(byAngle: .pi, duration: 0.5) // Rotate 180 degrees
+
+        for node in children {
+            if let hexagon = node as? HexagonNode {
+                for pieceNode in hexagon.children {
+                    if let pieceNode = pieceNode as? SKSpriteNode {
+                        pieceNode.run(rotateAction)
+                    }
+                }
+            }
+        }
     }
     
     func presentPromotionOptions(completion: @escaping (String) -> Void) {
@@ -659,4 +599,74 @@ class GameScene: SKScene {
         }
     }
     
+}
+
+extension UIColor {
+    convenience init(hex: String) {
+        let hexString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines)
+        let scanner = Scanner(string: hexString)
+        
+        if hexString.hasPrefix("#") {
+            scanner.currentIndex = hexString.index(after: hexString.startIndex)
+        }
+        
+        var color: UInt64 = 0
+        scanner.scanHexInt64(&color)
+        
+        let mask = 0x000000FF
+        let r = Int(color >> 16) & mask
+        let g = Int(color >> 8) & mask
+        let b = Int(color) & mask
+        
+        let red   = CGFloat(r) / 255.0
+        let green = CGFloat(g) / 255.0
+        let blue  = CGFloat(b) / 255.0
+        
+        self.init(red: red, green: green, blue: blue, alpha: 1.0)
+    }
+}
+
+
+class HexagonNode: SKShapeNode {
+    
+    static func createHexagonPath(size: CGFloat) -> CGPath {
+        let path = UIBezierPath()
+        let angle: CGFloat = .pi / 3
+        for i in 0..<6 {
+            let x = size * cos(angle * CGFloat(i))
+            let y = size * sin(angle * CGFloat(i))
+            if i == 0 {
+                path.move(to: CGPoint(x: x, y: y))
+            } else {
+                path.addLine(to: CGPoint(x: x, y: y))
+            }
+        }
+        path.close()
+        return path.cgPath
+    }
+    
+    init(size: CGFloat, color: UIColor) {
+        super.init()
+        self.path = HexagonNode.createHexagonPath(size: size)
+        self.fillColor = color
+        self.strokeColor = color
+        self.lineWidth = 0
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    func addPieceImage(named imageName: String, identifier: String) {
+        let texture = SKTexture(imageNamed: imageName)
+        let pieceNode = SKSpriteNode(texture: texture)
+        pieceNode.name = identifier
+        
+        let hexWidth = self.frame.size.width * 0.85// - lineWidth //need to subtract linewidth if you change the linewidth of the PARENT hexagon, fixed with glowOverlay
+        pieceNode.size = CGSize(width: hexWidth, height: hexWidth)
+        //print(pieceNode.size)
+        pieceNode.position = CGPoint(x: 0, y: 0)
+        pieceNode.zPosition = 2
+        self.addChild(pieceNode)
+    }
 }

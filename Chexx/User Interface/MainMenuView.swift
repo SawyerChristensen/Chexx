@@ -12,7 +12,7 @@ struct MainMenuView: View {
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
-    @State private var singlePlayerOptions = false
+    @State private var multiplayerOptions = false
 
     var body: some View {
         NavigationView {
@@ -36,10 +36,10 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if singlePlayerOptions {
+                        if multiplayerOptions {
                             VStack {
-                                NavigationLink(destination: GameView(isTabletopMode: true).onAppear { audioManager.stop() }) {
-                                    Text("Tabletop")
+                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                    Text("Random")
                                         .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -48,8 +48,8 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stop() }) {
-                                    Text("vs CPU")
+                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                    Text("vs Friend")
                                         .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -62,7 +62,27 @@ struct MainMenuView: View {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
                                     Text("Tutorial")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stop() }) {
+                                    Text("Single Player")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stop() }) {
+                                    Text("Pass & Play")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
@@ -71,35 +91,27 @@ struct MainMenuView: View {
                                 .padding(5)
                                 
                                 Button(action: {
-                                    singlePlayerOptions = true
+                                    multiplayerOptions = true
                                 }) {
-                                    Text("New Game")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                    Text("Online")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
-                                
-                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
-                                    Text("Multiplayer")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
-                                        .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                        .clipShape(HexagonEdgeRectangleShape())
-                                }
-                                .padding(5)
+                                .padding(.bottom)
                             }
+                            
                         }
                         
                         Spacer()
                         
-                        if singlePlayerOptions {
+                        if multiplayerOptions {
                             Button(action: {
                                 withAnimation {
-                                    singlePlayerOptions = false
+                                    multiplayerOptions = false
                                 }
                             }) {
                                 HStack {
@@ -122,8 +134,8 @@ struct MainMenuView: View {
                     }) {
                         Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: screenHeight / 18, height: screenHeight / 18)
-                            .padding(10)
+                            .frame(width: screenHeight / 15, height: screenHeight / 15)
+                            .padding(screenHeight / 30)
                     }
                     .fullScreenCover(isPresented: $isProfilePresented) {
                         ProfileView()
@@ -138,33 +150,26 @@ struct MainMenuView: View {
                     Spacer()
                     // Settings icon on the right
                     Button(action: {
-                        isSettingsPresented = true
+                        if let windowScene = UIApplication.shared.connectedScenes
+                                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
+                               let rootViewController = windowScene.windows.first?.rootViewController {
+                            let settingsViewController = UIHostingController(rootView: SettingsViewController(screenHeight: screenHeight))
+                            settingsViewController.modalPresentationStyle = .overCurrentContext
+                            settingsViewController.view.backgroundColor = .clear // Transparent background
+                            rootViewController.present(settingsViewController, animated: true, completion: nil)
+                        }
                     }) {
                         Image(systemName: "gearshape.fill")
                             .resizable()
-                            .frame(width: screenHeight / 18, height: screenHeight / 18)
-                            .padding(10)
+                            .frame(width: screenHeight / 15, height: screenHeight / 15)
+                            .padding(screenHeight / 30)
                     }
-                    .fullScreenCover(isPresented: $isSettingsPresented) {
-                        ZStack {
-                                // Transparent background that dismisses the view when tapped
-                                Color.white.opacity(0.001)
-                                    .edgesIgnoringSafeArea(.all)
-                                    .onTapGesture {
-                                        isSettingsPresented = false
-                                    }
-                                
-                                SettingsView(screenHeight: screenHeight)
-                            }
-                            .background(Color.clear) // Make sure background is clear
-                            .edgesIgnoringSafeArea(.all)
-                        }
                 }
                 Spacer()
             }
-            //.onAppear {
-            //    audioManager.play()
-            //}
+            .onAppear {
+                audioManager.play()
+            }
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }

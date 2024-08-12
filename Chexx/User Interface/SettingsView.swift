@@ -16,51 +16,60 @@ struct SettingsView: View {
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
     var body: some View {
-        VStack {
-            WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
-                .padding()
-
+        ZStack {
+            // Transparent background that dismisses the view when tapped
+            Color.white.opacity(0.0001) // Slightly transparent background
+                .edgesIgnoringSafeArea(.all) // Ensures it covers the entire screen, including safe areas
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()
+                }
             VStack {
-                
-                Toggle("Highlight Available Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
-                    //.padding()
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                    //.shadow(color: .white, radius: 10, x: 0, y: 0)
-                /*
-                Text("Tabletop")
-                    .font(.system(size: 36, weight: .bold, design: .serif))
-                    .padding(.top)
-                
-                Toggle("Rotate Table on Turn", isOn: $tabletopRotateTableOnTurn) //note: toggle does not scale with font
-                    //.padding()
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
-                    .foregroundColor(colorScheme == .dark ? .white : .black)
-                    //.shadow(color: .white, radius: 10, x: 0, y: 0)
-                    .padding(.bottom)
-                */
-            }
-                            
-            Button(action: {
-                self.presentationMode.wrappedValue.dismiss()
-            }) {
-                Text("Close")
-                    .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
                     .padding()
-                    .frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                    .background(Color.accentColor)
-                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                    .clipShape(HexagonEdgeRectangleShape())
+                
+                VStack {
+                    
+                    Toggle("Highlight Available Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
+                    //.padding()
+                        .frame(maxWidth: min(screenHeight / 2.4, 500))
+                        .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
+                        .foregroundColor(colorScheme == .dark ? .white : .black)
+                    //.shadow(color: .white, radius: 10, x: 0, y: 0)
+                    /*
+                     Text("Tabletop")
+                     .font(.system(size: 36, weight: .bold, design: .serif))
+                     .padding(.top)
+                     
+                     Toggle("Rotate Table on Turn", isOn: $tabletopRotateTableOnTurn) //note: toggle does not scale with font
+                     //.padding()
+                     .frame(maxWidth: min(screenHeight / 2.4, 500))
+                     .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
+                     .foregroundColor(colorScheme == .dark ? .white : .black)
+                     //.shadow(color: .white, radius: 10, x: 0, y: 0)
+                     .padding(.bottom)
+                     */
+                }
+                
+                Button(action: {
+                    self.presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("Close")
+                        .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                        .padding()
+                        .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                        .background(Color.accentColor)
+                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                        .clipShape(HexagonEdgeRectangleShape())
+                }
+                .padding(.top, 20)
             }
-            .padding(.top, 20)
+            .padding()
+            .background(Color(UIColor.systemBackground))
+            .cornerRadius(15)
+            .shadow(radius: 100)
+            //.shadow(radius: 100)
+            //.scaleEffect(1.2)
         }
-        .padding()
-        .background(Color(UIColor.systemBackground))
-        .cornerRadius(15)
-        .shadow(radius: 10)
-        //.scaleEffect(1.2)
     }
 }
 
