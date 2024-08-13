@@ -33,34 +33,27 @@ func boardToHex(_ positions: [(Int, Int)]) -> [String] {
     return algebraicPositions
 }
 
-func validMovesForPiece(_ piece: SKSpriteNode, in gameState: GameState) -> [String] {
-    let pieceDetails = piece.name?.split(separator: "_") ?? []
-    guard pieceDetails.count == 3 else { return [] }
-    
-    let color = String(pieceDetails[1])
-    let type = String(pieceDetails[2])
-    
+func validMovesForPiece(at position: String, color: String, type: String, in gameState: GameState) -> [String] {
     switch type {
     case "pawn":
-        return validMovesForPawn(color, at: String(pieceDetails[0]), in: gameState)
+        return validMovesForPawn(color, at: position, in: gameState)
     case "rook":
-        return validMovesForRook(color, at: String(pieceDetails[0]), in: gameState)
+        return validMovesForRook(color, at: position, in: gameState)
     case "bishop":
-        return validMovesForBishop(color, at: String(pieceDetails[0]), in: gameState)
+        return validMovesForBishop(color, at: position, in: gameState)
     case "queen":
-        let rookMoves = validMovesForRook(color, at: String(pieceDetails[0]), in: gameState)
-        let bishopMoves = validMovesForBishop(color, at: String(pieceDetails[0]), in: gameState)
+        let rookMoves = validMovesForRook(color, at: position, in: gameState)
+        let bishopMoves = validMovesForBishop(color, at: position, in: gameState)
         return Array(Set(rookMoves + bishopMoves))
     case "king":
-        return validMovesForKing(color, at: String(pieceDetails[0]), in: gameState)
+        return validMovesForKing(color, at: position, in: gameState)
     case "knight":
-        return validMovesForKnight(color, at: String(pieceDetails[0]), in: gameState)
+        return validMovesForKnight(color, at: position, in: gameState)
     default:
         return []
     }
 }
 
-//this needs to be changed later to make promotion work!! AND EN PASSANT
 private func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []

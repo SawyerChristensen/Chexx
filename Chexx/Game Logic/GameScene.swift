@@ -226,7 +226,7 @@ class GameScene: SKScene {
                     let identifier = "\(position)_\(piece.color)_\(piece.type)"
                     if let hexagon = scene.childNode(withName: position) as? HexagonNode {
                         let pieceImage = "\(piece.color)_\(piece.type)"
-                        hexagon.addPieceImage(named: pieceImage, identifier: identifier, boardIsRotated: isBoardRotated)
+                        hexagon.addPieceImage(named: pieceImage, identifier: identifier, isBoardRotated: boardIsRotated)
                     }
                 }
             }
@@ -299,9 +299,19 @@ class GameScene: SKScene {
             originalHexagonName = parentHexagon.name
         }
 
-        validMoves = validMovesForPiece(selectedPiece!, in: gameState)
+        // Extract piece details from the node's name
+        if let pieceDetails = pieceNode.name?.split(separator: "_"), pieceDetails.count == 3 {
+            let position = String(pieceDetails[0])
+            let color = String(pieceDetails[1])
+            let type = String(pieceDetails[2])
+            
+            validMoves = validMovesForPiece(at: position, color: color, type: type, in: gameState)
+        } else {
+            validMoves = []
+        }
+
+        // Highlight the valid moves
         highlightValidMoves(validMoves)
-        print("Valid moves:", validMoves)
 
         // Apply wobble effect
         applyWobbleEffect(to: pieceNode)
@@ -456,10 +466,10 @@ class GameScene: SKScene {
         
         // Ensure the move is made by the current player (touchDown should catch this first!)
         guard color == gameState.currentPlayer else {
-            print("It's not \(color)'s turn")
+            //print("It's not \(color)'s turn")
             return
         }
-        print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
+        //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
 
         if type == "pawn" {
             fiftyMoveRule = 0
@@ -517,33 +527,29 @@ class GameScene: SKScene {
         pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"
         pieceNode.removeFromParent()
         
-        if let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode {
-            // Add the piece to the new hexagon
-            newHexagonParent.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, boardIsRotated: isBoardRotated)
-
-            // Adjust the piece's rotation based on the board's rotation state
-            if isBoardRotated {
-                pieceNode.zRotation += .pi // Add 180 degrees if the board is rotated
-            }
-        } else {
-            print("New hexagon not found")
-        }
+        let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
+        newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
 
         if isPassAndPlay {
             rotateBoard()
             rotateAllPieces()
         }
         
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
+        if isKingInCheck(for: opponentColor) {
+            print("Check! for...", opponentColor)
+            // Additional logic to handle check... NEED TO IMPLEMENT
+        }
+        
         fiftyMoveRule += 1
-        gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+        gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
-
     }
     
-    var isBoardRotated: Bool = false // This will track if the board is rotated by 180 degrees
+    var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
     
     func rotateBoard() {
-        isBoardRotated.toggle()
+        boardIsRotated.toggle()
         UIView.animate(withDuration: 0.5) {
             self.view?.transform = (self.view?.transform.rotated(by: .pi))!
         }
@@ -573,14 +579,68 @@ class GameScene: SKScene {
     }
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
-        for node in children {
-            if let hexagon = node as? HexagonNode,
-               hexagon.name == hexagonName,
+        if let hexagon = childNode(withName: hexagonName) as? HexagonNode,
                let pieceNode = hexagon.children.first as? SKSpriteNode {
                 return pieceNode
             }
+            return nil
+        }
+    
+    func findKingPosition(for color: String) -> String? {
+        print("\n")
+        print("Current King search:", color)
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.type == "king" && piece.color == color {
+                    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+                    return "\(columns[colIndex])\(rowIndex + 1)"
+                }
+            }
         }
         return nil
+    }
+    
+    func generateAllOpponentMoves(for color: String) -> [String] {
+        var opponentMoves: [String] = []
+        
+        // Define the columns of your board
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
+        // Determine the opponent's color
+        let opponentColor = color == "white" ? "black" : "white"
+        //print("Generating moves for opponent color:", opponentColor)
+        
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == opponentColor {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    //print("Checking piece at \(currentPosition): \(piece.type) \(piece.color)")
+                    
+                    // Directly call validMovesForPiece with the piece's details
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
+                    //print("Valid moves for \(piece.type) at \(currentPosition):", validMoves)
+                    
+                    opponentMoves.append(contentsOf: validMoves)
+                }
+            }
+        }
+        
+        //print("Generated opponent moves:", opponentMoves)
+        return opponentMoves
+    }
+    
+    func isKingInCheck(for color: String) -> Bool {
+        guard let kingPosition = findKingPosition(for: color) else {
+            print("\(color.capitalized) king not found!")
+            return false
+        }
+        
+        let opponentMoves = generateAllOpponentMoves(for: color)
+        
+        //print("CURRENT KING POSITION:", kingPosition)
+        //print("ALL POSSIBLE ENEMY MOVES:", opponentMoves)
+        
+        return opponentMoves.contains(kingPosition)
     }
     
     func resetEnPassant(for color: String) {
@@ -667,7 +727,7 @@ class HexagonNode: SKShapeNode {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func addPieceImage(named imageName: String, identifier: String, boardIsRotated: Bool) {
+    func addPieceImage(named imageName: String, identifier: String, isBoardRotated: Bool) {
         let texture = SKTexture(imageNamed: imageName)
         let pieceNode = SKSpriteNode(texture: texture)
         pieceNode.name = identifier
@@ -678,7 +738,7 @@ class HexagonNode: SKShapeNode {
         pieceNode.position = CGPoint(x: 0, y: 0)
         pieceNode.zPosition = 2
         
-        if boardIsRotated {
+        if isBoardRotated {
             pieceNode.zRotation = .pi
         }
         self.addChild(pieceNode)
