@@ -40,7 +40,7 @@ struct MainMenuView: View {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
                                     Text("Random")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
@@ -50,7 +50,7 @@ struct MainMenuView: View {
                                 
                                 NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
                                     Text("vs Friend")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)

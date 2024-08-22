@@ -85,6 +85,14 @@ struct GameState: Codable {
             board[col][row] = piece
         }
     }
+    
+    func copy() -> GameState {
+        var newGameState = GameState()
+        newGameState.currentPlayer = self.currentPlayer
+        newGameState.gameStatus = self.gameStatus
+        newGameState.board = self.board.map { $0.map { $0 } }
+        return newGameState
+    }
 }
 
 //we can kind of ignore these two functions for now, might modify later

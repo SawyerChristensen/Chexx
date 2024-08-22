@@ -28,6 +28,8 @@ class GameScene: SKScene {
     var validMoves: [String] = []
     var fiftyMoveRule = 0 // Still need to implement
     
+    var statusTextUpdater: ((String) -> Void)?
+    
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
@@ -322,7 +324,7 @@ class GameScene: SKScene {
             resetPiece(currentSelectedPiece)
             selectedPiece = nil
             originalHexagonName = nil
-            clearHighlights()
+            clearValidMoveHighlights()
             validMoves.removeAll()
         }
     }
@@ -375,7 +377,7 @@ class GameScene: SKScene {
             selectedPiece.setScale(1.0)
             self.selectedPiece = nil
             originalHexagonName = nil
-            clearHighlights()
+            clearValidMoveHighlights()
         }
     }
     
@@ -389,7 +391,7 @@ class GameScene: SKScene {
                 glowOverlay.strokeColor = UIColor.yellow
                 glowOverlay.lineWidth = 4
                 glowOverlay.zPosition = 1
-                glowOverlay.name = "glowOverlay"
+                glowOverlay.name = "validMovesOverlay"
                 
                 hexagon.addChild(glowOverlay)
                 
@@ -401,13 +403,43 @@ class GameScene: SKScene {
             }
         }
     }
+    
+    func highlightCheckingPiece(at position: String) {
+        if let hexagon = childNode(withName: position) as? HexagonNode {
+            let glowOverlay = SKShapeNode(path: hexagon.path!)
+            glowOverlay.fillColor = UIColor.red.withAlphaComponent(0.3)
+            glowOverlay.strokeColor = UIColor.red
+            glowOverlay.lineWidth = 4
+            glowOverlay.zPosition = 1
+            glowOverlay.name = "checkOverlay" //same as yellow highlights! might cause bugs!
+            
+            hexagon.addChild(glowOverlay)
+            
+            let fadeOut = SKAction.fadeAlpha(to: 0.2, duration: 0.8)
+            let fadeIn = SKAction.fadeAlpha(to: 0.8, duration: 0.8)
+            let pulse = SKAction.sequence([fadeOut, fadeIn])
+            let repeatPulse = SKAction.repeatForever(pulse)
+            glowOverlay.run(repeatPulse)
+            
+            statusTextUpdater?("Check!")
+        }
+    }
 
-    func clearHighlights() {
+    func clearValidMoveHighlights() {
         for node in children {
             if let hexagon = node as? HexagonNode {
-                hexagon.childNode(withName: "glowOverlay")?.removeFromParent() // remove the glowing overlay if it exists
+                hexagon.childNode(withName: "validMovesOverlay")?.removeFromParent()
             }
         }
+    }
+    
+    func clearCheckHighlights() {
+        for node in children {
+            if let hexagon = node as? HexagonNode {
+                hexagon.childNode(withName: "checkOverlay")?.removeFromParent()
+            }
+        }
+        statusTextUpdater?("")
     }
 
     func findNearestHexagon(to position: CGPoint) -> HexagonNode? {
@@ -537,7 +569,7 @@ class GameScene: SKScene {
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         if isKingInCheck(for: opponentColor) {
-            print("Check! for...", opponentColor)
+            print("\(opponentColor)'s king is in check!")
             // Additional logic to handle check... NEED TO IMPLEMENT
         }
         
@@ -587,8 +619,7 @@ class GameScene: SKScene {
         }
     
     func findKingPosition(for color: String) -> String? {
-        print("\n")
-        print("Current King search:", color)
+        //print("Current King search:", color)
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece, piece.type == "king" && piece.color == color {
@@ -600,33 +631,25 @@ class GameScene: SKScene {
         return nil
     }
     
-    func generateAllOpponentMoves(for color: String) -> [String] {
-        var opponentMoves: [String] = []
+    func findCheckingPieces(kingPosition: String, opponentColor: String) -> [String] {
+        var checkingPieces: [String] = []
         
-        // Define the columns of your board
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        
-        // Determine the opponent's color
-        let opponentColor = color == "white" ? "black" : "white"
-        //print("Generating moves for opponent color:", opponentColor)
         
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece, piece.color == opponentColor {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    //print("Checking piece at \(currentPosition): \(piece.type) \(piece.color)")
-                    
-                    // Directly call validMovesForPiece with the piece's details
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
-                    //print("Valid moves for \(piece.type) at \(currentPosition):", validMoves)
                     
-                    opponentMoves.append(contentsOf: validMoves)
+                    if validMoves.contains(kingPosition) {
+                        checkingPieces.append(currentPosition)
+                    }
                 }
             }
         }
         
-        //print("Generated opponent moves:", opponentMoves)
-        return opponentMoves
+        return checkingPieces
     }
     
     func isKingInCheck(for color: String) -> Bool {
@@ -634,13 +657,18 @@ class GameScene: SKScene {
             print("\(color.capitalized) king not found!")
             return false
         }
+        let opponentColor = color == "white" ? "black" : "white"
         
-        let opponentMoves = generateAllOpponentMoves(for: color)
-        
-        //print("CURRENT KING POSITION:", kingPosition)
-        //print("ALL POSSIBLE ENEMY MOVES:", opponentMoves)
-        
-        return opponentMoves.contains(kingPosition)
+        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, opponentColor: opponentColor)
+            if !checkingPieces.isEmpty {
+                // Highlight the pieces that are checking the king
+                for position in checkingPieces {
+                    highlightCheckingPiece(at: position)
+                }
+                return true
+            }
+        clearCheckHighlights()
+        return false
     }
     
     func resetEnPassant(for color: String) {

@@ -50,3 +50,4 @@ the proper attribution:
 
 
 Future updates: refactor touchDown and TouchUP in GameScene
+refactor is king in check function to use a global variable instead of searching for it every single time
