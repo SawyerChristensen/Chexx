@@ -26,6 +26,8 @@ settings for color scheme? (beige, grayscale, black/white/red, other?)
 
 -add stalemate checking/ending
 
+-pawn does not capture difrectly in front of it, if there is a peice in front of a pawn make the move up one move invalid (modify in pieceRules)
+
 
 
 UNDO FOR PRODUCTION:

@@ -463,6 +463,9 @@ class GameScene: SKScene {
     }
     
     func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) { //still need to implement game status such as "ongoing" or "ended"
+        
+        clearCheckHighlights() //this should also clear any status messages
+        
         guard let hexagonName = hexagonName else {
             print("Hexagon name is nil")
             return
@@ -521,7 +524,7 @@ class GameScene: SKScene {
             if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex - 1] = nil //also have to update the board state!
+                    gameState.board[colIndex][rowIndex - 1] = nil 
                     fiftyMoveRule = 0
                 }
             }
@@ -549,6 +552,7 @@ class GameScene: SKScene {
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
     func finalizeMove(_ pieceNode: SKSpriteNode, _ type: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int) {
+        
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
@@ -561,21 +565,28 @@ class GameScene: SKScene {
         
         let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
-
+        
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
+        let opponentKingPosition = findKingPosition(for: opponentColor)!
+        let checkingPieces = findCheckingPieces(kingPosition: opponentKingPosition, color: gameState.currentPlayer)
+        
+        if checkingPieces != [] {
+            print("\(opponentColor)'s king is in check!")
+            for position in checkingPieces {
+                highlightCheckingPiece(at: position)
+            }
+        }
+        
         if isPassAndPlay {
             rotateBoard()
             rotateAllPieces()
         }
         
-        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
-        if isKingInCheck(for: opponentColor) {
-            print("\(opponentColor)'s king is in check!")
-            // Additional logic to handle check... NEED TO IMPLEMENT
-        }
-        
         fiftyMoveRule += 1
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
+        
+        print("\n")
     }
     
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
@@ -619,31 +630,31 @@ class GameScene: SKScene {
         }
     
     func findKingPosition(for color: String) -> String? {
-        //print("Current King search:", color)
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.type == "king" && piece.color == color {
-                    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-                    return "\(columns[colIndex])\(rowIndex + 1)"
-                }
-            }
+        let kingPosition: String
+        
+        if color == "white" {
+            kingPosition = gameState.whiteKingPosition
+        } else {
+            kingPosition = gameState.blackKingPosition
         }
-        return nil
+        
+        return kingPosition
     }
     
-    func findCheckingPieces(kingPosition: String, opponentColor: String) -> [String] {
+    func findCheckingPieces(kingPosition: String, color: String) -> [String] {
         var checkingPieces: [String] = []
         
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == opponentColor {
+                if let piece = piece, piece.color == color {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
                     
                     if validMoves.contains(kingPosition) {
                         checkingPieces.append(currentPosition)
+                        //highlightCheckingPiece(at: currentPosition)
                     }
                 }
             }
@@ -652,6 +663,7 @@ class GameScene: SKScene {
         return checkingPieces
     }
     
+    //this function is not what it says it is, can be split up. there is a duplicate function with different funcitonality in piecerules
     func isKingInCheck(for color: String) -> Bool {
         guard let kingPosition = findKingPosition(for: color) else {
             print("\(color.capitalized) king not found!")
@@ -659,12 +671,9 @@ class GameScene: SKScene {
         }
         let opponentColor = color == "white" ? "black" : "white"
         
-        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, opponentColor: opponentColor)
+        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
             if !checkingPieces.isEmpty {
                 // Highlight the pieces that are checking the king
-                for position in checkingPieces {
-                    highlightCheckingPiece(at: position)
-                }
                 return true
             }
         clearCheckHighlights()

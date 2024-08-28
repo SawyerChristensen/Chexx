@@ -33,24 +33,34 @@ func boardToHex(_ positions: [(Int, Int)]) -> [String] {
     return algebraicPositions
 }
 
-func validMovesForPiece(at position: String, color: String, type: String, in gameState: GameState) -> [String] {
+func validMovesForPiece(at position: String, color: String, type: String, in gameState: GameState, skipKingCheck: Bool = false) -> [String] {
+    var possibleMoves: [String] = []
+
     switch type {
     case "pawn":
-        return validMovesForPawn(color, at: position, in: gameState)
+        possibleMoves = validMovesForPawn(color, at: position, in: gameState)
     case "rook":
-        return validMovesForRook(color, at: position, in: gameState)
+        possibleMoves = validMovesForRook(color, at: position, in: gameState)
     case "bishop":
-        return validMovesForBishop(color, at: position, in: gameState)
+        possibleMoves = validMovesForBishop(color, at: position, in: gameState)
     case "queen":
         let rookMoves = validMovesForRook(color, at: position, in: gameState)
         let bishopMoves = validMovesForBishop(color, at: position, in: gameState)
-        return Array(Set(rookMoves + bishopMoves))
+        possibleMoves = Array(Set(rookMoves + bishopMoves))
     case "king":
-        return validMovesForKing(color, at: position, in: gameState)
+        possibleMoves = validMovesForKing(color, at: position, in: gameState)
     case "knight":
-        return validMovesForKnight(color, at: position, in: gameState)
+        possibleMoves = validMovesForKnight(color, at: position, in: gameState)
     default:
-        return []
+        possibleMoves = []
+    }
+
+    // Filter out any moves that would expose the king to check
+    if skipKingCheck {
+        //print("Skipped king check...", possibleMoves, "for", color, type, "at", position)
+        return possibleMoves
+    } else {
+        return filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: gameState)
     }
 }
 
@@ -1107,4 +1117,53 @@ private func validMovesForKnight(_ color: String, at position: String, in gameSt
     }
 
     return boardToHex(validBoardMoves)
+}
+
+private func filterMovesThatExposeKing(_ moves: [String], for color: String, at position: String, in gameState: GameState) -> [String] {
+    //print("moves", moves, "for", color, "position", position)
+    return moves.filter { move in
+        //print("move:", move)
+        // Create a copy of the game state
+        var tempGameState = gameState.copy() //note to self: just move this back into gamescene? its fuckig up the king memory somehow
+        
+        // Simulate the move in the copied game state
+        tempGameState.movePiece(from: position, to: move)
+        
+        // Check if the king would be in check after this move
+        return !isKingInCheck(for: color, in: tempGameState)
+    }
+    
+    func isKingInCheck(for color: String, in currentGameState: GameState) -> Bool {
+        let kingPosition: String
+        
+        if color == "white" {
+            kingPosition = currentGameState.whiteKingPosition
+        } else {
+            kingPosition = currentGameState.blackKingPosition
+        }
+        //print(kingPosition)
+        
+        //print("generating all opponent moves...")
+        let opponentColor = color == "white" ? "black" : "white"
+        let opponentMoves = generateAllMoves(for: opponentColor, in: currentGameState)
+        
+        return opponentMoves.contains(kingPosition)
+    }
+    
+    func generateAllMoves(for color: String, in gameState: GameState) -> [String] {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        var allMoves: [String] = []
+
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState, skipKingCheck: true)
+                    allMoves.append(contentsOf: validMoves)
+                }
+            }
+        }
+
+        return allMoves
+    }
 }

@@ -5,7 +5,7 @@
 //  Created by Sawyer Christensen on 6/29/24.
 //
 
-import Foundation
+import SpriteKit
 
 struct Piece: Codable {
     var color: String // "white" or "black"
@@ -18,6 +18,9 @@ struct GameState: Codable {
     var currentPlayer: String // "white" or "black"
     var gameStatus: String // "ongoing" or "ended"
     var board: [[Piece?]] // 2D array of optional pieces
+    
+    var whiteKingPosition: String
+    var blackKingPosition: String
     
     init() {
         // Initialize the board with nils (empty positions)
@@ -36,12 +39,46 @@ struct GameState: Codable {
         // Set initial game metadata
         currentPlayer = "white"
         gameStatus = "ongoing"
+        whiteKingPosition = "g1"
+        blackKingPosition = "g10"
         
         // Set initial pieces on the board
         setInitialPiecePositions()
     }
     
     mutating func setInitialPiecePositions() {
+        let initialPositions: [((Int, Int), Piece)] = [
+            ((6, 9), Piece(color: "black", type: "king")),
+            ((5, 0), Piece(color: "white", type: "rook")),
+            ((7, 0), Piece(color: "white", type: "rook")),
+            ((6, 0), Piece(color: "white", type: "king")),
+            ((3, 2), Piece(color: "white", type: "rook")),
+            ((4, 3), Piece(color: "white", type: "rook")),
+            ((5, 4), Piece(color: "white", type: "rook")),
+            /*((6, 3), Piece(color: "white", type: "pawn")),
+            ((7, 2), Piece(color: "white", type: "pawn")),
+            ((8, 1), Piece(color: "white", type: "pawn")),
+            ((9, 0), Piece(color: "white", type: "pawn")),
+            ((2, 7), Piece(color: "black", type: "rook")),
+            ((8, 7), Piece(color: "black", type: "rook")),
+            ((3, 8), Piece(color: "black", type: "knight")),
+            ((4, 9), Piece(color: "black", type: "queen")),
+            ((5, 10), Piece(color: "black", type: "bishop")),
+            ((5, 9), Piece(color: "black", type: "bishop")),
+            ((5, 8), Piece(color: "black", type: "bishop")),
+            ((6, 9), Piece(color: "black", type: "king")),
+            ((7, 8), Piece(color: "black", type: "knight")),
+            ((2, 0), Piece(color: "white", type: "rook")),
+            ((3, 0), Piece(color: "white", type: "knight")),
+            ((4, 0), Piece(color: "white", type: "queen")),
+            ((5, 0), Piece(color: "white", type: "bishop")),
+            ((5, 1), Piece(color: "white", type: "bishop")),
+            ((5, 2), Piece(color: "white", type: "bishop")),
+            ((6, 0), Piece(color: "white", type: "king")),
+            ((7, 0), Piece(color: "white", type: "knight")),
+            ((8, 0), Piece(color: "white", type: "rook"))*/
+        ]
+        /*
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
             ((2, 6), Piece(color: "black", type: "pawn")),
@@ -79,7 +116,7 @@ struct GameState: Codable {
             ((6, 0), Piece(color: "white", type: "king")),
             ((7, 0), Piece(color: "white", type: "knight")),
             ((8, 0), Piece(color: "white", type: "rook"))
-        ]
+        ]*/
         
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
@@ -87,11 +124,59 @@ struct GameState: Codable {
     }
     
     func copy() -> GameState {
-        var newGameState = GameState()
-        newGameState.currentPlayer = self.currentPlayer
-        newGameState.gameStatus = self.gameStatus
-        newGameState.board = self.board.map { $0.map { $0 } }
-        return newGameState
+        // Create a deep copy of the board
+        let copiedBoard = board.map { column in
+            column.map { $0 }
+        }
+        
+        // Return a new GameState with copied properties
+        return GameState(
+            currentPlayer: currentPlayer,
+            gameStatus: gameStatus,
+            board: copiedBoard,
+            whiteKingPosition: whiteKingPosition,
+            blackKingPosition: blackKingPosition
+        )
+    }
+    
+    // New initializer to use in the copy method
+    init(currentPlayer: String, gameStatus: String, board: [[Piece?]], whiteKingPosition: String, blackKingPosition: String) {
+        self.currentPlayer = currentPlayer
+        self.gameStatus = gameStatus
+        self.board = board
+        self.whiteKingPosition = whiteKingPosition
+        self.blackKingPosition = blackKingPosition
+    }
+
+    mutating func movePiece(from: String, to: String) {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
+        // Convert from and to positions to board indices
+        guard let fromColumn = columns.firstIndex(of: String(from.first!)),
+              let fromRow = Int(from.dropFirst()),
+              let toColumn = columns.firstIndex(of: String(to.first!)),
+              let toRow = Int(to.dropFirst()) else {
+            return
+        }
+
+        // Adjust for 0-based indexing
+        let fromIndex = (fromColumn, fromRow - 1)
+        let toIndex = (toColumn, toRow - 1)
+        
+        // Move the piece on the board
+        let pieceToMove = board[fromIndex.0][fromIndex.1]
+        board[fromIndex.0][fromIndex.1] = nil
+        board[toIndex.0][toIndex.1] = pieceToMove
+        
+        // Update king position if necessary
+        if pieceToMove?.type == "king" {
+            //print("updating king position from", from, "to", to)
+            if pieceToMove?.color == "white" {
+                whiteKingPosition = "\(columns[toColumn])\(toRow)"
+            } else if pieceToMove?.color == "black" {
+                blackKingPosition = "\(columns[toColumn])\(toRow)"
+            }
+        }
     }
 }
 
@@ -131,49 +216,3 @@ func getDocumentsDirectory() -> URL {
     let paths = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
     return paths[0]
 }
-
-
-
-
-/*
-func initialGameState() -> GameState {//need to change how we initialize the game state. look above under the struct for my notes on how to do this
-    return GameState(pieces: [
-        "b7": "black_pawn",
-        "c7": "black_pawn",
-        "d7": "black_pawn",
-        "e7": "black_pawn",
-        "f7": "black_pawn",
-        "g7": "black_pawn",
-        "h7": "black_pawn",
-        "i7": "black_pawn",
-        "k7": "black_pawn",
-        "b1": "white_pawn",
-        "c2": "white_pawn",
-        "d3": "white_pawn",
-        "e4": "white_pawn",
-        "f5": "white_pawn",
-        "g4": "white_pawn",
-        "h3": "white_pawn",
-        "i2": "white_pawn",
-        "k1": "white_pawn",
-        "c8": "black_rook",
-        "i8": "black_rook",
-        "d9": "black_knight",
-        "e10": "black_queen",
-        "f11": "black_bishop",
-        "f10": "black_bishop",
-        "f9": "black_bishop",
-        "g10": "black_king",
-        "h9": "black_knight",
-        "c1": "white_rook",
-        "d1": "white_knight",
-        "e1": "white_queen",
-        "f1": "white_bishop",
-        "f2": "white_bishop",
-        "f3": "white_bishop",
-        "g1": "white_king",
-        "h1": "white_knight",
-        "i1": "white_rook",
-    ])
-}
-*/
