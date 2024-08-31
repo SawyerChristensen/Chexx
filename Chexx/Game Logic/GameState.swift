@@ -16,7 +16,7 @@ struct Piece: Codable {
 
 struct GameState: Codable {
     var currentPlayer: String // "white" or "black"
-    var gameStatus: String // "ongoing" or "ended"
+    var gameStatus: String // "ongoing" or "ended" //can probably change this into a bool "isOngoing" later
     var board: [[Piece?]] // 2D array of optional pieces
     
     var whiteKingPosition: String

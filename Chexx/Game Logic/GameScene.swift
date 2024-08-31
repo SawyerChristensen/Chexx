@@ -567,13 +567,17 @@ class GameScene: SKScene {
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
-        let opponentKingPosition = findKingPosition(for: opponentColor)!
-        let checkingPieces = findCheckingPieces(kingPosition: opponentKingPosition, color: gameState.currentPlayer)
         
-        if checkingPieces != [] {
-            print("\(opponentColor)'s king is in check!")
-            for position in checkingPieces {
-                highlightCheckingPiece(at: position)
+        fiftyMoveRule += 1
+        gameState.currentPlayer = opponentColor
+        resetEnPassant(for: gameState.currentPlayer)
+        
+        if isCheck(for: gameState.currentPlayer) {
+            if isCheckmate(for: gameState.currentPlayer) {
+                print("Checkmate! Game Over!", opponentColor, "wins!")
+                statusTextUpdater?("Checkmate!")
+                gameState.gameStatus = "ended"
+                return
             }
         }
         
@@ -581,10 +585,6 @@ class GameScene: SKScene {
             rotateBoard()
             rotateAllPieces()
         }
-        
-        fiftyMoveRule += 1
-        gameState.currentPlayer = opponentColor
-        resetEnPassant(for: gameState.currentPlayer)
         
         print("\n")
     }
@@ -664,7 +664,7 @@ class GameScene: SKScene {
     }
     
     //this function is not what it says it is, can be split up. there is a duplicate function with different funcitonality in piecerules
-    func isKingInCheck(for color: String) -> Bool {
+    func isCheck(for color: String) -> Bool {
         guard let kingPosition = findKingPosition(for: color) else {
             print("\(color.capitalized) king not found!")
             return false
@@ -674,10 +674,37 @@ class GameScene: SKScene {
         let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
             if !checkingPieces.isEmpty {
                 // Highlight the pieces that are checking the king
-                return true
+                for position in checkingPieces {
+                    highlightCheckingPiece(at: position)
+                }
+                return true //king is in check!
             }
         clearCheckHighlights()
         return false
+    }
+    
+    func isCheckmate(for color: String) -> Bool {
+        // Now check if the opponent has any legal moves
+        let opponentColor = color == "white" ? "black" : "white"
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        
+        // Loop through all opponent pieces
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
+                    
+                    // If any piece has a legal move, its either 1) the king moving out of check 2) a piece blocking check or 3) a piece taking the attacker getting the king out of check. if any can be done, its not checkmate
+                    if !validMoves.isEmpty {
+                        return false
+                    }
+                }
+            }
+        }
+        
+        // If no legal moves found, it's checkmate!
+        return true
     }
     
     func resetEnPassant(for color: String) {

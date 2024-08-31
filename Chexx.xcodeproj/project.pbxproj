@@ -46,6 +46,40 @@
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
 		BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA512C462765009113B4 /* BackgroundView.swift */; };
 		BE94E0EB2C692E3A005DCAD3 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE94E0EA2C692E3A005DCAD3 /* SettingsViewController.swift */; };
+		BE94E1112C82F02E005DCAD3 /* notify.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */; };
+		BE94E1122C82F02E005DCAD3 /* move-opponent.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F02C82F02C005DCAD3 /* move-opponent.mp3 */; };
+		BE94E1132C82F02E005DCAD3 /* illegal.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F12C82F02D005DCAD3 /* illegal.mp3 */; };
+		BE94E1142C82F02E005DCAD3 /* click.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F22C82F02D005DCAD3 /* click.mp3 */; };
+		BE94E1152C82F02E005DCAD3 /* event-start.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F32C82F02D005DCAD3 /* event-start.mp3 */; };
+		BE94E1162C82F02E005DCAD3 /* game-lose-long.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F42C82F02D005DCAD3 /* game-lose-long.mp3 */; };
+		BE94E1172C82F02E005DCAD3 /* game-win-long.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F52C82F02D005DCAD3 /* game-win-long.mp3 */; };
+		BE94E1182C82F02E005DCAD3 /* promote.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F62C82F02D005DCAD3 /* promote.mp3 */; };
+		BE94E1192C82F02E005DCAD3 /* scatter.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F72C82F02D005DCAD3 /* scatter.mp3 */; };
+		BE94E11A2C82F02E005DCAD3 /* puzzle-correct-2.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F82C82F02D005DCAD3 /* puzzle-correct-2.mp3 */; };
+		BE94E11B2C82F02E005DCAD3 /* correct.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0F92C82F02D005DCAD3 /* correct.mp3 */; };
+		BE94E11C2C82F02E005DCAD3 /* lesson-pass.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FA2C82F02D005DCAD3 /* lesson-pass.mp3 */; };
+		BE94E11D2C82F02E005DCAD3 /* lesson-fail.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FB2C82F02D005DCAD3 /* lesson-fail.mp3 */; };
+		BE94E11E2C82F02E005DCAD3 /* game-end.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FC2C82F02D005DCAD3 /* game-end.mp3 */; };
+		BE94E11F2C82F02E005DCAD3 /* incorrect.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FD2C82F02D005DCAD3 /* incorrect.mp3 */; };
+		BE94E1202C82F02E005DCAD3 /* achievement.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FE2C82F02D005DCAD3 /* achievement.mp3 */; };
+		BE94E1212C82F02E005DCAD3 /* drawoffer.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0FF2C82F02D005DCAD3 /* drawoffer.mp3 */; };
+		BE94E1222C82F02E005DCAD3 /* event-warning.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1002C82F02D005DCAD3 /* event-warning.mp3 */; };
+		BE94E1232C82F02E005DCAD3 /* puzzle-correct.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1012C82F02D005DCAD3 /* puzzle-correct.mp3 */; };
+		BE94E1242C82F02E005DCAD3 /* puzzle-wrong.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1022C82F02D005DCAD3 /* puzzle-wrong.mp3 */; };
+		BE94E1252C82F02E005DCAD3 /* game-start.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1032C82F02D005DCAD3 /* game-start.mp3 */; };
+		BE94E1262C82F02E005DCAD3 /* game-lose.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1042C82F02D005DCAD3 /* game-lose.mp3 */; };
+		BE94E1272C82F02E005DCAD3 /* move-check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1052C82F02D005DCAD3 /* move-check.mp3 */; };
+		BE94E1282C82F02E005DCAD3 /* game-win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1062C82F02D005DCAD3 /* game-win.mp3 */; };
+		BE94E1292C82F02E005DCAD3 /* castle.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1072C82F02D005DCAD3 /* castle.mp3 */; };
+		BE94E12A2C82F02E005DCAD3 /* event-end.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1082C82F02D005DCAD3 /* event-end.mp3 */; };
+		BE94E12B2C82F02E005DCAD3 /* decline.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1092C82F02D005DCAD3 /* decline.mp3 */; };
+		BE94E12C2C82F02E005DCAD3 /* capture.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10A2C82F02D005DCAD3 /* capture.mp3 */; };
+		BE94E12D2C82F02E005DCAD3 /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10B2C82F02D005DCAD3 /* notification.mp3 */; };
+		BE94E12E2C82F02E005DCAD3 /* premove.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10C2C82F02D005DCAD3 /* premove.mp3 */; };
+		BE94E12F2C82F02E005DCAD3 /* game-draw.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10D2C82F02D005DCAD3 /* game-draw.mp3 */; };
+		BE94E1302C82F02E005DCAD3 /* move-self.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */; };
+		BE94E1312C82F02E005DCAD3 /* shoutout.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */; };
+		BE94E1322C82F02E005DCAD3 /* tenseconds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
 		BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
@@ -93,6 +127,40 @@
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		BE76AA512C462765009113B4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		BE94E0EA2C692E3A005DCAD3 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notify.mp3; sourceTree = "<group>"; };
+		BE94E0F02C82F02C005DCAD3 /* move-opponent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "move-opponent.mp3"; sourceTree = "<group>"; };
+		BE94E0F12C82F02D005DCAD3 /* illegal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = illegal.mp3; sourceTree = "<group>"; };
+		BE94E0F22C82F02D005DCAD3 /* click.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = click.mp3; sourceTree = "<group>"; };
+		BE94E0F32C82F02D005DCAD3 /* event-start.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "event-start.mp3"; sourceTree = "<group>"; };
+		BE94E0F42C82F02D005DCAD3 /* game-lose-long.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-lose-long.mp3"; sourceTree = "<group>"; };
+		BE94E0F52C82F02D005DCAD3 /* game-win-long.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-win-long.mp3"; sourceTree = "<group>"; };
+		BE94E0F62C82F02D005DCAD3 /* promote.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = promote.mp3; sourceTree = "<group>"; };
+		BE94E0F72C82F02D005DCAD3 /* scatter.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = scatter.mp3; sourceTree = "<group>"; };
+		BE94E0F82C82F02D005DCAD3 /* puzzle-correct-2.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "puzzle-correct-2.mp3"; sourceTree = "<group>"; };
+		BE94E0F92C82F02D005DCAD3 /* correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = correct.mp3; sourceTree = "<group>"; };
+		BE94E0FA2C82F02D005DCAD3 /* lesson-pass.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "lesson-pass.mp3"; sourceTree = "<group>"; };
+		BE94E0FB2C82F02D005DCAD3 /* lesson-fail.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "lesson-fail.mp3"; sourceTree = "<group>"; };
+		BE94E0FC2C82F02D005DCAD3 /* game-end.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-end.mp3"; sourceTree = "<group>"; };
+		BE94E0FD2C82F02D005DCAD3 /* incorrect.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = incorrect.mp3; sourceTree = "<group>"; };
+		BE94E0FE2C82F02D005DCAD3 /* achievement.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = achievement.mp3; sourceTree = "<group>"; };
+		BE94E0FF2C82F02D005DCAD3 /* drawoffer.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = drawoffer.mp3; sourceTree = "<group>"; };
+		BE94E1002C82F02D005DCAD3 /* event-warning.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "event-warning.mp3"; sourceTree = "<group>"; };
+		BE94E1012C82F02D005DCAD3 /* puzzle-correct.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "puzzle-correct.mp3"; sourceTree = "<group>"; };
+		BE94E1022C82F02D005DCAD3 /* puzzle-wrong.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "puzzle-wrong.mp3"; sourceTree = "<group>"; };
+		BE94E1032C82F02D005DCAD3 /* game-start.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-start.mp3"; sourceTree = "<group>"; };
+		BE94E1042C82F02D005DCAD3 /* game-lose.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-lose.mp3"; sourceTree = "<group>"; };
+		BE94E1052C82F02D005DCAD3 /* move-check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "move-check.mp3"; sourceTree = "<group>"; };
+		BE94E1062C82F02D005DCAD3 /* game-win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-win.mp3"; sourceTree = "<group>"; };
+		BE94E1072C82F02D005DCAD3 /* castle.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = castle.mp3; sourceTree = "<group>"; };
+		BE94E1082C82F02D005DCAD3 /* event-end.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "event-end.mp3"; sourceTree = "<group>"; };
+		BE94E1092C82F02D005DCAD3 /* decline.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = decline.mp3; sourceTree = "<group>"; };
+		BE94E10A2C82F02D005DCAD3 /* capture.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = capture.mp3; sourceTree = "<group>"; };
+		BE94E10B2C82F02D005DCAD3 /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
+		BE94E10C2C82F02D005DCAD3 /* premove.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = premove.mp3; sourceTree = "<group>"; };
+		BE94E10D2C82F02D005DCAD3 /* game-draw.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-draw.mp3"; sourceTree = "<group>"; };
+		BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "move-self.mp3"; sourceTree = "<group>"; };
+		BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shoutout.mp3; sourceTree = "<group>"; };
+		BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tenseconds.mp3; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
 		BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViewController.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -236,6 +304,40 @@
 		BE7EB8C32C4778F700D66EB0 /* Sound Effects */ = {
 			isa = PBXGroup;
 			children = (
+				BE94E0FE2C82F02D005DCAD3 /* achievement.mp3 */,
+				BE94E10A2C82F02D005DCAD3 /* capture.mp3 */,
+				BE94E1072C82F02D005DCAD3 /* castle.mp3 */,
+				BE94E0F22C82F02D005DCAD3 /* click.mp3 */,
+				BE94E0F92C82F02D005DCAD3 /* correct.mp3 */,
+				BE94E1092C82F02D005DCAD3 /* decline.mp3 */,
+				BE94E0FF2C82F02D005DCAD3 /* drawoffer.mp3 */,
+				BE94E1082C82F02D005DCAD3 /* event-end.mp3 */,
+				BE94E0F32C82F02D005DCAD3 /* event-start.mp3 */,
+				BE94E1002C82F02D005DCAD3 /* event-warning.mp3 */,
+				BE94E10D2C82F02D005DCAD3 /* game-draw.mp3 */,
+				BE94E0FC2C82F02D005DCAD3 /* game-end.mp3 */,
+				BE94E0F42C82F02D005DCAD3 /* game-lose-long.mp3 */,
+				BE94E1042C82F02D005DCAD3 /* game-lose.mp3 */,
+				BE94E1032C82F02D005DCAD3 /* game-start.mp3 */,
+				BE94E0F52C82F02D005DCAD3 /* game-win-long.mp3 */,
+				BE94E1062C82F02D005DCAD3 /* game-win.mp3 */,
+				BE94E0F12C82F02D005DCAD3 /* illegal.mp3 */,
+				BE94E0FD2C82F02D005DCAD3 /* incorrect.mp3 */,
+				BE94E0FB2C82F02D005DCAD3 /* lesson-fail.mp3 */,
+				BE94E0FA2C82F02D005DCAD3 /* lesson-pass.mp3 */,
+				BE94E1052C82F02D005DCAD3 /* move-check.mp3 */,
+				BE94E0F02C82F02C005DCAD3 /* move-opponent.mp3 */,
+				BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */,
+				BE94E10B2C82F02D005DCAD3 /* notification.mp3 */,
+				BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */,
+				BE94E10C2C82F02D005DCAD3 /* premove.mp3 */,
+				BE94E0F62C82F02D005DCAD3 /* promote.mp3 */,
+				BE94E0F82C82F02D005DCAD3 /* puzzle-correct-2.mp3 */,
+				BE94E1012C82F02D005DCAD3 /* puzzle-correct.mp3 */,
+				BE94E1022C82F02D005DCAD3 /* puzzle-wrong.mp3 */,
+				BE94E0F72C82F02D005DCAD3 /* scatter.mp3 */,
+				BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */,
+				BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */,
 			);
 			path = "Sound Effects";
 			sourceTree = "<group>";
@@ -306,19 +408,39 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BE94E11F2C82F02E005DCAD3 /* incorrect.mp3 in Resources */,
 				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
+				BE94E1282C82F02E005DCAD3 /* game-win.mp3 in Resources */,
+				BE94E1112C82F02E005DCAD3 /* notify.mp3 in Resources */,
 				BE76A9F92C2A3EDA009113B4 /* wn.png in Resources */,
+				BE94E1132C82F02E005DCAD3 /* illegal.mp3 in Resources */,
+				BE94E1212C82F02E005DCAD3 /* drawoffer.mp3 in Resources */,
+				BE94E12D2C82F02E005DCAD3 /* notification.mp3 in Resources */,
 				BE76A9EF2C2A3EDA009113B4 /* white_queen.png in Resources */,
+				BE94E1312C82F02E005DCAD3 /* shoutout.mp3 in Resources */,
 				BE76A9EB2C2A3EDA009113B4 /* white_bishop.png in Resources */,
 				BE76A9EC2C2A3EDA009113B4 /* white_king.png in Resources */,
+				BE94E1232C82F02E005DCAD3 /* puzzle-correct.mp3 in Resources */,
+				BE94E12E2C82F02E005DCAD3 /* premove.mp3 in Resources */,
 				BE76A9E82C2A3EDA009113B4 /* black_pawn.png in Resources */,
+				BE94E11D2C82F02E005DCAD3 /* lesson-fail.mp3 in Resources */,
+				BE94E1162C82F02E005DCAD3 /* game-lose-long.mp3 in Resources */,
 				BE76A9F62C2A3EDA009113B4 /* br.png in Resources */,
 				BE76A9F02C2A3EDA009113B4 /* white_rook.png in Resources */,
+				BE94E1262C82F02E005DCAD3 /* game-lose.mp3 in Resources */,
+				BE94E1182C82F02E005DCAD3 /* promote.mp3 in Resources */,
 				BE76A9F42C2A3EDA009113B4 /* bp.png in Resources */,
 				BE76A9F32C2A3EDA009113B4 /* bn.png in Resources */,
+				BE94E1292C82F02E005DCAD3 /* castle.mp3 in Resources */,
+				BE94E12B2C82F02E005DCAD3 /* decline.mp3 in Resources */,
 				BE76A9FB2C2A3EDA009113B4 /* wq.png in Resources */,
+				BE94E1302C82F02E005DCAD3 /* move-self.mp3 in Resources */,
+				BE94E1222C82F02E005DCAD3 /* event-warning.mp3 in Resources */,
 				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
+				BE94E1152C82F02E005DCAD3 /* event-start.mp3 in Resources */,
 				BE76A9E92C2A3EDA009113B4 /* black_queen.png in Resources */,
+				BE94E1172C82F02E005DCAD3 /* game-win-long.mp3 in Resources */,
+				BE94E1122C82F02E005DCAD3 /* move-opponent.mp3 in Resources */,
 				BE76A9F82C2A3EDA009113B4 /* wk.png in Resources */,
 				BE76A9F72C2A3EDA009113B4 /* wb.png in Resources */,
 				BE76A9F12C2A3EDA009113B4 /* bb.png in Resources */,
@@ -326,13 +448,27 @@
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
 				BE76A9E62C2A3EDA009113B4 /* black_king.png in Resources */,
 				BE76A9F52C2A3EDA009113B4 /* bq.png in Resources */,
+				BE94E11E2C82F02E005DCAD3 /* game-end.mp3 in Resources */,
 				BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */,
+				BE94E1142C82F02E005DCAD3 /* click.mp3 in Resources */,
 				BE76A9E72C2A3EDA009113B4 /* black_knight.png in Resources */,
+				BE94E1202C82F02E005DCAD3 /* achievement.mp3 in Resources */,
+				BE94E11A2C82F02E005DCAD3 /* puzzle-correct-2.mp3 in Resources */,
+				BE94E12C2C82F02E005DCAD3 /* capture.mp3 in Resources */,
 				BE76A9ED2C2A3EDA009113B4 /* white_knight.png in Resources */,
 				BE76A9EA2C2A3EDA009113B4 /* black_rook.png in Resources */,
+				BE94E11C2C82F02E005DCAD3 /* lesson-pass.mp3 in Resources */,
+				BE94E1272C82F02E005DCAD3 /* move-check.mp3 in Resources */,
+				BE94E12A2C82F02E005DCAD3 /* event-end.mp3 in Resources */,
 				BE76A9EE2C2A3EDA009113B4 /* white_pawn.png in Resources */,
+				BE94E1192C82F02E005DCAD3 /* scatter.mp3 in Resources */,
+				BE94E12F2C82F02E005DCAD3 /* game-draw.mp3 in Resources */,
+				BE94E11B2C82F02E005DCAD3 /* correct.mp3 in Resources */,
 				BE76A9FC2C2A3EDA009113B4 /* wr.png in Resources */,
+				BE94E1252C82F02E005DCAD3 /* game-start.mp3 in Resources */,
 				BE76A9F22C2A3EDA009113B4 /* bk.png in Resources */,
+				BE94E1242C82F02E005DCAD3 /* puzzle-wrong.mp3 in Resources */,
+				BE94E1322C82F02E005DCAD3 /* tenseconds.mp3 in Resources */,
 				BE76A9E52C2A3EDA009113B4 /* black_bishop.png in Resources */,
 				BE76A9C02C2A2603009113B4 /* Base in Resources */,
 			);

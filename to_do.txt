@@ -34,6 +34,8 @@ UNDO FOR PRODUCTION:
 reenable main music menu (mainmenuview)
 reenable player turns (gamescene)
 
+possibly get original sound effects not from chess.com to avoid getting bent over my saul goodman
+
 
 
 other notes:
@@ -50,6 +52,16 @@ the proper attribution:
 "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
 
 
-
 Future updates: refactor touchDown and TouchUP in GameScene
 refactor is king in check function to use a global variable instead of searching for it every single time
+
+RESOURCES:
+
+ways to update chess AI/incrase computational efficiency:
+https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm
+
+General Chess Programming Info:
+https://www.chessprogramming.org/Main_Page
+
+Glinski's Hexchess:
+https://en.wikipedia.org/wiki/Hexagonal_chess
