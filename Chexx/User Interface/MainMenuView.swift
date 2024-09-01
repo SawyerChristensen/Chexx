@@ -38,7 +38,7 @@ struct MainMenuView: View {
                         
                         if multiplayerOptions {
                             VStack {
-                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Random")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -48,7 +48,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("vs Friend")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -60,7 +60,7 @@ struct MainMenuView: View {
                             }
                         } else {
                             VStack {
-                                NavigationLink(destination: GameView().onAppear { audioManager.stop() }) {
+                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Tutorial")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -70,7 +70,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stop() }) {
+                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Single Player")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -80,7 +80,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stop() }) {
+                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Pass & Play")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -168,7 +168,7 @@ struct MainMenuView: View {
                 Spacer()
             }
             .onAppear {
-                audioManager.play()
+                audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
             }
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad

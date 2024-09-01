@@ -9,33 +9,49 @@ import AVFoundation
 import SwiftUI
 
 class AudioManager: ObservableObject {
-    var audioPlayer: AVAudioPlayer?
+    var backgroundMusicPlayer: AVAudioPlayer?
+    var soundEffectPlayer: AVAudioPlayer?
 
-    init() {
-        setupAudioPlayer()
-    }
-
-    private func setupAudioPlayer() {
-        guard let path = Bundle.main.path(forResource: "carmen-habanera", ofType: "mp3") else {
+    func playBackgroundMusic(fileName: String, fileType: String) {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else {
+            print("Background music file not found: \(fileName).\(fileType)")
             return
         }
-
         let url = URL(fileURLWithPath: path)
 
         do {
-            audioPlayer = try AVAudioPlayer(contentsOf: url)
-            audioPlayer?.numberOfLoops = -1 // Loop indefinitely
-            audioPlayer?.volume = 0.3
+            backgroundMusicPlayer = try AVAudioPlayer(contentsOf: url)
+            backgroundMusicPlayer?.numberOfLoops = -1 // Loop indefinitely
+            backgroundMusicPlayer?.volume = 0.3
+            backgroundMusicPlayer?.play()
         } catch {
-            print("Could not load file")
+            print("Could not load background music file: \(error)")
         }
     }
 
-    func play() {
-        audioPlayer?.play()
+    func stopBackgroundMusic() {
+        backgroundMusicPlayer?.stop()
     }
 
-    func stop() {
-        audioPlayer?.stop()
+    func playSoundEffect(fileName: String, fileType: String) {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else {
+            print("Sound effect file not found: \(fileName).\(fileType)")
+            return
+        }
+        let url = URL(fileURLWithPath: path)
+
+        do {
+            soundEffectPlayer = try AVAudioPlayer(contentsOf: url)
+            
+            if fileName == "piece_move"{
+                soundEffectPlayer?.volume = 0.5
+            }
+            else {
+                soundEffectPlayer?.volume = 0.05
+            }
+            soundEffectPlayer?.play()
+        } catch {
+            print("Could not play sound effect: \(error)")
+        }
     }
 }

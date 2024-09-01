@@ -77,9 +77,11 @@
 		BE94E12D2C82F02E005DCAD3 /* notification.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10B2C82F02D005DCAD3 /* notification.mp3 */; };
 		BE94E12E2C82F02E005DCAD3 /* premove.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10C2C82F02D005DCAD3 /* premove.mp3 */; };
 		BE94E12F2C82F02E005DCAD3 /* game-draw.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10D2C82F02D005DCAD3 /* game-draw.mp3 */; };
-		BE94E1302C82F02E005DCAD3 /* move-self.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */; };
+		BE94E1302C82F02E005DCAD3 /* piece_move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10E2C82F02D005DCAD3 /* piece_move.mp3 */; };
 		BE94E1312C82F02E005DCAD3 /* shoutout.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */; };
 		BE94E1322C82F02E005DCAD3 /* tenseconds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */; };
+		BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */; };
+		BE94E1372C82FE6A005DCAD3 /* alert_from_mgs.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
 		BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
@@ -158,9 +160,11 @@
 		BE94E10B2C82F02D005DCAD3 /* notification.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notification.mp3; sourceTree = "<group>"; };
 		BE94E10C2C82F02D005DCAD3 /* premove.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = premove.mp3; sourceTree = "<group>"; };
 		BE94E10D2C82F02D005DCAD3 /* game-draw.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "game-draw.mp3"; sourceTree = "<group>"; };
-		BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "move-self.mp3"; sourceTree = "<group>"; };
+		BE94E10E2C82F02D005DCAD3 /* piece_move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move.mp3; sourceTree = "<group>"; };
 		BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = shoutout.mp3; sourceTree = "<group>"; };
 		BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tenseconds.mp3; sourceTree = "<group>"; };
+		BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = worldssmallestviolin.mp3; sourceTree = "<group>"; };
+		BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alert_from_mgs.mp3; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
 		BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViewController.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
@@ -253,8 +257,9 @@
 			isa = PBXGroup;
 			children = (
 				BEB2FD852C66C08E008BCB26 /* AudioManager.swift */,
-				BE7EB8C32C4778F700D66EB0 /* Sound Effects */,
 				BE7EB8C22C4778DB00D66EB0 /* Background Music */,
+				BE94E1332C82F30B005DCAD3 /* Sound Effects */,
+				BE7EB8C32C4778F700D66EB0 /* Extra Sound Effects */,
 			);
 			path = Audio;
 			sourceTree = "<group>";
@@ -301,7 +306,7 @@
 			path = "Background Music";
 			sourceTree = "<group>";
 		};
-		BE7EB8C32C4778F700D66EB0 /* Sound Effects */ = {
+		BE7EB8C32C4778F700D66EB0 /* Extra Sound Effects */ = {
 			isa = PBXGroup;
 			children = (
 				BE94E0FE2C82F02D005DCAD3 /* achievement.mp3 */,
@@ -327,7 +332,6 @@
 				BE94E0FA2C82F02D005DCAD3 /* lesson-pass.mp3 */,
 				BE94E1052C82F02D005DCAD3 /* move-check.mp3 */,
 				BE94E0F02C82F02C005DCAD3 /* move-opponent.mp3 */,
-				BE94E10E2C82F02D005DCAD3 /* move-self.mp3 */,
 				BE94E10B2C82F02D005DCAD3 /* notification.mp3 */,
 				BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */,
 				BE94E10C2C82F02D005DCAD3 /* premove.mp3 */,
@@ -339,7 +343,7 @@
 				BE94E10F2C82F02D005DCAD3 /* shoutout.mp3 */,
 				BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */,
 			);
-			path = "Sound Effects";
+			path = "Extra Sound Effects";
 			sourceTree = "<group>";
 		};
 		BE94E0EC2C699D36005DCAD3 /* Deprecated */ = {
@@ -348,6 +352,16 @@
 				BE76A9B72C2A2602009113B4 /* GameViewController.swift */,
 			);
 			path = Deprecated;
+			sourceTree = "<group>";
+		};
+		BE94E1332C82F30B005DCAD3 /* Sound Effects */ = {
+			isa = PBXGroup;
+			children = (
+				BE94E10E2C82F02D005DCAD3 /* piece_move.mp3 */,
+				BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */,
+				BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */,
+			);
+			path = "Sound Effects";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -421,6 +435,7 @@
 				BE76A9EB2C2A3EDA009113B4 /* white_bishop.png in Resources */,
 				BE76A9EC2C2A3EDA009113B4 /* white_king.png in Resources */,
 				BE94E1232C82F02E005DCAD3 /* puzzle-correct.mp3 in Resources */,
+				BE94E1372C82FE6A005DCAD3 /* alert_from_mgs.mp3 in Resources */,
 				BE94E12E2C82F02E005DCAD3 /* premove.mp3 in Resources */,
 				BE76A9E82C2A3EDA009113B4 /* black_pawn.png in Resources */,
 				BE94E11D2C82F02E005DCAD3 /* lesson-fail.mp3 in Resources */,
@@ -434,7 +449,7 @@
 				BE94E1292C82F02E005DCAD3 /* castle.mp3 in Resources */,
 				BE94E12B2C82F02E005DCAD3 /* decline.mp3 in Resources */,
 				BE76A9FB2C2A3EDA009113B4 /* wq.png in Resources */,
-				BE94E1302C82F02E005DCAD3 /* move-self.mp3 in Resources */,
+				BE94E1302C82F02E005DCAD3 /* piece_move.mp3 in Resources */,
 				BE94E1222C82F02E005DCAD3 /* event-warning.mp3 in Resources */,
 				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
 				BE94E1152C82F02E005DCAD3 /* event-start.mp3 in Resources */,
@@ -447,6 +462,7 @@
 				BE76A9FA2C2A3EDA009113B4 /* wp.png in Resources */,
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
 				BE76A9E62C2A3EDA009113B4 /* black_king.png in Resources */,
+				BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */,
 				BE76A9F52C2A3EDA009113B4 /* bq.png in Resources */,
 				BE94E11E2C82F02E005DCAD3 /* game-end.mp3 in Resources */,
 				BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */,

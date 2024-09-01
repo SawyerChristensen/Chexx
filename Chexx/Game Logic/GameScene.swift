@@ -11,6 +11,7 @@ import SwiftUI
 
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
+    let audioManager = AudioManager()
     var isVsCPU: Bool = false       // To handle "vs CPU" mode
     var isPassAndPlay: Bool = false // To handle "Pass & Play" mode
     
@@ -504,7 +505,9 @@ class GameScene: SKScene {
             //print("It's not \(color)'s turn")
             return
         }
+        
         //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
+        //need to update king position!!!
 
         if type == "pawn" {
             fiftyMoveRule = 0
@@ -541,20 +544,35 @@ class GameScene: SKScene {
            (color == "black" && type == "pawn" && rowIndex == 0) {
             presentPromotionOptions { newType in
                 type = newType // Update the piece type to the chosen promotion type
-                self.finalizeMove(pieceNode, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+                self.finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
             }
             return
         }
 
         // Move logic for non-promotion case
-        finalizeMove(pieceNode, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+        finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
     }
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
-    func finalizeMove(_ pieceNode: SKSpriteNode, _ type: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int) {
+    func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int) {
         
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] //jesus christ columns is defined in like every single function
+        
+        //maybe use gamestate.movepiece function? rn this works
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
+        
+        // KING POSITION IS OFF
+        if type == "king" {
+            //print("updating king position from", from, "to", to)
+            if color == "white" {
+                gameState.whiteKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
+            } else if color == "black" {
+                gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
+            }
+        }
+        
+        audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
             gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
@@ -577,8 +595,10 @@ class GameScene: SKScene {
                 print("Checkmate! Game Over!", opponentColor, "wins!")
                 statusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
+                audioManager.playSoundEffect(fileName: "worldssmallestviolin", fileType: "mp3")
                 return
             }
+            audioManager.playSoundEffect(fileName: "alert_from_mgs", fileType: "mp3")
         }
         
         if isPassAndPlay {
@@ -651,6 +671,8 @@ class GameScene: SKScene {
                 if let piece = piece, piece.color == color {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
+                    print(validMoves)
+                    print(kingPosition)
                     
                     if validMoves.contains(kingPosition) {
                         checkingPieces.append(currentPosition)
@@ -685,8 +707,8 @@ class GameScene: SKScene {
     
     func isCheckmate(for color: String) -> Bool {
         // Now check if the opponent has any legal moves
-        let opponentColor = color == "white" ? "black" : "white"
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h"]
+        //let opponentColor = color == "white" ? "black" : "white"
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] // this should really be defined globally
         
         // Loop through all opponent pieces
         for (colIndex, column) in gameState.board.enumerated() {
