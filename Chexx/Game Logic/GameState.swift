@@ -47,7 +47,7 @@ struct GameState: Codable {
     }
     
     mutating func setInitialPiecePositions() {
-        let initialPositions: [((Int, Int), Piece)] = [
+      /*  let initialPositions: [((Int, Int), Piece)] = [
             ((6, 9), Piece(color: "black", type: "king")),
             ((5, 0), Piece(color: "white", type: "rook")),
             ((7, 0), Piece(color: "white", type: "rook")),
@@ -77,8 +77,8 @@ struct GameState: Codable {
             ((6, 0), Piece(color: "white", type: "king")),
             ((7, 0), Piece(color: "white", type: "knight")),
             ((8, 0), Piece(color: "white", type: "rook"))*/
-        ]
-        /*
+        ]*/
+        
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
             ((2, 6), Piece(color: "black", type: "pawn")),
@@ -116,7 +116,7 @@ struct GameState: Codable {
             ((6, 0), Piece(color: "white", type: "king")),
             ((7, 0), Piece(color: "white", type: "knight")),
             ((8, 0), Piece(color: "white", type: "rook"))
-        ]*/
+        ]
         
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece

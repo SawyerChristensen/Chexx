@@ -12,7 +12,8 @@ struct MainMenuView: View {
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
-    @State private var multiplayerOptions = false
+    @State private var onlineOptions = false
+    @State private var singlePlayerOptions = false
 
     var body: some View {
         NavigationView {
@@ -36,7 +37,7 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if multiplayerOptions {
+                        if onlineOptions {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Random")
@@ -50,6 +51,29 @@ struct MainMenuView: View {
                                 
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("vs Friend")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                            }
+                        }
+                        if singlePlayerOptions {
+                            VStack {
+                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
+                                    Text("Glinski's")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
+                                    Text("Mathewson's")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -91,7 +115,7 @@ struct MainMenuView: View {
                                 .padding(5)
                                 
                                 Button(action: {
-                                    multiplayerOptions = true
+                                    onlineOptions = true
                                 }) {
                                     Text("Online")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
@@ -108,10 +132,10 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if multiplayerOptions {
+                        if onlineOptions {
                             Button(action: {
                                 withAnimation {
-                                    multiplayerOptions = false
+                                    onlineOptions = false
                                 }
                             }) {
                                 HStack {
@@ -167,9 +191,9 @@ struct MainMenuView: View {
                 }
                 Spacer()
             }
-            .onAppear {
-                audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
-            }
+            //.onAppear {
+            //    audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
+            //}
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
