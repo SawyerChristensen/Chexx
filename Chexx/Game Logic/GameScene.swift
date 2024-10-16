@@ -14,8 +14,9 @@ class GameScene: SKScene {
     let audioManager = AudioManager()
     var isVsCPU: Bool = false       // To handle "vs CPU" mode
     var isPassAndPlay: Bool = false // To handle "Pass & Play" mode
+    //var variant: String = "Glinkski's"
     
-    var gameState: GameState!
+    var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
 
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -487,12 +488,20 @@ class GameScene: SKScene {
             return
         }
         
-        let originalPosition = pieceDetails[0]
+        let originalPosition = String(pieceDetails[0])
         guard let originalColIndex = columns.firstIndex(of: String(originalPosition.first!)),
               var originalRowIndex = Int(String(originalPosition.dropFirst())) else {
             print("Invalid original position")
             return
         }
+        
+        /*print(originalPosition)
+        print(gameState.positionStringToInt(position: originalPosition))
+        print(hexagonName)
+        print(gameState.positionStringToInt(position: hexagonName))*/
+        
+        gameState.addMoveToHexFen(from: originalPosition, to: hexagonName)
+        
         originalRowIndex = originalRowIndex - 1 //originalRowIndex is originally not 0 indexed, have to - 1)
         
         // Get piece details from identifier
@@ -586,13 +595,9 @@ class GameScene: SKScene {
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
-        fiftyMoveRule += 1
-        gameState.currentPlayer = opponentColor
-        resetEnPassant(for: gameState.currentPlayer)
-        
-        if isCheck(for: gameState.currentPlayer) {
-            if isCheckmate(for: gameState.currentPlayer) {
-                print("Checkmate! Game Over!", opponentColor, "wins!")
+        if isCheck(for: opponentColor) {
+            if isCheckmate(for: opponentColor) {
+                print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
                 statusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
                 audioManager.playSoundEffect(fileName: "worldssmallestviolin", fileType: "mp3")
@@ -601,11 +606,16 @@ class GameScene: SKScene {
             audioManager.playSoundEffect(fileName: "alert_from_mgs", fileType: "mp3")
         }
         
+        fiftyMoveRule += 1
+        gameState.currentPlayer = opponentColor
+        resetEnPassant(for: gameState.currentPlayer)
+        
         if isPassAndPlay {
             rotateBoard()
             rotateAllPieces()
         }
         
+        //print(gameState.flattenBitArrayToBytes(gameState.compressBoardToBits()))
         print("\n")
     }
     
@@ -671,8 +681,8 @@ class GameScene: SKScene {
                 if let piece = piece, piece.color == color {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
-                    print(validMoves)
-                    print(kingPosition)
+                    //print(validMoves)
+                    //print(kingPosition)
                     
                     if validMoves.contains(kingPosition) {
                         checkingPieces.append(currentPosition)

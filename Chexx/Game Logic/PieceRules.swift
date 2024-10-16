@@ -80,7 +80,7 @@ private func validMovesForPawn(_ color: String, at position: String, in gameStat
     if color == "white" {
         // Move up 1
         if isValidPosition(columnToCheck: colIndex, rowToCheck: rowIndex + 1, in: gameState),
-           gameState.board[colIndex][rowIndex + 1] == nil {
+           gameState.board[colIndex][rowIndex + 1] == nil { //cannot capture straight, needs to be empty
             validBoardMoves.append((colIndex, rowIndex + 1))
 
             // If it hasn't moved at all, bonus move!

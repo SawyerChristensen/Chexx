@@ -31,8 +31,9 @@ struct MainMenuView: View {
                             .padding(.top, screenHeight * 0.14)
                             .colorInvertIfDarkMode(colorScheme: colorScheme)
                         
-                        Text("Hex Chess")
-                            .font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
+                        WaveText(text: "Hex Chess", fontSize: screenHeight * 0.07)
+                        //Text("Hex Chess")
+                            //.font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
                             .padding(.top, -5)
                         
                         Spacer()
@@ -60,9 +61,9 @@ struct MainMenuView: View {
                                 .padding(5)
                             }
                         }
-                        if singlePlayerOptions {
+                        /*else if singlePlayerOptions {
                             VStack {
-                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
+                                NavigationLink(destination: GameView(isVsCPU: true, variant: "Glinski's").onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Glinski's")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -72,7 +73,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
+                                NavigationLink(destination: GameView(isVsCPU: true, variant: "Mathewsons's").onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Mathewson's")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -82,7 +83,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                             }
-                        } else {
+                        }*/ else {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Tutorial")
@@ -94,6 +95,9 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
+                                /*Button(action: { //when adding variants, uncomment this, comment navigation link, and add appropriate menu options
+                                    singlePlayerOptions = true
+                                }) {*/
                                 NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Single Player")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
@@ -132,10 +136,11 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if onlineOptions {
+                        if onlineOptions /*|| singlePlayerOptions*/ {
                             Button(action: {
                                 withAnimation {
                                     onlineOptions = false
+                                    singlePlayerOptions = false
                                 }
                             }) {
                                 HStack {
@@ -158,7 +163,7 @@ struct MainMenuView: View {
                     }) {
                         Image(systemName: "person.crop.circle")
                             .resizable()
-                            .frame(width: screenHeight / 15, height: screenHeight / 15)
+                            .frame(width: screenHeight / 16, height: screenHeight / 16)
                             .padding(screenHeight / 30)
                     }
                     .fullScreenCover(isPresented: $isProfilePresented) {
@@ -185,7 +190,7 @@ struct MainMenuView: View {
                     }) {
                         Image(systemName: "gearshape.fill")
                             .resizable()
-                            .frame(width: screenHeight / 15, height: screenHeight / 15)
+                            .frame(width: screenHeight / 16, height: screenHeight / 16)
                             .padding(screenHeight / 30)
                     }
                 }

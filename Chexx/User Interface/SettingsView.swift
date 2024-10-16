@@ -24,7 +24,9 @@ struct SettingsView: View {
                     presentationMode.wrappedValue.dismiss()
                 }
             VStack {
-                WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
+                //WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
+                Text("Settings")
+                    .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                     .padding()
                 
                 VStack {

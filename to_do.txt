@@ -1,8 +1,10 @@
--implement promotion for pawn when it reaches the other side
 -50 move no capture rule for draw
 -threefold repetition rule for draw
+    -implement
 
--board and piece movement sound effects
+-Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
+
+-board and piece movement sound effects /"done" but need different ones
 
 a menu with modes:
 1) tabletop
@@ -11,53 +13,33 @@ a menu with modes:
 
 obviously implement all of the modes
 
-background music for the menu (and game?)
-
-add algebraic saving for reduced game file sizes? might be more economical for mutliplayer and better for single player app sizes/AND FOR THREEFOLD RULE (maybe just use a custom hash function?)
-
--launch screen (required)
-
--app delegate file and figure out the use for all the other template files (theyre there for a reason)
-
--black king dark mode app icon (need xcode 16 for that) (possibly add with an update)
-
-settings for color scheme? (beige, grayscale, black/white/red, other?)
--alternate board color schemes in settings?
-
 -add stalemate checking/ending
 
--pawn does not capture difrectly in front of it, if there is a peice in front of a pawn make the move up one move invalid (modify in pieceRules)
-
+-app delegate file and figure out the use for all the other template files (theyre there for a reason)
+-figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
+    -launch screen (required) & main menu /is it???
+    
+-need to atribute artist of the chess images somewhere in the app,
+maybe a credits menu in settings?
+the proper attribution:
+"By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
 
 
 UNDO FOR PRODUCTION:
 reenable main music menu (mainmenuview)
 reenable player turns (gamescene)
 
-possibly get original sound effects not from chess.com to avoid getting bent over my saul goodman
+-possibly get original sound effects not from chess.com to avoid getting bent over by saul goodman
 
+FOR FUTURE UPDATES:
+    -alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
+        beige:  Light tile: #ffce9e     "Grey" tile: #e8ab6f        Dark tile: #d18b47
 
-
-other notes:
-
-Beige colors for board:
-Light tile: #ffce9e
-"Grey" tile: #e8ab6f
-Dark tile: #d18b47
-
-
-need to atribute artist of the chess images somewhere in the app,
-maybe a credits menu in settings?
-the proper attribution:
-"By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
-
-
-Future updates: refactor touchDown and TouchUP in GameScene
-refactor is king in check function to use a global variable instead of searching for it every single time
+enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
 
 RESOURCES:
 
-ways to update chess AI/incrase computational efficiency:
+ways to update chess AI/increase computational efficiency:
 https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm
 
 General Chess Programming Info:

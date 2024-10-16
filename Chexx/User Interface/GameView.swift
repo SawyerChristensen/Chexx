@@ -12,6 +12,7 @@ struct GameView: View {
     @State private var statusText: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
+    //@State var variant: String
     @State private var sceneSize: CGSize = UIScreen.main.bounds.size
 
     var body: some View {
@@ -45,6 +46,7 @@ struct GameView: View {
         scene.scaleMode = .aspectFill
         //scene.anchorPoint = CGPoint(x: 0.5, y: 0.5) //written in gameScene
         scene.isVsCPU = isVsCPU // Pass the vs CPU mode
+        //scene.variant = variant
         scene.isPassAndPlay = isPassAndPlay // Pass the tabletop mode
         scene.statusTextUpdater = { text in
             self.statusText = text // Update the status text from the GameScene
