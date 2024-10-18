@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>765529868221-pnc0moo66tpc0nt2i9o7oqd09vim3j3b.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.765529868221-pnc0moo66tpc0nt2i9o7oqd09vim3j3b</string>
+	<key>API_KEY</key>
+	<string>AIzaSyDB5I3XwWZ8vtQfodskven6I4lDkm0fqK8</string>
+	<key>GCM_SENDER_ID</key>
+	<string>765529868221</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>SawyerChristensen.Chexx</string>
+	<key>PROJECT_ID</key>
+	<string>hexchess-2ca93</string>
+	<key>STORAGE_BUCKET</key>
+	<string>hexchess-2ca93.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:765529868221:ios:53a72d17a785a61386b4d4</string>
+</dict>
+</plist>

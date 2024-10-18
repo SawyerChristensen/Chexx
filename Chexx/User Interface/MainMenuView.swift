@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainMenuView: View {
     @StateObject private var audioManager = AudioManager()
+    @StateObject var authViewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
@@ -140,7 +141,7 @@ struct MainMenuView: View {
                             Button(action: {
                                 withAnimation {
                                     onlineOptions = false
-                                    singlePlayerOptions = false
+                                    //singlePlayerOptions = false
                                 }
                             }) {
                                 HStack {
@@ -167,11 +168,30 @@ struct MainMenuView: View {
                             .padding(screenHeight / 30)
                     }
                     .fullScreenCover(isPresented: $isProfilePresented) {
-                        ProfileView()
-                            .background(Color.white.opacity(0.001).edgesIgnoringSafeArea(.all))
-                            .onTapGesture {
+                        VStack {
+                            
+                            Spacer()
+                            
+                            ProfileView(screenHeight: screenHeight)
+                                .environmentObject(authViewModel)
+                            
+                            Spacer()
+                            
+                            // Dismiss button at the bottom
+                            Button(action: {
                                 isProfilePresented = false
+                            }) {
+                                Text("Close")
+                                    .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                                    .padding()
+                                    .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                    .background(Color.accentColor)
+                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                    .clipShape(HexagonEdgeRectangleShape())
                             }
+                        }
+                        .padding()
+                        .background(Color.white.ignoresSafeArea())
                     }
                     Spacer() // Push the settings icon to the right
                 }
