@@ -49,18 +49,15 @@ class AuthViewModel: ObservableObject {
             let fullName = user.profile?.name ?? firebaseUser.displayName ?? "Player"
             let firstName = fullName.split(separator: " ").first.map(String.init) ?? "Player"
             
-            DispatchQueue.main.async {
-                self.isLoggedIn = true
-                self.email = firebaseUser.email ?? "Unknown Email"
-                self.displayName = firstName
-                self.profileImageURL = URL(string: (user.profile?.imageURL(withDimension: 200)!.absoluteString)!)
-            }
+            self.isLoggedIn = true
+            self.email = firebaseUser.email ?? "Unknown Email"
+            self.displayName = firstName
+            self.profileImageURL = URL(string: (user.profile?.imageURL(withDimension: 200)!.absoluteString)!)
+
             return true
             
         } catch {
-            DispatchQueue.main.async {
-                self.errorMessage = error.localizedDescription
-            }
+            self.errorMessage = error.localizedDescription
             return false
         }
     }
@@ -68,17 +65,13 @@ class AuthViewModel: ObservableObject {
     func signInWithEmail(email: String, password: String) {
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error {
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
+                self.errorMessage = "Username or Password is incorrect."//error.localizedDescription
                 return
             }
-            
-            DispatchQueue.main.async {
-                self.isLoggedIn = true
-                self.errorMessage = ""
-                self.email = result?.user.email ?? "User"
-            }
+            self.isLoggedIn = true
+            self.errorMessage = ""
+            self.email = result?.user.email ?? "error@notfound.com"
+            self.displayName = self.email
         }
     }
     
@@ -86,17 +79,13 @@ class AuthViewModel: ObservableObject {
     func registerWithEmail(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
-                DispatchQueue.main.async {
-                    self.errorMessage = error.localizedDescription
-                }
+                self.errorMessage = error.localizedDescription
                 return
             }
-            
-            DispatchQueue.main.async {
-                self.isLoggedIn = true
-                self.errorMessage = ""
-                self.email = result?.user.email ?? "User"
-            }
+            self.isLoggedIn = true
+            self.errorMessage = ""
+            self.email = result?.user.email ?? "error@notfound.com"
+            self.displayName = self.email
         }
     }
 

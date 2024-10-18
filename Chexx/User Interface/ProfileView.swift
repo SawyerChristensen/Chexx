@@ -15,6 +15,10 @@ struct ProfileView: View {
     let screenHeight: CGFloat
     @Environment(\.colorScheme) var colorScheme // Detecting the current color scheme
     @EnvironmentObject var authViewModel: AuthViewModel
+    var userUsingEmail: Bool = false
+    var userUsingGoogle: Bool = false
+    var userUsingApple: Bool = false
+    var userUsingFacebook: Bool = false
     
     @State private var password = ""
     
@@ -39,6 +43,7 @@ struct ProfileView: View {
                 
                 Text("Welcome, \(authViewModel.displayName)!")
                     .font(.largeTitle)
+                    .multilineTextAlignment(.center)
                 
                 // Navigation buttons to different sections
                 VStack(spacing: 20) {
@@ -80,6 +85,15 @@ struct ProfileView: View {
                 
                 Button(action: { authViewModel.signInWithEmail(email: authViewModel.email, password: password) }) {
                     Text("Sign In")
+                        .padding()
+                        .background(Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                }
+                .padding()
+                
+                Button(action: { authViewModel.registerWithEmail(email: authViewModel.email, password: password) }) {
+                    Text("Register")
                         .padding()
                         .background(Color.accentColor)
                         .foregroundColor(.white)

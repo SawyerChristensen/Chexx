@@ -1,6 +1,8 @@
 -50 move no capture rule for draw
 -threefold repetition rule for draw
     -implement
+    
+-forgot password option for email users, shows up if you enter password in wrong
 
 -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
 
@@ -23,6 +25,14 @@ obviously implement all of the modes
 maybe a credits menu in settings?
 the proper attribution:
 "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
+
+
+
+
+
+
+
+
 
 
 UNDO FOR PRODUCTION:
