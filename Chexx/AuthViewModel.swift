@@ -10,6 +10,7 @@ import FirebaseAuth
 import GoogleSignIn
 //need to implement sign in with apple & facebook
 
+@MainActor
 class AuthViewModel: ObservableObject {
     @Published var isLoggedIn: Bool = false
     @Published var email: String = ""
@@ -18,15 +19,17 @@ class AuthViewModel: ObservableObject {
     @Published var errorMessage: String = ""
 
     func signInWithGoogle() async -> Bool {
+        
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("No client ID found in Firebase configuration")
         }
+        
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
-        guard let windowScene = await UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = await windowScene.windows.first,
-              let rootViewController = await window.rootViewController else {
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+              let window = windowScene.windows.first,
+              let rootViewController = window.rootViewController else {
             print("There is no root view controller")
             return false
         }
@@ -98,7 +101,7 @@ class AuthViewModel: ObservableObject {
     }
 
     func signOut() {
-        do {
+       do {
             try Auth.auth().signOut()
             self.isLoggedIn = false
             self.email = ""
