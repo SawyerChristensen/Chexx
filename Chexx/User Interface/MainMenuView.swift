@@ -11,6 +11,7 @@ struct MainMenuView: View {
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
+    @State private var isKeyboardVisible = false
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
     @State private var onlineOptions = false
@@ -20,6 +21,7 @@ struct MainMenuView: View {
         NavigationView {
             GeometryReader { geometry in
                 let screenHeight = geometry.size.height
+                let screenWidth = geometry.size.width
                 
                 ZStack {
                     //BackgroundView()
@@ -32,9 +34,9 @@ struct MainMenuView: View {
                             .padding(.top, screenHeight * 0.14)
                             .colorInvertIfDarkMode(colorScheme: colorScheme)
                         
-                        WaveText(text: "Hex Chess", fontSize: screenHeight * 0.07)
-                        //Text("Hex Chess")
-                            //.font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
+                        //WaveText(text: "Hex Chess", fontSize: screenHeight * 0.07)
+                        Text("Hex Chess")
+                            .font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
                             .padding(.top, -5)
                         
                         Spacer()
@@ -172,26 +174,40 @@ struct MainMenuView: View {
                             
                             Spacer()
                             
-                            ProfileView(screenHeight: screenHeight)
+                            ProfileView(screenHeight: screenHeight, screenWidth: screenWidth)
                                 .environmentObject(authViewModel)
                             
                             Spacer()
                             
-                            // Dismiss button at the bottom
-                            Button(action: {
-                                isProfilePresented = false
-                            }) {
-                                Text("Close")
-                                    .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
-                                    .padding()
-                                    .frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                                    .background(Color.accentColor)
-                                    .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                    .clipShape(HexagonEdgeRectangleShape())
+                            if !isKeyboardVisible { //is keyboard is visible, hide the close button
+                                // Dismiss button at the bottom
+                                Button(action: {
+                                    isProfilePresented = false
+                                }) {
+                                    Text("Close")
+                                        .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                                        .padding()
+                                        .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
                             }
                         }
                         .padding()
                         .background(Color.white.ignoresSafeArea())
+                        .onAppear {
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+                                isKeyboardVisible = true
+                            }
+                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                                isKeyboardVisible = false
+                            }
+                        }
+                        .onDisappear {
+                            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+                        }
                     }
                     Spacer() // Push the settings icon to the right
                 }

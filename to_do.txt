@@ -8,6 +8,8 @@
 
 -board and piece movement sound effects /"done" but need different ones
 
+-haptic feedback on check?
+
 a menu with modes:
 1) tabletop
 2) single player vs AI
@@ -44,6 +46,8 @@ reenable player turns (gamescene)
 FOR FUTURE UPDATES:
     -alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
         beige:  Light tile: #ffce9e     "Grey" tile: #e8ab6f        Dark tile: #d18b47
+        
+-check if any flags have been added in new unicode versions
 
 enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
 

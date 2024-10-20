@@ -31,7 +31,7 @@ struct SettingsView: View {
                 
                 VStack {
                     
-                    Toggle("Highlight Available Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
+                    Toggle("Highlight Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
                     //.padding()
                         .frame(maxWidth: min(screenHeight / 2.4, 500))
                         .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
