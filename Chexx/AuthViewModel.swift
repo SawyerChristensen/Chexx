@@ -7,6 +7,7 @@
 
 import Firebase
 import FirebaseAuth
+import FirebaseFirestore
 import GoogleSignIn
 //need to implement sign in with apple & facebook
 
@@ -25,21 +26,203 @@ class AuthViewModel: ObservableObject {
     @Published var userCountry: String = ""
     @Published var eloScore: Int = 800 // the default ELO score
     
+    let db = Firestore.firestore() //db for database (were using firestore)
+    
     init() {
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         if self.isLoggedIn {
-            restoreUserData()
+            fetchUserDataFromHardDrive() //get data from local hard drive first (faster) (also just in case theres no connection)
+            fetchUserDataFromFirestore { //get the data from the server and wait until we get a response
+                self.saveUserDataToDevice() //save the most recent data just in case
+            }
         }
     }
     
-    func restoreUserData() {
-        self.email = UserDefaults.standard.string(forKey: "email") ?? ""
-        self.displayName = UserDefaults.standard.string(forKey: "displayName") ?? ""
+    func fetchUserDataFromHardDrive() { //gets the local data from the hard drive
+        self.email = UserDefaults.standard.string(forKey: "email") ?? "none found on hard drive"
+        self.displayName = UserDefaults.standard.string(forKey: "displayName") ?? "none found on hard drive"
         if let imageUrlString = UserDefaults.standard.string(forKey: "profileImageURL") {
             self.profileImageURL = URL(string: imageUrlString)
         }
-        self.userCountry = UserDefaults.standard.string(forKey: "country") ?? ""
-        self.eloScore = UserDefaults.standard.integer(forKey: "eloScore")
+        self.userCountry = UserDefaults.standard.string(forKey: "country") ?? "none found on hard drive"
+        if (UserDefaults.standard.integer(forKey: "eloScore")) == 0 {
+            self.eloScore = -1
+        }
+        
+        print("Local Email: \(self.email)")
+        print("Local Display Name: \(self.displayName)")
+        print("Local Country: \(self.userCountry)")
+        print("Local ELO Score: \(self.eloScore)")
+        
+    }
+    
+    func fetchUserDataFromFirestore(completion: @escaping () -> Void) { //gets the latest data from the server & saves it to device
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        
+        //if theres no data in firestore, we need the values set to default
+        db.collection("users").document(userID).getDocument { document, error in
+            if let document = document, document.exists {
+                print("User document found: \(document.documentID)")
+                let data = document.data()
+                print(data!)
+                
+                self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
+                self.displayName = data?["displayName"] as? String ?? "none found on server"
+                self.userCountry = data?["country"] as? String ?? "none found on server"
+                self.eloScore = data?["eloScore"] as? Int ?? 800 //does NOT set the Elo to 800, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
+                
+                if self.eloScore == 0 {
+                    self.eloScore = 800
+                }
+                
+                print("Firestore Email: \(self.email)")
+                print("Firestore Display Name: \(self.displayName)")
+                print("Firestore Country: \(self.userCountry)")
+                print("Firestore ELO Score: \(self.eloScore)")
+
+            } else {
+                print("No Firestore document found for this user.")
+                //so make one!
+                //self.saveUserDataToFirestore()
+            }
+            
+            //this is so the other local code waits to execute until after this funciton is finished
+            completion()
+        }
+    }
+    
+    func saveUserDataToFirestore() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+
+        // Prepare the data to save
+        let userData: [String: Any] = [
+            "email": self.email,
+            "displayName": self.displayName,
+            "country": self.userCountry,
+            "eloScore": self.eloScore
+        ]
+
+        // Save the data in Firestore under the user's document
+        db.collection("users").document(userID).setData(userData) { error in
+            if let error = error {
+                print("Error saving user data: \(error.localizedDescription)")
+            } else {
+                print("User data successfully saved to Firestore.")
+            }
+        }
+    }
+    
+    func saveUserDataToDevice() {
+        UserDefaults.standard.set(self.email, forKey: "email")
+        UserDefaults.standard.set(self.displayName, forKey: "displayName")
+        UserDefaults.standard.set(self.userCountry, forKey: "country")
+        UserDefaults.standard.set(self.eloScore, forKey: "eloScore")
+    }
+    
+    func updateUserNameInFirestore(name: String) {
+        // Ensure the name is not empty or nil and does not match the stored value
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in to update name.")
+            return
+        }
+
+        // Load the current stored name from UserDefaults
+        let currentStoredName = UserDefaults.standard.string(forKey: "displayName") ?? ""
+
+        // Check if the new name is different from the stored name
+        if name.isEmpty {
+            print("Name is empty, not updating Firestore.")
+            return
+        }
+
+        if currentStoredName != name {
+            // Update the `displayName` field in Firestore
+            db.collection("users").document(userID).updateData([
+                "displayName": name
+            ]) { error in
+                if let error = error {
+                    print("Error updating name in Firestore: \(error.localizedDescription)")
+                } else {
+                    print("User name successfully updated to \(name).")
+                    
+                    // Optionally update the local UserDefaults after successful update
+                    UserDefaults.standard.set(name, forKey: "displayName")
+                }
+            }
+        } else {
+            print("Name is the same as the stored value, no update needed.")
+        }
+        
+        self.displayName = name
+    }
+    
+    func updateUserCountryInFirestore(country: String) {
+        // Ensure the country is not empty or nil and does not match the stored value
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in to update country.")
+            return
+        }
+
+        // Load the current stored country from UserDefaults
+        let currentStoredCountry = UserDefaults.standard.string(forKey: "country") ?? ""
+
+        // Check if the new country is different from the stored country
+        if country.isEmpty {
+            print("Country is empty, not updating Firestore.")
+            return
+        }
+
+        if currentStoredCountry != country {
+            // Update the `userCountry` field in Firestore
+            db.collection("users").document(userID).updateData([
+                "country": country
+            ]) { error in
+                if let error = error {
+                    print("Error updating country in Firestore: \(error.localizedDescription)")
+                } else {
+                    print("User country successfully updated to \(country).")
+                    
+                    // Optionally update the local UserDefaults after successful update
+                    UserDefaults.standard.set(country, forKey: "country")
+                }
+            }
+        } else {
+            print("Country is the same as the stored value, no update needed.")
+        }
+    }
+    
+    func loadUserCountryFromFirestore(completion: @escaping (String?) -> Void) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            print("No user logged in to load country.")
+            completion(nil) // Return nil if no user is logged in
+            return
+        }
+
+        db.collection("users").document(userID).getDocument { document, error in
+            if let error = error {
+                print("Error loading user country from Firestore: \(error.localizedDescription)")
+                completion(nil) // Return nil if there was an error
+                return
+            }
+            
+            if let document = document, document.exists {
+                let data = document.data()
+                let firestoreCountry = data?["country"] as? String ?? ""
+                
+                if !firestoreCountry.isEmpty {
+                    self.userCountry = firestoreCountry
+                    UserDefaults.standard.set(firestoreCountry, forKey: "country")
+                    print("User country loaded from Firestore: \(firestoreCountry)")
+                    completion(firestoreCountry) // Return the loaded country
+                } else {
+                    completion(nil) // Return nil if no country is found
+                    print("No country found in Firestore.")
+                }
+            } else {
+                print("User document does not exist.")
+                completion(nil) // Return nil if the document does not exist
+            }
+        }
     }
 
     func signInWithGoogle() async -> Bool {
@@ -78,14 +261,12 @@ class AuthViewModel: ObservableObject {
             self.displayName = firstName
             self.profileImageURL = URL(string: (user.profile?.imageURL(withDimension: 200)!.absoluteString)!)
             
-
-            // Persist user details
-            UserDefaults.standard.set(self.email, forKey: "email")
-            UserDefaults.standard.set(self.displayName, forKey: "displayName")
             if let imageURL = self.profileImageURL?.absoluteString {
                 UserDefaults.standard.set(imageURL, forKey: "profileImageURL")
             }
             
+            self.fetchUserDataFromFirestore(completion: {}) //empty completion handler, we dont care if its asychonour here as long as it happens
+
             return true
             
         } catch {
@@ -126,10 +307,7 @@ class AuthViewModel: ObservableObject {
             self.email = result?.user.email ?? "error@notfound.com" //this should never display if the error catching is working properly
             self.displayName = self.email
             
-            // Persist login state and user details
-            UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
-            UserDefaults.standard.set(self.email, forKey: "email")
-            UserDefaults.standard.set(self.displayName, forKey: "displayName")
+            self.fetchUserDataFromFirestore(completion: {})
         }
     }
     
@@ -145,11 +323,7 @@ class AuthViewModel: ObservableObject {
             self.email = result?.user.email ?? "error@notfound.com"
             self.displayName = self.email
             
-            // Persist login state and user details
-            UserDefaults.standard.set(self.isLoggedIn, forKey: "isLoggedIn")
-            UserDefaults.standard.set(self.email, forKey: "email")
-            UserDefaults.standard.set(self.displayName, forKey: "displayName")
-
+            self.fetchUserDataFromFirestore(completion: {})
         }
     }
     
@@ -181,6 +355,32 @@ class AuthViewModel: ObservableObject {
            
         } catch let signOutError as NSError {
             self.errorMessage = signOutError.localizedDescription
+        }
+        //deleteUserAndData()
+    }
+    
+    func deleteUserAndData() {
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        
+        // Reference to the Firestore document for the user
+        let userDocumentRef = db.collection("users").document(userID)
+
+        // Delete Firestore document first
+        userDocumentRef.delete { error in
+            if let error = error {
+                print("Error deleting user document: \(error.localizedDescription)")
+                return
+            }
+            print("User Firestore document successfully deleted.")
+
+            // Now delete the user from Firebase Authentication
+            Auth.auth().currentUser?.delete { error in
+                if let error = error {
+                    print("Error deleting user account: \(error.localizedDescription)")
+                } else {
+                    print("User account successfully deleted.")
+                }
+            }
         }
     }
 }

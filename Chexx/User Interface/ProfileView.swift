@@ -286,7 +286,7 @@ struct ProfileView: View {
                             .focused($focus, equals: .displayName)
                             .onSubmit {
                             if !newDisplayName.isEmpty {
-                                authViewModel.displayName = newDisplayName
+                                authViewModel.updateUserNameInFirestore(name: newDisplayName)
                                 newDisplayName = ""
                             }
                             isEditing = false
@@ -340,13 +340,13 @@ struct ProfileView: View {
                     .onAppear {
                         loadSelectedCountry() // Load the selected country when the view appears
                     }
-                    .onChange(of: selectedCountry) { newValue in //same issue as before, its literally fine
-                        if (newValue != nil) {
-                            //updating local storage
-                            UserDefaults.standard.set(selectedCountry?.name, forKey: "country") // Persist the selection
-                            //updating firebase (server storage)
-                            authViewModel.userCountry = selectedCountry!.name
-                        }
+                    .onChange(of: selectedCountry) { newValue in
+                        // Update Firebase Firestore (server storage)
+                        authViewModel.userCountry = selectedCountry!.name
+                        authViewModel.updateUserCountryInFirestore(country: selectedCountry!.name)
+                        
+                        //update local storage
+                        UserDefaults.standard.set(selectedCountry?.name, forKey: "country") // Persist the selection
                     }
                 }
                 
@@ -528,14 +528,23 @@ struct ProfileView: View {
     }
     
     func loadSelectedCountry() {
-        let savedCountryName = UserDefaults.standard.string(forKey: "country") ?? nil
-
-        // Find the country based on the saved name
-        if let country = countries.first(where: { $0.name == savedCountryName }) {
+        // First, try loading the country from UserDefaults
+        if let savedCountryName = UserDefaults.standard.string(forKey: "country"),
+           let country = countries.first(where: { $0.name == savedCountryName }) {
+            // If found in UserDefaults and matches a known country, assign it
             selectedCountry = country
         }
+        
+        // Regardless of whether it's found locally, attempt to load the latest from Firestore
+        //if theres no service, the function should still update selectedCountry to what is found on the hard drive
+        authViewModel.loadUserCountryFromFirestore { loadedCountry in
+            if let loadedCountry = loadedCountry,
+               let country = self.countries.first(where: { $0.name == loadedCountry }) {
+                // Update the selectedCountry from Firestore
+                self.selectedCountry = country
+            }
+        }
     }
-    
 }
 
 

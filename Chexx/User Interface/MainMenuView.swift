@@ -195,7 +195,7 @@ struct MainMenuView: View {
                             }
                         }
                         .padding()
-                        .background(Color.white.ignoresSafeArea())
+                        .background(Color(UIColor.systemBackground))
                         .onAppear {
                             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                 isKeyboardVisible = true
@@ -235,6 +235,7 @@ struct MainMenuView: View {
             //.onAppear {
             //    audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
             //}
+            //.background(Color(UIColor.systemBackground)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
