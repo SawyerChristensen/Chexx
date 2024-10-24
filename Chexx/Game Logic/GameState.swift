@@ -233,55 +233,93 @@ struct GameState: Codable {
         HexFen.append(UInt8(originInt))
         HexFen.append(UInt8(destinationInt))
         
-        print(HexFen)
+        //print(HexFen)
         
         for value in HexFen {
             // Convert each UInt8 to a binary string with leading zeros
             let binaryString = String(value, radix: 2).leftPadded(toLength: 8, withPad: "0")
-            print(binaryString)
+            //print(binaryString)
         }
     }
     
-    func positionStringToInt(position: String) -> Int {
+    func positionStringToInt(position: String) -> UInt8 {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        
+        let columnOffsets = [0, 6, 13, 21, 30, 40, 51, 61, 70, 78, 85] // Precomputed offsets
+
         // Convert from and to positions to board indices
         guard let columnPos = columns.firstIndex(of: String(position.first!)),
               var rowPos = Int(position.dropFirst()) else {
             return 0
         }
-        
-        rowPos = rowPos - 1 //input String is not 0-indexed
-        
-        //let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
-        
-        var columnOffset: Int = 0
 
-        if columnPos == 0 { //index of "a" in columns
-            columnOffset = 0
-        } else if columnPos == 1 { //index of "b" in columns
-            columnOffset = 6
-        } else if columnPos == 2 { //index of "c" in columns
-            columnOffset = 13       //6 + 7
-        } else if columnPos == 3 { //index of "d" in columns
-            columnOffset = 21       //6 + 7 + 8
-        } else if columnPos == 4 { //index of "e" in columns
-            columnOffset = 30       //6 + 7 + 8 + 9
-        } else if columnPos == 5 { //index of "f" in columns
-            columnOffset = 40       //6 + 7 + 8 + 9 + 10
-        } else if columnPos == 6 { //index of "g" in columns
-            columnOffset = 51       //6 + 7 + 8 + 9 + 10 + 11
-        } else if columnPos == 7 { //index of "h" in columns
-            columnOffset = 61       //6 + 7 + 8 + 9 + 10 + 11 + 10
-        } else if columnPos == 8 { //index of "i" in columns
-            columnOffset = 70       //6 + 7 + 8 + 9 + 10 + 11 + 10 + 9
-        } else if columnPos == 9 { //index of "k" in columns
-            columnOffset = 78       //6 + 7 + 8 + 9 + 10 + 11 + 10 + 9 + 8
-        } else if columnPos == 10 { //index of "l" in columns
-            columnOffset = 85       //6 + 7 + 8 + 9 + 10 + 11 + 10 + 9 + 8 + 7
+        rowPos -= 1 // Input String is not 0-indexed
+
+        // Use the columnPos to fetch the corresponding offset
+        let columnOffset = columnOffsets[columnPos]
+
+        return UInt8(columnOffset + rowPos)
+    }
+    
+    func positionIntToString(index: UInt8) -> String {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
+        
+        var remainingIndex = index
+        var columnPos = 0
+        
+        // Find the correct column based on the index range
+        for (i, size) in columnSizes.enumerated() {
+            if remainingIndex < size {
+                columnPos = i
+                break
+            }
+            remainingIndex -= UInt8(size)
         }
         
-        return columnOffset + rowPos
+        // Convert remainingIndex back to row number (1-indexed)
+        let rowPos = remainingIndex + 1
+        
+        // Combine column letter and row number into position string
+        let columnLetter = columns[columnPos]
+        return "\(columnLetter)\(rowPos)"
+    }
+    
+    mutating func HexFenToGameState(fen: [UInt8]) -> GameState {
+        guard fen.count >= 1 else {
+            print("Invalid HexFen: Not enough data")
+            return self
+        }
+        
+        self.HexFen = fen //(so it can be updated)
+
+        //let variant = fen[0] //first uint8 is the variant identifier
+        //print("Variant used: \(variant)") //0 means Glinkskis
+
+        // Iterate through the remaining UInt8s in pairs (skipping the first one)
+        for i in stride(from: 1, to: fen.count, by: 2) {
+            let fromIndex = fen[i]
+            let toIndex = fen[i + 1]
+
+            // Convert indices to position strings
+            let fromPosition = positionIntToString(index: fromIndex)
+            let toPosition = positionIntToString(index: toIndex)
+
+            // Perform the move
+            movePiece(from: fromPosition, to: toPosition)
+        }
+        
+        // Determine the current player's turn based on the number of moves
+        print(fen)
+        let moveCount = (fen.count - 1) / 2
+        print(moveCount)
+        if moveCount == 0 {
+            currentPlayer = "white"
+        } else {
+            currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
+        }
+
+        // Return the updated game state
+        return self
     }
     
     /*func compressBoardToBits() -> [Bool] {
@@ -340,25 +378,18 @@ struct GameState: Codable {
     }*/
 }
 
-
-
-//we can kind of ignore these two functions for now, might modify later
-//rn is saves the game state in a bulky format, it stores the dictionary struct gamestate
-//before launch we should have it convert the game state to algebraic chess notation, then save that in a json file or whatever
-//this could cut down the game file save by like 20x, probably more. must implement this before launch
-//would also need to change the load game state file to accept algebraic notation from the save file
-//can do later though https://en.wikipedia.org/wiki/Algebraic_notation_(chess)
-
-
-func saveGameStateToFile(_ gameState: GameState, to filename: String) { // i think this saves it to a file? this isnt used rn but need to implement later
+func saveGameStateToFile(hexFen: [UInt8], to filename: String) {
+    let saveData = HexFenSaveData(date: Date(), hexFen: hexFen)
     let encoder = JSONEncoder()
-    if let encoded = try? encoder.encode(gameState) {
+    encoder.dateEncodingStrategy = .iso8601 // Standard format for date
+
+    if let encoded = try? encoder.encode(saveData) {
         let url = getDocumentsDirectory().appendingPathComponent(filename)
         do {
             try encoded.write(to: url)
-            print("Game state saved to \(url.path)")
+            print("HexFen saved to \(url.path)")
         } catch {
-            print("Failed to save game state: \(error.localizedDescription)")
+            print("Failed to save HexFen: \(error.localizedDescription)")
         }
     }
 }
@@ -367,11 +398,27 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
     let url = getDocumentsDirectory().appendingPathComponent(filename)
     if let data = try? Data(contentsOf: url) {
         let decoder = JSONDecoder()
-        if let gameState = try? decoder.decode(GameState.self, from: data) {
+        decoder.dateDecodingStrategy = .iso8601
+
+        if let saveData = try? decoder.decode(HexFenSaveData.self, from: data) {
+            var gameState = GameState() // Initialize empty GameState
+            gameState = gameState.HexFenToGameState(fen: saveData.hexFen) // Rebuild from HexFen
+            print("Game state loaded from \(url.path)")
             return gameState
         }
     }
     return nil
+}
+
+func deleteGameFile(filename: String) {
+    let url = getDocumentsDirectory().appendingPathComponent(filename)
+    
+    do {
+        try FileManager.default.removeItem(at: url)
+        print("Successfully deleted game file: \(url.path)")
+    } catch {
+        print("Failed to delete game file: \(error.localizedDescription)")
+    }
 }
 
 func getDocumentsDirectory() -> URL {
@@ -384,4 +431,9 @@ extension String {
         let padding = String(repeating: character, count: max(0, length - self.count))
         return padding + self
     }
+}
+
+struct HexFenSaveData: Codable {
+    let date: Date
+    let hexFen: [UInt8]
 }

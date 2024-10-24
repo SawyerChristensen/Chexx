@@ -49,10 +49,10 @@ class AuthViewModel: ObservableObject {
             self.eloScore = -1
         }
         
-        print("Local Email: \(self.email)")
+        /* print("Local Email: \(self.email)")
         print("Local Display Name: \(self.displayName)")
         print("Local Country: \(self.userCountry)")
-        print("Local ELO Score: \(self.eloScore)")
+        print("Local ELO Score: \(self.eloScore)") */
         
     }
     
@@ -62,9 +62,9 @@ class AuthViewModel: ObservableObject {
         //if theres no data in firestore, we need the values set to default
         db.collection("users").document(userID).getDocument { document, error in
             if let document = document, document.exists {
-                print("User document found: \(document.documentID)")
+                //print("User document found: \(document.documentID)")
                 let data = document.data()
-                print(data!)
+                //print(data!)
                 
                 self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
                 self.displayName = data?["displayName"] as? String ?? "none found on server"
@@ -75,10 +75,10 @@ class AuthViewModel: ObservableObject {
                     self.eloScore = 800
                 }
                 
-                print("Firestore Email: \(self.email)")
+                /* print("Firestore Email: \(self.email)")
                 print("Firestore Display Name: \(self.displayName)")
                 print("Firestore Country: \(self.userCountry)")
-                print("Firestore ELO Score: \(self.eloScore)")
+                print("Firestore ELO Score: \(self.eloScore)") */
 
             } else {
                 print("No Firestore document found for this user.")

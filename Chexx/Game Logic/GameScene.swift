@@ -12,8 +12,8 @@ import SwiftUI
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     let audioManager = AudioManager()
-    var isVsCPU: Bool = false       // To handle "vs CPU" mode
-    var isPassAndPlay: Bool = false // To handle "Pass & Play" mode
+    var isVsCPU: Bool      // To handle "vs CPU" mode
+    var isPassAndPlay: Bool // To handle "Pass & Play" mode
     //var variant: String = "Glinkski's"
     
     var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
@@ -32,6 +32,17 @@ class GameScene: SKScene {
     
     var statusTextUpdater: ((String) -> Void)?
     
+    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool) { // this can be modified to take in file name for gamesave
+        self.isVsCPU = isVsCPU
+        self.isPassAndPlay = isPassAndPlay
+        super.init(size: size)
+    }
+
+    // Required initializer for loading from a storyboard or nib
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
@@ -39,8 +50,18 @@ class GameScene: SKScene {
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
         // Load the game state (if exists) or create a new one
-        gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
-
+        if isPassAndPlay {
+            gameState = loadGameStateFromFile(from: "currentPassAndPlay") ?? GameState()
+        }
+        
+        if isVsCPU {
+            setupVsCPUMode()
+            gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
+        }
+        
+        //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
+        //gameState = gameState.HexFenToGameState(fen: [0, 6, 8, 84, 82])
+        
         // Calculate hexagon size based on screen size
         hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
         
@@ -49,17 +70,20 @@ class GameScene: SKScene {
         
         // Place pieces on the board based on the game state
         placePieces(scene: self, gameState: gameState)
-        
-        // Adjust the game for specific modes
-        if isVsCPU {
-            setupVsCPUMode()
+    }
+    
+    override func didMove(to view: SKView) {
+        super.didMove(to: view)
+
+        if isPassAndPlay && gameState.currentPlayer == "black" {
+            rotateBoardImmediately()
+            rotateAllPiecesImmediately()
         }
     }
     
     func setupVsCPUMode() {
         // Set up AI logic or behavior here
-        // For example, decide when the AI should make a move or interact with the gameState
-        print("CPU mode activated")
+        //print("CPU mode activated")
     }
     
     enum Direction { //for use with calcualte new center
@@ -611,9 +635,18 @@ class GameScene: SKScene {
         resetEnPassant(for: gameState.currentPlayer)
         
         if isPassAndPlay {
-            rotateBoard()
             rotateAllPieces()
+            rotateBoard()
+            saveGameStateToFile(hexFen: gameState.HexFen, to: "currentPassAndPlay")
         }
+        
+        if isVsCPU {
+            saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
+        }
+        
+        deleteGameFile(filename: "currentSinglePlayer")
+        deleteGameFile(filename: "currentPassAndPlay")
+        deleteGameFile(filename: "currentGameState")
         
         //print(gameState.flattenBitArrayToBytes(gameState.compressBoardToBits()))
         print("\n")
@@ -622,10 +655,26 @@ class GameScene: SKScene {
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
     
     func rotateBoard() {
+        guard let view = self.view else {
+            print("View is nil, can't rotate board")
+            return
+        }
+        
         boardIsRotated.toggle()
         UIView.animate(withDuration: 0.5) {
             self.view?.transform = (self.view?.transform.rotated(by: .pi))!
         }
+    }
+    
+    func rotateBoardImmediately() {
+        guard let view = self.view else {
+            print("View is nil, can't rotate board")
+            return
+        }
+
+        boardIsRotated.toggle()
+        // Set the transform directly without animation
+        view.transform = view.transform.rotated(by: .pi)
     }
     
     func rotateAllPieces() {
@@ -636,6 +685,18 @@ class GameScene: SKScene {
                 for pieceNode in hexagon.children {
                     if let pieceNode = pieceNode as? SKSpriteNode {
                         pieceNode.run(rotateAction)
+                    }
+                }
+            }
+        }
+    }
+    
+    func rotateAllPiecesImmediately() {
+        for node in children {
+            if let hexagon = node as? HexagonNode {
+                for pieceNode in hexagon.children {
+                    if let pieceNode = pieceNode as? SKSpriteNode {
+                        pieceNode.zRotation += .pi
                     }
                 }
             }

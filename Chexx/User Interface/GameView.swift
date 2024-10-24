@@ -42,7 +42,7 @@ struct GameView: View {
     }
 
     private func createScene(size: CGSize) -> SKScene {
-        let scene = GameScene(size: size)
+        let scene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay)
         scene.scaleMode = .aspectFill
         //scene.anchorPoint = CGPoint(x: 0.5, y: 0.5) //written in gameScene
         scene.isVsCPU = isVsCPU // Pass the vs CPU mode

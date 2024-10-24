@@ -8,7 +8,7 @@
 import UIKit
 import SpriteKit
 import GameplayKit
-
+/*
 class GameViewController: UIViewController {
 
     var scene: GameScene?
@@ -56,3 +56,4 @@ class GameViewController: UIViewController {
         }, completion: nil)
     }
 }
+*/
