@@ -309,14 +309,8 @@ struct GameState: Codable {
         }
         
         // Determine the current player's turn based on the number of moves
-        print(fen)
         let moveCount = (fen.count - 1) / 2
-        print(moveCount)
-        if moveCount == 0 {
-            currentPlayer = "white"
-        } else {
-            currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
-        }
+        currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
 
         // Return the updated game state
         return self

@@ -16,6 +16,7 @@ struct MainMenuView: View {
     @State private var isProfilePresented = false
     @State private var onlineOptions = false
     @State private var singlePlayerOptions = false
+    @State private var passAndPlayOptions = false
 
     var body: some View {
         NavigationView {
@@ -64,10 +65,14 @@ struct MainMenuView: View {
                                 .padding(5)
                             }
                         }
-                        /*else if singlePlayerOptions {
+                        
+                        else if singlePlayerOptions { //can also implement variants here
                             VStack {
-                                NavigationLink(destination: GameView(isVsCPU: true, variant: "Glinski's").onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Glinski's")
+                                NavigationLink(destination: GameView(isVsCPU: true).onAppear {
+                                    deleteGameFile(filename: "currentSinglePlayer")
+                                    audioManager.stopBackgroundMusic()
+                                }) {
+                                    Text("New Game")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -76,8 +81,10 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView(isVsCPU: true, variant: "Mathewsons's").onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Mathewson's")
+                                NavigationLink(destination: GameView(isVsCPU: true).onAppear {
+                                    audioManager.stopBackgroundMusic()
+                                }) {
+                                    Text("Resume")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -86,7 +93,37 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                             }
-                        }*/ else {
+                        }
+                            
+                        else if passAndPlayOptions {
+                            VStack {
+                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
+                                    deleteGameFile(filename: "currentPassAndPlay")
+                                    audioManager.stopBackgroundMusic()
+                                }) {
+                                    Text("New Game")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                                
+                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
+                                    audioManager.stopBackgroundMusic()
+                                }) {
+                                    Text("Resume")
+                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .padding(5)
+                            }
+                            
+                        } else {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Tutorial")
@@ -98,10 +135,10 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                /*Button(action: { //when adding variants, uncomment this, comment navigation link, and add appropriate menu options
+                                Button(action: {
                                     singlePlayerOptions = true
-                                }) {*/
-                                NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stopBackgroundMusic() }) {
+                                }) {
+                                //NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Single Player")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -111,7 +148,10 @@ struct MainMenuView: View {
                                 }
                                 .padding(5)
                                 
-                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stopBackgroundMusic() }) {
+                                Button(action: {
+                                    passAndPlayOptions = true
+                                }) {
+                                //NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Pass & Play")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -139,11 +179,12 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if onlineOptions /*|| singlePlayerOptions*/ {
+                        if onlineOptions || singlePlayerOptions || passAndPlayOptions {
                             Button(action: {
                                 withAnimation {
                                     onlineOptions = false
-                                    //singlePlayerOptions = false
+                                    singlePlayerOptions = false
+                                    passAndPlayOptions = false
                                 }
                             }) {
                                 HStack {

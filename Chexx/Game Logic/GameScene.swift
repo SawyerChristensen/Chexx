@@ -655,7 +655,7 @@ class GameScene: SKScene {
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
     
     func rotateBoard() {
-        guard let view = self.view else {
+        guard self.view != nil else {
             print("View is nil, can't rotate board")
             return
         }
