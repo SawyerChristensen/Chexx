@@ -31,9 +31,10 @@ the proper attribution:
 hexchess settings
 -background music toggle
 -sound effects toggle
-show legal moves toggle (done)
+-show legal moves toggle (done)
 -show icon in multiplayer toggle
 -show name in multiplayer toggle
+-low motion toggle (in pass and play)
 
 -show row/columns A-L 1-11?
 

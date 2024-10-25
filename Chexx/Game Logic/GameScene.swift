@@ -624,10 +624,10 @@ class GameScene: SKScene {
                 print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
                 statusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
-                audioManager.playSoundEffect(fileName: "worldssmallestviolin", fileType: "mp3")
+                audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")
                 return
             }
-            audioManager.playSoundEffect(fileName: "alert_from_mgs", fileType: "mp3")
+            audioManager.playSoundEffect(fileName: "check", fileType: "mp3")
         }
         
         fiftyMoveRule += 1
@@ -644,9 +644,9 @@ class GameScene: SKScene {
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
         }
         
-        deleteGameFile(filename: "currentSinglePlayer")
-        deleteGameFile(filename: "currentPassAndPlay")
-        deleteGameFile(filename: "currentGameState")
+        //deleteGameFile(filename: "currentSinglePlayer")
+        //deleteGameFile(filename: "currentPassAndPlay")
+        //deleteGameFile(filename: "currentGameState")
         
         //print(gameState.flattenBitArrayToBytes(gameState.compressBoardToBits()))
         print("\n")
