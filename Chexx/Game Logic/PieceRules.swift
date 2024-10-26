@@ -1124,7 +1124,7 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
     return moves.filter { move in
         //print("move:", move)
         // Create a copy of the game state
-        var tempGameState = gameState.copy() //note to self: just move this back into gamescene? its fuckig up the king memory somehow
+        var tempGameState = gameState.copy()
         
         // Simulate the move in the copied game state
         tempGameState.movePiece(from: position, to: move)
@@ -1132,38 +1132,38 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
         // Check if the king would be in check after this move
         return !isKingInCheck(for: color, in: tempGameState)
     }
-    
-    func isKingInCheck(for color: String, in currentGameState: GameState) -> Bool {
-        let kingPosition: String
-        
-        if color == "white" {
-            kingPosition = currentGameState.whiteKingPosition
-        } else {
-            kingPosition = currentGameState.blackKingPosition
-        }
-        //print(kingPosition)
-        
-        //print("generating all opponent moves...")
-        let opponentColor = color == "white" ? "black" : "white"
-        let opponentMoves = generateAllMoves(for: opponentColor, in: currentGameState)
-        
-        return opponentMoves.contains(kingPosition)
-    }
-    
-    func generateAllMoves(for color: String, in gameState: GameState) -> [String] {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        var allMoves: [String] = []
+}
 
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState, skipKingCheck: true)
-                    allMoves.append(contentsOf: validMoves)
-                }
+func isKingInCheck(for color: String, in currentGameState: GameState) -> Bool {
+    let kingPosition: String
+    
+    if color == "white" {
+        kingPosition = currentGameState.whiteKingPosition
+    } else {
+        kingPosition = currentGameState.blackKingPosition
+    }
+    //print(kingPosition)
+    
+    //print("generating all opponent moves...")
+    let opponentColor = color == "white" ? "black" : "white"
+    let opponentMoves = generateAllMoves(for: opponentColor, in: currentGameState)
+    
+    return opponentMoves.contains(kingPosition)
+}
+
+func generateAllMoves(for color: String, in gameState: GameState) -> [String] {
+    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    var allMoves: [String] = []
+
+    for (colIndex, column) in gameState.board.enumerated() {
+        for (rowIndex, piece) in column.enumerated() {
+            if let piece = piece, piece.color == color {
+                let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState, skipKingCheck: true)
+                allMoves.append(contentsOf: validMoves)
             }
         }
-
-        return allMoves
     }
+
+    return allMoves
 }

@@ -17,6 +17,7 @@ class GameScene: SKScene {
     //var variant: String = "Glinkski's"
     
     var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
+    var gameCPU: GameCPU!
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
 
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -55,8 +56,8 @@ class GameScene: SKScene {
         }
         
         if isVsCPU {
-            setupVsCPUMode()
             gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
+            gameCPU = GameCPU(difficulty: CPUDifficulty.easy)
         }
         
         //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
@@ -79,11 +80,6 @@ class GameScene: SKScene {
             rotateBoardImmediately()
             rotateAllPiecesImmediately()
         }
-    }
-    
-    func setupVsCPUMode() {
-        // Set up AI logic or behavior here
-        //print("CPU mode activated")
     }
     
     enum Direction { //for use with calcualte new center
@@ -285,7 +281,7 @@ class GameScene: SKScene {
                     }
                     break
                 } else {
-                    print("It's not \(pieceColor)'s turn")
+                    print("It's \(gameState.currentPlayer)'s turn")
                 }
             }
         }
@@ -617,9 +613,10 @@ class GameScene: SKScene {
         let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
         
+        
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
-        if isCheck(for: opponentColor) {
+        if isCheck(for: opponentColor) { //this is implemented in GAMESTATE now, can just add the things we removed under this conditional and use the gamestate function to check, it makes more sense being there anyway
             if isCheckmate(for: opponentColor) {
                 print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
                 statusTextUpdater?("Checkmate!")
@@ -630,9 +627,17 @@ class GameScene: SKScene {
             audioManager.playSoundEffect(fileName: "check", fileType: "mp3")
         }
         
-        fiftyMoveRule += 1
+        fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate
+        
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
+        
+        if isVsCPU && gameState.currentPlayer == "black" {
+            // Simulate thinking time
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                self.cpuMakeMove()
+            }
+        }
         
         if isPassAndPlay {
             rotateAllPieces()
@@ -644,12 +649,26 @@ class GameScene: SKScene {
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
         }
         
-        //deleteGameFile(filename: "currentSinglePlayer")
-        //deleteGameFile(filename: "currentPassAndPlay")
-        //deleteGameFile(filename: "currentGameState")
-        
-        //print(gameState.flattenBitArrayToBytes(gameState.compressBoardToBits()))
         print("\n")
+    }
+    
+    func cpuMakeMove() {
+        if let move = gameCPU.makeMove(gameState: gameState) {
+            print("CPU moves from \(move.start) to \(move.destination)")
+
+            // Find the CPU's piece node at the starting position
+            if let cpuPieceNode = findPieceNode(at: move.start) {
+                // Call updateGameState with the CPU's piece node and destination hexagon name
+                self.updateGameState(with: cpuPieceNode, at: move.destination)
+            } else {
+                print("Error: CPU's piece node not found at \(move.start)")
+            }
+        } else {
+            // Handle no valid moves (e.g., checkmate or stalemate)
+            print("CPU has no valid moves. Game over.")
+            statusTextUpdater?("CPU has no valid moves. Game over.")
+            gameState.gameStatus = "ended"
+        }
     }
     
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
@@ -714,11 +733,29 @@ class GameScene: SKScene {
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
         if let hexagon = childNode(withName: hexagonName) as? HexagonNode,
-               let pieceNode = hexagon.children.first as? SKSpriteNode {
-                return pieceNode
-            }
-            return nil
+           let pieceNode = hexagon.children.first as? SKSpriteNode {
+            return pieceNode
         }
+        return nil
+    }
+    
+    func updatePieceNode(_ pieceNode: SKSpriteNode, from start: String, to destination: String) {
+        // Remove the piece from its current parent
+        pieceNode.removeFromParent()
+        
+        // Update the pieceNode's name to reflect its new position
+        if let nameComponents = pieceNode.name?.split(separator: "_"), nameComponents.count == 3 {
+            let color = String(nameComponents[1])
+            let type = String(nameComponents[2])
+            pieceNode.name = "\(destination)_\(color)_\(type)"
+        }
+        
+        // Add the piece to the new hexagon
+        if let destinationHexagon = childNode(withName: destination) as? HexagonNode {
+            destinationHexagon.addChild(pieceNode)
+            pieceNode.position = CGPoint.zero // Reset position relative to the parent hexagon
+        }
+    }
     
     func findKingPosition(for color: String) -> String? {
         let kingPosition: String
@@ -757,7 +794,7 @@ class GameScene: SKScene {
     }
     
     //this function is not what it says it is, can be split up. there is a duplicate function with different funcitonality in piecerules
-    func isCheck(for color: String) -> Bool {
+    func isCheck(for color: String) -> Bool { //this should return 
         guard let kingPosition = findKingPosition(for: color) else {
             print("\(color.capitalized) king not found!")
             return false

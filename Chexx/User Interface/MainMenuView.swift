@@ -273,9 +273,9 @@ struct MainMenuView: View {
                 }
                 Spacer()
             }
-            //.onAppear {
-            //    audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
-            //}
+            .onAppear {
+                audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
+            }
             //.background(Color(UIColor.systemBackground)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad

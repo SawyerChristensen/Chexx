@@ -16,10 +16,10 @@
 		BE091A522CC12A1800C1A3EC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A512CC12A1800C1A3EC /* GoogleSignIn */; };
 		BE091A542CC12A1800C1A3EC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A532CC12A1800C1A3EC /* GoogleSignInSwift */; };
 		BE091A572CC2889700C1A3EC /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE091A562CC2888100C1A3EC /* AuthViewModel.swift */; };
-		BE091A5F2CC3C9FB00C1A3EC /* notes.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE091A5E2CC3C9FB00C1A3EC /* notes.txt */; };
 		BE091A612CCBB62B00C1A3EC /* piece_move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */; };
 		BE091A632CCBB84C00C1A3EC /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* check.mp3 */; };
 		BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */; };
+		BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE091A662CCBBFB900C1A3EC /* GameCPU.swift */; };
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
 		BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B52C2A2602009113B4 /* GameScene.swift */; };
 		BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B72C2A2602009113B4 /* GameViewController.swift */; };
@@ -104,10 +104,10 @@
 /* Begin PBXFileReference section */
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
-		BE091A5E2CC3C9FB00C1A3EC /* notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
 		BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move.mp3; sourceTree = "<group>"; };
 		BE091A622CCBB84C00C1A3EC /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
 		BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_loss.mp3; sourceTree = "<group>"; };
+		BE091A662CCBBFB900C1A3EC /* GameCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCPU.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE76A9B52C2A2602009113B4 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -213,7 +213,6 @@
 			children = (
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
 				BE76AA412C3E34C6009113B4 /* to_do.txt */,
-				BE091A5E2CC3C9FB00C1A3EC /* notes.txt */,
 				BE76A9AE2C2A2602009113B4 /* Chexx */,
 				BE76A9AD2C2A2602009113B4 /* Products */,
 			);
@@ -305,6 +304,7 @@
 		BE7EB8C02C47778100D66EB0 /* Game Logic */ = {
 			isa = PBXGroup;
 			children = (
+				BE091A662CCBBFB900C1A3EC /* GameCPU.swift */,
 				BE76A9B52C2A2602009113B4 /* GameScene.swift */,
 				BE76AA3D2C30DF82009113B4 /* GameState.swift */,
 				BE76AA3F2C3720EE009113B4 /* PieceRules.swift */,
@@ -462,7 +462,6 @@
 				BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */,
 				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
 				BE94E1282C82F02E005DCAD3 /* game-win.mp3 in Resources */,
-				BE091A5F2CC3C9FB00C1A3EC /* notes.txt in Resources */,
 				BE94E1112C82F02E005DCAD3 /* notify.mp3 in Resources */,
 				BE76A9F92C2A3EDA009113B4 /* wn.png in Resources */,
 				BE94E1132C82F02E005DCAD3 /* illegal.mp3 in Resources */,
@@ -548,6 +547,7 @@
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
+				BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */,
 				BE94E0EB2C692E3A005DCAD3 /* SettingsViewController.swift in Sources */,
 				BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,

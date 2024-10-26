@@ -316,6 +316,102 @@ struct GameState: Codable {
         return self
     }
     
+    func findKingPositionGS(for color: String) -> String? {
+        let kingPosition: String
+        
+        if color == "white" {
+            kingPosition = self.whiteKingPosition
+        } else {
+            kingPosition = self.blackKingPosition
+        }
+        
+        return kingPosition
+    }
+    
+    func findCheckingPiecesGS(kingPosition: String, color: String) -> [String] {
+        var checkingPieces: [String] = []
+        
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
+        for (colIndex, column) in self.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
+
+                    if validMoves.contains(kingPosition) {
+                        checkingPieces.append(currentPosition)
+                    }
+                }
+            }
+        }
+        
+        return checkingPieces
+    }
+    
+    func isCheckGS(for color: String) -> Bool {
+        guard let kingPosition = findKingPositionGS(for: color) else {
+            print("\(color.capitalized) king not found!")
+            return false
+        }
+        let opponentColor = color == "white" ? "black" : "white"
+        
+        let checkingPieces = findCheckingPiecesGS(kingPosition: kingPosition, color: opponentColor)
+            if !checkingPieces.isEmpty {
+                return true //king is in check!
+            }
+        return false
+    }
+    
+    func isCheckmateGS(for color: String) -> Bool {
+        // Now check if the opponent has any legal moves
+        //let opponentColor = color == "white" ? "black" : "white"
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] // this should really be defined globally
+        
+        // Loop through all opponent pieces
+        for (colIndex, column) in self.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
+                    
+                    // If any piece has a legal move, its either 1) the king moving out of check 2) a piece blocking check or 3) a piece taking the attacker getting the king out of check. if any can be done, its not checkmate
+                    if !validMoves.isEmpty {
+                        return false
+                    }
+                }
+            }
+        }
+        
+        // If no legal moves found, it's checkmate!
+        return true
+    }
+    
+    func isGameOver(for color: String) -> (Bool, String?) {
+        // Check if it's checkmate
+        if isCheckGS(for: color) && isCheckmateGS(for: color) {
+            return (true, "checkmate")
+        }
+        
+        // Check for stalemate: no legal moves and not in check
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        for (colIndex, column) in board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
+                    if !validMoves.isEmpty {
+                        // If there is at least one legal move, it’s not a stalemate
+                        return (false, nil)
+                    }
+                }
+            }
+        }
+
+        // If the current player has no moves but is not in check, it's stalemate
+        return (true, "stalemate")
+    }
+    
     /*func compressBoardToBits() -> [Bool] {
         var bitArray = [Bool]()
 
@@ -381,7 +477,7 @@ func saveGameStateToFile(hexFen: [UInt8], to filename: String) {
         let url = getDocumentsDirectory().appendingPathComponent(filename)
         do {
             try encoded.write(to: url)
-            print("HexFen saved to \(url.path)")
+            //print("HexFen saved to \(url.path)")
         } catch {
             print("Failed to save HexFen: \(error.localizedDescription)")
         }
@@ -409,7 +505,7 @@ func deleteGameFile(filename: String) {
     
     do {
         try FileManager.default.removeItem(at: url)
-        print("Successfully deleted game file: \(url.path)")
+        //print("Successfully deleted game file: \(url.path)")
     } catch {
         print("Failed to delete game file: \(error.localizedDescription)")
     }

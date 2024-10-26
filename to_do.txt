@@ -1,19 +1,36 @@
+-move checking/checkmate/stalemate logic into gamestate
+-implement cpu
+-enable the cpu to actually affect gamescene
+-settings options (down below)
+    -background music toggle
+    -sound effects toggle
+    -show legal moves toggle (done)
+    -show name in multiplayer toggle
+    -low motion toggle (in pass and play)
+
+-dark mode should be grey background, same color buttons, white title text. not as blinding, but not b&w
+-sounds for main menu button presses (not for a button that starts any games, or profile/settings)
+
 -50 move no capture rule for draw
 -threefold repetition rule for draw
-    -implement
     
 -forgot password option for email users, shows up if you enter password in wrong
 
 -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
 
--board and piece movement sound effects /"done" but need different ones
-
-a menu with modes:
+a main menu with modes:
 1) pass & play (done)
 2) single player vs AI (need to implement ai)
-3) multiplayer online (need to implement online play)
+3) multiplayer online (need to implement online play) (should be implemented last) (no icons, need name checking)
 
--add stalemate checking/ending
+-Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
+    -display name, country emoji, elo
+    
+-name checking for online play (also set default name to full name instead of single)
+
+
+
+BEFORE LAUNCH:
 
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
@@ -26,28 +43,10 @@ the proper attribution:
 
 
 -game history button in profile view (store past user games, who vs who, and then display hex fen format)
--maybe add
+    -single player stored on device, multiplayer stored in cloud
 
-hexchess settings
--background music toggle
--sound effects toggle
--show legal moves toggle (done)
--show icon in multiplayer toggle
--show name in multiplayer toggle
--low motion toggle (in pass and play)
+-reenable main music menu if disabled (mainmenuview)
 
--show row/columns A-L 1-11?
-
-
-
-
-
-
-UNDO FOR PRODUCTION:
-reenable main music menu (mainmenuview)
-reenable player turns (gamescene)
-
--possibly get original sound effects not from chess.com to avoid getting bent over by saul goodman
 
 FOR FUTURE UPDATES:
 
@@ -62,6 +61,10 @@ FOR FUTURE UPDATES:
 -favorite opening in profile view?
 
 enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
+
+-enable a "show row/columns A-L 1-11" option in settings
+
+
 
 RESOURCES:
 
