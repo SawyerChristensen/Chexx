@@ -9,7 +9,8 @@ import SwiftUI
 import SpriteKit
 
 struct GameView: View {
-    @State private var statusText: String = ""
+    @State private var redStatusText: String = ""
+    @State private var whiteStatusText: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
     //@State var variant: String
@@ -31,10 +32,16 @@ struct GameView: View {
                     }
                 if geometry.size.height > geometry.size.width {
                     // Text view to display status messages
-                    Text(statusText)
+                    Text(redStatusText)
                         .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
                         .foregroundColor(.red)
                         .shadow(color: .red, radius: 5, x: 0, y: 0)
+                        .padding(.bottom, geometry.size.height * 0.95)
+                    
+                    Text(whiteStatusText)
+                        .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                        .foregroundColor(.white)
+                        .shadow(color: .white, radius: 5, x: 0, y: 0)
                         .padding(.bottom, geometry.size.height * 0.95)
                 }
             }
@@ -48,8 +55,11 @@ struct GameView: View {
         scene.isVsCPU = isVsCPU // Pass the vs CPU mode
         //scene.variant = variant
         scene.isPassAndPlay = isPassAndPlay // Pass the tabletop mode
-        scene.statusTextUpdater = { text in
-            self.statusText = text // Update the status text from the GameScene
+        scene.redStatusTextUpdater = { text in
+            self.redStatusText = text // Update the status text from the GameScene
+        }
+        scene.whiteStatusTextUpdater = { text in
+            self.whiteStatusText = text // Update the white status text from the GameScene
         }
         return scene
     }

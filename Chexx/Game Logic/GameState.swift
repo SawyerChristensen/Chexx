@@ -14,6 +14,20 @@ struct Piece: Codable {
     var isEnPassantTarget: Bool = false //if pawns have moved two, it opens them up for temporary en passant capture!!
 }
 
+struct Move { //just for makeMove/unmakeMove functions
+    let start: String // Starting position, e.g., "e2"
+    let destination: String // Destination position, e.g., "e4"
+}
+
+struct MoveUndoInfo { //also ^
+    let fromColIndex: Int
+    let fromRowIndex: Int
+    let toColIndex: Int
+    let toRowIndex: Int
+    let movingPiece: Piece?
+    let capturedPiece: Piece?
+}
+
 struct GameState: Codable {
     var currentPlayer: String // "white" or "black"
     var gameStatus: String // "ongoing" or "ended" //can probably change this into a bool "isOngoing" later
@@ -226,6 +240,46 @@ struct GameState: Codable {
         }
     }
     
+    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //can maybe get rid of?
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let fromColLetter = String(from.prefix(1))
+        let fromRowString = String(from.dropFirst())
+        let toColLetter = String(to.prefix(1))
+        let toRowString = String(to.dropFirst())
+
+        guard let fromColIndex = columns.firstIndex(of: fromColLetter),
+              let toColIndex = columns.firstIndex(of: toColLetter),
+              let fromRowIndex = Int(fromRowString).map({ $0 - 1 }),
+              let toRowIndex = Int(toRowString).map({ $0 - 1 }) else {
+            fatalError("Invalid move coordinates")
+        }
+
+        let movingPiece = board[fromColIndex][fromRowIndex]
+        let capturedPiece = board[toColIndex][toRowIndex]
+
+        // Update the board
+        board[toColIndex][toRowIndex] = movingPiece
+        board[fromColIndex][fromRowIndex] = nil
+
+        // Store undo information
+        let undoInfo = MoveUndoInfo(
+            fromColIndex: fromColIndex,
+            fromRowIndex: fromRowIndex,
+            toColIndex: toColIndex,
+            toRowIndex: toRowIndex,
+            movingPiece: movingPiece,
+            capturedPiece: capturedPiece
+        )
+
+        return undoInfo
+    }
+
+    mutating func unmakeMove(_ from: String, to: String, undoInfo: MoveUndoInfo) {
+        // Restore the board
+        board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece
+        board[undoInfo.toColIndex][undoInfo.toRowIndex] = undoInfo.capturedPiece
+    }
+    
     mutating func addMoveToHexFen(from: String, to: String) {
         let originInt = positionStringToInt(position: from)
         let destinationInt = positionStringToInt(position: to)
@@ -316,6 +370,19 @@ struct GameState: Codable {
         return self
     }
     
+    func pieceAt(_ position: String) -> Piece? {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let colLetter = String(position.prefix(1))
+        let rowString = String(position.dropFirst())
+
+        guard let colIndex = columns.firstIndex(of: colLetter),
+              let rowIndex = Int(rowString).map({ $0 - 1 }) else {
+            return nil
+        }
+
+        return board[colIndex][rowIndex]
+    }
+    
     func findKingPositionGS(for color: String) -> String? {
         let kingPosition: String
         
@@ -387,9 +454,10 @@ struct GameState: Codable {
         return true
     }
     
-    func isGameOver(for color: String) -> (Bool, String?) {
+    func isGameOver() -> (Bool, String?) {
         // Check if it's checkmate
-        if isCheckGS(for: color) && isCheckmateGS(for: color) {
+        let oppColor = currentPlayer //== "white" ? "black" : "white" //Maybe currentPlayer? who knows
+        if isCheckGS(for: oppColor) && isCheckmateGS(for: oppColor) {
             return (true, "checkmate")
         }
         
@@ -397,7 +465,7 @@ struct GameState: Codable {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         for (colIndex, column) in board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
+                if let piece = piece, piece.color == oppColor {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
                     if !validMoves.isEmpty {

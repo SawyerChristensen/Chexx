@@ -1,4 +1,4 @@
--move checking/checkmate/stalemate logic into gamestate
+-move checking/checkmate/stalemate logic into gamestate?
 -implement cpu
 -enable the cpu to actually affect gamescene
 -settings options (down below)
@@ -7,6 +7,10 @@
     -show legal moves toggle (done)
     -show name in multiplayer toggle
     -low motion toggle (in pass and play)
+    
+-the game is currently loading the game state every move (hard drive is slow!!)
+    
+FIX QUEEN MOVEMENT (BROKE AF RN)
 
 -dark mode should be grey background, same color buttons, white title text. not as blinding, but not b&w
 -sounds for main menu button presses (not for a button that starts any games, or profile/settings)
@@ -63,6 +67,16 @@ FOR FUTURE UPDATES:
 enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
 
 -enable a "show row/columns A-L 1-11" option in settings
+
+-enable an option to play as black against the CPU
+
+
+Current Minimax algorithm takes:
+Depth 1:    0.01 seconds
+Depth 2:    0.32 seconds
+Depth 3:    2.30 seoncds
+Depth 4:    ~45 seconds (unacceptable)
+use hashing/transposition tables/other tech to speed this up especially at higher depths when we potentially eval the same state multiple times
 
 
 

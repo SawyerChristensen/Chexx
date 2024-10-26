@@ -31,7 +31,8 @@ class GameScene: SKScene {
     var validMoves: [String] = []
     var fiftyMoveRule = 0 // Still need to implement
     
-    var statusTextUpdater: ((String) -> Void)?
+    var redStatusTextUpdater: ((String) -> Void)?
+    var whiteStatusTextUpdater: ((String) -> Void)?
     
     init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool) { // this can be modified to take in file name for gamesave
         self.isVsCPU = isVsCPU
@@ -57,7 +58,7 @@ class GameScene: SKScene {
         
         if isVsCPU {
             gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
-            gameCPU = GameCPU(difficulty: CPUDifficulty.easy)
+            gameCPU = GameCPU(difficulty: CPUDifficulty.medium)
         }
         
         //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
@@ -443,7 +444,7 @@ class GameScene: SKScene {
             let repeatPulse = SKAction.repeatForever(pulse)
             glowOverlay.run(repeatPulse)
             
-            statusTextUpdater?("Check!")
+            redStatusTextUpdater?("Check!")
         }
     }
 
@@ -461,7 +462,7 @@ class GameScene: SKScene {
                 hexagon.childNode(withName: "checkOverlay")?.removeFromParent()
             }
         }
-        statusTextUpdater?("")
+        redStatusTextUpdater?("")
     }
 
     func findNearestHexagon(to position: CGPoint) -> HexagonNode? {
@@ -619,7 +620,7 @@ class GameScene: SKScene {
         if isCheck(for: opponentColor) { //this is implemented in GAMESTATE now, can just add the things we removed under this conditional and use the gamestate function to check, it makes more sense being there anyway
             if isCheckmate(for: opponentColor) {
                 print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
-                statusTextUpdater?("Checkmate!")
+                redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
                 audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")
                 return
@@ -634,8 +635,11 @@ class GameScene: SKScene {
         
         if isVsCPU && gameState.currentPlayer == "black" {
             // Simulate thinking time
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.05 : 0.5
+            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove()
+                //self.whiteStatusTextUpdater?("")
             }
         }
         
@@ -653,8 +657,8 @@ class GameScene: SKScene {
     }
     
     func cpuMakeMove() {
-        if let move = gameCPU.makeMove(gameState: gameState) {
-            print("CPU moves from \(move.start) to \(move.destination)")
+        if let move = gameCPU.findMove(gameState: gameState) {
+            //print("CPU moves from \(move.start) to \(move.destination)")
 
             // Find the CPU's piece node at the starting position
             if let cpuPieceNode = findPieceNode(at: move.start) {
@@ -666,7 +670,7 @@ class GameScene: SKScene {
         } else {
             // Handle no valid moves (e.g., checkmate or stalemate)
             print("CPU has no valid moves. Game over.")
-            statusTextUpdater?("CPU has no valid moves. Game over.")
+            redStatusTextUpdater?("CPU has no valid moves. Game over.")
             gameState.gameStatus = "ended"
         }
     }

@@ -8,9 +8,10 @@
 import Foundation
 
 enum CPUDifficulty {
-    case easy   // Completely random moves (works)
-    case medium // Simple heuristic (e.g., piece count or board control) (doesnt work)
-    case hard   // Minimax or another advanced algorithm (doesnt work)
+    case random // Completely random moves (works)
+    case easy   // Gains the most points ON the turn (no lookahead)
+    case medium // Minimax with a depth of 2
+    case hard   // Minimax with a depth of 4-5?
 }
 
 class GameCPU {
@@ -43,7 +44,7 @@ class GameCPU {
     }
 
     // Main function to decide and make a move
-    func makeMove(gameState: GameState) -> (start: String, destination: String)? {
+    func findMove(gameState: GameState) -> (start: String, destination: String)? {
         // Use the existing function to get all possible moves
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
 
@@ -52,12 +53,14 @@ class GameCPU {
         }
 
         switch difficulty {
-        case .easy:
+        case .random:
             return selectRandomMove(from: possibleMoves)
+        case .easy:
+            return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState) //depth of 1?
         case .medium:
-            return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState)
+            return minimaxMove(gameState: gameState, depth: 2)
         case .hard:
-            return minimaxMove(gameState: gameState, depth: 3) // Adjust depth as needed
+            return minimaxMove(gameState: gameState, depth: 3)
         }
     }
 
@@ -70,7 +73,7 @@ class GameCPU {
 
     // Heuristic-based move selection (Medium difficulty)
     private func selectBestMoveWithHeuristic(from moves: [String], gameState: GameState) -> (start: String, destination: String)? {
-        var bestMove: String?
+        var bestMoves: [String] = []
         var bestValue = Int.min
 
         for move in moves {
@@ -81,55 +84,97 @@ class GameCPU {
                 let value = evaluateGameState(testState, for: gameState.currentPlayer)
                 if value > bestValue {
                     bestValue = value
-                    bestMove = move
+                    bestMoves = [move] // Start a new list with this move
+                } else if value == bestValue {
+                    bestMoves.append(move)
                 }
             }
         }
 
-        if let bestMove = bestMove {
-            return parseMove(bestMove)
+        if !bestMoves.isEmpty {
+            // Randomly select one move among the best moves
+            if let selectedMove = bestMoves.randomElement() {
+                print("Selected move among best moves: \(selectedMove)")
+                return parseMove(selectedMove)
+            }
         }
         return nil
     }
 
     // Minimax algorithm for Hard difficulty
     private func minimaxMove(gameState: GameState, depth: Int) -> (start: String, destination: String)? {
-        let bestMove = minimax(gameState: gameState, depth: depth, maximizingPlayer: true).move
+        
+        let startTime = Date() //for testing
+        
+        let maximizingPlayerColor = gameState.currentPlayer
+        let bestMove = minimax(gameState: gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor).move
+        
+        // Record the end time
+        let endTime = Date()
+        // Calculate the time interval (in seconds)
+        let timeInterval = endTime.timeIntervalSince(startTime)
+        // Print the time taken
+        print("Time taken for minimaxMove: \(timeInterval) seconds")
+        
         return parseMove(bestMove)
     }
 
     // Minimax implementation (simplified)
-    private func minimax(gameState: GameState, depth: Int, maximizingPlayer: Bool) -> (value: Int, move: String) {
-        if depth == 0 || gameState.isGameOver(for: gameState.currentPlayer).0 {
-            let value = evaluateGameState(gameState, for: gameState.currentPlayer)
+    private func minimax(gameState: GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String) -> (value: Int, move: String) {
+        if depth == 0 || gameState.isGameOver().0 { //need do something and read .1 value if game is actually over
+            let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, "")
         }
+        //print("thinking...")
 
-        let possibleMoves = generateAllMoves(for: gameState.currentPlayer, in: gameState)
-        var bestValue = maximizingPlayer ? Int.min : Int.max
+        var alpha = alpha
+        var beta = beta
         var bestMove = ""
 
-        for move in possibleMoves {
-            if let parsedMove = parseMove(move) {
-                var testState = gameState.copy()
-                testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
-                testState.currentPlayer = testState.currentPlayer == "white" ? "black" : "white"
+        let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
 
-                let result = minimax(gameState: testState, depth: depth - 1, maximizingPlayer: !maximizingPlayer)
-                if maximizingPlayer {
+        if maximizingPlayer {
+            var bestValue = Int.min
+            for move in possibleMoves {
+                if let parsedMove = parseMove(move) {
+                    var testState = gameState.copy()
+                    testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
+                    testState.currentPlayer = testState.currentPlayer == "white" ? "black" : "white"
+
+                    let result = minimax(gameState: testState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: false, originalPlayerColor: originalPlayerColor)
                     if result.value > bestValue {
                         bestValue = result.value
                         bestMove = move
                     }
-                } else {
+                    alpha = max(alpha, bestValue)
+                    if beta <= alpha {
+                        break // Beta cutoff
+                    }
+                }
+            }
+            return (bestValue, bestMove)
+        } else {
+            var bestValue = Int.max
+            for move in possibleMoves {
+                if let parsedMove = parseMove(move) {
+                    var testState = gameState.copy()
+                    testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
+                    testState.currentPlayer = testState.currentPlayer == "white" ? "black" : "white"
+
+                    let result = minimax(gameState: testState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: true, originalPlayerColor: originalPlayerColor)
                     if result.value < bestValue {
                         bestValue = result.value
                         bestMove = move
                     }
+                    beta = min(beta, bestValue)
+                    if beta <= alpha {
+                        break // Alpha cutoff
+                    }
                 }
             }
+            //print("thunk")
+            return (bestValue, bestMove)
         }
-        return (bestValue, bestMove)
     }
 
     // Parse move string into start and destination positions
@@ -167,22 +212,38 @@ class GameCPU {
         // Return the material difference
         return playerScore - opponentScore
     }
+    
+    // Order moves to improve alpha-beta pruning efficiency
+    private func orderMoves(_ moves: [String], gameState: GameState) -> [String] {
+        return moves.sorted { move1, move2 in
+            let score1 = evaluateMove(move1, in: gameState)
+            let score2 = evaluateMove(move2, in: gameState)
+            return score1 > score2
+        }
+    }
 
+    // Simple heuristic to prioritize moves
+    private func evaluateMove(_ move: String, in gameState: GameState) -> Int {
+        if let parsedMove = parseMove(move),
+           let fromPiece = gameState.pieceAt(parsedMove.start),
+           let toPiece = gameState.pieceAt(parsedMove.destination) {
+            // Capture move
+            return pieceValue(toPiece.type) - pieceValue(fromPiece.type)
+        } else {
+            // Non-capture move
+            return 0
+        }
+    }
+    
     // Assign values to pieces for evaluation
     private func pieceValue(_ type: String) -> Int { //could maybe be updated for hexchess specific values
         switch type {
-        case "king":
-            return 1000
-        case "queen":
-            return 9
-        case "rook":
-            return 5
-        case "bishop", "knight":
-            return 3
-        case "pawn":
-            return 1
-        default:
-            return 0
+        case "king":                return 1000
+        case "queen":               return 9
+        case "rook":                return 5
+        case "bishop", "knight":    return 3
+        case "pawn":                return 1
+        default: return 0
         }
     }
 }
