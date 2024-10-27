@@ -434,6 +434,7 @@ private func validMovesForBishop(_ color: String, at position: String, in gameSt
     
     // Move up left diagonal...
     var counter = 1
+    var downCounter = 1
     
         // ...on the right side of the board
         while colIndex - counter >= 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: rowIndex + (counter * 2), in: gameState) {
@@ -494,6 +495,7 @@ private func validMovesForBishop(_ color: String, at position: String, in gameSt
     
     // Move down left diagonal...
     counter = 1
+    downCounter = 1
     
         // ...on the right side of the board
         while colIndex - counter >= 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: rowIndex - counter, in: gameState) {
@@ -510,20 +512,22 @@ private func validMovesForBishop(_ color: String, at position: String, in gameSt
 
         // ...on the middle/left side of the board
         new_starting_row = rowIndex - counter + 1
-        while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row - (counter * 2), in: gameState) {
-            if gameState.board[colIndex - counter][new_starting_row - (counter * 2)] == nil {
-                validBoardMoves.append((colIndex - counter, new_starting_row - (counter * 2)))
-            } else if gameState.board[colIndex - counter][new_starting_row - (counter * 2)]?.color == color {
+        while colIndex - counter < 5 && isValidPosition(columnToCheck: colIndex - counter, rowToCheck: new_starting_row - (downCounter * 2), in: gameState) {
+            if gameState.board[colIndex - counter][new_starting_row - (downCounter * 2)] == nil {
+                validBoardMoves.append((colIndex - counter, new_starting_row - (downCounter * 2)))
+            } else if gameState.board[colIndex - counter][new_starting_row - (downCounter * 2)]?.color == color {
                 break
             } else {
-                validBoardMoves.append((colIndex - counter, new_starting_row - (counter * 2)))
+                validBoardMoves.append((colIndex - counter, new_starting_row - (downCounter * 2)))
                 break
             }
             counter += 1
+            downCounter += 1
         }
     
     // Move down right diagonal...
     counter = 1
+    downCounter = 1
     
         // ...on the left side of the board
         while colIndex + counter <= 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: rowIndex - counter, in: gameState) {
@@ -540,16 +544,17 @@ private func validMovesForBishop(_ color: String, at position: String, in gameSt
 
         // ...on the middle/right side of the board
         new_starting_row = rowIndex - counter + 1
-        while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row - (counter * 2), in: gameState) {
-            if gameState.board[colIndex + counter][new_starting_row - (counter * 2)] == nil {
-                validBoardMoves.append((colIndex + counter, new_starting_row - (counter * 2)))
-            } else if gameState.board[colIndex + counter][new_starting_row - (counter * 2)]?.color == color {
+        while colIndex + counter > 5 && isValidPosition(columnToCheck: colIndex + counter, rowToCheck: new_starting_row - (downCounter * 2), in: gameState) {
+            if gameState.board[colIndex + counter][new_starting_row - (downCounter * 2)] == nil {
+                validBoardMoves.append((colIndex + counter, new_starting_row - (downCounter * 2)))
+            } else if gameState.board[colIndex + counter][new_starting_row - (downCounter * 2)]?.color == color {
                 break
             } else {
-                validBoardMoves.append((colIndex + counter, new_starting_row - (counter * 2)))
+                validBoardMoves.append((colIndex + counter, new_starting_row - (downCounter * 2)))
                 break
             }
             counter += 1
+            downCounter += 1
         }
     
     // Move perfectly left...

@@ -14,7 +14,7 @@ struct GameView: View {
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
     //@State var variant: String
-    @State private var sceneSize: CGSize = UIScreen.main.bounds.size
+    //@State private var sceneSize: CGSize = UIScreen.main.bounds.size
 
     var body: some View {
         GeometryReader { geometry in
@@ -23,11 +23,11 @@ struct GameView: View {
                 
                 SpriteView(scene: createScene(size: geometry.size))
                     .ignoresSafeArea()
-                    .onAppear {
-                        sceneSize = geometry.size
-                    }
+                    //.onAppear {
+                    //    sceneSize = geometry.size
+                   // }
                     .onChange(of: geometry.size) { _, newSize in
-                        sceneSize = newSize
+                    //    sceneSize = newSize
                         updateSceneSize(newSize)
                     }
                 if geometry.size.height > geometry.size.width {

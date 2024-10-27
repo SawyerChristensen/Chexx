@@ -35,6 +35,11 @@ a main menu with modes:
 -name checking for online play (also set default name to full name instead of single)
 
 
+Bugs:
+tile highlight does not stay on rotate
+
+
+
 
 BEFORE LAUNCH:
 
@@ -83,7 +88,7 @@ enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as star
 Current Minimax algorithm takes:
 Depth 1:    0.01 seconds
 Depth 2:    ~0.4 seconds
-Depth 3:    2.30 seoncds (often much more, 2.3 seems to be the MINIMUM) (also unnacceptable) depth 3 is target default
+Depth 3:    2.30 seoncds (often much more, ~6 sec, 2.3 seems to be the MINIMUM) (also unnacceptable) depth 3 is target default
 Depth 4:    ~45 seconds (unacceptable)
 use hashing/transposition tables/other tech to speed this up especially at higher depths when we potentially eval the same state multiple times
 

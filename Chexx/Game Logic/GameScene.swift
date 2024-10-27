@@ -48,6 +48,8 @@ class GameScene: SKScene {
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
+        //print("Loaded the game scene")
+        
         // Center the scene
         anchorPoint = CGPoint(x: 0.5, y: 0.5)
         
@@ -58,7 +60,7 @@ class GameScene: SKScene {
         
         if isVsCPU {
             gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
-            gameCPU = GameCPU(difficulty: CPUDifficulty.medium)
+            gameCPU = GameCPU(difficulty: CPUDifficulty.hard)
         }
         
         //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
@@ -545,7 +547,7 @@ class GameScene: SKScene {
         
         //********** CAPTURING ********** // STILL NEED TO CHECK IF A KING IS CAPTURED & END THE GAME
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
-            print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
+            //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
             //remove the piecenode at the designation hexagon, note this is different than updating the board state, but we take care of that later
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
@@ -638,7 +640,7 @@ class GameScene: SKScene {
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
         
-        if isVsCPU && gameState.currentPlayer == "black" {
+        if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
             let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.33
