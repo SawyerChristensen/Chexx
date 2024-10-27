@@ -572,9 +572,14 @@ class GameScene: SKScene {
         // Pawn promotion logic without blocking the main thread
         if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1) ||
            (color == "black" && type == "pawn" && rowIndex == 0) {
-            presentPromotionOptions { newType in
-                type = newType // Update the piece type to the chosen promotion type
+            if isVsCPU && color == "black" { //need to change this if implement a mode where CPU plays as white
+                type = "queen" //CPU automatically chooses queen, possible update can be it choosing between queen or knight if knight is more advantageous
                 self.finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+            } else {
+                presentPromotionOptions { newType in
+                    type = newType // Update the piece type to the chosen promotion type
+                    self.finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+                }
             }
             return
         }
@@ -658,18 +663,24 @@ class GameScene: SKScene {
     
     func cpuMakeMove() {
         if let move = gameCPU.findMove(gameState: &gameState) {
-            //print("CPU moves from \(move.start) to \(move.destination)")
-
-            // Find the CPU's piece node at the starting position
             if let cpuPieceNode = findPieceNode(at: move.start) {
-                // Call updateGameState with the CPU's piece node and destination hexagon name
-                self.updateGameState(with: cpuPieceNode, at: move.destination)
+                if let destinationHexagon = self.childNode(withName: move.destination) {
+                    if let parent = cpuPieceNode.parent {
+                        let destinationPosition = parent.convert(destinationHexagon.position, from: self)
+                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.1)
+                        cpuPieceNode.run(slideAction) { [weak self] in
+                            self?.updateGameState(with: cpuPieceNode, at: move.destination)
+                        }
+                    }
+                } else {
+                    print("Error: Destination hexagon not found for \(move.destination)")
+                }
             } else {
                 print("Error: CPU's piece node not found at \(move.start)")
             }
         } else {
             // Handle no valid moves (e.g., checkmate or stalemate)
-            print("CPU has no valid moves. Game over.")
+            print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
             redStatusTextUpdater?("CPU has no valid moves. Game over.")
             gameState.gameStatus = "ended"
         }

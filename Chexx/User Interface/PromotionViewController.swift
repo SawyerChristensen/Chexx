@@ -17,5 +17,5 @@ struct PromotionViewController: UIViewControllerRepresentable {
         return hostingController
     }
     
-    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {}
+    func updateUIViewController(_ uiViewController: UIViewController, context: Context) {} //might not need this
 }

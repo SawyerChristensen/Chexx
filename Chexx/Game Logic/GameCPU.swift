@@ -64,14 +64,14 @@ class GameCPU {
         }
     }
 
-    // Randomly select a move (Easy difficulty)
+    // Randomly select a move
     private func selectRandomMove(from moves: [String]) -> (start: String, destination: String)? {
         guard let move = moves.randomElement() else { return nil }
         print(move)
         return parseMove(move)
     }
 
-    // Heuristic-based move selection (Medium difficulty)
+    // Heuristic-based move selection (Easy difficulty)
     private func selectBestMoveWithHeuristic(from moves: [String], gameState: GameState) -> (start: String, destination: String)? {
         var bestMoves: [String] = []
         var bestValue = Int.min
@@ -101,7 +101,6 @@ class GameCPU {
         return nil
     }
 
-    // Minimax algorithm for Hard difficulty
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
         
         let startTime = Date() //for testing
@@ -119,7 +118,6 @@ class GameCPU {
         return parseMove(bestMove)
     }
 
-    // Minimax implementation (simplified)
     private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String) -> (value: Int, move: String) {
         if depth == 0 || gameState.isGameOver().0 { //need do something and read .1 value if game is actually over
             let value = evaluateGameState(gameState, for: originalPlayerColor)
