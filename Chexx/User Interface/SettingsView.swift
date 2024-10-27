@@ -68,8 +68,7 @@ struct SettingsView: View {
             .padding()
             .background(Color(UIColor.systemBackground))
             .cornerRadius(15)
-            .shadow(radius: 100)
-            //.shadow(radius: 100)
+            .shadow(radius: colorScheme == .dark ? 20 : 100)
             //.scaleEffect(1.2)
         }
     }

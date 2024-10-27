@@ -37,6 +37,7 @@ a main menu with modes:
 
 Bugs:
 tile highlight does not stay on rotate
+-user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 
 
 

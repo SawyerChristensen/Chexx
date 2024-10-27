@@ -34,10 +34,13 @@ struct MainMenuView: View {
                             .frame(height: screenHeight * 0.14)
                             .padding(.top, screenHeight * 0.14)
                             .colorInvertIfDarkMode(colorScheme: colorScheme)
+                            //.shadow(color: .white, radius: 5, x: 0, y: 0)
+                            //.overlay(colorScheme == .dark ? Color.accentColor .blendMode(.darken) : Color.white .blendMode(.darken)) //try to do nothing if light mode
                         
                         //WaveText(text: "Hex Chess", fontSize: screenHeight * 0.07)
                         Text("Hex Chess")
                             .font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             .padding(.top, -5)
                         
                         Spacer()
@@ -236,7 +239,7 @@ struct MainMenuView: View {
                             }
                         }
                         .padding()
-                        .background(Color(UIColor.systemBackground))
+                        .background(Color(UIColor.systemGray6))
                         .onAppear {
                             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                 isKeyboardVisible = true
@@ -276,7 +279,7 @@ struct MainMenuView: View {
             //.onAppear {
              //   audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
             //}
-            //.background(Color(UIColor.systemBackground)) //change this to change main menu background color
+            .background(Color(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }

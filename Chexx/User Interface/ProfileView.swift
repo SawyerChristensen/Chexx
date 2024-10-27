@@ -419,7 +419,7 @@ struct ProfileView: View {
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color(.systemGray5))
                         .cornerRadius(8)
                         .focused($focus, equals: .email)
                         .submitLabel(.next) //show "next" on the keyboard
@@ -437,7 +437,7 @@ struct ProfileView: View {
                         .textInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color(.systemGray5))
                         .cornerRadius(8)
                         .focused($focus, equals: .password)
                         .submitLabel(.go) // Show "Go" on the keyboard
