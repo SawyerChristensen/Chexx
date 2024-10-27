@@ -44,7 +44,7 @@ class GameCPU {
     }
 
     // Main function to decide and make a move
-    func findMove(gameState: GameState) -> (start: String, destination: String)? {
+    func findMove(gameState: inout GameState) -> (start: String, destination: String)? {
         // Use the existing function to get all possible moves
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
 
@@ -58,9 +58,9 @@ class GameCPU {
         case .easy:
             return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState) //depth of 1?
         case .medium:
-            return minimaxMove(gameState: gameState, depth: 2)
+            return minimaxMove(gameState: &gameState, depth: 2)
         case .hard:
-            return minimaxMove(gameState: gameState, depth: 3)
+            return minimaxMove(gameState: &gameState, depth: 3)
         }
     }
 
@@ -102,12 +102,12 @@ class GameCPU {
     }
 
     // Minimax algorithm for Hard difficulty
-    private func minimaxMove(gameState: GameState, depth: Int) -> (start: String, destination: String)? {
+    private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
         
         let startTime = Date() //for testing
         
         let maximizingPlayerColor = gameState.currentPlayer
-        let bestMove = minimax(gameState: gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor).move
+        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor).move
         
         // Record the end time
         let endTime = Date()
@@ -120,51 +120,47 @@ class GameCPU {
     }
 
     // Minimax implementation (simplified)
-    private func minimax(gameState: GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String) -> (value: Int, move: String) {
+    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String) -> (value: Int, move: String) {
         if depth == 0 || gameState.isGameOver().0 { //need do something and read .1 value if game is actually over
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, "")
         }
-        //print("thinking...")
 
         var alpha = alpha
         var beta = beta
-        var bestMove = ""
+        var bestMoves: [String] = [] // List of moves with the best score
+        var bestValue = maximizingPlayer ? Int.min : Int.max
 
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
+        let orderedMoves = orderMoves(possibleMoves, gameState: gameState)
 
-        if maximizingPlayer {
-            var bestValue = Int.min
-            for move in possibleMoves {
-                if let parsedMove = parseMove(move) {
-                    var testState = gameState.copy()
-                    testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
-                    testState.currentPlayer = testState.currentPlayer == "white" ? "black" : "white"
+        for move in orderedMoves {
+            if let parsedMove = parseMove(move) {
+                let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
+                gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
-                    let result = minimax(gameState: testState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: false, originalPlayerColor: originalPlayerColor)
+                let result = minimax(gameState: &gameState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: !maximizingPlayer, originalPlayerColor: originalPlayerColor)
+
+                gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
+                gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+                if maximizingPlayer {
                     if result.value > bestValue {
                         bestValue = result.value
-                        bestMove = move
+                        bestMoves = [move] // Reset bestMoves to the new best move
+                    } else if result.value == bestValue {
+                        bestMoves.append(move) // Add to bestMoves if it's equal to bestValue
                     }
                     alpha = max(alpha, bestValue)
                     if beta <= alpha {
                         break // Beta cutoff
                     }
-                }
-            }
-            return (bestValue, bestMove)
-        } else {
-            var bestValue = Int.max
-            for move in possibleMoves {
-                if let parsedMove = parseMove(move) {
-                    var testState = gameState.copy()
-                    testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
-                    testState.currentPlayer = testState.currentPlayer == "white" ? "black" : "white"
-
-                    let result = minimax(gameState: testState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: true, originalPlayerColor: originalPlayerColor)
+                } else {
                     if result.value < bestValue {
                         bestValue = result.value
-                        bestMove = move
+                        bestMoves = [move] // Reset bestMoves to the new best move
+                    } else if result.value == bestValue {
+                        bestMoves.append(move) // Add to bestMoves if it's equal to bestValue
                     }
                     beta = min(beta, bestValue)
                     if beta <= alpha {
@@ -172,9 +168,13 @@ class GameCPU {
                     }
                 }
             }
-            //print("thunk")
-            return (bestValue, bestMove)
-        }
+        } //lists can be good for depth of 2, but other depths should have less, better higher scoring moves
+        //possible overhead, but nothing important rn. need to figure out hashing and multithreading first
+
+        // Randomly select one of the best moves
+        let bestMove = bestMoves.randomElement() ?? ""
+
+        return (bestValue, bestMove)
     }
 
     // Parse move string into start and destination positions

@@ -74,11 +74,22 @@ enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as star
 Current Minimax algorithm takes:
 Depth 1:    0.01 seconds
 Depth 2:    0.32 seconds
-Depth 3:    2.30 seoncds
+Depth 3:    2.30 seoncds (often much more, 2.3 seems to be the MINIMUM) (also unnacceptable) depth 3 is target default
 Depth 4:    ~45 seconds (unacceptable)
 use hashing/transposition tables/other tech to speed this up especially at higher depths when we potentially eval the same state multiple times
 
+Possible Future Optimizations:
+DONE? Alpha-Beta Pruning (done? make suer it works optimally) Up to 10x reduction in search space
+Multi-Threading (Parallel Search) Up to 2-8x speedup, depending on hardware (MAKE SURE IT DOESNT LOAD THE GS EVERY THREAD, MIGHT BE THE REASON ITS SO SLOW RN)
+Hashing (Zobrist Hashing) 10-50% speedup
+Transposition Tables (TT) 20-100% speedup (depending on position complexity)
+Parallelized Evaluation Functions 2-4x speedup, depending on how parallelizable the evaluation function is
+Simd (Single Instruction, Multiple Data) and GPU Offloading 2-10x speedup, depending on hardware and implementation
+Move Ordering and Iterative Deepening 10-30% speedup (did move ordering)
+Late Move Reductions 10-30% speedup
+Null Move Pruning 10-20% speedup
 
+Might be able to get to depth 4 with all of these improvements
 
 RESOURCES:
 

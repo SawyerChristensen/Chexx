@@ -636,7 +636,7 @@ class GameScene: SKScene {
         if isVsCPU && gameState.currentPlayer == "black" {
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.05 : 0.5
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.33
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove()
                 //self.whiteStatusTextUpdater?("")
@@ -653,11 +653,11 @@ class GameScene: SKScene {
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
         }
         
-        print("\n")
+        //print("\n")
     }
     
     func cpuMakeMove() {
-        if let move = gameCPU.findMove(gameState: gameState) {
+        if let move = gameCPU.findMove(gameState: &gameState) {
             //print("CPU moves from \(move.start) to \(move.destination)")
 
             // Find the CPU's piece node at the starting position
