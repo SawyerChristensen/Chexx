@@ -32,8 +32,8 @@ struct MainMenuView: View {
                         Image("white_king")
                             .resizable()
                             .scaledToFit()
-                            .frame(height: screenHeight * 0.14)
-                            .padding(.top, screenHeight * 0.14)
+                            .frame(height: screenHeight * 0.15)
+                            .padding(.top, screenHeight * 0.15)
                             .colorInvertIfDarkMode(colorScheme: colorScheme)
                             //.shadow(color: .white, radius: 5, x: 0, y: 0)
                             //.overlay(colorScheme == .dark ? Color.accentColor .blendMode(.darken) : Color.white .blendMode(.darken)) //try to do nothing if light mode
@@ -53,7 +53,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -63,7 +63,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -80,7 +80,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -92,7 +92,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -112,7 +112,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -124,7 +124,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -137,7 +137,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -150,7 +150,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -163,7 +163,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -175,7 +175,7 @@ struct MainMenuView: View {
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
@@ -237,7 +237,7 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(width: screenHeight / 4.5, height: screenHeight / 18)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                             }

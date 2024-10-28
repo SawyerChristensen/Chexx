@@ -2,17 +2,18 @@
 -implement cpu
 -enable the cpu to actually affect gamescene
 -settings options (down below)
-    -background music toggle
-    -sound effects toggle
+    -background music toggle (done)
+    -sound effects toggle (done)
     -show legal moves toggle (done)
     -show name in multiplayer toggle
-    -low motion toggle (in pass and play)
+    -low motion toggle
     
+issues:
+-king movemnt is broken, the cpu can put its own king in check
+-also the AI is dogshit at getting a checkmate
 
     
 -the game is currently loading the game state every scene reload (or maybe move?) (hard drive is slow!!)
-    
-FIX QUEEN MOVEMENT (BROKE AF RN)
 
 -dark mode should be grey background, same color buttons, white title text. not as blinding, but not b&w
 -sounds for main menu button presses (not for a button that starts any games, or profile/settings)

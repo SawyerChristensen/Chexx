@@ -312,7 +312,7 @@ struct ProfileView: View {
                             }) {
                                 Image(systemName: "pencil")
                                     .font(.headline)
-                                    .foregroundColor(.black) // Change color as needed
+                                    .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             }
                             .padding(.leading, 5)
                         }
@@ -369,7 +369,7 @@ struct ProfileView: View {
                                 .padding()
                                 .frame(height: screenHeight / 18)
                                 .background(Color.accentColor)
-                                .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                 .clipShape(HexagonEdgeRectangleShape())
                                 .padding(.bottom , screenHeight / 20)
                         }
@@ -381,7 +381,7 @@ struct ProfileView: View {
                                 .padding()
                                 .frame(width: screenHeight / 4.5, height: screenHeight / 18)
                                 .background(Color.red)
-                                .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                 .clipShape(HexagonEdgeRectangleShape())
                         }
                     }
