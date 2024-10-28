@@ -11,8 +11,9 @@ struct SettingsView: View {
     let screenHeight: CGFloat //built off of 720 for initial iphone 15 pro test
     @Environment(\.colorScheme) var colorScheme // Detecting the current color scheme
     @AppStorage("highlightEnabled") private var highlightEnabled = true
-    //@AppStorage("tabletopRotateTableOnTurn") private var tabletopRotateTableOnTurn = true
-    //@AppStorage("tabletopPermRotateBlack") private var tabletopPermRotateBlack = true
+    @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
+    @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
+    
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
     var body: some View {
@@ -26,32 +27,26 @@ struct SettingsView: View {
             VStack {
                 //WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
                 Text("Settings")
-                    .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
+                    .font(.system(size: screenHeight / 22, weight: .bold, design: .serif))
                     .padding()
-                
-                VStack {
                     
-                    Toggle("Highlight Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
-                    //.padding()
-                        .frame(maxWidth: min(screenHeight / 2.4, 500))
-                        .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
-                        .foregroundColor(colorScheme == .dark ? .white : .black)
-                    //.shadow(color: .white, radius: 10, x: 0, y: 0)
-                    /*
-                     Text("Tabletop")
-                     .font(.system(size: 36, weight: .bold, design: .serif))
-                     .padding(.top)
-                     
-                     Toggle("Rotate Table on Turn", isOn: $tabletopRotateTableOnTurn) //note: toggle does not scale with font
-                     //.padding()
-                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                     .font(.system(size: min(screenHeight / 40, 28), weight: .bold, design: .serif))
-                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                     //.shadow(color: .white, radius: 10, x: 0, y: 0)
-                     .padding(.bottom)
-                     */
-                }
+                Toggle("Show Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
+                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    //.padding(.bottom, 2)
                 
+                Toggle("Background Music", isOn: $backgroundMusicEnabled) //note: toggle does not scale with font
+                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    //.padding(.bottom, 2)
+                
+                Toggle("Sound Effects", isOn: $soundEffectsEnabled) //note: toggle does not scale with font
+                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                    
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {

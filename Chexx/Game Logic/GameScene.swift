@@ -11,6 +11,8 @@ import SwiftUI
 
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
+    @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
+    
     let audioManager = AudioManager()
     var isVsCPU: Bool      // To handle "vs CPU" mode
     var isPassAndPlay: Bool // To handle "Pass & Play" mode
@@ -608,8 +610,7 @@ class GameScene: SKScene {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
             }
         }
-        
-        audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")
+        if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
             gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
@@ -629,10 +630,10 @@ class GameScene: SKScene {
                 print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
                 redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
-                audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")
+                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             }
-            audioManager.playSoundEffect(fileName: "check", fileType: "mp3")
+            if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") }
         }
         
         fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate

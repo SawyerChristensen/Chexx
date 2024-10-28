@@ -316,9 +316,9 @@ struct ProfileView: View {
                             }
                             .padding(.leading, 5)
                         }
-                        .onChange(of: isEditing) { editing in //this is literally how its supposed to be in the apple documentation. the documentation says "its deprecated, use zero or two, and then gives an example of just one. can safely ignore this warning until the documentation is updated
-                            if editing {
-                                focus = .displayName // Set focus when editing starts
+                        .onChange(of: isEditing) {
+                            if isEditing {
+                                focus = .displayName
                             }
                         }
                     }
@@ -340,7 +340,7 @@ struct ProfileView: View {
                     .onAppear {
                         loadSelectedCountry() // Load the selected country when the view appears
                     }
-                    .onChange(of: selectedCountry) { newValue in
+                    .onChange(of: selectedCountry) {
                         // Update Firebase Firestore (server storage)
                         authViewModel.userCountry = selectedCountry!.name
                         authViewModel.updateUserCountryInFirestore(country: selectedCountry!.name)

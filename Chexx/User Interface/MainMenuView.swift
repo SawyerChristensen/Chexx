@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct MainMenuView: View {
+    @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
@@ -100,6 +101,9 @@ struct MainMenuView: View {
                             
                         else if passAndPlayOptions {
                             VStack {
+                                
+                                //possiby have a toggle here for low motion mode (either here or settings)
+                                
                                 NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
                                     deleteGameFile(filename: "currentPassAndPlay")
                                     audioManager.stopBackgroundMusic()
@@ -276,15 +280,24 @@ struct MainMenuView: View {
                 }
                 Spacer()
             }
-            //.onAppear {
-             //   audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
-            //}
+            .onAppear {
+                if backgroundMusicEnabled {
+                    audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
+                } //need to stop music immediatey if this is disabled
+            }
+            .onChange(of: backgroundMusicEnabled) {
+                if backgroundMusicEnabled {
+                    audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
+                } else {
+                    audioManager.stopBackgroundMusic()
+                }
+            }
             .background(Color(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
 }
-
+/*
 struct SettingsModalView: View {
     @Environment(\.colorScheme) var colorScheme
     @AppStorage("highlightEnabled") private var highlightEnabled = true
@@ -311,7 +324,7 @@ struct SettingsModalView: View {
         .cornerRadius(15)
         .shadow(radius: 10)
     }
-}
+}*/
 
 struct HexagonEdgeRectangleShape: Shape {
     func path(in rect: CGRect) -> Path {
