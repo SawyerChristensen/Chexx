@@ -643,7 +643,7 @@ class GameScene: SKScene {
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.33
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.2
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove()
                 //self.whiteStatusTextUpdater?("")
@@ -681,7 +681,7 @@ class GameScene: SKScene {
         } else {
             // Handle no valid moves (e.g., checkmate or stalemate)
             print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
-            redStatusTextUpdater?("CPU has no valid moves. Game over.")
+            //redStatusTextUpdater?("CPU has no valid moves. Game over.")
             gameState.gameStatus = "ended"
         }
     }

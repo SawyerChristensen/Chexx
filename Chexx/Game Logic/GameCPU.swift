@@ -72,21 +72,31 @@ class GameCPU {
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
-        
+    
         let startTime = Date() //for testing
+        let deadline = startTime.addingTimeInterval(5.0)
         
         let maximizingPlayerColor = gameState.currentPlayer
-        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor).move
+        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
+        
+        print(bestMove)
         
         let endTime = Date() //for testing
         let timeInterval = endTime.timeIntervalSince(startTime) //for testing
         print("Time taken for minimaxMove: \(timeInterval) seconds")
         
-        return parseMove(bestMove)
+        return parseMove(bestMove.move)
     }
 
-    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String) -> (value: Int, move: String) {
-        if depth == 0 || gameState.isGameOver().0 { //need do something and read .1 value if game is actually over
+    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: String) {
+        
+        //print("Entering minimax at depth:", depth)
+        
+        if Date() >= deadline {
+            return (0, "") //end the recursion!!
+        }
+        
+        if depth == 0 || gameState.isGameOver().0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, "")
         }
@@ -96,19 +106,25 @@ class GameCPU {
         var bestMoves: [String] = [] // List of moves with the best score
         var bestValue = maximizingPlayer ? Int.min : Int.max
 
+        // Generate and order moves for better alpha/beta pruning
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
         let orderedMoves = orderMoves(possibleMoves, gameState: gameState)
 
         for move in orderedMoves {
+            if Date() >= deadline { //mayyyy not need this
+               return (bestValue, bestMoves.randomElement() ?? "")
+           }
+
             if let parsedMove = parseMove(move) {
                 let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
                 gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
-                let result = minimax(gameState: &gameState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: !maximizingPlayer, originalPlayerColor: originalPlayerColor)
+                let result = minimax(gameState: &gameState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: !maximizingPlayer, originalPlayerColor: originalPlayerColor, deadline: deadline)
 
                 gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
                 gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
+                // Update best value and moves based on maximizing/minimizing
                 if maximizingPlayer {
                     if result.value > bestValue {
                         bestValue = result.value
@@ -123,9 +139,9 @@ class GameCPU {
                 } else {
                     if result.value < bestValue {
                         bestValue = result.value
-                        bestMoves = [move] // Reset bestMoves to the new best move
+                        bestMoves = [move]
                     } else if result.value == bestValue {
-                        bestMoves.append(move) // Add to bestMoves if it's equal to bestValue
+                        bestMoves.append(move)
                     }
                     beta = min(beta, bestValue)
                     if beta <= alpha {
@@ -133,8 +149,7 @@ class GameCPU {
                     }
                 }
             }
-        } //lists can be good for depth of 2, but other depths should have less, better higher scoring moves
-        //possible overhead, but nothing important rn. need to figure out hashing and multithreading first
+        }
 
         // Randomly select one of the best moves
         let bestMove = bestMoves.randomElement() ?? ""
