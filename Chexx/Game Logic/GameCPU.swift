@@ -67,7 +67,7 @@ class GameCPU {
     // Randomly select a move
     private func selectRandomMove(from moves: [String]) -> (start: String, destination: String)? {
         guard let move = moves.randomElement() else { return nil }
-        print(move)
+        //print(move)
         return parseMove(move)
     }
 

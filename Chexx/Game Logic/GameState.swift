@@ -409,20 +409,47 @@ struct GameState: Codable {
         return kingPosition
     }*/
     
-    mutating func findCheckingPieces(kingPosition: String, color: String) -> [String] { //can maybe use king sight like in piecerules? this is very innefficient and runs every move in minimax calls, can maybe further reduce time complexity by o^2 again???? (next improvement to work on)
+    mutating func findCheckingPieces(kingPosition: String, color: String) -> [String] {
         var checkingPieces: [String] = []
         let opponentColor = color == "white" ? "black" : "white"
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
+        // Rook and Queen threats (straight-line moves)
+        let rookMoves = validMovesForRook(color, at: kingPosition, in: self)
+        for position in rookMoves {
+            if let piece = pieceAt(position),
+               piece.color == opponentColor,
+               (piece.type == "rook" || piece.type == "queen") {
+                checkingPieces.append(position)
+            }
+        }
 
-        for (colIndex, column) in board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == opponentColor {
-                    let position = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: position, color: piece.color, type: piece.type, in: &self)
-                    if validMoves.contains(kingPosition) {
-                        checkingPieces.append(position)
-                    }
-                }
+        // Bishop and Queen threats (diagonal moves)
+        let bishopMoves = validMovesForBishop(color, at: kingPosition, in: self)
+        for position in bishopMoves {
+            if let piece = pieceAt(position),
+               piece.color == opponentColor,
+               (piece.type == "bishop" || piece.type == "queen") {
+                checkingPieces.append(position)
+            }
+        }
+
+        // Knight threats (L-shaped moves)
+        let knightMoves = validMovesForKnight(color, at: kingPosition, in: self)
+        for position in knightMoves {
+            if let piece = pieceAt(position),
+               piece.color == opponentColor,
+               piece.type == "knight" {
+                checkingPieces.append(position)
+            }
+        }
+
+        // Pawn threats (single-step diagonal moves towards the king)
+        let pawnMoves = pawnPureCaptures(color, at: kingPosition, in: self)
+        for position in pawnMoves {
+            if let piece = pieceAt(position),
+               piece.color == opponentColor,
+               piece.type == "pawn" {
+                checkingPieces.append(position)
             }
         }
 

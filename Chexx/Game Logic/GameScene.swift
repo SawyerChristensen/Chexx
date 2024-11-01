@@ -639,7 +639,7 @@ class GameScene: SKScene {
         resetEnPassant(for: gameState.currentPlayer)
         
         updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
-        /*
+        
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
@@ -648,7 +648,7 @@ class GameScene: SKScene {
                 self.cpuMakeMove()
                 //self.whiteStatusTextUpdater?("")
             }
-        }*/
+        }
         
         if isPassAndPlay {
             rotateAllPieces()
@@ -739,20 +739,19 @@ class GameScene: SKScene {
     
     func updateGameStatusUI() {
         let (isGameOver, gameStatus) = gameState.isGameOver()
-        print(isGameOver, gameStatus)
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
 
         if isGameOver {
             switch gameStatus {
             case "checkmate":
-                print("Checkmate!", opponentColor, "wins!")
+                //print("Checkmate!", opponentColor, "wins!")
                 redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
                 if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             case "stalemate":
-                print("Stalemate!")
+                //print("Stalemate!")
                 redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
                 if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }

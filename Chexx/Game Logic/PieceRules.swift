@@ -64,7 +64,7 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
     //}
 }
 
-private func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
+func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
 
@@ -251,7 +251,7 @@ private func validMovesForPawn(_ color: String, at position: String, in gameStat
     return boardToHex(validBoardMoves)
 }
 
-private func validMovesForRook(_ color: String, at position: String, in gameState: GameState) -> [String] {
+func validMovesForRook(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
 
@@ -417,7 +417,7 @@ private func validMovesForRook(_ color: String, at position: String, in gameStat
     return boardToHex(validBoardMoves)
 }
 
-private func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
+func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
     
@@ -648,7 +648,7 @@ private func validMovesForBishop(_ color: String, at position: String, in gameSt
     return boardToHex(validBoardMoves)
 }
 
-private func validMovesForKing(_ color: String, at position: String, in gameState: GameState) -> [String] {
+func validMovesForKing(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
 
@@ -798,7 +798,7 @@ private func validMovesForKing(_ color: String, at position: String, in gameStat
     return boardToHex(validBoardMoves)
 }
 
-private func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
+func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var validBoardMoves: [(Int, Int)] = []
 
