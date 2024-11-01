@@ -33,7 +33,7 @@ func boardToHex(_ positions: [(Int, Int)]) -> [String] {
     return algebraicPositions
 }
 
-func validMovesForPiece(at position: String, color: String, type: String, in gameState: GameState, skipKingCheck: Bool = false) -> [String] {
+func validMovesForPiece(at position: String, color: String, type: String, in gameState: inout GameState/*, skipKingCheck: Bool = false*/) -> [String] {
     var possibleMoves: [String] = []
 
     switch type {
@@ -54,14 +54,18 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
     default:
         possibleMoves = []
     }
+    if color == "black"{
+        print("possible moves:", possibleMoves)
+        print("filtered moves: ", filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: &gameState))
+    }
 
     // Filter out any moves that would expose the king to check
-    if skipKingCheck {
+    //if skipKingCheck {
         //print("Skipped king check...", possibleMoves, "for", color, type, "at", position)
-        return possibleMoves
-    } else {
-        return filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: gameState)
-    }
+     //   return possibleMoves
+    //} else {
+        return filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: &gameState)
+    //}
 }
 
 private func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
@@ -1124,22 +1128,169 @@ private func validMovesForKnight(_ color: String, at position: String, in gameSt
     return boardToHex(validBoardMoves)
 }
 
-private func filterMovesThatExposeKing(_ moves: [String], for color: String, at position: String, in gameState: GameState) -> [String] {
+
+private func filterMovesThatExposeKing(_ moves: [String], for color: String, at position: String, in gameState: inout GameState) -> [String] {
     //print("moves", moves, "for", color, "position", position)
     return moves.filter { move in
-        //print("move:", move)
-        // Create a copy of the game state
-        var tempGameState = gameState.copy()
+
+        let undoInfo = gameState.makeMove(position, to: move)
+
+        let kingInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState) //can swap out this function for the commented out one, the commented out one fs works but is slow
+        print(move, kingInCheck)
+        gameState.unmakeMove(position, to: move, undoInfo: undoInfo)
         
-        // Simulate the move in the copied game state
-        tempGameState.movePiece(from: position, to: move)
-        
-        // Check if the king would be in check after this move
-        return !isKingInCheck(for: color, in: tempGameState)
+        return !kingInCheck.0
     }
 }
 
-func isKingInCheck(for color: String, in currentGameState: GameState) -> Bool {
+func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout GameState) -> (Bool, String) {
+    let kingPosition: String
+    if color == "white" {
+        kingPosition = currentGameState.whiteKingPosition
+    } else {
+        kingPosition = currentGameState.blackKingPosition
+    }
+
+    let opponentColor = color == "white" ? "black" : "white"
+
+    // Rook and Queen threats (straight-line moves)
+    let rookMoves = validMovesForRook(color, at: kingPosition, in: currentGameState)
+    for position in rookMoves {
+        if let piece = currentGameState.pieceAt(position),
+           piece.color == opponentColor,
+           (piece.type == "rook" || piece.type == "queen") {
+            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        }
+    }
+
+    // Bishop and Queen threats (diagonal moves)
+    let bishopMoves = validMovesForBishop(color, at: kingPosition, in: currentGameState)
+    for position in bishopMoves {
+        if let piece = currentGameState.pieceAt(position),
+           piece.color == opponentColor,
+           (piece.type == "bishop" || piece.type == "queen") {
+            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        }
+    }
+
+    // Knight threats (L-shaped moves)
+    let knightMoves = validMovesForKnight(color, at: kingPosition, in: currentGameState)
+    for position in knightMoves {
+        if let piece = currentGameState.pieceAt(position),
+           piece.color == opponentColor,
+           piece.type == "knight" {
+            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        }
+    }
+
+    // Pawn threats (single step diagonal moves towards the king)
+    let pawnMoves = pawnPureCaptures(color, at: kingPosition, in: currentGameState)
+    for position in pawnMoves { //this is also checking straight ahead, wrong //fix this later
+        if let piece = currentGameState.pieceAt(position),
+           piece.color == opponentColor,
+           piece.type == "pawn" {
+            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        }
+    }
+
+    return (false, "none") // No threats detected
+}
+
+func pawnPureCaptures(_ color: String, at position: String, in gameState: GameState) -> [String] {
+    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    var validBoardMoves: [(Int, Int)] = []
+
+    guard position.count >= 2,
+          let columnLetter = position.first,
+          var rowIndex = Int(String(position.dropFirst())),
+          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+        print("Position only has string length of 1!")
+        return boardToHex(validBoardMoves)
+    }
+    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+
+    if color == "white" {
+        // Capture logic for left and right
+        if colIndex < 5 { // Left side of board
+            //left on left
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "black" {
+                validBoardMoves.append((colIndex - 1, rowIndex))
+            }
+            //right on left
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex + 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex + 1]?.color == "black" {
+                validBoardMoves.append((colIndex + 1, rowIndex + 1))
+            }
+        } else if colIndex == 5 { // Center of board
+            //left on center
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "black" {
+                validBoardMoves.append((colIndex - 1, rowIndex))
+            }
+            //right on center
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "black" {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
+        } else { // Right side of board
+            //left on right
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex + 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex + 1]?.color == "black" {
+                validBoardMoves.append((colIndex - 1, rowIndex + 1))
+            }
+            //right on right
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "black" {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
+        }
+    }
+
+    if color == "black" {
+        // Capture logic for left and right
+        if colIndex < 5 { // Left side of board
+            //left on left
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex - 1]?.color == "white" {
+                validBoardMoves.append((colIndex - 1, rowIndex - 1))
+            }
+            //right on left
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex + 1][rowIndex]?.color == "white" {
+                validBoardMoves.append((colIndex + 1, rowIndex))
+            }
+        } else if colIndex == 5 { // Center of board
+            //left on center
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex - 1][rowIndex - 1]?.color == "white" {
+                validBoardMoves.append((colIndex - 1, rowIndex - 1))
+            }
+            //right on center
+            if isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex - 1]?.color == "white" {
+                validBoardMoves.append((colIndex + 1, rowIndex - 1))
+            }
+        } else { // Right side of board
+            //left on right
+            if isValidPosition(columnToCheck: colIndex - 1, rowToCheck: rowIndex, in: gameState),
+               gameState.board[colIndex - 1][rowIndex]?.color == "white" {
+                validBoardMoves.append((colIndex - 1, rowIndex))
+            }
+            //right on right
+            if colIndex + 1 < columns.count,
+               isValidPosition(columnToCheck: colIndex + 1, rowToCheck: rowIndex - 1, in: gameState),
+               gameState.board[colIndex + 1][rowIndex - 1]?.color == "white" {
+                validBoardMoves.append((colIndex + 1, rowIndex - 1))
+            }
+        }
+    }
+    return boardToHex(validBoardMoves)
+
+}
+
+/*
+func isKingInCheck(for color: String, in currentGameState: inout GameState) -> Bool {
     let kingPosition: String
     
     if color == "white" {
@@ -1151,12 +1302,12 @@ func isKingInCheck(for color: String, in currentGameState: GameState) -> Bool {
     
     //print("generating all opponent moves...")
     let opponentColor = color == "white" ? "black" : "white"
-    let opponentMoves = generateAllMoves(for: opponentColor, in: currentGameState)
+    let opponentMoves = generateAllMoves(for: opponentColor, in: &currentGameState)
     
     return opponentMoves.contains(kingPosition)
 }
 
-func generateAllMoves(for color: String, in gameState: GameState) -> [String] {
+func generateAllMoves(for color: String, in gameState: inout GameState) -> [String] {
     let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
     var allMoves: [String] = []
 
@@ -1164,11 +1315,11 @@ func generateAllMoves(for color: String, in gameState: GameState) -> [String] {
         for (rowIndex, piece) in column.enumerated() {
             if let piece = piece, piece.color == color {
                 let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState, skipKingCheck: true)
+                let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState, skipKingCheck: true)
                 allMoves.append(contentsOf: validMoves)
             }
         }
     }
 
     return allMoves
-}
+}*/

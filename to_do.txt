@@ -11,7 +11,6 @@
 issues:
 -king movemnt is broken, the cpu can put its own king in check
 -also the AI is dogshit at getting a checkmate
-
     
 -the game is currently loading the game state every scene reload (or maybe move?) (hard drive is slow!!)
 

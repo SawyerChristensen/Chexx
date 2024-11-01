@@ -21,7 +21,7 @@ class GameCPU {
         self.difficulty = difficulty
     }
     
-    func generateAllFullMoves(for color: String, in gameState: GameState) -> [String] {
+    func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [String] {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         var allMoves: [String] = []
 
@@ -29,7 +29,7 @@ class GameCPU {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece, piece.color == color {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState, skipKingCheck: true)
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
 
                     // For each valid destination, create a move string that includes the start and destination
                     for destination in validMoves {
@@ -46,7 +46,7 @@ class GameCPU {
     // Main function to decide and make a move
     func findMove(gameState: inout GameState) -> (start: String, destination: String)? {
         // Use the existing function to get all possible moves
-        let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
+        let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
 
         guard !possibleMoves.isEmpty else {
             return nil // No valid moves available
@@ -56,7 +56,7 @@ class GameCPU {
         case .random:
             return selectRandomMove(from: possibleMoves)
         case .easy:
-            return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState) //depth of 1?
+            return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState) //depth of 1? //why doesnt this have &?
         case .medium:
             return minimaxMove(gameState: &gameState, depth: 2)
         case .hard:
@@ -113,7 +113,7 @@ class GameCPU {
         // Calculate the time interval (in seconds)
         let timeInterval = endTime.timeIntervalSince(startTime)
         // Print the time taken
-        print("Time taken for minimaxMove: \(timeInterval) seconds")
+        //print("Time taken for minimaxMove: \(timeInterval) seconds")
         
         return parseMove(bestMove)
     }
@@ -129,7 +129,7 @@ class GameCPU {
         var bestMoves: [String] = [] // List of moves with the best score
         var bestValue = maximizingPlayer ? Int.min : Int.max
 
-        let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: gameState)
+        let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
         let orderedMoves = orderMoves(possibleMoves, gameState: gameState)
 
         for move in orderedMoves {

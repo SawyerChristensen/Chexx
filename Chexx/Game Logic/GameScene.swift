@@ -334,7 +334,7 @@ class GameScene: SKScene {
             let color = String(pieceDetails[1])
             let type = String(pieceDetails[2])
             
-            validMoves = validMovesForPiece(at: position, color: color, type: type, in: gameState)
+            validMoves = validMovesForPiece(at: position, color: color, type: type, in: &gameState)
         } else {
             validMoves = []
         }
@@ -625,22 +625,13 @@ class GameScene: SKScene {
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
-        if isCheck(for: opponentColor) { //this is implemented in GAMESTATE now, can just add the things we removed under this conditional and use the gamestate function to check, it makes more sense being there anyway
-            if isCheckmate(for: opponentColor) {
-                print("Checkmate! Game Over!", gameState.currentPlayer, "wins!")
-                redStatusTextUpdater?("Checkmate!")
-                gameState.gameStatus = "ended"
-                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
-                return
-            }
-            if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") }
-        }
-        
         fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate
         
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
         
+        updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
+        /*
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
@@ -649,7 +640,7 @@ class GameScene: SKScene {
                 self.cpuMakeMove()
                 //self.whiteStatusTextUpdater?("")
             }
-        }
+        }*/
         
         if isPassAndPlay {
             rotateAllPieces()
@@ -661,7 +652,7 @@ class GameScene: SKScene {
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
         }
         
-        //print("\n")
+        print("\n")
     }
     
     func cpuMakeMove() {
@@ -740,6 +731,61 @@ class GameScene: SKScene {
         }
     }
     
+    func updateGameStatusUI() {
+        let (isGameOver, gameStatus) = gameState.isGameOver()
+        
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" //just for the below print statement,
+
+        if isGameOver {
+            switch gameStatus {
+            case "checkmate":
+                print("Checkmate!", opponentColor, "wins!")
+                redStatusTextUpdater?("Checkmate!")
+                gameState.gameStatus = "ended"
+                if soundEffectsEnabled {
+                    audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")
+                }
+                return
+            case "stalemate":
+                print("Stalemate!")
+                redStatusTextUpdater?("Stalemate!")
+                gameState.gameStatus = "ended"
+                if soundEffectsEnabled {
+                    audioManager.playSoundEffect(fileName: "game_draw", fileType: "mp3")
+                }
+                return
+            default:
+                break
+            }
+        } else if gameStatus == "check" {
+            // Update UI to indicate check
+            redStatusTextUpdater?("Check!")
+            if soundEffectsEnabled {
+                audioManager.playSoundEffect(fileName: "check", fileType: "mp3")
+            }
+            
+            // Highlight checking pieces
+            highlightCheckStatus(in: &gameState)
+        } else {
+            // Clear any check highlights if no check or game-ending condition
+            clearCheckHighlights()
+        }
+    }
+    
+    func highlightCheckStatus(in gameState: inout GameState) { //technically runs findCheckingPieces twice whenever a piece puts a king in check, once in isGameOver() and then once again here, but only gets executing once for the initial check if there are no pieces in check. Also, this runs on the UI level, and doesnt impact the time complexity of minimax at all (the cpu move search). Can MAYBE be refactored later, but rn theres really no need (it works!)
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
+        let kingPosition = gameState.currentPlayer == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
+        let checkingPieces = gameState.findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
+
+        if !checkingPieces.isEmpty {
+            for position in checkingPieces {
+                highlightCheckingPiece(at: position)
+            }
+        } else {
+            clearCheckHighlights()
+        }
+    }
+    
     func presentPromotionOptions(completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let promotionViewController = UIHostingController(rootView: PromotionView(completion: completion))
@@ -773,86 +819,6 @@ class GameScene: SKScene {
             destinationHexagon.addChild(pieceNode)
             pieceNode.position = CGPoint.zero // Reset position relative to the parent hexagon
         }
-    }
-    
-    func findKingPosition(for color: String) -> String? {
-        let kingPosition: String
-        
-        if color == "white" {
-            kingPosition = gameState.whiteKingPosition
-        } else {
-            kingPosition = gameState.blackKingPosition
-        }
-        
-        return kingPosition
-    }
-    
-    func findCheckingPieces(kingPosition: String, color: String) -> [String] {
-        var checkingPieces: [String] = []
-        
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
-                    //print(validMoves)
-                    //print(kingPosition)
-                    
-                    if validMoves.contains(kingPosition) {
-                        checkingPieces.append(currentPosition)
-                        //highlightCheckingPiece(at: currentPosition)
-                    }
-                }
-            }
-        }
-        
-        return checkingPieces
-    }
-    
-    //this function is not what it says it is, can be split up. there is a duplicate function with different funcitonality in piecerules
-    func isCheck(for color: String) -> Bool { //this should return 
-        guard let kingPosition = findKingPosition(for: color) else {
-            print("\(color.capitalized) king not found!")
-            return false
-        }
-        let opponentColor = color == "white" ? "black" : "white"
-        
-        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
-            if !checkingPieces.isEmpty {
-                // Highlight the pieces that are checking the king
-                for position in checkingPieces {
-                    highlightCheckingPiece(at: position)
-                }
-                return true //king is in check!
-            }
-        clearCheckHighlights()
-        return false
-    }
-    
-    func isCheckmate(for color: String) -> Bool {
-        // Now check if the opponent has any legal moves
-        //let opponentColor = color == "white" ? "black" : "white"
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] // this should really be defined globally
-        
-        // Loop through all opponent pieces
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: gameState)
-                    
-                    // If any piece has a legal move, its either 1) the king moving out of check 2) a piece blocking check or 3) a piece taking the attacker getting the king out of check. if any can be done, its not checkmate
-                    if !validMoves.isEmpty {
-                        return false
-                    }
-                }
-            }
-        }
-        
-        // If no legal moves found, it's checkmate!
-        return true
     }
     
     func resetEnPassant(for color: String) {

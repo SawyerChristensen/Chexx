@@ -14,12 +14,7 @@ struct Piece: Codable {
     var isEnPassantTarget: Bool = false //if pawns have moved two, it opens them up for temporary en passant capture!!
 }
 
-struct Move { //just for makeMove/unmakeMove functions
-    let start: String // Starting position, e.g., "e2"
-    let destination: String // Destination position, e.g., "e4"
-}
-
-struct MoveUndoInfo { //also ^
+struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
     let fromColIndex: Int
     let fromRowIndex: Int
     let toColIndex: Int
@@ -92,7 +87,7 @@ struct GameState: Codable {
     
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
-            ((1, 6), Piece(color: "black", type: "pawn")),
+            /*((1, 6), Piece(color: "black", type: "pawn")),
             ((2, 6), Piece(color: "black", type: "pawn")),
             ((3, 6), Piece(color: "black", type: "pawn")),
             ((4, 6), Piece(color: "black", type: "pawn")),
@@ -100,7 +95,7 @@ struct GameState: Codable {
             ((6, 6), Piece(color: "black", type: "pawn")),
             ((7, 6), Piece(color: "black", type: "pawn")),
             ((8, 6), Piece(color: "black", type: "pawn")),
-            ((9, 6), Piece(color: "black", type: "pawn")),
+            ((9, 6), Piece(color: "black", type: "pawn")),*/
             ((1, 0), Piece(color: "white", type: "pawn")),
             ((2, 1), Piece(color: "white", type: "pawn")),
             ((3, 2), Piece(color: "white", type: "pawn")),
@@ -110,15 +105,15 @@ struct GameState: Codable {
             ((7, 2), Piece(color: "white", type: "pawn")),
             ((8, 1), Piece(color: "white", type: "pawn")),
             ((9, 0), Piece(color: "white", type: "pawn")),
-            ((2, 7), Piece(color: "black", type: "rook")),
+            /*((2, 7), Piece(color: "black", type: "rook")),
             ((8, 7), Piece(color: "black", type: "rook")),
             ((3, 8), Piece(color: "black", type: "knight")),
             ((4, 9), Piece(color: "black", type: "queen")),
             ((5, 10), Piece(color: "black", type: "bishop")),
             ((5, 9), Piece(color: "black", type: "bishop")),
-            ((5, 8), Piece(color: "black", type: "bishop")),
+            ((5, 8), Piece(color: "black", type: "bishop")),*/
             ((6, 9), Piece(color: "black", type: "king")),
-            ((7, 8), Piece(color: "black", type: "knight")),
+            //((7, 8), Piece(color: "black", type: "knight")),
             ((2, 0), Piece(color: "white", type: "rook")),
             ((3, 0), Piece(color: "white", type: "knight")),
             ((4, 0), Piece(color: "white", type: "queen")),
@@ -240,7 +235,7 @@ struct GameState: Codable {
         }
     }
     
-    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //can maybe get rid of?
+    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //ABLE TO UNDO THIS WITH INFO, NOT WITH MOVEPIECE
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let fromColLetter = String(from.prefix(1))
         let fromRowString = String(from.dropFirst())
@@ -261,6 +256,15 @@ struct GameState: Codable {
         board[toColIndex][toRowIndex] = movingPiece
         board[fromColIndex][fromRowIndex] = nil
 
+        // Update king's position if necessary
+        if movingPiece?.type == "king" {
+            if movingPiece?.color == "white" {
+                whiteKingPosition = "\(columns[toColIndex])\(toRowIndex + 1)"
+            } else if movingPiece?.color == "black" {
+                blackKingPosition = "\(columns[toColIndex])\(toRowIndex + 1)"
+            }
+        }
+
         // Store undo information
         let undoInfo = MoveUndoInfo(
             fromColIndex: fromColIndex,
@@ -278,6 +282,16 @@ struct GameState: Codable {
         // Restore the board
         board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece
         board[undoInfo.toColIndex][undoInfo.toRowIndex] = undoInfo.capturedPiece
+
+        // Restore the king's position if necessary
+        if let movingPiece = undoInfo.movingPiece, movingPiece.type == "king" {
+            let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+            if movingPiece.color == "white" {
+                whiteKingPosition = "\(columns[undoInfo.fromColIndex])\(undoInfo.fromRowIndex + 1)"
+            } else if movingPiece.color == "black" {
+                blackKingPosition = "\(columns[undoInfo.fromColIndex])\(undoInfo.fromRowIndex + 1)"
+            }
+        }
     }
     
     mutating func addMoveToHexFen(from: String, to: String) {
@@ -382,8 +396,8 @@ struct GameState: Codable {
 
         return board[colIndex][rowIndex]
     }
-    
-    func findKingPositionGS(for color: String) -> String? {
+    /*
+    func findKingPosition(for color: String) -> String? {
         let kingPosition: String
         
         if color == "white" {
@@ -393,91 +407,65 @@ struct GameState: Codable {
         }
         
         return kingPosition
-    }
+    }*/
     
-    func findCheckingPiecesGS(kingPosition: String, color: String) -> [String] {
+    mutating func findCheckingPieces(kingPosition: String, color: String) -> [String] {
         var checkingPieces: [String] = []
-        
+        let opponentColor = color == "white" ? "black" : "white"
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        
-        for (colIndex, column) in self.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
 
+        for (colIndex, column) in board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == opponentColor {
+                    let position = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: position, color: piece.color, type: piece.type, in: &self)
                     if validMoves.contains(kingPosition) {
-                        checkingPieces.append(currentPosition)
+                        checkingPieces.append(position)
                     }
                 }
             }
         }
-        
+
         return checkingPieces
     }
-    
-    func isCheckGS(for color: String) -> Bool {
-        guard let kingPosition = findKingPositionGS(for: color) else {
-            print("\(color.capitalized) king not found!")
-            return false
-        }
-        let opponentColor = color == "white" ? "black" : "white"
-        
-        let checkingPieces = findCheckingPiecesGS(kingPosition: kingPosition, color: opponentColor)
-            if !checkingPieces.isEmpty {
-                return true //king is in check!
-            }
-        return false
-    }
-    
-    func isCheckmateGS(for color: String) -> Bool {
-        // Now check if the opponent has any legal moves
-        //let opponentColor = color == "white" ? "black" : "white"
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] // this should really be defined globally
-        
-        // Loop through all opponent pieces
-        for (colIndex, column) in self.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
-                    
-                    // If any piece has a legal move, its either 1) the king moving out of check 2) a piece blocking check or 3) a piece taking the attacker getting the king out of check. if any can be done, its not checkmate
-                    if !validMoves.isEmpty {
-                        return false
-                    }
-                }
-            }
-        }
-        
-        // If no legal moves found, it's checkmate!
-        return true
-    }
-    
-    func isGameOver() -> (Bool, String?) {
-        // Check if it's checkmate
-        let oppColor = currentPlayer //== "white" ? "black" : "white" //Maybe currentPlayer? who knows
-        if isCheckGS(for: oppColor) && isCheckmateGS(for: oppColor) {
-            return (true, "checkmate")
-        }
-        
-        // Check for stalemate: no legal moves and not in check
+
+    mutating func hasLegalMovesForCurrentPlayer() -> Bool {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         for (colIndex, column) in board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == oppColor {
+                if let piece = piece, piece.color == currentPlayer {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: self)
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &self)
                     if !validMoves.isEmpty {
-                        // If there is at least one legal move, it’s not a stalemate
-                        return (false, nil)
+                        return true
                     }
                 }
             }
         }
+        return false
+    }
+    
+    mutating func isGameOver() -> (Bool, String?) {
+        let opponentColor = currentPlayer == "white" ? "black" : "white"
+        let kingPosition = currentPlayer == "white" ? whiteKingPosition : blackKingPosition
 
-        // If the current player has no moves but is not in check, it's stalemate
-        return (true, "stalemate")
+        // Step 1: Check if the current player is in check
+        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
+        let inCheck = !checkingPieces.isEmpty
+
+        // Step 2: Check if there are any valid moves for the current player
+        let hasLegalMoves = hasLegalMovesForCurrentPlayer()
+
+        if inCheck {
+            if !hasLegalMoves {
+                return (true, "checkmate")
+            }
+            return (false, "check")
+        } else if !hasLegalMoves {
+            return (true, "stalemate")
+        }
+
+        return (false, nil)  // Game is still ongoing
     }
     
     /*func compressBoardToBits() -> [Bool] {
