@@ -56,7 +56,7 @@ class GameCPU {
         case .random:
             return selectRandomMove(from: possibleMoves)
         case .easy:
-            return selectBestMoveWithHeuristic(from: possibleMoves, gameState: gameState) //depth of 1? //why doesnt this have &?
+            return minimaxMove(gameState: &gameState, depth: 1)
         case .medium:
             return minimaxMove(gameState: &gameState, depth: 2)
         case .hard:
@@ -71,36 +71,6 @@ class GameCPU {
         return parseMove(move)
     }
 
-    // Heuristic-based move selection (Easy difficulty)
-    private func selectBestMoveWithHeuristic(from moves: [String], gameState: GameState) -> (start: String, destination: String)? {
-        var bestMoves: [String] = []
-        var bestValue = Int.min
-
-        for move in moves {
-            if let parsedMove = parseMove(move) {
-                var testState = gameState.copy()
-                testState.movePiece(from: parsedMove.start, to: parsedMove.destination)
-
-                let value = evaluateGameState(testState, for: gameState.currentPlayer)
-                if value > bestValue {
-                    bestValue = value
-                    bestMoves = [move] // Start a new list with this move
-                } else if value == bestValue {
-                    bestMoves.append(move)
-                }
-            }
-        }
-
-        if !bestMoves.isEmpty {
-            // Randomly select one move among the best moves
-            if let selectedMove = bestMoves.randomElement() {
-                print("Selected move among best moves: \(selectedMove)")
-                return parseMove(selectedMove)
-            }
-        }
-        return nil
-    }
-
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
         
         let startTime = Date() //for testing
@@ -108,12 +78,9 @@ class GameCPU {
         let maximizingPlayerColor = gameState.currentPlayer
         let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor).move
         
-        // Record the end time
-        let endTime = Date()
-        // Calculate the time interval (in seconds)
-        let timeInterval = endTime.timeIntervalSince(startTime)
-        // Print the time taken
-        //print("Time taken for minimaxMove: \(timeInterval) seconds")
+        let endTime = Date() //for testing
+        let timeInterval = endTime.timeIntervalSince(startTime) //for testing
+        print("Time taken for minimaxMove: \(timeInterval) seconds")
         
         return parseMove(bestMove)
     }
@@ -189,8 +156,7 @@ class GameCPU {
     }
 
     // Evaluate the game state to assign a score
-    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int {
-        // Initialize scores
+    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int { //this is o^2, can maybe just store a variable that gets updated instead of all of this extra math
         var playerScore = 0
         var opponentScore = 0
 

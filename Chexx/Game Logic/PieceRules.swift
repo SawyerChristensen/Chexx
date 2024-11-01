@@ -54,10 +54,6 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
     default:
         possibleMoves = []
     }
-    if color == "black"{
-        print("possible moves:", possibleMoves)
-        print("filtered moves: ", filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: &gameState))
-    }
 
     // Filter out any moves that would expose the king to check
     //if skipKingCheck {
@@ -1136,7 +1132,7 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
         let undoInfo = gameState.makeMove(position, to: move)
 
         let kingInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState) //can swap out this function for the commented out one, the commented out one fs works but is slow
-        print(move, kingInCheck)
+
         gameState.unmakeMove(position, to: move, undoInfo: undoInfo)
         
         return !kingInCheck.0

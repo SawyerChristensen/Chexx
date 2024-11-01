@@ -85,6 +85,8 @@ class GameScene: SKScene {
             rotateBoardImmediately()
             rotateAllPiecesImmediately()
         }
+        
+        updateGameStatusUI()
     }
     
     enum Direction { //for use with calcualte new center
@@ -431,7 +433,13 @@ class GameScene: SKScene {
         }
     }
     
-    func highlightCheckingPiece(at position: String) {
+    func highlightCheckStatus(for positions: [String]) {
+        for position in positions {
+            highlightCheckingPiece(at: position)
+        }
+    }
+    
+    func highlightCheckingPiece(at position: String) { //sdfsf
         if let hexagon = childNode(withName: position) as? HexagonNode {
             let glowOverlay = SKShapeNode(path: hexagon.path!)
             glowOverlay.fillColor = UIColor.red.withAlphaComponent(0.3)
@@ -651,8 +659,6 @@ class GameScene: SKScene {
         if isVsCPU {
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
         }
-        
-        print("\n")
     }
     
     func cpuMakeMove() {
@@ -733,8 +739,9 @@ class GameScene: SKScene {
     
     func updateGameStatusUI() {
         let (isGameOver, gameStatus) = gameState.isGameOver()
+        print(isGameOver, gameStatus)
         
-        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" //just for the below print statement,
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
 
         if isGameOver {
             switch gameStatus {
@@ -742,45 +749,26 @@ class GameScene: SKScene {
                 print("Checkmate!", opponentColor, "wins!")
                 redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
-                if soundEffectsEnabled {
-                    audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")
-                }
+                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             case "stalemate":
                 print("Stalemate!")
                 redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
-                if soundEffectsEnabled {
-                    audioManager.playSoundEffect(fileName: "game_draw", fileType: "mp3")
-                }
+                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             default:
                 break
             }
-        } else if gameStatus == "check" {
-            // Update UI to indicate check
-            redStatusTextUpdater?("Check!")
-            if soundEffectsEnabled {
-                audioManager.playSoundEffect(fileName: "check", fileType: "mp3")
-            }
-            
-            // Highlight checking pieces
-            highlightCheckStatus(in: &gameState)
-        } else {
-            // Clear any check highlights if no check or game-ending condition
-            clearCheckHighlights()
         }
-    }
-    
-    func highlightCheckStatus(in gameState: inout GameState) { //technically runs findCheckingPieces twice whenever a piece puts a king in check, once in isGameOver() and then once again here, but only gets executing once for the initial check if there are no pieces in check. Also, this runs on the UI level, and doesnt impact the time complexity of minimax at all (the cpu move search). Can MAYBE be refactored later, but rn theres really no need (it works!)
-        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
-        let kingPosition = gameState.currentPlayer == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
-        let checkingPieces = gameState.findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
-
-        if !checkingPieces.isEmpty {
-            for position in checkingPieces {
-                highlightCheckingPiece(at: position)
-            }
+        
+        if gameStatus.starts(with: "check") {
+            //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") } //for some reason this isnt working rn
+            // Extract positions after "check by " and highlight checking pieces
+            let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
+            let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+            
+            highlightCheckStatus(for: checkPositions)
         } else {
             clearCheckHighlights()
         }

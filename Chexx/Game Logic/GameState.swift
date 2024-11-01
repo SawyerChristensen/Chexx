@@ -87,7 +87,7 @@ struct GameState: Codable {
     
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
-            /*((1, 6), Piece(color: "black", type: "pawn")),
+            ((1, 6), Piece(color: "black", type: "pawn")),
             ((2, 6), Piece(color: "black", type: "pawn")),
             ((3, 6), Piece(color: "black", type: "pawn")),
             ((4, 6), Piece(color: "black", type: "pawn")),
@@ -95,7 +95,7 @@ struct GameState: Codable {
             ((6, 6), Piece(color: "black", type: "pawn")),
             ((7, 6), Piece(color: "black", type: "pawn")),
             ((8, 6), Piece(color: "black", type: "pawn")),
-            ((9, 6), Piece(color: "black", type: "pawn")),*/
+            ((9, 6), Piece(color: "black", type: "pawn")),
             ((1, 0), Piece(color: "white", type: "pawn")),
             ((2, 1), Piece(color: "white", type: "pawn")),
             ((3, 2), Piece(color: "white", type: "pawn")),
@@ -105,15 +105,15 @@ struct GameState: Codable {
             ((7, 2), Piece(color: "white", type: "pawn")),
             ((8, 1), Piece(color: "white", type: "pawn")),
             ((9, 0), Piece(color: "white", type: "pawn")),
-            /*((2, 7), Piece(color: "black", type: "rook")),
+            ((2, 7), Piece(color: "black", type: "rook")),
             ((8, 7), Piece(color: "black", type: "rook")),
             ((3, 8), Piece(color: "black", type: "knight")),
             ((4, 9), Piece(color: "black", type: "queen")),
             ((5, 10), Piece(color: "black", type: "bishop")),
             ((5, 9), Piece(color: "black", type: "bishop")),
-            ((5, 8), Piece(color: "black", type: "bishop")),*/
+            ((5, 8), Piece(color: "black", type: "bishop")),
             ((6, 9), Piece(color: "black", type: "king")),
-            //((7, 8), Piece(color: "black", type: "knight")),
+            ((7, 8), Piece(color: "black", type: "knight")),
             ((2, 0), Piece(color: "white", type: "rook")),
             ((3, 0), Piece(color: "white", type: "knight")),
             ((4, 0), Piece(color: "white", type: "queen")),
@@ -235,7 +235,7 @@ struct GameState: Codable {
         }
     }
     
-    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //ABLE TO UNDO THIS WITH INFO, NOT WITH MOVEPIECE
+    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //able to undo this with the output info, not with movePiece()
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let fromColLetter = String(from.prefix(1))
         let fromRowString = String(from.dropFirst())
@@ -409,7 +409,7 @@ struct GameState: Codable {
         return kingPosition
     }*/
     
-    mutating func findCheckingPieces(kingPosition: String, color: String) -> [String] {
+    mutating func findCheckingPieces(kingPosition: String, color: String) -> [String] { //can maybe use king sight like in piecerules? this is very innefficient and runs every move in minimax calls, can maybe further reduce time complexity by o^2 again???? (next improvement to work on)
         var checkingPieces: [String] = []
         let opponentColor = color == "white" ? "black" : "white"
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
@@ -445,12 +445,11 @@ struct GameState: Codable {
         return false
     }
     
-    mutating func isGameOver() -> (Bool, String?) {
-        let opponentColor = currentPlayer == "white" ? "black" : "white"
+    mutating func isGameOver() -> (Bool, String) {
         let kingPosition = currentPlayer == "white" ? whiteKingPosition : blackKingPosition
 
         // Step 1: Check if the current player is in check
-        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: opponentColor)
+        let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: currentPlayer)
         let inCheck = !checkingPieces.isEmpty
 
         // Step 2: Check if there are any valid moves for the current player
@@ -460,12 +459,13 @@ struct GameState: Codable {
             if !hasLegalMoves {
                 return (true, "checkmate")
             }
-            return (false, "check")
+            let checkingPiecesText = checkingPieces.joined(separator: ", ") //could also use an array but I dont want to return 3 seperate data types on i mean come on
+            return (false, "check by \(checkingPiecesText)")
         } else if !hasLegalMoves {
             return (true, "stalemate")
         }
 
-        return (false, nil)  // Game is still ongoing
+        return (false, "")  // Game is still ongoing
     }
     
     /*func compressBoardToBits() -> [Bool] {

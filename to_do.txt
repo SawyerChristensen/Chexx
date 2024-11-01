@@ -64,6 +64,8 @@ the proper attribution:
 
 FOR FUTURE UPDATES:
 
+optimizations to CPU
+
 -haptic feedback on check?
 
     -alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
@@ -85,12 +87,14 @@ enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as star
 
 
 
-
-Current Minimax algorithm takes:
+Current Minimax algorithm takes: (seems to multiply by 10 every depth)
 Depth 1:    0.01 seconds
-Depth 2:    ~0.4 seconds
-Depth 3:    2.30 seoncds (often much more, ~6 sec, 2.3 seems to be the MINIMUM) (also unnacceptable) depth 3 is target default
-Depth 4:    ~45 seconds (unacceptable)
+Depth 2:    ~0.2 seconds
+Depth 3:    ~2.0 seoncds depth 3 is target default
+Depth 4:    ~20 seconds (unacceptable)
+
+look for current eval functions that loop through the game state, they are all likely o^2 and slow
+
 use hashing/transposition tables/other tech to speed this up especially at higher depths when we potentially eval the same state multiple times
 
 Possible Future Optimizations:
@@ -104,12 +108,15 @@ Move Ordering and Iterative Deepening 10-30% speedup (did move ordering)
 Late Move Reductions 10-30% speedup
 Null Move Pruning 10-20% speedup
 
+-prioritizes looking at branches over the current branch max that involve a piece if the user taps on a piece, likely to be moving that piece
+-doing cpu calculations in the background, with increasing depths, obviously use this ^ idea
+
 Might be able to get to depth 4 with all of these improvements
 
 
 RESOURCES:
 
--Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25
+-Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25 (implement for multiplayer ruling)
 
 ways to update chess AI/increase computational efficiency:
 https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm
