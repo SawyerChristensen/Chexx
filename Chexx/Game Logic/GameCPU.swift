@@ -74,12 +74,12 @@ class GameCPU {
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
     
         let startTime = Date() //for testing
-        let deadline = startTime.addingTimeInterval(5.0)
+        let deadline = startTime.addingTimeInterval(3.0)
         
         let maximizingPlayerColor = gameState.currentPlayer
-        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
+        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline) //can .move extraction here instead of in the return satement, rn its not for print testing
         
-        print(bestMove)
+        //print(bestMove)
         
         let endTime = Date() //for testing
         let timeInterval = endTime.timeIntervalSince(startTime) //for testing
@@ -92,10 +92,6 @@ class GameCPU {
         
         //print("Entering minimax at depth:", depth)
         
-        if Date() >= deadline {
-            return (0, "") //end the recursion!!
-        }
-        
         if depth == 0 || gameState.isGameOver().0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, "")
@@ -103,8 +99,8 @@ class GameCPU {
 
         var alpha = alpha
         var beta = beta
-        var bestMoves: [String] = [] // List of moves with the best score
         var bestValue = maximizingPlayer ? Int.min : Int.max
+        var bestMoves: [String] = [] // List of moves with the best score
 
         // Generate and order moves for better alpha/beta pruning
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
@@ -112,15 +108,22 @@ class GameCPU {
 
         for move in orderedMoves {
             if Date() >= deadline { //mayyyy not need this
-               return (bestValue, bestMoves.randomElement() ?? "")
-           }
+                return (bestValue, bestMoves.randomElement() ?? "")}
 
             if let parsedMove = parseMove(move) {
                 let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
                 gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
-                let result = minimax(gameState: &gameState, depth: depth - 1, alpha: alpha, beta: beta, maximizingPlayer: !maximizingPlayer, originalPlayerColor: originalPlayerColor, deadline: deadline)
-
+                let result = minimax(
+                    gameState: &gameState,
+                    depth: depth - 1,
+                    alpha: alpha,
+                    beta: beta,
+                    maximizingPlayer: !maximizingPlayer,
+                    originalPlayerColor: originalPlayerColor,
+                    deadline: deadline)
+                
+                //print(result, !maximizingPlayer, gameState.currentPlayer)
                 gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
                 gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
@@ -128,9 +131,10 @@ class GameCPU {
                 if maximizingPlayer {
                     if result.value > bestValue {
                         bestValue = result.value
-                        bestMoves = [move] // Reset bestMoves to the new best move
+                        bestMoves = [move]
+                        
                     } else if result.value == bestValue {
-                        bestMoves.append(move) // Add to bestMoves if it's equal to bestValue
+                        bestMoves.append(move)
                     }
                     alpha = max(alpha, bestValue)
                     if beta <= alpha {

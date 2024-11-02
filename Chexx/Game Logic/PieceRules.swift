@@ -1178,6 +1178,16 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
             return (true, ("\(position) \(piece.color) \(piece.type)"))
         }
     }
+    
+    // Opposing king potential threats (should never happen, this is so they are avoided)
+    let kingMoves = validMovesForKing(color, at: kingPosition, in: currentGameState)
+    for position in kingMoves {
+        if let piece = currentGameState.pieceAt(position),
+           piece.color == opponentColor,
+           piece.type == "king" {
+            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        }
+    }
 
     // Pawn threats (single step diagonal moves towards the king)
     let pawnMoves = pawnPureCaptures(color, at: kingPosition, in: currentGameState)
