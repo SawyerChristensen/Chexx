@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "black_knight.png",
+      "filename" : "black_knight64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "black_knight128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "black_knight192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "black_knight.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

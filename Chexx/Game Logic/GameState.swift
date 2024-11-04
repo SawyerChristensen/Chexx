@@ -576,7 +576,7 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
         if let saveData = try? decoder.decode(HexFenSaveData.self, from: data) {
             var gameState = GameState() // Initialize empty GameState
             gameState = gameState.HexFenToGameState(fen: saveData.hexFen) // Rebuild from HexFen
-            //print("Game state loaded from \(url.path)") //STILL AN ISSUE WITH RELOADING THE GAMESTATE EVERY UI UPDATE, NEED TO CHANGE
+            print("Game state loaded from \(url.path)") //STILL AN ISSUE WITH RELOADING THE GAMESTATE EVERY UI UPDATE, NEED TO CHANGE
             return gameState
         }
     }

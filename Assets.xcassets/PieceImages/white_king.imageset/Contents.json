@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "white_king.png",
+      "filename" : "white_king64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "white_king128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "white_king192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "white_king.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

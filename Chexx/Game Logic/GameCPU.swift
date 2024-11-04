@@ -44,7 +44,7 @@ class GameCPU {
     }
 
     // Main function to decide and make a move
-    func findMove(gameState: inout GameState) -> (start: String, destination: String)? {
+    func findMove(gameState: inout GameState) -> (start: String, destination: String)? { //this being conditional can maybe be changed, idk
         // Use the existing function to get all possible moves
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
 
@@ -83,7 +83,7 @@ class GameCPU {
         
         let endTime = Date() //for testing
         let timeInterval = endTime.timeIntervalSince(startTime) //for testing
-        print("Time taken for minimaxMove: \(timeInterval) seconds")
+        //print("Time taken for minimaxMove: \(timeInterval) seconds")
         
         return parseMove(bestMove.move)
     }

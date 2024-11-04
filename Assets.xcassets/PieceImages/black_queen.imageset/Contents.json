@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "black_queen.png",
+      "filename" : "black_queen64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "black_queen128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "black_queen192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "black_queen.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

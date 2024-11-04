@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "white_knight.png",
+      "filename" : "white_knight64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "white_knight128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "white_knight192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "white_knight.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

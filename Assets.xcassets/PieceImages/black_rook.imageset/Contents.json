@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "black_rook.png",
+      "filename" : "black_rook64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "black_rook128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "black_rook192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "black_rook.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

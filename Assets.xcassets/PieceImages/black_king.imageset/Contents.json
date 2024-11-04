@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "black_king.png",
+      "filename" : "black_king64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "black_king128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "black_king192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "black_king.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

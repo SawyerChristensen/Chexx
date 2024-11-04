@@ -1,17 +1,28 @@
 {
   "images" : [
     {
-      "filename" : "white_rook.png",
+      "filename" : "white_rook64.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
+      "filename" : "white_rook128.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "white_rook192.png",
       "idiom" : "universal",
       "scale" : "3x"
+    },
+    {
+      "idiom" : "mac",
+      "scale" : "1x"
+    },
+    {
+      "filename" : "white_rook.png",
+      "idiom" : "mac",
+      "scale" : "2x"
     }
   ],
   "info" : {

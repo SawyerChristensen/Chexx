@@ -238,15 +238,16 @@ class GameScene: SKScene {
             hexagon.position = CGPoint(x: currentX, y: currentY)
             hexagon.name = key
             hexagons.append(hexagon)
+            scene.addChild(hexagon)
         }
         
         // Add all hexagons to the scene
-        for hexagon in hexagons {
-            scene.addChild(hexagon)
-        }
+        //for hexagon in hexagons {
+        //    scene.addChild(hexagon)
+        //}
     }
     
-    func placePieces(scene: SKScene, gameState: GameState? = nil) {
+    func placePieces(scene: SKScene, gameState: GameState? = nil) { //o^2 time, can maybe be incorporated into an earlier function like generateHexTiles
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let state = gameState ?? GameState()
 
@@ -477,7 +478,7 @@ class GameScene: SKScene {
         redStatusTextUpdater?("")
     }
 
-    func findNearestHexagon(to position: CGPoint) -> HexagonNode? {
+    func findNearestHexagon(to position: CGPoint) -> HexagonNode? { //o(n) time, calcualtes distance between EVERY hexagon on the board EVERY tap. can probably use a hash map to speed this up
         var closestHexagon: HexagonNode?
         var minDistance = CGFloat.greatestFiniteMagnitude
         for node in children {
@@ -643,7 +644,7 @@ class GameScene: SKScene {
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             // Simulate thinking time
             //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.2
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.1
             DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove()
                 //self.whiteStatusTextUpdater?("")
@@ -740,7 +741,7 @@ class GameScene: SKScene {
     func updateGameStatusUI() {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
-        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
+        //let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
 
         if isGameOver {
             switch gameStatus {
