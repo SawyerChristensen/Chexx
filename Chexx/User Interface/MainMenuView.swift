@@ -72,8 +72,7 @@ struct MainMenuView: View {
                         
                         else if singlePlayerOptions { //can also implement variants here
                             VStack {
-                                NavigationLink(destination: GameView(isVsCPU: true).onAppear {
-                                    deleteGameFile(filename: "currentSinglePlayer")
+                                NavigationLink(destination: GameView(isVsCPU: true, startNewGame: true).onAppear {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")
@@ -104,8 +103,7 @@ struct MainMenuView: View {
                                 
                                 //possiby have a toggle here for low motion mode (either here or settings)
                                 
-                                NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
-                                    deleteGameFile(filename: "currentPassAndPlay")
+                                NavigationLink(destination: GameView(isPassAndPlay: true, startNewGame: true).onAppear {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")

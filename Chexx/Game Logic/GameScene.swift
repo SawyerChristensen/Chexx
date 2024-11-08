@@ -639,22 +639,33 @@ class GameScene: SKScene {
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
         
-        updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
-        
-        if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
-            // Simulate thinking time
-            //self.whiteStatusTextUpdater?("Thinking...") //only enable on hard difficulty
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.001 : 0.1
-            DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
-                self.cpuMakeMove()
-                //self.whiteStatusTextUpdater?("")
-            }
-        }
-        
         if isPassAndPlay {
             rotateAllPieces()
             rotateBoard()
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentPassAndPlay")
+        }
+        
+        updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
+        
+        if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
+            self.whiteStatusTextUpdater?("Thinking...")
+            var statusText = ["Thinking.", "Thinking..", "Thinking..."]
+            var currentIndex = 0
+            let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+                self.whiteStatusTextUpdater?(statusText[currentIndex])
+                currentIndex = (currentIndex + 1) % statusText.count
+            }
+            
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1
+            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
+                self.cpuMakeMove()
+                
+                // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
+                DispatchQueue.main.async {
+                    thinkingTimer.invalidate() // Stop the timer //need to refactor later, not a hard error atm
+                    self.whiteStatusTextUpdater?("") // Clear the status text
+                }
+            }
         }
         
         if isVsCPU {
@@ -668,10 +679,12 @@ class GameScene: SKScene {
                 if let destinationHexagon = self.childNode(withName: move.destination) {
                     if let parent = cpuPieceNode.parent {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
-                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.1)
+                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.2)
+                        //slideAction.timingMode = .linear
                         cpuPieceNode.run(slideAction) { [weak self] in
                             self?.updateGameState(with: cpuPieceNode, at: move.destination)
                         }
+                        
                     }
                 } else {
                     print("Error: Destination hexagon not found for \(move.destination)")

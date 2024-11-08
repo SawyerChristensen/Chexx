@@ -13,23 +13,20 @@ struct GameView: View {
     @State private var whiteStatusText: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
+    @State private var scene: SKScene?
+    var startNewGame: Bool = false
     //@State var variant: String
-    //@State private var sceneSize: CGSize = UIScreen.main.bounds.size
 
     var body: some View {
         GeometryReader { geometry in
             ZStack {
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
-                SpriteView(scene: createScene(size: geometry.size))
-                    .ignoresSafeArea()
-                    //.onAppear {
-                    //    sceneSize = geometry.size
-                   // }
-                    .onChange(of: geometry.size) { _, newSize in
-                    //    sceneSize = newSize
-                        updateSceneSize(newSize)
-                    }
+                if let scene = scene {
+                    SpriteView(scene: scene)
+                        .ignoresSafeArea()
+                }
+                
                 if geometry.size.height > geometry.size.width {
                     // Text view to display status messages
                     Text(redStatusText)
@@ -45,18 +42,36 @@ struct GameView: View {
                         .padding(.bottom, geometry.size.height * 0.95)
                 }
             }
+            .onAppear {
+                if scene == nil {
+                    if isVsCPU && startNewGame == true {
+                        deleteGameFile(filename: "currentSinglePlayer")
+                    }
+                    if isPassAndPlay && startNewGame == true {
+                        deleteGameFile(filename: "currentPassAndPlay")
+                    }
+                    scene = createScene(size: geometry.size) 
+                }
+            }
+            .onChange(of: geometry.size) { _, newSize in
+                scene?.size = newSize
+                if geometry.size.height > geometry.size.width {
+                    scene?.scaleMode = .aspectFill
+                } else {
+                    scene?.scaleMode = .resizeFill
+                }
+            }
         }
     }
 
     private func createScene(size: CGSize) -> SKScene {
         let scene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay)
         scene.scaleMode = .aspectFill
-        //scene.anchorPoint = CGPoint(x: 0.5, y: 0.5) //written in gameScene
-        scene.isVsCPU = isVsCPU // Pass the vs CPU mode
+        scene.isVsCPU = isVsCPU
         //scene.variant = variant
-        scene.isPassAndPlay = isPassAndPlay // Pass the tabletop mode
+        scene.isPassAndPlay = isPassAndPlay
         scene.redStatusTextUpdater = { text in
-            self.redStatusText = text // Update the status text from the GameScene
+            self.redStatusText = text // Update the red status text from the GameScene
         }
         scene.whiteStatusTextUpdater = { text in
             self.whiteStatusText = text // Update the white status text from the GameScene
@@ -64,15 +79,4 @@ struct GameView: View {
         return scene
     }
 
-    private func updateSceneSize(_ newSize: CGSize) {
-        if let skView = UIApplication.shared.connectedScenes
-            .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
-           let rootViewController = skView.windows.first?.rootViewController as? SKView {
-            if let scene = rootViewController.scene as? GameScene {
-                scene.size = newSize
-                scene.scaleMode = .aspectFill
-                rootViewController.presentScene(scene)
-            }
-        }
-    }
 }
