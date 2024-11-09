@@ -648,8 +648,8 @@ class GameScene: SKScene {
         updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
         
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
-            self.whiteStatusTextUpdater?("Thinking...")
-            var statusText = ["Thinking.", "Thinking..", "Thinking..."]
+            self.whiteStatusTextUpdater?("Thinking.")
+            var statusText = ["Thinking..", "Thinking...", "Thinking."]
             var currentIndex = 0
             let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
                 self.whiteStatusTextUpdater?(statusText[currentIndex])

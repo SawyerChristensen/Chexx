@@ -450,19 +450,13 @@ struct ProfileView: View {
                 //.padding(.bottom, 8)
                 
                 if !authViewModel.errorMessage.isEmpty {
-                    Text(authViewModel.errorMessage)
-                        .foregroundColor(.red)
-                        .padding()
                     Button(action: {
                         authViewModel.sendPasswordReset(email: authViewModel.email)
                     }) {
-                        Text("Reset Password")
+                        Text(resetPasswordTextAppend())
                             .padding()
-                            .background(Color.blue)
-                            .foregroundColor(.white)
-                            .cornerRadius(8)
+                            .foregroundColor(.red)
                     }
-                    //.padding()
                     
                 }
                     
@@ -545,6 +539,21 @@ struct ProfileView: View {
             }
         }
     }
+    
+    private func resetPasswordTextAppend() -> AttributedString {
+            var attributedString = AttributedString(authViewModel.errorMessage)
+            
+            if authViewModel.errorMessage == "The email address is already in use by another account." {
+                attributedString += AttributedString(" Reset Password?")
+                
+                // Apply underline to "Reset Password?"
+                if let range = attributedString.range(of: "Reset Password?") {
+                    attributedString[range].underlineStyle = .single
+                }
+            }
+            
+            return attributedString
+        }
 }
 
 

@@ -24,25 +24,20 @@ issues:
 
 -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
 
-a main menu with modes:
-1) pass & play (done)
-2) single player vs AI (need to implement ai)
-3) multiplayer online (need to implement online play) (should be implemented last) (no icons, need name checking)
-
--Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
-    -display name, country emoji, elo
+online multiplayer (need to implement online play) (should be implemented last) (no icons, need name checking)
     
 -name checking for online play (also set default name to full name instead of single)
 
 
 Bugs:
-tile highlight does not stay on rotate
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 
-
-
-
 BEFORE LAUNCH:
+
+-Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
+    -display first name, country emoji, elo
+
+-enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
 
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
@@ -53,10 +48,6 @@ maybe a credits menu in settings?
 the proper attribution:
 "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
 
-
--game history button in profile view (store past user games, who vs who, and then display hex fen format)
-    -single player stored on device, multiplayer stored in cloud
-
 -reenable main music menu if disabled (mainmenuview)
 
 -test if auto promote to queen actually works
@@ -65,6 +56,9 @@ the proper attribution:
 FOR FUTURE UPDATES:
 
 optimizations to CPU
+
+-game history button in profile view? (store past user games, who vs who, and then display hex fen format)
+    -single player stored on device, multiplayer stored in cloud
 
 -haptic feedback on check?
 
