@@ -13,6 +13,7 @@ struct SettingsView: View {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
+    @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
@@ -36,13 +37,18 @@ struct SettingsView: View {
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
-                Toggle("Background Music", isOn: $backgroundMusicEnabled) //note: toggle does not scale with font
+                Toggle("Background Music", isOn: $backgroundMusicEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
-                Toggle("Sound Effects", isOn: $soundEffectsEnabled) //note: toggle does not scale with font
+                Toggle("Sound Effects", isOn: $soundEffectsEnabled)
+                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                
+                Toggle("Low Motion", isOn: $lowMotionEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)

@@ -43,11 +43,11 @@ class AudioManager: ObservableObject {
         do {
             soundEffectPlayer = try AVAudioPlayer(contentsOf: url)
             
-            if fileName == "piece_move"{
-                soundEffectPlayer?.volume = 0.5
+            if fileName == "piece_move" {
+                soundEffectPlayer?.volume = 0.1
             }
-            else {
-                soundEffectPlayer?.volume = 0.05
+            else { //background music
+                soundEffectPlayer?.volume = 0.01
             }
             soundEffectPlayer?.play()
         } catch {

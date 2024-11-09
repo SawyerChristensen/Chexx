@@ -12,6 +12,7 @@ import SwiftUI
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
+    @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     
     let audioManager = AudioManager()
     var isVsCPU: Bool      // To handle "vs CPU" mode
@@ -640,8 +641,13 @@ class GameScene: SKScene {
         resetEnPassant(for: gameState.currentPlayer)
         
         if isPassAndPlay {
-            rotateAllPieces()
-            rotateBoard()
+            if lowMotionEnabled {
+                rotateBoardImmediately()
+                rotateAllPiecesImmediately()
+            } else {
+                rotateBoard()
+                rotateAllPieces()
+            }
             saveGameStateToFile(hexFen: gameState.HexFen, to: "currentPassAndPlay")
         }
         

@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainMenuView: View {
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
+    //@AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
@@ -130,7 +131,7 @@ struct MainMenuView: View {
                             
                         } else {
                             VStack {
-                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
+                                /*NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Tutorial")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -139,11 +140,11 @@ struct MainMenuView: View {
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
-                                
+                                */
                                 Button(action: {
                                     singlePlayerOptions = true
+                                    //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                 }) {
-                                //NavigationLink(destination: GameView(isVsCPU: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Single Player")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -155,8 +156,8 @@ struct MainMenuView: View {
                                 
                                 Button(action: {
                                     passAndPlayOptions = true
+                                    //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                 }) {
-                                //NavigationLink(destination: GameView(isPassAndPlay: true).onAppear { audioManager.stopBackgroundMusic() }) {
                                     Text("Pass & Play")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
@@ -168,6 +169,7 @@ struct MainMenuView: View {
                                 
                                 Button(action: {
                                     onlineOptions = true
+                                    //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                 }) {
                                     Text("Online")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
