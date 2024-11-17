@@ -1,19 +1,12 @@
--low motion toggle
-
--50 move no capture rule for draw
--threefold repetition rule for draw
-    
--Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
-
 online multiplayer (need to implement online play) (should be implemented last) (no icons, need name checking)
     -show name in multiplayer toggle?
     
 -name checking for online play (also set default name to full name instead of single)
 
+-tutorial
+
 -facebook sign in
     -enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
-
-
 
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
@@ -37,6 +30,13 @@ the proper attribution:
 
 
 FOR FUTURE UPDATES:
+
+-50 move no capture rule for draw
+-threefold repetition rule for draw
+    
+-Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
+
+
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
     -display first name, country emoji, elo?
 

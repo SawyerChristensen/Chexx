@@ -50,7 +50,7 @@ struct MainMenuView: View {
                         if onlineOptions {
                             VStack {
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Random")
+                                    Text("Lobby")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -60,7 +60,7 @@ struct MainMenuView: View {
                                 .padding(5)
                                 
                                 NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("vs Friend")
+                                    Text("Get Link")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)

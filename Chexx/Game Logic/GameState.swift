@@ -32,7 +32,7 @@ struct GameState: Codable {
     var blackKingPosition: String
     
     var variant: String = "Glinski's"
-    var HexFen: [UInt8] = []
+    var HexPgn: [UInt8] = []
     
     init(/*variant: String*/) {
         //self.variant = variant
@@ -54,18 +54,18 @@ struct GameState: Codable {
         gameStatus = "ongoing"
         whiteKingPosition = "g1"
         blackKingPosition = "g10"
-        HexFen = []
+        HexPgn = []
         
         //print(variant)
         
         if variant == "Glinski's" {
-            HexFen.append(00)
+            HexPgn.append(00)
         } else if variant == "Mathewson's" {
-            HexFen.append(01)
+            HexPgn.append(01)
         } else if variant == "McCooey's" {
-            HexFen.append(10)
+            HexPgn.append(10)
         } else if variant == "Christensen's" {
-            HexFen.append(11)
+            HexPgn.append(11)
         }
         
         // Set initial pieces on the board
@@ -189,22 +189,22 @@ struct GameState: Codable {
             whiteKingPosition: whiteKingPosition,
             blackKingPosition: blackKingPosition,
             //variant: variant,
-            HexFen: HexFen
+            HexPgn: HexPgn
         )
     }
     
     // New initializer to use in the copy method
-    init(currentPlayer: String, gameStatus: String, board: [[Piece?]], whiteKingPosition: String, blackKingPosition: String, /*variant: String,*/ HexFen: [UInt8]) {
+    init(currentPlayer: String, gameStatus: String, board: [[Piece?]], whiteKingPosition: String, blackKingPosition: String, /*variant: String,*/ HexPgn: [UInt8]) {
         self.currentPlayer = currentPlayer
         self.gameStatus = gameStatus
         self.board = board
         self.whiteKingPosition = whiteKingPosition
         self.blackKingPosition = blackKingPosition
         //self.variant = variant
-        self.HexFen = HexFen
+        self.HexPgn = HexPgn
     }
 
-    mutating func movePiece(from: String, to: String) {
+    mutating func movePiece(from: String, to: String, promotionPiece: Piece?) {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
         // Convert from and to positions to board indices
@@ -219,8 +219,11 @@ struct GameState: Codable {
         let fromIndex = (fromColumn, fromRow - 1)
         let toIndex = (toColumn, toRow - 1)
         
-        // Move the piece on the board
-        let pieceToMove = board[fromIndex.0][fromIndex.1]
+        var pieceToMove = board[fromIndex.0][fromIndex.1]
+
+        if promotionPiece != nil {
+            pieceToMove = promotionPiece
+        }
         board[fromIndex.0][fromIndex.1] = nil
         board[toIndex.0][toIndex.1] = pieceToMove
         
@@ -294,20 +297,20 @@ struct GameState: Codable {
         }
     }
     
-    mutating func addMoveToHexFen(from: String, to: String) {
+    mutating func addMoveToHexPgn(from: String, to: String, promotionOffset: UInt8) {
         let originInt = positionStringToInt(position: from)
         let destinationInt = positionStringToInt(position: to)
         
-        HexFen.append(UInt8(originInt))
-        HexFen.append(UInt8(destinationInt))
+        HexPgn.append(UInt8(originInt))
+        HexPgn.append(UInt8(destinationInt + promotionOffset))
         
-        //print(HexFen)
-        
-        for value in HexFen {
+        //print(HexPgn) //for testing
+        /*
+        for value in HexPgn {
             // Convert each UInt8 to a binary string with leading zeros
             let binaryString = String(value, radix: 2).leftPadded(toLength: 8, withPad: "0")
-            //print(binaryString)
-        }
+            print(binaryString)
+        }*/
     }
     
     func positionStringToInt(position: String) -> UInt8 {
@@ -352,37 +355,82 @@ struct GameState: Codable {
         return "\(columnLetter)\(rowPos)"
     }
     
-    mutating func HexFenToGameState(fen: [UInt8]) -> GameState {
-        guard fen.count >= 1 else {
-            print("Invalid HexFen: Not enough data")
+    mutating func HexPgnToGameState(pgn: [UInt8]) -> GameState {
+        guard pgn.count >= 1 else {
+            print("Invalid HexPgn: Not enough data")
             return self
         }
         
-        self.HexFen = fen //(so it can be updated)
+        self.HexPgn = pgn
 
-        //let variant = fen[0] //first uint8 is the variant identifier
-        //print("Variant used: \(variant)") //0 means Glinkskis
+        //let variant = pgn[0] //first uint8 is the variant identifier
+        //print("Variant used: \(variant)") //0 means Glinkskis //rn thats default
 
         // Iterate through the remaining UInt8s in pairs (skipping the first one)
-        for i in stride(from: 1, to: fen.count, by: 2) {
-            let fromIndex = fen[i]
-            let toIndex = fen[i + 1]
+        for i in stride(from: 1, to: pgn.count, by: 2) {
+            let fromIndex = pgn[i]
+            let toIndex = pgn[i + 1]
+            
+            var adjustedIndex = UInt8(0)
+            var promotionPiece: Piece?
+            
+            currentPlayer = (((i - 1) / 2) % 2 == 0) ? "white" : "black"
+            
+            if toIndex > 91 { //pawn getting promoted!
+                if currentPlayer == "white" {
+                    promotionPiece = getPromotionPiece(for: toIndex)
+                } else {
+                    promotionPiece = getPromotionPiece(for: toIndex - 1)
+                }
+                
+                switch promotionPiece?.type {
+                    case "queen":
+                        adjustedIndex = 91
+                    case "rook":
+                        adjustedIndex = 92
+                    case "bishop":
+                        adjustedIndex = 93
+                    case "knight":
+                        adjustedIndex = 94
+                    default:
+                        adjustedIndex = 0
+                    }
+            }
 
             // Convert indices to position strings
             let fromPosition = positionIntToString(index: fromIndex)
-            let toPosition = positionIntToString(index: toIndex)
+            let toPosition = positionIntToString(index: toIndex - adjustedIndex)
 
             // Perform the move
-            movePiece(from: fromPosition, to: toPosition)
+            movePiece(from: fromPosition, to: toPosition, promotionPiece: promotionPiece)
         }
         
         // Determine the current player's turn based on the number of moves
-        let moveCount = (fen.count - 1) / 2
+        let moveCount = (pgn.count - 1) / 2
         currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
 
         // Return the updated game state
         return self
     }
+    
+    func getPromotionPiece(for index: UInt8) -> Piece? { //helper function for HexPgnToGameState
+        let queenPromotionIndexArray: [UInt8] = [91, 96, 103, 111, 120, 130, 141, 151, 160, 168, 175, 181]
+        let rookPromotionIndexArray: [UInt8] = [92, 97, 104, 112, 121, 131, 142, 152, 161, 169, 176, 182]
+        let bishopPromotionIndexArray: [UInt8] = [93, 98, 105, 113, 122, 132, 143, 153, 162, 170, 177, 183]
+        let knightPromotionIndexArray: [UInt8] = [94, 99, 106, 114, 123, 133, 144, 154, 163, 171, 178, 184]
+        
+        if queenPromotionIndexArray.contains(index) {
+            return Piece(color: currentPlayer, type: "queen")
+        } else if rookPromotionIndexArray.contains(index) {
+            return Piece(color: currentPlayer, type: "rook")
+        } else if bishopPromotionIndexArray.contains(index) {
+            return Piece(color: currentPlayer, type: "bishop")
+        } else if knightPromotionIndexArray.contains(index) {
+            return Piece(color: currentPlayer, type: "knight")
+        }
+        return nil
+    }
+
     
     func pieceAt(_ position: String) -> Piece? {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
@@ -494,7 +542,7 @@ struct GameState: Codable {
 
         return (false, "")  // Game is still ongoing
     }
-    
+
     /*func compressBoardToBits() -> [Bool] {
         var bitArray = [Bool]()
 
@@ -551,8 +599,8 @@ struct GameState: Codable {
     }*/
 }
 
-func saveGameStateToFile(hexFen: [UInt8], to filename: String) {
-    let saveData = HexFenSaveData(date: Date(), hexFen: hexFen)
+func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {
+    let saveData = HexPgnSaveData(date: Date(), hexPgn: hexPgn)
     let encoder = JSONEncoder()
     encoder.dateEncodingStrategy = .iso8601 // Standard format for date
 
@@ -560,9 +608,9 @@ func saveGameStateToFile(hexFen: [UInt8], to filename: String) {
         let url = getDocumentsDirectory().appendingPathComponent(filename)
         do {
             try encoded.write(to: url)
-            //print("HexFen saved to \(url.path)")
+            //print("HexPgn saved to \(url.path)")
         } catch {
-            print("Failed to save HexFen: \(error.localizedDescription)")
+            print("Failed to save HexPgn: \(error.localizedDescription)")
         }
     }
 }
@@ -573,9 +621,9 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601
 
-        if let saveData = try? decoder.decode(HexFenSaveData.self, from: data) {
+        if let saveData = try? decoder.decode(HexPgnSaveData.self, from: data) {
             var gameState = GameState() // Initialize empty GameState
-            gameState = gameState.HexFenToGameState(fen: saveData.hexFen) // Rebuild from HexFen
+            gameState = gameState.HexPgnToGameState(pgn: saveData.hexPgn) // Rebuild from HexPgn
             print("Game state loaded from \(url.path)") //STILL AN ISSUE WITH RELOADING THE GAMESTATE EVERY UI UPDATE, NEED TO CHANGE
             return gameState
         }
@@ -606,7 +654,7 @@ extension String {
     }
 }
 
-struct HexFenSaveData: Codable {
+struct HexPgnSaveData: Codable {
     let date: Date
-    let hexFen: [UInt8]
+    let hexPgn: [UInt8]
 }

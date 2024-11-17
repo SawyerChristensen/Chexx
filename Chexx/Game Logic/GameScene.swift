@@ -22,7 +22,6 @@ class GameScene: SKScene {
     var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
     var gameCPU: GameCPU!
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
-
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
     let light = UIColor(hex: "#ffce9e")
     let grey = UIColor(hex: "#e8ab6f")
@@ -67,7 +66,7 @@ class GameScene: SKScene {
         }
         
         //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
-        //gameState = gameState.HexFenToGameState(fen: [0, 6, 8, 84, 82])
+        //gameState = gameState.HexPgnToGameState(pgn: [0, 6, 8, 84, 82])
         
         // Calculate hexagon size based on screen size
         hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
@@ -535,8 +534,6 @@ class GameScene: SKScene {
         print(hexagonName)
         print(gameState.positionStringToInt(position: hexagonName))*/
         
-        gameState.addMoveToHexFen(from: originalPosition, to: hexagonName)
-        
         originalRowIndex = originalRowIndex - 1 //originalRowIndex is originally not 0 indexed, have to - 1)
         
         // Get piece details from identifier
@@ -551,7 +548,6 @@ class GameScene: SKScene {
         }
         
         //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
-        //need to update king position!!!
 
         if type == "pawn" {
             fiftyMoveRule = 0
@@ -583,27 +579,35 @@ class GameScene: SKScene {
                 }
             }
         
+        var promotionOffsetInt = UInt8(0)
+        
         // Pawn promotion logic without blocking the main thread
         if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1) ||
            (color == "black" && type == "pawn" && rowIndex == 0) {
             if isVsCPU && color == "black" { //need to change this if implement a mode where CPU plays as white
                 type = "queen" //CPU automatically chooses queen, possible update can be it choosing between queen or knight if knight is more advantageous
-                self.finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+                self.finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: 91)
             } else {
                 presentPromotionOptions { newType in
                     type = newType // Update the piece type to the chosen promotion type
-                    self.finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+                    
+                    if newType == "queen" { promotionOffsetInt = 91 } //for hexpgn representation
+                    else if newType == "rook" { promotionOffsetInt = 92 }
+                    else if newType == "bishop" { promotionOffsetInt = 93 }
+                    else if newType == "knight" { promotionOffsetInt = 94 }
+                    
+                    self.finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: promotionOffsetInt)
                 }
             }
             return
         }
 
         // Move logic for non-promotion case
-        finalizeMove(pieceNode, color, type, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex)
+        finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: 0)
     }
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
-    func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int) {
+    func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ originalPosition: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int, promotionOffsetInt: UInt8) {
         
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] //jesus christ columns is defined in like every single function
         
@@ -611,7 +615,14 @@ class GameScene: SKScene {
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
-        // KING POSITION IS OFF
+        gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
+        
+        /*if isOnlineMultiplayer { //send move to cloud if online multiplayer
+            gameState.currentPlayerId = (gameState.currentPlayerId == MultiplayerManager.shared.currentUserId) ? (MultiplayerManager.shared.opponentId ?? "") : MultiplayerManager.shared.currentUserId
+            
+            multiplayerManager.sendMove(hexPgn: gameState.HexPgn)
+        }*/
+        
         if type == "king" {
             //print("updating king position from", from, "to", to)
             if color == "white" {
@@ -648,14 +659,14 @@ class GameScene: SKScene {
                 rotateBoard()
                 rotateAllPieces()
             }
-            saveGameStateToFile(hexFen: gameState.HexFen, to: "currentPassAndPlay")
+            saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentPassAndPlay")
         }
         
         updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
         
         if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
             self.whiteStatusTextUpdater?("Thinking.")
-            var statusText = ["Thinking..", "Thinking...", "Thinking."]
+            let statusText = ["Thinking..", "Thinking...", "Thinking."]
             var currentIndex = 0
             let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
                 self.whiteStatusTextUpdater?(statusText[currentIndex])
@@ -675,9 +686,13 @@ class GameScene: SKScene {
         }
         
         if isVsCPU {
-            saveGameStateToFile(hexFen: gameState.HexFen, to: "currentSinglePlayer")
+            saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentSinglePlayer")
         }
+        
+        //print("\n")
+        
     }
+    
     
     func cpuMakeMove() {
         if let move = gameCPU.findMove(gameState: &gameState) {
