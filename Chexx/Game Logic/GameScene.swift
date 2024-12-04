@@ -15,12 +15,16 @@ class GameScene: SKScene {
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     
     let audioManager = AudioManager()
-    var isVsCPU: Bool      // To handle "vs CPU" mode
-    var isPassAndPlay: Bool // To handle "Pass & Play" mode
+    var isVsCPU: Bool
+    var isPassAndPlay: Bool
+    var isOnlineMultiplayer: Bool
     //var variant: String = "Glinkski's"
     
     var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
+    var hexPgn: [Int] = [0]
     var gameCPU: GameCPU!
+    var multiplayerManager = MultiplayerManager.shared
+    
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
     let light = UIColor(hex: "#ffce9e")
@@ -31,14 +35,15 @@ class GameScene: SKScene {
     var originalPosition: CGPoint?
     var originalHexagonName: String?
     var validMoves: [String] = []
-    var fiftyMoveRule = 0 // Still need to implement
+    //var fiftyMoveRule = 0 // Still need to implement
     
     var redStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextUpdater: ((String) -> Void)?
     
-    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool) { // this can be modified to take in file name for gamesave
+    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) { // this can be modified to take in file name for gamesave
         self.isVsCPU = isVsCPU
         self.isPassAndPlay = isPassAndPlay
+        self.isOnlineMultiplayer = isOnlineMultiplayer
         super.init(size: size)
     }
 
@@ -58,11 +63,13 @@ class GameScene: SKScene {
         // Load the game state (if exists) or create a new one
         if isPassAndPlay {
             gameState = loadGameStateFromFile(from: "currentPassAndPlay") ?? GameState()
-        }
-        
-        if isVsCPU {
+        } else if isVsCPU {
             gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
             gameCPU = GameCPU(difficulty: CPUDifficulty.hard)
+        } else if isOnlineMultiplayer {
+            gameState = GameState()
+        } else {
+            print("No game mode detected!")
         }
         
         //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
@@ -84,6 +91,13 @@ class GameScene: SKScene {
         if isPassAndPlay && gameState.currentPlayer == "black" {
             rotateBoardImmediately()
             rotateAllPiecesImmediately()
+        }
+        
+        if isOnlineMultiplayer {
+            multiplayerManager.startListeningForMoves { [weak self] hexPgn in
+                print("Recieved from server: \(hexPgn)")
+                self?.applyHexPgn(hexPgn)
+            }
         }
         
         updateGameStatusUI()
@@ -548,10 +562,10 @@ class GameScene: SKScene {
         }
         
         //print("Moving \(color) \(type) from \(originalPosition) to \(hexagonName)")
-
+/*
         if type == "pawn" {
             fiftyMoveRule = 0
-        }
+        }*/
         
         //********** CAPTURING ********** // STILL NEED TO CHECK IF A KING IS CAPTURED & END THE GAME
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
@@ -561,21 +575,21 @@ class GameScene: SKScene {
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
                 capturedPieceNode.removeFromParent()
             }
-            fiftyMoveRule = 0
+            //fiftyMoveRule = 0
         }
             //Capturing logic for En Passant
             if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
                     gameState.board[colIndex][rowIndex - 1] = nil 
-                    fiftyMoveRule = 0
+                    //fiftyMoveRule = 0
                 }
             }
             if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
                     gameState.board[colIndex][rowIndex + 1] = nil
-                    fiftyMoveRule = 0
+                    //fiftyMoveRule = 0
                 }
             }
         
@@ -615,13 +629,11 @@ class GameScene: SKScene {
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
-        gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
+        gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt) //not sure if this has to be HERE specifically, could be earlier, could be later, might not matter at all
         
-        /*if isOnlineMultiplayer { //send move to cloud if online multiplayer
-            gameState.currentPlayerId = (gameState.currentPlayerId == MultiplayerManager.shared.currentUserId) ? (MultiplayerManager.shared.opponentId ?? "") : MultiplayerManager.shared.currentUserId
-            
+        if isOnlineMultiplayer { //send move to cloud if online multiplayer
             multiplayerManager.sendMove(hexPgn: gameState.HexPgn)
-        }*/
+        }
         
         if type == "king" {
             //print("updating king position from", from, "to", to)
@@ -637,7 +649,7 @@ class GameScene: SKScene {
             gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
         }
         
-        pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"
+        pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"//do we really need this??
         pieceNode.removeFromParent()
         
         let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
@@ -646,7 +658,7 @@ class GameScene: SKScene {
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
-        fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate
+        //fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate
         
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
@@ -705,7 +717,6 @@ class GameScene: SKScene {
                         cpuPieceNode.run(slideAction) { [weak self] in
                             self?.updateGameState(with: cpuPieceNode, at: move.destination)
                         }
-                        
                     }
                 } else {
                     print("Error: Destination hexagon not found for \(move.destination)")
@@ -776,17 +787,27 @@ class GameScene: SKScene {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
         //let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
+        /*
+        if isOnlineMultiplayer {
+            if gameState.currentPlayer == MultiplayerManager.shared.playerColor {
+                whiteStatusTextUpdater?("Your turn")
+            } else {
+                whiteStatusTextUpdater?("Waiting for opponent...")
+            }
+        }*/
 
         if isGameOver {
             switch gameStatus {
             case "checkmate":
                 //print("Checkmate!", opponentColor, "wins!")
+                whiteStatusTextUpdater?("")
                 redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
                 if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             case "stalemate":
                 //print("Stalemate!")
+                whiteStatusTextUpdater?("")
                 redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
                 if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
@@ -843,6 +864,38 @@ class GameScene: SKScene {
         }
     }
     
+    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer
+        // Exit early if hexPgn is unchanged or empty
+        guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else { return }
+
+        // Extract the last move's start and destination
+        let startIndex = hexPgn[hexPgn.count - 2]
+        let destinationIndex = hexPgn[hexPgn.count - 1]
+        let startPosition = gameState.positionIntToString(index: startIndex)
+        let destinationPosition = gameState.positionIntToString(index: destinationIndex)
+
+        // Animate the move
+        if let pieceNode = findPieceNode(at: startPosition) {
+            if let destinationHexagon = self.childNode(withName: destinationPosition) {
+                if let parent = pieceNode.parent {
+                    let destinationPoint = parent.convert(destinationHexagon.position, from: self)
+                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.2)
+                    pieceNode.run(slideAction) { [weak self] in
+                        self?.updateGameState(with: pieceNode, at: destinationPosition)
+                    }
+                }
+            } else {
+                print("Error: Destination hexagon not found for \(destinationPosition)")
+            }
+        } else {
+            print("Error: Piece node not found at \(startPosition)")
+        }
+        
+        // Update game status UI
+        updateGameStatusUI()
+    }
+
+    
     func resetEnPassant(for color: String) {
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
@@ -866,6 +919,12 @@ class GameScene: SKScene {
                     print("No piece at \(columns[colIndex])\(rowIndex + 1)")
                 }
             }
+        }
+    }
+    
+    deinit { //(upon deninitialization of the GameScene (the view exits, stop listening for game updates)
+        if isOnlineMultiplayer {
+            multiplayerManager.stopListening()
         }
     }
     

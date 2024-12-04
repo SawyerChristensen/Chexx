@@ -1,15 +1,21 @@
-online multiplayer (need to implement online play) (should be implemented last) (no icons, need name checking)
+online multiplayer (need to implement online play) (no icons, need name checking)
     -show name in multiplayer toggle?
+    
+    need better UI for starting a game
+    better player turn notification,
+    animation speed improvements,
+    and restricting players to only moving their color
     
 -name checking for online play (also set default name to full name instead of single)
 
--tutorial
+-basic tutorial
 
 -facebook sign in
     -enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
 
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
+-enpassant will not work for online play, code sets enpassant to true in gamescene, not gamestate with movepiece func
 
 
 
@@ -31,16 +37,17 @@ the proper attribution:
 
 FOR FUTURE UPDATES:
 
--50 move no capture rule for draw
--threefold repetition rule for draw
-    
--Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
+-make games more secure, this works for now
 
+-50 move no capture rule for draw
+
+-threefold repetition rule for draw
+    -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
 
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
     -display first name, country emoji, elo?
 
-optimizations to CPU
+-optimizations to game CPU
 
 -game history button in profile view? (store past user games, who vs who, and then display hex fen format)
     -single player stored on device, multiplayer stored in cloud

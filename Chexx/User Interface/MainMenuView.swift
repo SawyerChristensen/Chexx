@@ -13,12 +13,23 @@ struct MainMenuView: View {
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
-    @State private var isKeyboardVisible = false
+    @State private var isKeyboardVisible = false //for logging in to profile view
+    
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
+    //the submenus:
     @State private var onlineOptions = false
     @State private var singlePlayerOptions = false
     @State private var passAndPlayOptions = false
+    
+    //for online play:
+    @State private var isGameLinkPresented = false
+    @State private var gameLink: String = ""
+    @State private var isGameIDEntryPresented = false
+    @State private var gameIDToJoin: String = ""
+    @State private var navigateToGameView = false
+    @State private var showErrorAlert = false
+    @State private var errorMessage = "An error occurred."
 
     var body: some View {
         NavigationView {
@@ -49,8 +60,11 @@ struct MainMenuView: View {
                         
                         if onlineOptions {
                             VStack {
-                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Lobby")
+                                // Create Game Button
+                                Button(action: {
+                                    createOnlineGame()
+                                }) {
+                                    Text("Create Game")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -58,9 +72,33 @@ struct MainMenuView: View {
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
-                                
-                                NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Get Link")
+                                .sheet(isPresented: $isGameLinkPresented) {
+                                    VStack {
+                                        Text("Share this Game ID with your opponent:")
+                                            .font(.headline)
+                                            .padding()
+                                        Text(gameLink)
+                                            .font(.system(size: 24, weight: .bold, design: .monospaced))
+                                            .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
+                                            .padding()
+                                        Button("Copy to Clipboard") {
+                                            UIPasteboard.general.string = gameLink
+                                        }
+                                        .padding()
+                                        Button("Start Game") {
+                                            isGameLinkPresented = false
+                                            navigateToGameView = true
+                                        }
+                                        .padding()
+                                    }
+                                    .padding()
+                                }
+
+                                // Join Game Button
+                                Button(action: {
+                                    isGameIDEntryPresented = true
+                                }) {
+                                    Text("Join Game")
                                         .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
                                         .frame(width: screenHeight * 0.32, height: screenHeight / 12)
                                         .background(Color.accentColor)
@@ -68,8 +106,34 @@ struct MainMenuView: View {
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
+                                .sheet(isPresented: $isGameIDEntryPresented) {
+                                    VStack {
+                                        Text("Enter Game ID:")
+                                            .font(.headline)
+                                            .padding()
+                                        TextField("Game ID", text: $gameIDToJoin)
+                                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .padding()
+                                        Button("Join") {
+                                            joinOnlineGame(gameId: gameIDToJoin)
+                                        }
+                                        .padding()
+                                    }
+                                    .padding()
+                                }
+
+                                // NavigationLink to GameView
+                                NavigationLink(destination: GameView(isOnlineMultiplayer: true).onAppear {
+                                    audioManager.stopBackgroundMusic()
+                                }, isActive: $navigateToGameView) {
+                                    EmptyView()
+                                }
+                            }
+                            .alert(isPresented: $showErrorAlert) {
+                                Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
                             }
                         }
+
                         
                         else if singlePlayerOptions { //can also implement variants here
                             VStack {
@@ -296,35 +360,32 @@ struct MainMenuView: View {
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
-}
-/*
-struct SettingsModalView: View {
-    @Environment(\.colorScheme) var colorScheme
-    @AppStorage("highlightEnabled") private var highlightEnabled = true
-
-    var body: some View {
-        VStack(spacing: 20) {
-            Text("Settings")
-                .font(.headline)
-                .padding()
-
-            Toggle("Enable Highlight", isOn: $highlightEnabled)
-                .padding()
-
-            Button(action: {
-                // Handle other settings actions
-            }) {
-                Text("Other Settings")
+    
+    func createOnlineGame() {
+        MultiplayerManager.shared.createGame { gameId in
+            if let gameId = gameId {
+                self.gameLink = gameId
+                self.isGameLinkPresented = true
+            } else {
+                self.errorMessage = "Failed to create a game."
+                self.showErrorAlert = true
             }
-
-            Spacer()
         }
-        .padding()
-        .background(Color(UIColor.systemBackground))
-        .cornerRadius(15)
-        .shadow(radius: 10)
     }
-}*/
+
+    func joinOnlineGame(gameId: String) {
+        MultiplayerManager.shared.joinGame(gameId: gameId) { success in
+            if success {
+                self.isGameIDEntryPresented = false
+                self.navigateToGameView = true
+            } else {
+                self.errorMessage = "Failed to join the game."
+                self.showErrorAlert = true
+            }
+        }
+    }
+}
+
 
 struct HexagonEdgeRectangleShape: Shape {
     func path(in rect: CGRect) -> Path {

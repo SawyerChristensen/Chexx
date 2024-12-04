@@ -13,6 +13,7 @@ struct GameView: View {
     @State private var whiteStatusText: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
+    @State var isOnlineMultiplayer: Bool = false
     @State private var scene: SKScene?
     var startNewGame: Bool = false
     //@State var variant: String
@@ -65,11 +66,12 @@ struct GameView: View {
     }
 
     private func createScene(size: CGSize) -> SKScene {
-        let scene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay)
+        let scene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay, isOnlineMultiplayer: isOnlineMultiplayer)
         scene.scaleMode = .aspectFill
         scene.isVsCPU = isVsCPU
         //scene.variant = variant
         scene.isPassAndPlay = isPassAndPlay
+        scene.isOnlineMultiplayer = isOnlineMultiplayer
         scene.redStatusTextUpdater = { text in
             self.redStatusText = text // Update the red status text from the GameScene
         }

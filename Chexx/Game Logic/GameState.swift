@@ -34,8 +34,7 @@ struct GameState: Codable {
     var variant: String = "Glinski's"
     var HexPgn: [UInt8] = []
     
-    init(/*variant: String*/) {
-        //self.variant = variant
+    init() {
         // Initialize the board with nils (empty positions)
         //let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
@@ -56,8 +55,6 @@ struct GameState: Codable {
         blackKingPosition = "g10"
         HexPgn = []
         
-        //print(variant)
-        
         if variant == "Glinski's" {
             HexPgn.append(00)
         } else if variant == "Mathewson's" {
@@ -71,19 +68,6 @@ struct GameState: Codable {
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
     }
-    /*
-    mutating func setInitialPiecePositions() {
-        switch variant {
-        case "Glinski's":
-            setGlinskisPiecePositions()
-        case "Mathewson's":
-            setMathewsonsPiecePositions()
-        case "McCooey's":
-            setMathewsonsPiecePositions()
-        default:
-            setGlinskisPiecePositions() // Default to Glinski's
-        }
-    }*/
     
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
@@ -128,80 +112,6 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }
-    
-    /*private mutating func setMathewsonsPiecePositions() {
-        let initialPositions: [((Int, Int), Piece)] = [
-            ((1, 6), Piece(color: "black", type: "pawn")),
-            ((2, 6), Piece(color: "black", type: "pawn")),
-            ((3, 7), Piece(color: "black", type: "pawn")),
-            ((4, 7), Piece(color: "black", type: "pawn")),
-            ((5, 7), Piece(color: "black", type: "pawn")),
-            ((6, 7), Piece(color: "black", type: "pawn")),
-            ((7, 7), Piece(color: "black", type: "pawn")),
-            ((8, 6), Piece(color: "black", type: "pawn")),
-            ((9, 6), Piece(color: "black", type: "pawn")),
-            ((1, 0), Piece(color: "white", type: "pawn")),
-            ((2, 1), Piece(color: "white", type: "pawn")),
-            ((3, 1), Piece(color: "white", type: "pawn")),
-            ((4, 2), Piece(color: "white", type: "pawn")),
-            ((5, 3), Piece(color: "white", type: "pawn")),
-            ((6, 2), Piece(color: "white", type: "pawn")),
-            ((7, 1), Piece(color: "white", type: "pawn")),
-            ((8, 1), Piece(color: "white", type: "pawn")),
-            ((9, 0), Piece(color: "white", type: "pawn")),
-            ((2, 7), Piece(color: "black", type: "rook")),
-            ((8, 7), Piece(color: "black", type: "rook")),
-            ((3, 8), Piece(color: "black", type: "knight")),
-            ((4, 9), Piece(color: "black", type: "queen")),
-            ((5, 10), Piece(color: "black", type: "bishop")),
-            ((5, 9), Piece(color: "black", type: "bishop")),
-            ((5, 8), Piece(color: "black", type: "bishop")),
-            ((6, 9), Piece(color: "black", type: "king")),
-            ((7, 8), Piece(color: "black", type: "knight")),
-            ((2, 0), Piece(color: "white", type: "rook")),
-            ((3, 0), Piece(color: "white", type: "knight")),
-            ((4, 0), Piece(color: "white", type: "queen")),
-            ((5, 0), Piece(color: "white", type: "bishop")),
-            ((5, 1), Piece(color: "white", type: "bishop")),
-            ((5, 2), Piece(color: "white", type: "bishop")),
-            ((6, 0), Piece(color: "white", type: "king")),
-            ((7, 0), Piece(color: "white", type: "knight")),
-            ((8, 0), Piece(color: "white", type: "rook"))
-        ]
-        
-        for ((col, row), piece) in initialPositions {
-            board[col][row] = piece
-        }
-    }*/
-    
-    func copy() -> GameState {
-        // Create a deep copy of the board
-        let copiedBoard = board.map { column in
-            column.map { $0 }
-        }
-        
-        // Return a new GameState with copied properties
-        return GameState(
-            currentPlayer: currentPlayer,
-            gameStatus: gameStatus,
-            board: copiedBoard,
-            whiteKingPosition: whiteKingPosition,
-            blackKingPosition: blackKingPosition,
-            //variant: variant,
-            HexPgn: HexPgn
-        )
-    }
-    
-    // New initializer to use in the copy method
-    init(currentPlayer: String, gameStatus: String, board: [[Piece?]], whiteKingPosition: String, blackKingPosition: String, /*variant: String,*/ HexPgn: [UInt8]) {
-        self.currentPlayer = currentPlayer
-        self.gameStatus = gameStatus
-        self.board = board
-        self.whiteKingPosition = whiteKingPosition
-        self.blackKingPosition = blackKingPosition
-        //self.variant = variant
-        self.HexPgn = HexPgn
     }
 
     mutating func movePiece(from: String, to: String, promotionPiece: Piece?) {
@@ -355,7 +265,7 @@ struct GameState: Codable {
         return "\(columnLetter)\(rowPos)"
     }
     
-    mutating func HexPgnToGameState(pgn: [UInt8]) -> GameState {
+    mutating func HexPgnToGameState(pgn: [UInt8]) -> GameState { //this assumes its operating on an blank gameState/new board
         guard pgn.count >= 1 else {
             print("Invalid HexPgn: Not enough data")
             return self
