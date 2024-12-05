@@ -95,9 +95,9 @@
 		BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */; };
 		BE94E1372C82FE6A005DCAD3 /* alert_from_mgs.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
-		BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
+		BECA2C092D01ED32002B14BE /* GameLinkSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -184,9 +184,9 @@
 		BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = worldssmallestviolin.mp3; sourceTree = "<group>"; };
 		BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alert_from_mgs.mp3; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
-		BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionViewController.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheetView.swift; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -317,11 +317,11 @@
 			isa = PBXGroup;
 			children = (
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
+				BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */,
 				BE76AA512C462765009113B4 /* BackgroundView.swift */,
 				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
 				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
 				BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */,
-				BEB2FD812C653C4C008BCB26 /* PromotionViewController.swift */,
 				BEB2FD832C6599BB008BCB26 /* GameView.swift */,
 			);
 			path = "User Interface";
@@ -548,10 +548,10 @@
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
 				BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */,
-				BEB2FD822C653C4C008BCB26 /* PromotionViewController.swift in Sources */,
 				BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,
 				BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */,
+				BECA2C092D01ED32002B14BE /* GameLinkSheetView.swift in Sources */,
 				BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

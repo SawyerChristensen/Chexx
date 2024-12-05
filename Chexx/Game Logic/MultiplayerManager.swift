@@ -26,32 +26,63 @@ class MultiplayerManager {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
     }
     
-    // Create a new game
+    func generateGameCode() -> String {
+        let letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        return String((0..<6).compactMap { _ in letters.randomElement() })
+    }
+    
     func createGame(completion: @escaping (String?) -> Void) {
-        let gameRef = db.collection("games").document()
-        let gameId = gameRef.documentID
-        
-        self.playerColor = "black" //creator of the game is black
-        self.opponentColor = "white" //invited opponent makes the first move
-        
-        let gameData: [String: Any] = [
-            "player1Id": currentUserId,
-            "player1Color": self.playerColor,
-            "hexPgn": [], // Start with an empty HexPgn array
-            "status": "waiting",
-            "lastUpdated": FieldValue.serverTimestamp()
-        ]
-        
-        gameRef.setData(gameData) { error in
-            if let error = error {
-                print("Error creating game: \(error)")
+        let maxAttempts = 5 // Maximum number of attempts to avoid infinite loops
+
+        func tryCreateGame(attemptsLeft: Int) {
+            guard attemptsLeft > 0 else {
+                print("Failed to generate a unique game code after multiple attempts.")
                 completion(nil)
-            } else {
-                self.gameId = gameId
-                completion(gameId)
+                return
+            }
+
+            let gameId = generateGameCode()
+            let gameRef = db.collection("games").document(gameId)
+
+            self.playerColor = "black" // Creator of the game is black
+            self.opponentColor = "white" // Invited opponent makes the first move
+
+            let gameData: [String: Any] = [
+                "player1Id": currentUserId,
+                "player1Color": self.playerColor,
+                "hexPgn": [], // Start with an empty HexPgn array
+                "status": "waiting",
+                "lastUpdated": FieldValue.serverTimestamp()
+            ]
+
+            // Check if a game with this ID already exists
+            gameRef.getDocument { (document, error) in
+                if let error = error {
+                    print("Error checking for existing game ID: \(error)")
+                    completion(nil)
+                } else if let document = document, document.exists {
+                    // Game ID already exists, try again
+                    tryCreateGame(attemptsLeft: attemptsLeft - 1)
+                } else {
+                    // Game ID is unique, create the game
+                    gameRef.setData(gameData) { error in
+                        DispatchQueue.main.async {
+                            if let error = error {
+                                print("Error creating game: \(error)")
+                                completion(nil)
+                            } else {
+                                self.gameId = gameId
+                                completion(gameId)
+                            }
+                        }
+                    }
+                }
             }
         }
+
+        tryCreateGame(attemptsLeft: maxAttempts) // with 308 million combinations possible with 6 letters, chances are extremely unlikely there will be any collisions anyway
     }
+
     
     // Join an existing game
     func joinGame(gameId: String, completion: @escaping (Bool) -> Void) {

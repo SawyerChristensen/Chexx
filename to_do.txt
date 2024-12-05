@@ -1,9 +1,10 @@
 online multiplayer (need to implement online play) (no icons, need name checking)
-    -show name in multiplayer toggle?
-    
-    need better UI for starting a game
-    better player turn notification,
-    and restricting players to only moving their color
+    -better player turn notification
+    -restricting players to only moving their color
+    -bug: rejoining does not display the most recent board state, only the very last move?
+    -bug: if youre not signed in, theres no error message for creating a game, only an unexplained failure
+    -allow non-signed in users to play multiplayer with just a code?
+    -add random matchmaking if youre signed in
     
 -name checking for online play (also set default name to full name instead of single)
 
@@ -14,7 +15,8 @@ online multiplayer (need to implement online play) (no icons, need name checking
 
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
--enpassant will not work for online play, code sets enpassant to true in gamescene, not gamestate with movepiece func
+-enpassant will not work for online play, code sets enpassant to true in gamescene, not gamestate with movepiece func (test)
+
 
 
 
@@ -31,6 +33,7 @@ the proper attribution:
 -reenable main music menu if disabled (mainmenuview)
 
 -test if auto promote to queen actually works
+
 
 
 

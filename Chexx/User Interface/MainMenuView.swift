@@ -23,7 +23,7 @@ struct MainMenuView: View {
     @State private var passAndPlayOptions = false
     
     //for online play:
-    @State private var isGameLinkPresented = false
+    @State private var presentGameLink = false
     @State private var gameLink: String = ""
     @State private var isGameIDEntryPresented = false
     @State private var gameIDToJoin: String = ""
@@ -62,6 +62,7 @@ struct MainMenuView: View {
                             VStack {
                                 // Create Game Button
                                 Button(action: {
+                                    presentGameLink = true
                                     createOnlineGame()
                                 }) {
                                     Text("Create Game")
@@ -72,26 +73,13 @@ struct MainMenuView: View {
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
-                                .sheet(isPresented: $isGameLinkPresented) {
-                                    VStack {
-                                        Text("Share this Game ID with your opponent:")
-                                            .font(.headline)
-                                            .padding()
-                                        Text(gameLink)
-                                            .font(.system(size: 24, weight: .bold, design: .monospaced))
-                                            .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
-                                            .padding()
-                                        Button("Copy to Clipboard") {
-                                            UIPasteboard.general.string = gameLink
-                                        }
-                                        .padding()
-                                        Button("Start Game") {
-                                            isGameLinkPresented = false
-                                            navigateToGameView = true
-                                        }
-                                        .padding()
-                                    }
-                                    .padding()
+                                .sheet(isPresented: $presentGameLink) {
+                                    GameLinkSheetView(
+                                        isPresented: $presentGameLink,
+                                        navigateToGameView: $navigateToGameView,
+                                        gameLink: $gameLink,
+                                        screenHeight: screenHeight
+                                    )
                                 }
 
                                 // Join Game Button
@@ -109,17 +97,38 @@ struct MainMenuView: View {
                                 .sheet(isPresented: $isGameIDEntryPresented) {
                                     VStack {
                                         Text("Enter Game ID:")
-                                            .font(.headline)
-                                            .padding()
-                                        TextField("Game ID", text: $gameIDToJoin)
+                                            .font(.title2)
+                                        TextField("Game ID", text: Binding(
+                                            get: {
+                                                self.gameIDToJoin
+                                            },
+                                            set: { newValue in
+                                                self.gameIDToJoin = newValue.uppercased()
+                                            }
+                                        ))
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
+                                            .autocorrectionDisabled()
+                                            //.textInputAutocapitalization()
+                                            .keyboardType(.asciiCapable)
                                             .padding()
-                                        Button("Join") {
+                                            .onSubmit {
+                                                joinOnlineGame(gameId: gameIDToJoin)
+                                            }
+                                        Button(action: {
                                             joinOnlineGame(gameId: gameIDToJoin)
+                                        }) {
+                                            Text("Join Game →")
+                                                .font(.system(size: 30, weight: .bold, design: .serif)) //join is HARDCODED, UNLIKE CREATE
+                                                .frame(width: 240, height: 60)
+                                                .background(Color.accentColor)
+                                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
+                                                .clipShape(HexagonEdgeRectangleShape())
                                         }
                                         .padding()
                                     }
                                     .padding()
+                                    .presentationDetents([.medium])
+                                    .presentationDragIndicator(.visible)
                                 }
 
                                 // NavigationLink to GameView
@@ -363,15 +372,18 @@ struct MainMenuView: View {
     
     func createOnlineGame() {
         MultiplayerManager.shared.createGame { gameId in
-            if let gameId = gameId {
-                self.gameLink = gameId
-                self.isGameLinkPresented = true
-            } else {
-                self.errorMessage = "Failed to create a game."
-                self.showErrorAlert = true
+            DispatchQueue.main.async {
+                if let gameId = gameId {
+                    self.gameLink = gameId
+                } else {
+                    self.errorMessage = "Failed to create a game."
+                    self.showErrorAlert = true
+                    self.presentGameLink = false  // Dismiss the sheet
+                }
             }
         }
     }
+
 
     func joinOnlineGame(gameId: String) {
         MultiplayerManager.shared.joinGame(gameId: gameId) { success in
