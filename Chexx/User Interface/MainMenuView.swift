@@ -330,7 +330,7 @@ struct MainMenuView: View {
                         if let windowScene = UIApplication.shared.connectedScenes
                                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
                                let rootViewController = windowScene.windows.first?.rootViewController {
-                            let settingsViewController = UIHostingController(rootView: SettingsViewController(screenHeight: screenHeight))
+                            let settingsViewController = UIHostingController(rootView: SettingsView(screenHeight: screenHeight))
                             settingsViewController.modalPresentationStyle = .overCurrentContext
                             settingsViewController.view.backgroundColor = .clear // Transparent background
                             rootViewController.present(settingsViewController, animated: true, completion: nil)

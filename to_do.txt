@@ -3,7 +3,6 @@ online multiplayer (need to implement online play) (no icons, need name checking
     
     need better UI for starting a game
     better player turn notification,
-    animation speed improvements,
     and restricting players to only moving their color
     
 -name checking for online play (also set default name to full name instead of single)

@@ -714,8 +714,10 @@ class GameScene: SKScene {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
                         let slideAction = SKAction.move(to: destinationPosition, duration: 0.2)
                         //slideAction.timingMode = .linear
-                        cpuPieceNode.run(slideAction) { [weak self] in
-                            self?.updateGameState(with: cpuPieceNode, at: move.destination)
+                        cpuPieceNode.run(slideAction)
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in //pretty sure this improves the frame rate
+                            guard let self = self else { return }
+                            self.updateGameState(with: cpuPieceNode, at: move.destination)
                         }
                     }
                 } else {
@@ -864,7 +866,7 @@ class GameScene: SKScene {
         }
     }
     
-    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer
+    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer, also moves the piece
         // Exit early if hexPgn is unchanged or empty
         guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else { return }
 
@@ -880,8 +882,10 @@ class GameScene: SKScene {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.2)
-                    pieceNode.run(slideAction) { [weak self] in
-                        self?.updateGameState(with: pieceNode, at: destinationPosition)
+                    pieceNode.run(slideAction)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in//pretty sure this improves the frame rate
+                        guard let self = self else { return }
+                        self.updateGameState(with: pieceNode, at: destinationPosition)
                     }
                 }
             } else {
