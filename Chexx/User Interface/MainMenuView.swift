@@ -316,7 +316,7 @@ struct MainMenuView: View {
                             }
                         }
                         .padding()
-                        .background(Color(UIColor.systemGray6))
+                        .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                         .onAppear {
                             NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                 isKeyboardVisible = true

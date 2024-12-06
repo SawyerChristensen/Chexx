@@ -26,8 +26,9 @@ struct GameLinkSheetView: View {
                     .padding()
             } else {
                 Text(gameLink)
-                    .font(.system(size: 24, weight: .bold, design: .monospaced))
+                    .font(.system(size: 30, weight: .bold, design: .monospaced))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .tracking(3) //spacing in btween letters for better visibility
                     .padding()
 
                 Button(action: {
@@ -37,7 +38,7 @@ struct GameLinkSheetView: View {
                         .underline()
                 }
                 .underline(true)
-                .padding()
+                .padding(.bottom, 24)
             }
 
             Button(action: {

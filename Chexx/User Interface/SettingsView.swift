@@ -33,24 +33,24 @@ struct SettingsView: View {
                     
                 Toggle("Show Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
                 Toggle("Background Music", isOn: $backgroundMusicEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
                 Toggle("Sound Effects", isOn: $soundEffectsEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                 
                 Toggle("Low Motion", isOn: $lowMotionEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .bold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     
                 Button(action: {
