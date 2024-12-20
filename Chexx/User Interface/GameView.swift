@@ -47,7 +47,7 @@ struct GameView: View {
                         .font(.system(size: geometry.size.height / 32, design: .serif))
                         .foregroundColor(.white)
                         //.shadow(color: .white, radius: 5, x: 0, y: 0)
-                        .padding(.bottom, geometry.size.height * 0.95)
+                        .padding(.bottom, geometry.size.height * 0.90)
                 }
             }
             .onAppear {

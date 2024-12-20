@@ -1,6 +1,5 @@
 online multiplayer (need to implement online play) (no icons, need name checking)
     -bug: rejoining does not display the most recent board state, only the very last move?
-    -bug: if youre not signed in, theres no error message for creating a game, only an unexplained failure
     -allow non-signed in users to play multiplayer with just a code?
     
 -name checking for online play (also set default name to full name instead of single)

@@ -35,6 +35,20 @@ class AuthViewModel: ObservableObject {
             fetchUserDataFromFirestore { //get the data from the server and wait until we get a response
                 self.saveUserDataToDevice() //save the most recent data just in case
             }
+        } else {
+            // If not logged in, sign in anonymously? (this is currently not allowed)
+            if Auth.auth().currentUser == nil {
+                Auth.auth().signInAnonymously { (authResult, error) in
+                    if let error = error {
+                        print("Anonymous sign-in failed: \(error)")
+                        // Handle error if needed, maybe retry or set default state
+                    } else {
+                        print("Anonymous sign-in succeeded.")
+                        //self.isLoggedIn = true
+                        // Optionally fetch user data if needed
+                    }
+                }
+            }
         }
     }
     
