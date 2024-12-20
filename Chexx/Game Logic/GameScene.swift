@@ -294,7 +294,7 @@ class GameScene: SKScene {
                pieceDetails.count > 1, // Ensure there is a color component
                let pieceColor = String(pieceDetails[1]) as String? {
 
-                if pieceColor == gameState.currentPlayer {
+                if (pieceColor == gameState.currentPlayer && (!isVsCPU || gameState.currentPlayer == "white")) {
                     if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
                         deselectCurrentPiece()
                     } else { // Tapped on a different piece

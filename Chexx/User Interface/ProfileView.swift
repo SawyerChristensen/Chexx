@@ -363,8 +363,8 @@ struct ProfileView: View {
                 VStack(spacing: 20) {
                     
                     if !isKeyboardVisible {
-                        Button(action: gameHistory) {
-                            Text("Game History")
+                        Button(action: showAchievements) {
+                            Text("Achievements")
                                 .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
                                 .padding()
                                 .frame(height: screenHeight / 18)
@@ -508,17 +508,9 @@ struct ProfileView: View {
         .padding()
     }
     
-    // Example functions for navigation
-    private func startNewGame() {
-        // Code to start a new game
-    }
-    
-    private func viewProfile() {
-        // Code to navigate to the profile view
-    }
-    
-    private func gameHistory() {
-        // Code to view game history
+    private func showAchievements() {
+        //need to implement
+        //actually dont make this a button, always have achievements visible and scrollable
     }
     
     func loadSelectedCountry() {

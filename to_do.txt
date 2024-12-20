@@ -11,12 +11,35 @@ online multiplayer (need to implement online play) (no icons, need name checking
 -basic tutorial
 
 -facebook sign in
-    -enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
+
+-enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
+-enable gamecenter achievements (need apple developer program)
+
+Achievements:
+    Hex Machina - Checkmate the CPU
+    Hexcalibur: Underpromote a pawn to a knight
+    Hexplorer - Visit every tile in a single game
+    Friendly Hexchange - Play an online game
+    Hexperimenter - Win with 10 different openings
+    Hexcommunicated - Checkmate using only bishops
+    Hexathon - Play 26 games
+    Hexpedition - Move your king to the opposing king’s starting position
+    Hexceptional Morale - Promote 3 pawns in a single game
+    Hexecutioner - Checkmate after capturing all enemy pieces
+    The Great Hexcape - Checkmate after being put in check 3 times
+    Hexclusion Zone - Deliver a smothered mate
+    Hextreme Measures - Checkmate using your own king
+    Tactical Hexcellence - Checkmate without losing any pieces
+    Seasoned Hexpert - Complete all other achievements
+    
+    Hexceptional Win! - Checkmate the CPU
+
+
 
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -enpassant will not work for online play, code sets enpassant to true in gamescene, not gamestate with movepiece func (test)
-
+-background music still playing after exiting app in sim? does this happen in production?
 
 
 
