@@ -11,6 +11,7 @@ import SpriteKit
 struct GameView: View {
     @State private var redStatusText: String = ""
     @State private var whiteStatusText: String = ""
+    @State private var whiteStatusTextMini: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
     @State var isOnlineMultiplayer: Bool = false
@@ -40,6 +41,12 @@ struct GameView: View {
                         .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
                         .foregroundColor(.white)
                         .shadow(color: .white, radius: 5, x: 0, y: 0)
+                        .padding(.bottom, geometry.size.height * 0.95)
+                    
+                    Text(whiteStatusTextMini)
+                        .font(.system(size: geometry.size.height / 32, design: .serif))
+                        .foregroundColor(.white)
+                        //.shadow(color: .white, radius: 5, x: 0, y: 0)
                         .padding(.bottom, geometry.size.height * 0.95)
                 }
             }
@@ -77,6 +84,9 @@ struct GameView: View {
         }
         scene.whiteStatusTextUpdater = { text in
             self.whiteStatusText = text // Update the white status text from the GameScene
+        }
+        scene.whiteStatusTextMiniUpdater = { text in
+            self.whiteStatusTextMini = text // Update the mini white status text from the GameScene
         }
         return scene
     }

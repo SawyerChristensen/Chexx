@@ -55,7 +55,7 @@ struct GameLinkSheetView: View {
             .padding()
         }
         .padding()
-        .presentationDetents([.medium]) //i dont think this ALWAYS triggers, but it really should
-        .presentationDragIndicator(.visible)
+        //.presentationDetents([.medium]) //i dont think this ALWAYS triggers, but it really should
+        //.presentationDragIndicator(.visible)
     }
 }

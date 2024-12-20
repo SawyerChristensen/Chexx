@@ -19,8 +19,7 @@ class MultiplayerManager {
     var gameId: String?
     var currentUserId: String
     var opponentId: String?
-    var playerColor: String = ""
-    var opponentColor: String = ""
+    var currentPlayerColor: String = ""
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -44,12 +43,11 @@ class MultiplayerManager {
             let gameId = generateGameCode()
             let gameRef = db.collection("games").document(gameId)
 
-            self.playerColor = "black" // Creator of the game is black
-            self.opponentColor = "white" // Invited opponent makes the first move
+            self.currentPlayerColor = "black" // Creator of the game is black
 
             let gameData: [String: Any] = [
                 "player1Id": currentUserId,
-                "player1Color": self.playerColor,
+                "player1Color": self.currentPlayerColor,
                 "hexPgn": [], // Start with an empty HexPgn array
                 "status": "waiting",
                 "lastUpdated": FieldValue.serverTimestamp()
@@ -103,9 +101,12 @@ class MultiplayerManager {
                 completion(false)
                 return
             }*/
+            
+            self.currentPlayerColor = "white" // Joiner of the game is white
+            
             gameRef.updateData([
                 "player2Id": self.currentUserId,
-                "player2Color": self.playerColor,
+                "player2Color": self.currentPlayerColor,
                 "status": "in-progress",
                 "lastUpdated": FieldValue.serverTimestamp()
             ]) { error in

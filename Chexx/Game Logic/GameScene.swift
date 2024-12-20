@@ -23,7 +23,6 @@ class GameScene: SKScene {
     var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
     var hexPgn: [Int] = [0]
     var gameCPU: GameCPU!
-    var multiplayerManager = MultiplayerManager.shared
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -39,6 +38,7 @@ class GameScene: SKScene {
     
     var redStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextUpdater: ((String) -> Void)?
+    var whiteStatusTextMiniUpdater: ((String) -> Void)?
     
     init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) { // this can be modified to take in file name for gamesave
         self.isVsCPU = isVsCPU
@@ -87,14 +87,20 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-
-        if isPassAndPlay && gameState.currentPlayer == "black" {
+        
+        if (isPassAndPlay && gameState.currentPlayer == "black") || (isOnlineMultiplayer && MultiplayerManager.shared.currentPlayerColor == "black") {
             rotateBoardImmediately()
             rotateAllPiecesImmediately()
         }
         
+        if (isOnlineMultiplayer && gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor) {
+            self.whiteStatusTextMiniUpdater?("Your Turn")
+        } else {
+            self.whiteStatusTextMiniUpdater?("")
+        }
+        
         if isOnlineMultiplayer {
-            multiplayerManager.startListeningForMoves { [weak self] hexPgn in
+            MultiplayerManager.shared.startListeningForMoves { [weak self] hexPgn in
                 print("Recieved from server: \(hexPgn)")
                 self?.applyHexPgn(hexPgn)
             }
@@ -294,7 +300,9 @@ class GameScene: SKScene {
                pieceDetails.count > 1, // Ensure there is a color component
                let pieceColor = String(pieceDetails[1]) as String? {
 
-                if (pieceColor == gameState.currentPlayer && (!isVsCPU || gameState.currentPlayer == "white")) {
+                if (pieceColor == gameState.currentPlayer &&
+                    (!isVsCPU || gameState.currentPlayer == "white") &&
+                    (!isOnlineMultiplayer || pieceColor == MultiplayerManager.shared.currentPlayerColor)) {
                     if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
                         deselectCurrentPiece()
                     } else { // Tapped on a different piece
@@ -632,7 +640,7 @@ class GameScene: SKScene {
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt) //not sure if this has to be HERE specifically, could be earlier, could be later, might not matter at all
         
         if isOnlineMultiplayer { //send move to cloud if online multiplayer
-            multiplayerManager.sendMove(hexPgn: gameState.HexPgn)
+            MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn)
         }
         
         if type == "king" {
@@ -654,7 +662,6 @@ class GameScene: SKScene {
         
         let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
-        
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
@@ -789,14 +796,14 @@ class GameScene: SKScene {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
         //let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
-        /*
+        
         if isOnlineMultiplayer {
-            if gameState.currentPlayer == MultiplayerManager.shared.playerColor {
-                whiteStatusTextUpdater?("Your turn")
+            if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
+                whiteStatusTextMiniUpdater?("Your turn")
             } else {
-                whiteStatusTextUpdater?("Waiting for opponent...")
+                whiteStatusTextMiniUpdater?("Waiting for opponent...")
             }
-        }*/
+        }
 
         if isGameOver {
             switch gameStatus {
@@ -928,7 +935,7 @@ class GameScene: SKScene {
     
     deinit { //(upon deninitialization of the GameScene (the view exits, stop listening for game updates)
         if isOnlineMultiplayer {
-            multiplayerManager.stopListening()
+            MultiplayerManager.shared.stopListening()
         }
     }
     

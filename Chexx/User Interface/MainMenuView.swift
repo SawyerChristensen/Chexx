@@ -9,6 +9,7 @@ import SwiftUI
 
 struct MainMenuView: View {
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
+    //@AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     //@AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
@@ -80,6 +81,8 @@ struct MainMenuView: View {
                                         gameLink: $gameLink,
                                         screenHeight: screenHeight
                                     )
+                                    .presentationDetents([.medium])
+                                    .presentationDragIndicator(.visible)
                                 }
 
                                 // Join Game Button
@@ -175,7 +178,13 @@ struct MainMenuView: View {
                         else if passAndPlayOptions {
                             VStack {
                                 
-                                //possiby have a toggle here for low motion mode (either here or settings)
+                                /*Toggle("Low Motion", isOn: $lowMotionEnabled)
+                                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                                    .padding(.top, -5)
+                                    .padding(.bottom, 20)
+                                    .scaleEffect(0.9)*/
                                 
                                 NavigationLink(destination: GameView(isPassAndPlay: true, startNewGame: true).onAppear {
                                     audioManager.stopBackgroundMusic()

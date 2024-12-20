@@ -14,6 +14,7 @@ struct SettingsView: View {
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
+    //@AppStorage("playerTurnNotifEnabled") private var playerTurnNotifEnabled = false
     
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
@@ -52,7 +53,12 @@ struct SettingsView: View {
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                    
+                /*
+                Toggle("Player Turn Notification", isOn: $playerTurnNotifEnabled)
+                    .frame(maxWidth: min(screenHeight / 2.4, 500))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .foregroundColor(colorScheme == .dark ? .white : .black)
+                */
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {

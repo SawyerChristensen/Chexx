@@ -1,10 +1,7 @@
 online multiplayer (need to implement online play) (no icons, need name checking)
-    -restricting players to only moving their color
-    -better player turn notification
     -bug: rejoining does not display the most recent board state, only the very last move?
     -bug: if youre not signed in, theres no error message for creating a game, only an unexplained failure
     -allow non-signed in users to play multiplayer with just a code?
-    -add random matchmaking if youre signed in
     
 -name checking for online play (also set default name to full name instead of single)
 
@@ -38,9 +35,7 @@ Achievements:
 
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
--enpassant will not work for online play, code sets enpassant to true in gamescene, not gamestate with movepiece func (test)
--background music still playing after exiting app in sim? does this happen in production?
-
+-enpassant does not work in multiplayer with 2 center most columns
 
 
 BEFORE LAUNCH:
@@ -53,8 +48,6 @@ maybe a credits menu in settings?
 the proper attribution:
 "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
 
--reenable main music menu if disabled (mainmenuview)
-
 -test if auto promote to queen actually works
 
 
@@ -63,6 +56,8 @@ the proper attribution:
 FOR FUTURE UPDATES:
 
 -make games more secure, this works for now
+
+-add random matchmaking if youre signed in?
 
 -50 move no capture rule for draw
 
