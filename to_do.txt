@@ -1,6 +1,7 @@
 online multiplayer (need to implement online play) (no icons, need name checking)
     -bug: rejoining does not display the most recent board state, only the very last move?
-    -allow non-signed in users to play multiplayer with just a code?
+    
+-add a "resume game" button for online multiplayer
     
 -name checking for online play (also set default name to full name instead of single)
 
@@ -35,6 +36,8 @@ Achievements:
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -enpassant does not work in multiplayer with 2 center most columns
+-entering in a weird join code can crash the app
+-when recieving a new pgn online, it also sends it back to firebase due to execution through the main game loop
 
 
 BEFORE LAUNCH:

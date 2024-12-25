@@ -542,7 +542,9 @@ struct ProfileView: View {
                 if let range = attributedString.range(of: "Reset Password?") {
                     attributedString[range].underlineStyle = .single
                 }
+            } else { authViewModel.errorMessage = ""
             }
+                
             
             return attributedString
         }

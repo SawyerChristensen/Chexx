@@ -639,7 +639,7 @@ class GameScene: SKScene {
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt) //not sure if this has to be HERE specifically, could be earlier, could be later, might not matter at all
         
-        if isOnlineMultiplayer { //send move to cloud if online multiplayer
+        if isOnlineMultiplayer { //send move to cloud if online multiplayer TRIGGERS WHEN RECIEVING TOO, FIX
             MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn)
         }
         
@@ -692,13 +692,13 @@ class GameScene: SKScene {
                 currentIndex = (currentIndex + 1) % statusText.count
             }
             
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1
+            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1 //delay isnt really needed
             DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove()
                 
                 // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
                 DispatchQueue.main.async {
-                    thinkingTimer.invalidate() // Stop the timer //need to refactor later, not a hard error atm
+                    thinkingTimer.invalidate() // Stop the timer
                     self.whiteStatusTextUpdater?("") // Clear the status text
                 }
             }
@@ -724,7 +724,7 @@ class GameScene: SKScene {
                         cpuPieceNode.run(slideAction)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in //pretty sure this improves the frame rate
                             guard let self = self else { return }
-                            self.updateGameState(with: cpuPieceNode, at: move.destination)
+                            self.updateGameState(with: cpuPieceNode, at: move.destination) //upon recieiving a move it sends the move it recieved back to the cloud, this is redundant.
                         }
                     }
                 } else {
@@ -795,13 +795,12 @@ class GameScene: SKScene {
     func updateGameStatusUI() {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
-        //let opponentColor = gameState.currentPlayer == "white" ? "black" : "white" // just for the print statement
-        
         if isOnlineMultiplayer {
             if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
                 whiteStatusTextMiniUpdater?("Your turn")
+                
             } else {
-                whiteStatusTextMiniUpdater?("Waiting for opponent...")
+                whiteStatusTextMiniUpdater?("Waiting for opponent.")
             }
         }
 
@@ -917,8 +916,8 @@ class GameScene: SKScene {
             }
         }
     }
-    
-    func printGameState() { //just for bug fixing
+  
+/*    func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
@@ -931,11 +930,13 @@ class GameScene: SKScene {
                 }
             }
         }
-    }
+    }*/
     
     deinit { //(upon deninitialization of the GameScene (the view exits, stop listening for game updates)
         if isOnlineMultiplayer {
-            MultiplayerManager.shared.stopListening()
+            Task { @MainActor in
+                MultiplayerManager.shared.stopListening()
+            }
         }
     }
     

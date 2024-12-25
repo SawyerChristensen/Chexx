@@ -10,7 +10,8 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 
-class MultiplayerManager {
+@MainActor
+class MultiplayerManager: ObservableObject {
     static let shared = MultiplayerManager()
     
     private let db = Firestore.firestore()
@@ -20,6 +21,9 @@ class MultiplayerManager {
     var currentUserId: String
     var opponentId: String?
     var currentPlayerColor: String = ""
+    
+    @Published var opponentName: String = ""
+    @Published var opponentProfileImageURL: URL?
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -85,6 +89,7 @@ class MultiplayerManager {
     // Join an existing game
     func joinGame(gameId: String, completion: @escaping (Bool) -> Void) {
         let gameRef = db.collection("games").document(gameId)
+        
         gameRef.getDocument { snapshot, error in
             if let error = error {
                 print("Error joining game: \(error)")
@@ -96,11 +101,6 @@ class MultiplayerManager {
                 completion(false)
                 return
             }
-            /*if let player2Id = data["player2Id"] as? String {
-                print("Game already has two players")
-                completion(false)
-                return
-            }*/
             
             self.currentPlayerColor = "white" // Joiner of the game is white
             
@@ -117,8 +117,42 @@ class MultiplayerManager {
                     self.gameId = gameId
                     if let player1Id = data["player1Id"] as? String {
                         self.opponentId = player1Id
+                        self.fetchOpponentInfo(userId: player1Id)
                     }
                     completion(true)
+                }
+            }
+        }
+    }
+    
+    // Listen for opponent joining a game
+    func listenForOpponentJoined() {
+        guard let gameId = gameId else { return }
+        let gameRef = db.collection("games").document(gameId)
+
+        gameRef.addSnapshotListener { snapshot, error in
+            if let error = error {
+                print("Error listening for opponent: \(error)")
+                return
+            }
+            guard let data = snapshot?.data() else { return }
+
+            if let player2Id = data["player2Id"] as? String {
+                self.opponentId = player2Id
+                self.fetchOpponentInfo(userId: player2Id)
+            }
+        }
+    }
+
+    // Fetch opponent's information
+    private func fetchOpponentInfo(userId: String) {
+        AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL in
+            DispatchQueue.main.async {
+                self?.opponentName = name ?? "Unknown Player"
+                if let profileURL = profileURL {
+                    self?.opponentProfileImageURL = URL(string: profileURL)
+                } else {
+                    self?.opponentProfileImageURL = nil
                 }
             }
         }
@@ -143,7 +177,7 @@ class MultiplayerManager {
     }
     
     // Send move by updating HexPgn
-    func sendMove(hexPgn: [UInt8], completion: ((Error?) -> Void)? = nil) {
+    func sendMove(hexPgn: [UInt8], completion: ((Error?) -> Void)? = nil) { //need to make sure it doesnt send when recieving a new hexPGN
         print("sendMove: ", hexPgn)
         guard let gameId = gameId else { return }
         let gameRef = db.collection("games").document(gameId)

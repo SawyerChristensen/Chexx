@@ -13,6 +13,8 @@ import GoogleSignIn
 
 @MainActor
 class AuthViewModel: ObservableObject {
+    static let shared = AuthViewModel()
+    
     @Published var isLoggedIn: Bool = false {
         didSet {
             // Persist login state
@@ -97,7 +99,7 @@ class AuthViewModel: ObservableObject {
             } else {
                 print("No Firestore document found for this user.")
                 //so make one!
-                //self.saveUserDataToFirestore()
+                self.saveUserDataToFirestore()
             }
             
             //this is so the other local code waits to execute until after this funciton is finished
@@ -105,16 +107,47 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func fetchUserDataByUserId(_ userId: String, completion: @escaping (String?, String?) -> Void) {
+        db.collection("users").document(userId).getDocument { document, error in
+            if let error = error {
+                print("Error fetching user data: \(error)")
+                completion(nil, nil)
+                return
+            }
+            
+            guard let data = document?.data() else {
+                print("No Firestore document found for userId: \(userId)")
+                completion(nil, nil)
+                return
+            }
+            
+            //print("Fetched user data: \(data)") // Debugging
+            
+            let displayName = data["displayName"] as? String
+            let profileImageURL = data["profileImageURL"] as? String
+            
+            //print("Fetched displayName: \(displayName ?? "None"), profileImageURL: \(profileImageURL ?? "None")") // Debugging
+            
+            completion(displayName, profileImageURL)
+        }
+    }
+
+    
     func saveUserDataToFirestore() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
 
         // Prepare the data to save
-        let userData: [String: Any] = [
+        var userData: [String: Any] = [
             "email": self.email,
             "displayName": self.displayName,
             "country": self.userCountry,
             "eloScore": self.eloScore
         ]
+        
+        // Add profileImageURL ONLY if it exists
+        if let profileImageURL = self.profileImageURL?.absoluteString {
+            userData["profileImageURL"] = profileImageURL
+        }
 
         // Save the data in Firestore under the user's document
         db.collection("users").document(userID).setData(userData) { error in
@@ -176,16 +209,16 @@ class AuthViewModel: ObservableObject {
             print("No user logged in to update country.")
             return
         }
-
-        // Load the current stored country from UserDefaults
-        let currentStoredCountry = UserDefaults.standard.string(forKey: "country") ?? ""
-
+        
         // Check if the new country is different from the stored country
         if country.isEmpty {
             print("Country is empty, not updating Firestore.")
             return
         }
 
+        // Load the current stored country from UserDefaults
+        let currentStoredCountry = UserDefaults.standard.string(forKey: "country") ?? ""
+        
         if currentStoredCountry != country {
             // Update the `userCountry` field in Firestore
             db.collection("users").document(userID).updateData([
@@ -240,7 +273,6 @@ class AuthViewModel: ObservableObject {
     }
 
     func signInWithGoogle() async -> Bool {
-        
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("No client ID found in Firebase configuration")
         }
@@ -279,7 +311,7 @@ class AuthViewModel: ObservableObject {
                 UserDefaults.standard.set(imageURL, forKey: "profileImageURL")
             }
             
-            self.fetchUserDataFromFirestore(completion: {}) //empty completion handler, we dont care if its asychonour here as long as it happens
+            self.fetchUserDataFromFirestore(completion: {}) //empty completion handler, we dont care if its asychronous here as long as it happens
 
             return true
             
@@ -354,10 +386,12 @@ class AuthViewModel: ObservableObject {
 
     func signOut() {
        do {
-            try Auth.auth().signOut()
-            self.isLoggedIn = false
-            self.email = ""
-            self.displayName = ""
+           try Auth.auth().signOut()
+           self.isLoggedIn = false
+           self.email = ""
+           self.displayName = ""
+           self.userCountry = ""
+           self.profileImageURL = URL("")
            
            // Remove saved data
            UserDefaults.standard.removeObject(forKey: "isLoggedIn")
