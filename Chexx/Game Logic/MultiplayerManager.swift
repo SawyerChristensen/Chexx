@@ -177,7 +177,15 @@ class MultiplayerManager: ObservableObject {
     }
     
     // Send move by updating HexPgn
-    func sendMove(hexPgn: [UInt8], completion: ((Error?) -> Void)? = nil) { //need to make sure it doesnt send when recieving a new hexPGN
+    func sendMove(hexPgn: [UInt8], currentTurn: String, completion: ((Error?) -> Void)? = nil) {
+        // Only send if it's actually our move to send
+        if currentTurn != currentPlayerColor {
+            print("Not your turn; ignoring sendMove.") //this usually happens when RECIEVING a move this used to rebound the move back up to the server
+            completion?(nil)
+            return
+        }
+
+        // Otherwise proceed to update Firestore
         print("sendMove: ", hexPgn)
         guard let gameId = gameId else { return }
         let gameRef = db.collection("games").document(gameId)

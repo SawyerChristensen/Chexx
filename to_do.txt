@@ -37,7 +37,6 @@ Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -enpassant does not work in multiplayer with 2 center most columns
 -entering in a weird join code can crash the app
--when recieving a new pgn online, it also sends it back to firebase due to execution through the main game loop
 
 
 BEFORE LAUNCH:

@@ -639,8 +639,8 @@ class GameScene: SKScene {
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt) //not sure if this has to be HERE specifically, could be earlier, could be later, might not matter at all
         
-        if isOnlineMultiplayer { //send move to cloud if online multiplayer TRIGGERS WHEN RECIEVING TOO, FIX
-            MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn)
+        if isOnlineMultiplayer { //send move to cloud if online multiplayer and is our turn/move to send
+            MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn, currentTurn: gameState.currentPlayer)
         }
         
         if type == "king" {
@@ -712,8 +712,7 @@ class GameScene: SKScene {
         
     }
     
-    
-    func cpuMakeMove() {
+    func cpuMakeMove() { //for single player, also moves the piece
         if let move = gameCPU.findMove(gameState: &gameState) {
             if let cpuPieceNode = findPieceNode(at: move.start) {
                 if let destinationHexagon = self.childNode(withName: move.destination) {
@@ -724,7 +723,7 @@ class GameScene: SKScene {
                         cpuPieceNode.run(slideAction)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in //pretty sure this improves the frame rate
                             guard let self = self else { return }
-                            self.updateGameState(with: cpuPieceNode, at: move.destination) //upon recieiving a move it sends the move it recieved back to the cloud, this is redundant.
+                            self.updateGameState(with: cpuPieceNode, at: move.destination)
                         }
                     }
                 } else {
@@ -738,6 +737,86 @@ class GameScene: SKScene {
             print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
             //redStatusTextUpdater?("CPU has no valid moves. Game over.")
             gameState.gameStatus = "ended"
+        }
+    }
+    
+    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer, also moves the piece
+        // Exit early if hexPgn is unchanged or empty
+        guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else {
+            print("same as stored, returning...")
+            return }
+
+        // Extract the last move's start and destination
+        let startIndex = hexPgn[hexPgn.count - 2]
+        let destinationIndex = hexPgn[hexPgn.count - 1]
+        let startPosition = gameState.positionIntToString(index: startIndex)
+        let destinationPosition = gameState.positionIntToString(index: destinationIndex)
+
+        // Animate the move
+        if let pieceNode = findPieceNode(at: startPosition) {
+            if let destinationHexagon = self.childNode(withName: destinationPosition) {
+                if let parent = pieceNode.parent {
+                    let destinationPoint = parent.convert(destinationHexagon.position, from: self)
+                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.2)
+                    pieceNode.run(slideAction)
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in//pretty sure this improves the frame rate
+                        guard let self = self else { return }
+                        self.updateGameState(with: pieceNode, at: destinationPosition)
+                    }
+                }
+            } else {
+                print("Error: Destination hexagon not found for \(destinationPosition)")
+            }
+        } else {
+            print("Error: Piece node not found at \(startPosition)")
+        }
+        
+        // Update game status UI
+        updateGameStatusUI()
+    }
+    
+    func updateGameStatusUI() {
+        let (isGameOver, gameStatus) = gameState.isGameOver()
+        
+        if isOnlineMultiplayer {
+            if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
+                whiteStatusTextMiniUpdater?("Your turn")
+                
+            } else {
+                whiteStatusTextMiniUpdater?("Waiting for opponent.")
+            }
+        }
+
+        if isGameOver {
+            switch gameStatus {
+            case "checkmate":
+                //print("Checkmate!", opponentColor, "wins!")
+                whiteStatusTextUpdater?("")
+                redStatusTextUpdater?("Checkmate!")
+                gameState.gameStatus = "ended"
+                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                return
+            case "stalemate":
+                //print("Stalemate!")
+                whiteStatusTextUpdater?("")
+                redStatusTextUpdater?("Stalemate!")
+                gameState.gameStatus = "ended"
+                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                return
+            default:
+                break
+            }
+        }
+        
+        if gameStatus.starts(with: "check") {
+            //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") } //for some reason this isnt working rn
+            // Extract positions after "check by " and highlight checking pieces
+            let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
+            let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+            
+            highlightCheckStatus(for: checkPositions)
+        } else {
+            clearCheckHighlights()
         }
     }
     
@@ -792,51 +871,6 @@ class GameScene: SKScene {
         }
     }
     
-    func updateGameStatusUI() {
-        let (isGameOver, gameStatus) = gameState.isGameOver()
-        
-        if isOnlineMultiplayer {
-            if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
-                whiteStatusTextMiniUpdater?("Your turn")
-                
-            } else {
-                whiteStatusTextMiniUpdater?("Waiting for opponent.")
-            }
-        }
-
-        if isGameOver {
-            switch gameStatus {
-            case "checkmate":
-                //print("Checkmate!", opponentColor, "wins!")
-                whiteStatusTextUpdater?("")
-                redStatusTextUpdater?("Checkmate!")
-                gameState.gameStatus = "ended"
-                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
-                return
-            case "stalemate":
-                //print("Stalemate!")
-                whiteStatusTextUpdater?("")
-                redStatusTextUpdater?("Stalemate!")
-                gameState.gameStatus = "ended"
-                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
-                return
-            default:
-                break
-            }
-        }
-        
-        if gameStatus.starts(with: "check") {
-            //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") } //for some reason this isnt working rn
-            // Extract positions after "check by " and highlight checking pieces
-            let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
-            let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
-            
-            highlightCheckStatus(for: checkPositions)
-        } else {
-            clearCheckHighlights()
-        }
-    }
-    
     func presentPromotionOptions(completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let promotionViewController = UIHostingController(rootView: PromotionView(completion: completion))
@@ -871,41 +905,7 @@ class GameScene: SKScene {
             pieceNode.position = CGPoint.zero // Reset position relative to the parent hexagon
         }
     }
-    
-    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer, also moves the piece
-        // Exit early if hexPgn is unchanged or empty
-        guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else { return }
 
-        // Extract the last move's start and destination
-        let startIndex = hexPgn[hexPgn.count - 2]
-        let destinationIndex = hexPgn[hexPgn.count - 1]
-        let startPosition = gameState.positionIntToString(index: startIndex)
-        let destinationPosition = gameState.positionIntToString(index: destinationIndex)
-
-        // Animate the move
-        if let pieceNode = findPieceNode(at: startPosition) {
-            if let destinationHexagon = self.childNode(withName: destinationPosition) {
-                if let parent = pieceNode.parent {
-                    let destinationPoint = parent.convert(destinationHexagon.position, from: self)
-                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.2)
-                    pieceNode.run(slideAction)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in//pretty sure this improves the frame rate
-                        guard let self = self else { return }
-                        self.updateGameState(with: pieceNode, at: destinationPosition)
-                    }
-                }
-            } else {
-                print("Error: Destination hexagon not found for \(destinationPosition)")
-            }
-        } else {
-            print("Error: Piece node not found at \(startPosition)")
-        }
-        
-        // Update game status UI
-        updateGameStatusUI()
-    }
-
-    
     func resetEnPassant(for color: String) {
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
