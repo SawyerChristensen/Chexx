@@ -73,7 +73,8 @@ class MultiplayerManager: ObservableObject {
                                 print("Error creating game: \(error)")
                                 completion(nil)
                             } else {
-                                self.gameId = gameId
+                                self.gameId = gameId //this stores the gameID in memory, might not need this?
+                                UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //this saves the most recent game code to t
                                 completion(gameId)
                             }
                         }
@@ -102,7 +103,7 @@ class MultiplayerManager: ObservableObject {
                 return
             }
             
-            self.currentPlayerColor = "white" // Joiner of the game is white
+            self.currentPlayerColor = "white" // Joiner of the game is white by default
             
             gameRef.updateData([
                 "player2Id": self.currentUserId,
@@ -114,8 +115,9 @@ class MultiplayerManager: ObservableObject {
                     print("Error updating game: \(error)")
                     completion(false)
                 } else {
-                    self.gameId = gameId
-                    if let player1Id = data["player1Id"] as? String {
+                    self.gameId = gameId //stores the gameID in memory, maybe not necessary
+                    UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
+                    if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
                         self.opponentId = player1Id
                         self.fetchOpponentInfo(userId: player1Id)
                     }
@@ -124,6 +126,60 @@ class MultiplayerManager: ObservableObject {
             }
         }
     }
+    
+    func resumeGame(completion: @escaping (Bool) -> Void) {
+        guard let savedGameId = UserDefaults.standard.string(forKey: "mostRecentGameId") else {
+            print("No game ID found in UserDefaults.")
+            completion(false)
+            return
+        }
+        
+        let gameRef = db.collection("games").document(savedGameId)
+        gameRef.getDocument { snapshot, error in
+            if let error = error {
+                print("Error fetching game to resume: \(error)")
+                completion(false)
+                return
+            }
+            guard let data = snapshot?.data() else {
+                print("Game not found or no data in Firestore.")
+                completion(false)
+                return
+            }
+            
+            let player1Id = data["player1Id"] as? String
+            let player2Id = data["player2Id"] as? String
+            let player1Color = data["player1Color"] as? String ?? "black"
+            let player2Color = data["player2Color"] as? String ?? "white"
+            
+            // Determine if current user is player1 or player2
+            if player1Id == self.currentUserId {
+                // Current user is player1
+                self.currentPlayerColor = player1Color
+                self.opponentId = player2Id
+                if let opponentId = player2Id {
+                    self.fetchOpponentInfo(userId: opponentId)
+                }
+            } else if player2Id == self.currentUserId {
+                // Current user is player2
+                self.currentPlayerColor = player2Color
+                self.opponentId = player1Id
+                if let opponentId = player1Id {
+                    self.fetchOpponentInfo(userId: opponentId)
+                }
+            } else {
+                print("Current user is not in the saved game.")
+                completion(false)
+                return
+            }
+            
+            // Successfully resumed
+            self.gameId = savedGameId
+            print("Resumed game with ID: \(savedGameId). Current color: \(self.currentPlayerColor)")
+            completion(true)
+        }
+    }
+    
     
     // Listen for opponent joining a game
     func listenForOpponentJoined() {
@@ -162,12 +218,14 @@ class MultiplayerManager: ObservableObject {
     func startListeningForMoves(hexPgnUpdated: @escaping ([UInt8]) -> Void) {
         guard let gameId = gameId else { return }
         let gameRef = db.collection("games").document(gameId)
+        
         gameListener = gameRef.addSnapshotListener { snapshot, error in
             if let error = error {
                 print("Error listening for moves: \(error)")
                 return
             }
             guard let data = snapshot?.data() else { return }
+            
             if let hexPgnData = data["hexPgn"] as? [Int] {
                 // Convert [Int] to [UInt8]
                 let hexPgn = hexPgnData.map { UInt8($0) }
@@ -189,6 +247,7 @@ class MultiplayerManager: ObservableObject {
         print("sendMove: ", hexPgn)
         guard let gameId = gameId else { return }
         let gameRef = db.collection("games").document(gameId)
+        
         // Convert [UInt8] to [Int] because Firestore doesn't support UInt8 directly
         let hexPgnData = hexPgn.map { Int($0) }
         gameRef.updateData([
@@ -205,5 +264,6 @@ class MultiplayerManager: ObservableObject {
     // Remove listener when done
     func stopListening() {
         gameListener?.remove()
+        gameListener = nil //do i really need to set this to nil?
     }
 }

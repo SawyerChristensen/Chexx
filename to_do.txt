@@ -1,9 +1,5 @@
-online multiplayer (need to implement online play) (no icons, need name checking)
+online multiplayer (need name checking?)
     -bug: rejoining does not display the most recent board state, only the very last move?
-    
--add a "resume game" button for online multiplayer
-    
--name checking for online play (also set default name to full name instead of single)
 
 -basic tutorial
 
@@ -33,10 +29,14 @@ Achievements:
 
 
 
+
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -enpassant does not work in multiplayer with 2 center most columns
 -entering in a weird join code can crash the app
+-login does not check if your email is actually real
+
+
 
 
 BEFORE LAUNCH:
@@ -45,7 +45,7 @@ BEFORE LAUNCH:
     -launch screen (required) & main menu /is it???
     
 -need to atribute artist of the chess images somewhere in the app,
-maybe a credits menu in settings?
+maybe a credits section at the end of the tutorial
 the proper attribution:
 "By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
 
@@ -56,9 +56,12 @@ the proper attribution:
 
 FOR FUTURE UPDATES:
 
+-add a "resume game" button for online multiplayer?
+
 -make games more secure, this works for now
 
 -add random matchmaking if youre signed in?
+    -if added, need name checking for online play (just hide the icons, unless joining a friends game)
 
 -50 move no capture rule for draw
 

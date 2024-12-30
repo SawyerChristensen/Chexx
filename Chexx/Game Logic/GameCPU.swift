@@ -8,10 +8,10 @@
 import Foundation
 
 enum CPUDifficulty {
-    case random // Completely random moves (works)
-    case easy   // Gains the most points ON the turn (no lookahead)
-    case medium // Minimax with a depth of 2
-    case hard   // Minimax with a depth of 4-5?
+    case random
+    case easy
+    case medium
+    case hard
 }
 
 class GameCPU {

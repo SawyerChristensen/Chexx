@@ -31,29 +31,51 @@ struct MainMenuView: View {
     @State private var navigateToGameView = false
     @State private var showErrorAlert = false
     @State private var errorMessage = "An error occurred."
+    
+    @State private var hasSavedOnlineGame: Bool = false
+    @State private var hasSavedSinglePlayerGame: Bool = false
+    @State private var hasSavedPassAndPlayGame: Bool = false
+    
+    @State private var refreshID = UUID()
 
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
                 let screenHeight = geometry.size.height
                 let screenWidth = geometry.size.width
+                let maxScreenDimension = max(screenHeight, screenWidth)
                 
+                // MARK: - Main Menu Stack
                 ZStack {
-                    //BackgroundView()
+                    
+                    //BackgroundView() //maybe implement on a later date
+                    
                     VStack {
                         
-                        Image("white_king")
-                            .resizable()
-                            .scaledToFit()
-                            .frame(height: screenHeight * 0.15)
-                            .padding(.top, screenHeight * 0.15)
-                            .colorInvertIfDarkMode(colorScheme: colorScheme)
-                            //.shadow(color: .white, radius: 5, x: 0, y: 0)
-                            //.overlay(colorScheme == .dark ? Color.accentColor .blendMode(.darken) : Color.white .blendMode(.darken)) //try to do nothing if light mode
+                        if screenWidth > screenHeight { //landscape orientation!
+                            
+                            Image("king_stencil")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: maxScreenDimension * 0.16)
+                                .padding(.top, screenHeight * 0.08)
+                                .colorInvertIfDarkMode(colorScheme: colorScheme)
+                            
+                        } else { //portrait orientation!
+                            
+                            Image("king_stencil")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(height: maxScreenDimension * 0.16)
+                                .padding(.top, screenHeight * 0.16)
+                                .colorInvertIfDarkMode(colorScheme: colorScheme)
+                                //.shadow(color: .white, radius: 5, x: 0, y: 0)
+                                //.overlay(colorScheme == .dark ? Color.accentColor .blendMode(.darken) : Color.white .blendMode(.darken)) //try to do nothing if light mode
+                        }
                         
-                        //WaveText(text: "Hex Chess", fontSize: screenHeight * 0.07)
+                        //WaveText(text: "Hex Chess", fontSize: maxScreenDimension * 0.07)
                         Text("Hex Chess")
-                            .font(.system(size: screenHeight * 0.07, weight: .bold, design: .serif))
+                            .font(.system(size: maxScreenDimension * 0.07, weight: .bold, design: .serif))
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             .padding(.top, -5)
                         
@@ -61,14 +83,16 @@ struct MainMenuView: View {
                         
                         if onlineOptions {
                             VStack {
+                                // --------------------------------
                                 // Create Game Button
+                                // --------------------------------
                                 Button(action: {
                                     presentGameLink = true
                                     createOnlineGame()
                                 }) {
                                     Text("Create Game")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -79,19 +103,21 @@ struct MainMenuView: View {
                                         isPresented: $presentGameLink,
                                         navigateToGameView: $navigateToGameView,
                                         gameLink: $gameLink,
-                                        screenHeight: screenHeight
+                                        screenHeight: maxScreenDimension
                                     )
                                     .presentationDetents([.medium])
                                     .presentationDragIndicator(.visible)
                                 }
 
+                                // --------------------------------
                                 // Join Game Button
+                                // --------------------------------
                                 Button(action: {
                                     isGameIDEntryPresented = true
                                 }) {
                                     Text("Join Game")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -133,7 +159,24 @@ struct MainMenuView: View {
                                     .presentationDetents([.medium])
                                     .presentationDragIndicator(.visible)
                                 }
-
+                                
+                                // --------------------------------
+                                // Resume Game Button
+                                // --------------------------------
+                                if hasSavedOnlineGame {
+                                    Button(action: {
+                                        resumeOnlineGame()
+                                    }) {
+                                        Text("Resume")
+                                            .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
+                                    .padding(5)
+                                }
+                                
                                 // NavigationLink to GameView
                                 NavigationLink(destination: GameView(isOnlineMultiplayer: true).onAppear {
                                     audioManager.stopBackgroundMusic()
@@ -146,15 +189,14 @@ struct MainMenuView: View {
                             }
                         }
 
-                        
                         else if singlePlayerOptions { //can also implement variants here
                             VStack {
                                 NavigationLink(destination: GameView(isVsCPU: true, startNewGame: true).onAppear {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -165,8 +207,8 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("Resume")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -179,8 +221,8 @@ struct MainMenuView: View {
                             VStack {
                                 
                                 /*Toggle("Low Motion", isOn: $lowMotionEnabled)
-                                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                                    .frame(maxWidth: min(maxScreenDimension / 2.4, 500))
+                                    .font(.system(size: min(maxScreenDimension / 36, 28), weight: .semibold, design: .serif))
                                     .foregroundColor(colorScheme == .dark ? .white : .black)
                                     .padding(.top, -5)
                                     .padding(.bottom, 20)
@@ -190,8 +232,8 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -202,8 +244,8 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("Resume")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -211,57 +253,80 @@ struct MainMenuView: View {
                                 .padding(5)
                             }
                             
-                        } else {
+                        }
+                        
+                        else { //no sub menus enabled, go to top level main menu
                             VStack {
-                                /*NavigationLink(destination: GameView().onAppear { audioManager.stopBackgroundMusic() }) {
-                                    Text("Tutorial")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
-                                        .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                        .clipShape(HexagonEdgeRectangleShape())
-                                }
-                                .padding(5)
-                                */
-                                Button(action: {
-                                    singlePlayerOptions = true
-                                    //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
-                                }) {
-                                    Text("Single Player")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
-                                        .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                        .clipShape(HexagonEdgeRectangleShape())
-                                }
-                                .padding(5)
                                 
-                                Button(action: {
-                                    passAndPlayOptions = true
-                                    //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
-                                }) {
-                                    Text("Pass & Play")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
-                                        .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                        .clipShape(HexagonEdgeRectangleShape())
+                                if hasSavedSinglePlayerGame { //if theres a saved single player game...
+                                    Button(action: { // make sure we present the option to resume
+                                        singlePlayerOptions = true
+                                        //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
+                                    }) {
+                                        Text("Single Player")
+                                            .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
+                                    .padding(5)
+                                    
+                                } else { //there is no saved single player game, jump right in!
+                                    NavigationLink(destination: GameView(isVsCPU: true).onAppear {
+                                        audioManager.stopBackgroundMusic()
+                                    }) {
+                                        Text("Single Player")
+                                            .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
+                                    .padding(5)
                                 }
-                                .padding(5)
+                                
+                                
+                                if hasSavedPassAndPlayGame {
+                                    Button(action: {
+                                        passAndPlayOptions = true
+                                    }) {
+                                        Text("Pass & Play")
+                                            .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
+                                    .padding(5)
+                                    
+                                } else {
+                                    NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
+                                        audioManager.stopBackgroundMusic()
+                                    }) {
+                                        Text("Pass & Play")
+                                            .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
+                                    .padding(5)
+                                }
+                                
                                 
                                 Button(action: {
                                     onlineOptions = true
                                     //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                 }) {
                                     Text("Online")
-                                        .font(.system(size: screenHeight / 24, weight: .bold, design: .serif))
-                                        .frame(width: screenHeight * 0.32, height: screenHeight / 12)
+                                        .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
+                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(5)
-                                .padding(.bottom)
                             }
                             
                         }
@@ -278,94 +343,149 @@ struct MainMenuView: View {
                             }) {
                                 HStack {
                                     Image(systemName: "arrow.backward")
-                                        .font(.system(size: screenHeight * 0.046, weight: .bold, design: .serif))
+                                        .font(.system(size: maxScreenDimension * 0.05, weight: .bold, design: .serif))
                                 }
                             }
-                            .padding(.bottom, screenHeight * 0.14)
+                            .padding(.bottom, maxScreenDimension * 0.02)
+                            .padding(.top, -maxScreenDimension * 0.02)
                         }
+                        
+                        Spacer()
                     }
-                    // Center everything horizontally
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
+                .id(refreshID)  //attach a (rendering?) ID
+                .onAppear {
+                    refreshID = UUID() // Force a re-init of the view whenever the main menu appears
                 
-                // Overlay for Profile and Settings Icons
-                HStack {
-                    // Profile icon on the left
-                    Button(action: {
-                        isProfilePresented = true
-                    }) {
-                        Image(systemName: "person.crop.circle")
-                            .resizable()
-                            .frame(width: screenHeight / 16, height: screenHeight / 16)
-                            .padding(screenHeight / 30)
+                    DispatchQueue.main.async {
+                        checkForSavedOnlineGame()
+                        checkForSavedSinglePlayerGame()
+                        checkForSavedPassAndPlayGame()
                     }
-                    .fullScreenCover(isPresented: $isProfilePresented) {
-                        VStack {
-                            
-                            Spacer()
-                            
-                            ProfileView(screenHeight: screenHeight, screenWidth: screenWidth)
-                                .environmentObject(authViewModel)
-                            
-                            Spacer()
-                            
-                            if !isKeyboardVisible { //is keyboard is visible, hide the close button
-                                // Dismiss button at the bottom
-                                Button(action: {
-                                    isProfilePresented = false
-                                }) {
-                                    Text("Close")
-                                        .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
-                                        .padding()
-                                        .frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                                        .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                        .clipShape(HexagonEdgeRectangleShape())
+                }
+                
+                // MARK: - Top Screen Icons
+                HStack(alignment: .top) {
+                    
+                    // Profile & Leaderboard
+                    VStack {
+                        // Profile icon
+                        Button(action: {
+                            isProfilePresented = true
+                        }) {
+                            Image(systemName: "person.crop.circle")
+                                .resizable()
+                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .padding(.top, maxScreenDimension / 30)
+                                .padding(.leading, maxScreenDimension / 30)
+                        }
+                        .fullScreenCover(isPresented: $isProfilePresented) {
+                            VStack {
+                                
+                                Spacer()
+                                
+                                ProfileView(screenHeight: screenHeight, screenWidth: screenWidth)
+                                    .environmentObject(authViewModel)
+                                
+                                Spacer()
+                                
+                                if !isKeyboardVisible { //is keyboard is visible, hide the close button
+                                    // Dismiss button at the bottom
+                                    Button(action: {
+                                        isProfilePresented = false
+                                    }) {
+                                        Text("Close")
+                                            .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                                            .padding()
+                                            .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                            .background(Color.accentColor)
+                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .clipShape(HexagonEdgeRectangleShape())
+                                    }
                                 }
                             }
-                        }
-                        .padding()
-                        .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                        .onAppear {
-                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
-                                isKeyboardVisible = true
+                            .padding()
+                            .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                            .onAppear {
+                                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
+                                    isKeyboardVisible = true
+                                }
+                                NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+                                    isKeyboardVisible = false
+                                }
                             }
-                            NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
-                                isKeyboardVisible = false
+                            .onDisappear {
+                                NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+                                NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                             }
                         }
-                        .onDisappear {
-                            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-                            NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+                        
+                        // Leaderboard Icon
+                        Button(action: {
+                        //    isLeaderboardPresented = true
+                        }) {
+                            Image(systemName: "list.bullet.rectangle")
+                                .resizable()
+                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .padding(.top, maxScreenDimension / 30)
+                                .padding(.leading, maxScreenDimension / 30)
                         }
+                        //.sheet(isPresented: $isLeaderboardPresented) {
+                         //   LeaderboardView()
+                            // Replace with your actual leaderboard implementation
+                        //}
                     }
-                    Spacer() // Push the settings icon to the right
-                }
-                HStack {
+                    
                     Spacer()
-                    // Settings icon on the right
-                    Button(action: {
-                        if let windowScene = UIApplication.shared.connectedScenes
+                    
+                    // Settings & Tutorial
+                    VStack {
+                        // Settings icon
+                        Button(action: {
+                            if let windowScene = UIApplication.shared.connectedScenes
                                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
                                let rootViewController = windowScene.windows.first?.rootViewController {
-                            let settingsViewController = UIHostingController(rootView: SettingsView(screenHeight: screenHeight))
-                            settingsViewController.modalPresentationStyle = .overCurrentContext
-                            settingsViewController.view.backgroundColor = .clear // Transparent background
-                            rootViewController.present(settingsViewController, animated: true, completion: nil)
+                                let settingsViewController = UIHostingController(rootView: SettingsView(screenHeight: maxScreenDimension))
+                                settingsViewController.modalPresentationStyle = .overCurrentContext
+                                settingsViewController.view.backgroundColor = .clear // Transparent background
+                                rootViewController.present(settingsViewController, animated: true, completion: nil)
+                            }
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .resizable()
+                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .padding(.top, maxScreenDimension / 30)
+                                .padding(.trailing, maxScreenDimension / 30)
                         }
-                    }) {
-                        Image(systemName: "gearshape.fill")
-                            .resizable()
-                            .frame(width: screenHeight / 16, height: screenHeight / 16)
-                            .padding(screenHeight / 30)
+                        
+                        // Tutorial Icon
+                        // (Pick your own SF Symbol—e.g.: "questionmark.circle", "book.circle")
+                        Button(action: {
+                        //    isTutorialPresented = true
+                        }) {
+                            Image(systemName: "book.closed")
+                                .resizable()
+                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .padding(.top, maxScreenDimension / 30)
+                                .padding(.trailing, maxScreenDimension / 30)
+                        }
+                        //.sheet(isPresented: $isTutorialPresented) {
+                        //    TutorialView()
+                            // Replace with your actual tutorial implementation
+                        //}
+                        
                     }
                 }
-                Spacer()
+                
+                Spacer() //pushing all icons to the top of the screen
+                
             }
-            .onAppear {
+            .onAppear { // (of geometry view)
                 if backgroundMusicEnabled {
                     audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
-                } //need to stop music immediatey if this is disabled
+                }
+                print("Screen scale:", UIScreen.main.scale)
             }
             .onChange(of: backgroundMusicEnabled) {
                 if backgroundMusicEnabled {
@@ -379,6 +499,7 @@ struct MainMenuView: View {
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
     
+    // MARK: - Main Menu Helper functions
     func createOnlineGame() {
         MultiplayerManager.shared.createGame { gameId in
             DispatchQueue.main.async {
@@ -393,7 +514,6 @@ struct MainMenuView: View {
         }
     }
 
-
     func joinOnlineGame(gameId: String) {
         MultiplayerManager.shared.joinGame(gameId: gameId) { success in
             if success {
@@ -405,6 +525,36 @@ struct MainMenuView: View {
             }
         }
     }
+    
+    func checkForSavedOnlineGame() {
+        if let savedGameId = UserDefaults.standard.string(forKey: "mostRecentGameId"), !savedGameId.isEmpty {
+            hasSavedOnlineGame = true
+        } else {
+            hasSavedOnlineGame = false
+        }
+    }
+    
+    func resumeOnlineGame() {
+        MultiplayerManager.shared.resumeGame { success in
+            if success {
+                self.navigateToGameView = true
+            } else {
+                self.errorMessage = "No game to resume or an error occurred."
+                self.showErrorAlert = true
+            }
+        }
+    }
+    
+    func checkForSavedSinglePlayerGame() {
+        let url = getDocumentsDirectory().appendingPathComponent("currentSinglePlayer")
+        hasSavedSinglePlayerGame = FileManager.default.fileExists(atPath: url.path)
+    }
+
+    func checkForSavedPassAndPlayGame() {
+        let url = getDocumentsDirectory().appendingPathComponent("currentPassAndPlay")
+        hasSavedPassAndPlayGame = FileManager.default.fileExists(atPath: url.path)
+    }
+    
 }
 
 

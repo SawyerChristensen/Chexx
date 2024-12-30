@@ -12,7 +12,7 @@ struct GameView: View {
     @ObservedObject var multiplayerManager = MultiplayerManager.shared
     
     @State private var redStatusText: String = ""
-    @State private var whiteStatusText: String = "test"
+    @State private var whiteStatusText: String = ""
     @State private var whiteStatusTextMini: String = ""
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
