@@ -1,12 +1,5 @@
 online multiplayer (need name checking?)
-    -bug: rejoining does not display the most recent board state, only the very last move?
-
--basic tutorial
-
--facebook sign in
-
--enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
--enable gamecenter achievements (need apple developer program)
+    -implement ELO changing at the resolution of online games
 
 Achievements:
     Hex Machina - Checkmate the CPU
@@ -25,16 +18,21 @@ Achievements:
     Tactical Hexcellence - Checkmate without losing any pieces
     Seasoned Hexpert - Complete all other achievements
     
-    Hexceptional Win! - Checkmate the CPU
+    Hexceptional Win! - ???
+
+-facebook sign in
+
+-enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
+-enable gamecenter achievements (need apple developer program)
 
 
 
 
 Bugs:
--user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -enpassant does not work in multiplayer with 2 center most columns
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
+-resuming games gives pawns their opening move
 
 
 
@@ -55,6 +53,9 @@ the proper attribution:
 
 
 FOR FUTURE UPDATES:
+
+Bugs:
+-user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 
 -add a "resume game" button for online multiplayer?
 

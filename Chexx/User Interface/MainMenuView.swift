@@ -98,7 +98,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                                 .sheet(isPresented: $presentGameLink) {
                                     GameLinkSheetView(
                                         isPresented: $presentGameLink,
@@ -123,7 +123,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                                 .sheet(isPresented: $isGameIDEntryPresented) {
                                     VStack {
                                         Text("Enter Game ID:")
@@ -175,7 +175,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .padding(10)
+                                    .padding(8)
                                 }
                                 
                                 // NavigationLink to GameView
@@ -202,7 +202,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                                 
                                 NavigationLink(destination: GameView(isVsCPU: true).onAppear {
                                     audioManager.stopBackgroundMusic()
@@ -214,7 +214,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                             }
                         }
                             
@@ -239,7 +239,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                                 
                                 NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
                                     audioManager.stopBackgroundMusic()
@@ -251,7 +251,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                             }
                             
                         }
@@ -271,7 +271,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .padding(10)
+                                    .padding(8)
                                     
                                 } else { //there is no saved single player game, jump right in!
                                     NavigationLink(destination: GameView(isVsCPU: true).onAppear {
@@ -284,7 +284,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .padding(10)
+                                    .padding(8)
                                 }
                                 
                                 
@@ -299,7 +299,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .padding(10)
+                                    .padding(8)
                                     
                                 } else {
                                     NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
@@ -312,7 +312,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .padding(10)
+                                    .padding(8)
                                 }
                                 
                                 
@@ -327,7 +327,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .padding(10)
+                                .padding(8)
                             }
                             
                         }
@@ -485,7 +485,6 @@ struct MainMenuView: View {
                 if backgroundMusicEnabled {
                     audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
                 }
-                print("Screen scale:", UIScreen.main.scale)
             }
             .onChange(of: backgroundMusicEnabled) {
                 if backgroundMusicEnabled {

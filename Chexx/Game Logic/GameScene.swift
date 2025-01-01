@@ -20,7 +20,7 @@ class GameScene: SKScene {
     var isOnlineMultiplayer: Bool
     //var variant: String = "Glinkski's"
     
-    var gameState: GameState! //does this actually do anything??? (we init gameState in override func)
+    var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
     var hexPgn: [Int] = [0]
     var gameCPU: GameCPU!
     
@@ -100,6 +100,8 @@ class GameScene: SKScene {
         }
         
         if isOnlineMultiplayer {
+            MultiplayerManager.shared.stopListening()
+            
             MultiplayerManager.shared.startListeningForMoves { [weak self] hexPgn in
                 print("Recieved from server: \(hexPgn)")
                 self?.applyHexPgn(hexPgn)
@@ -281,6 +283,15 @@ class GameScene: SKScene {
                         hexagon.addPieceImage(named: pieceImage, identifier: identifier, isBoardRotated: boardIsRotated)
                     }
                 }
+            }
+        }
+    }
+    
+    func removeAllPieces(scene: SKScene) {
+        for node in scene.children {// Iterate over all hexagon nodes in the scene
+            if let hexagon = node as? HexagonNode {
+                // Remove all child nodes from the hexagon (these are the pieces)
+                hexagon.removeAllChildren()
             }
         }
     }
@@ -746,6 +757,14 @@ class GameScene: SKScene {
             print("same as stored, returning...")
             return }
 
+        if gameState.HexPgn.count == 1, hexPgn.count >= 2 { //reentering game! (the only item is the variant definition)
+            var shortened_hexPgn = hexPgn
+            shortened_hexPgn.removeLast(2)
+            gameState = gameState.HexPgnToGameState(pgn: shortened_hexPgn)
+            removeAllPieces(scene: self)
+            placePieces(scene: self, gameState: gameState)
+        }
+        
         // Extract the last move's start and destination
         let startIndex = hexPgn[hexPgn.count - 2]
         let destinationIndex = hexPgn[hexPgn.count - 1]
