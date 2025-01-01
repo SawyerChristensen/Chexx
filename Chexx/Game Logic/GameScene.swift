@@ -719,8 +719,6 @@ class GameScene: SKScene {
             saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentSinglePlayer")
         }
         
-        //print("\n")
-        
     }
     
     func cpuMakeMove() { //for single player, also moves the piece
@@ -936,7 +934,7 @@ class GameScene: SKScene {
         }
     }
   
-/*    func printGameState() { //just for debugging
+    func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
@@ -949,9 +947,9 @@ class GameScene: SKScene {
                 }
             }
         }
-    }*/
+    }
     
-    deinit { //(upon deninitialization of the GameScene (the view exits, stop listening for game updates)
+    deinit { //(upon memory deninitialization of the GameScene (i actually have no idea when this triggers)
         if isOnlineMultiplayer {
             Task { @MainActor in
                 MultiplayerManager.shared.stopListening()

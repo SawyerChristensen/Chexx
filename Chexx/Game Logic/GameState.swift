@@ -126,16 +126,34 @@ struct GameState: Codable {
         }
 
         // Adjust for 0-based indexing
-        let fromIndex = (fromColumn, fromRow - 1)
-        let toIndex = (toColumn, toRow - 1)
+        let fromColumnRow = (fromColumn, fromRow - 1)
+        let toColumnRow = (toColumn, toRow - 1)
         
-        var pieceToMove = board[fromIndex.0][fromIndex.1]
+        var pieceToMove = board[fromColumnRow.0][fromColumnRow.1]
 
         if promotionPiece != nil {
             pieceToMove = promotionPiece
         }
-        board[fromIndex.0][fromIndex.1] = nil
-        board[toIndex.0][toIndex.1] = pieceToMove
+        
+        if pieceToMove?.type == "pawn" { // remove the opening bonus if it moved
+            board[toColumnRow.0][toColumnRow.1]?.hasMoved = true //this modifies the actual pawn's metadata
+            
+            //dont forget to remove enpassant!
+            if abs(fromColumnRow.0 - toColumnRow.0) == 1 { //if the pawn is moving to another row
+                if board[toColumnRow.0][toColumnRow.1] == nil { //and the destination is empty, then it must be capturing en passant
+                    if pieceToMove?.color == "white" {
+                        board[toColumnRow.0][toColumnRow.1 - 1] = nil //remove the en passanted pawn
+                    }
+                    if pieceToMove?.color == "black" {
+                        board[toColumnRow.0][toColumnRow.1 + 1] = nil //remove the en passanted pawn
+                    }
+                }
+            }
+        }
+        
+        board[fromColumnRow.0][fromColumnRow.1] = nil //[fromcolumn][fromrow] tbh we dont really need to redefine these
+        board[toColumnRow.0][toColumnRow.1] = pieceToMove
+
         
         // Update king position if necessary
         if pieceToMove?.type == "king" {
@@ -319,6 +337,8 @@ struct GameState: Codable {
         let moveCount = (pgn.count - 1) / 2
         currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
 
+        printGameState()
+        
         // Return the updated game state
         return self
     }
@@ -452,61 +472,29 @@ struct GameState: Codable {
 
         return (false, "")  // Game is still ongoing
     }
+    
+    func printGameState() {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        print("Game Variant: \(variant)")
+        print("Current Player: \(currentPlayer)")
+        print("Game Status: \(gameStatus)")
+        print("White King Position: \(whiteKingPosition)")
+        print("Black King Position: \(blackKingPosition)")
+        print("HexPgn: \(HexPgn)")
+        print("\nBoard:")
 
-    /*func compressBoardToBits() -> [Bool] {
-        var bitArray = [Bool]()
-
-        // Encode current player (1st bit) (0 = white, 1 = black)
-        bitArray.append(currentPlayer == "black")
-
-        // Encode empty tiles (0) and pieces (1 + Huffman code)
-        for column in board {
-            for tile in column {
-                if let piece = tile {
-                    bitArray.append(true) // Tile is occupied, append 1
-                    
-                    // Encode the color of the piece (append 0 for white, 1 for black)
-                    bitArray.append(piece.color == "black")
-
-                    // Encode piece type using Huffman codes
-                    switch piece.type {
-                    case "pawn":
-                        bitArray.append(false) // 0 for pawn
-                        bitArray.append(piece.hasMoved) // its moved, append 1
-                        bitArray.append(piece.isEnPassantTarget) //if enpassant target, append 1
-                    case "knight":
-                        bitArray.append(contentsOf: [true, false, false]) // 100 for knight
-                    case "bishop":
-                        bitArray.append(contentsOf: [true, false, true]) // 101 for bishop
-                    case "rook":
-                        bitArray.append(contentsOf: [true, true, false]) // 110 for rook
-                    case "queen":
-                        bitArray.append(contentsOf: [true, true, true, true]) // 1111 for queen
-                    case "king":
-                        bitArray.append(contentsOf: [true, true, true, false]) // 1110 for king
-                    default:
-                        break
-                    }
+        for (colIndex, column) in board.enumerated() {
+            let columnLetter = columns[colIndex]
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece {
+                    print("\(columnLetter)\(rowIndex + 1): \(piece.color) \(piece.type) (hasMoved: \(piece.hasMoved), enPassantTarget: \(piece.isEnPassantTarget))")
                 } else {
-                    bitArray.append(false) // Tile is empty
+                    print("\(columnLetter)\(rowIndex + 1): Empty")
                 }
             }
+            print() // Separate columns for readability
         }
-
-        return bitArray
     }
-    
-    func flattenBitArrayToBytes(_ bitArray: [Bool]) -> [UInt8] { //a list of bools in swift is actually an array of bytes, but they represent true or false, 0/1 values, which can be flattend to bits, and then stored in bits again, representing an 8x reduction in space needed. actual storage of a hexchess board should be ~240 bits, or 30 bytes
-        var byteArray = [UInt8](repeating: 0, count: (bitArray.count + 7) / 8) // Calculate required bytes
-
-        for i in 0..<bitArray.count {
-            if bitArray[i] {
-                byteArray[i / 8] |= (1 << (7 - i % 8)) // Set the corresponding bit
-            }
-        }
-
-        return byteArray
-    }*/
 }
 
 func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {

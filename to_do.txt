@@ -32,7 +32,6 @@ Bugs:
 -enpassant does not work in multiplayer with 2 center most columns
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
--resuming games gives pawns their opening move
 
 
 
