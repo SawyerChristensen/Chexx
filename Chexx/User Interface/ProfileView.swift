@@ -263,10 +263,11 @@ struct ProfileView: View {
     
     var body: some View {
         let minDimension = min(self.screenHeight, self.screenWidth)
-        VStack {
+        VStack(spacing: 10) {
             
             if authViewModel.isLoggedIn { //LOGGED IN!
                 
+                // MARK: Profile Pic
                 if let theProfileImageURL = authViewModel.profileImageURL {
                     AsyncImage(url: theProfileImageURL) { image in
                         image
@@ -274,12 +275,13 @@ struct ProfileView: View {
                             .scaledToFit()
                             .clipShape(Circle()) // Make it circular
                             .frame(width: 100, height: 100) // Set size for the image
-                            .padding()
+                            .padding(.bottom)
                     } placeholder: {
                         ProgressView() // Show a loading spinner while the image loads
                     }
                 }
                 
+                // MARK: Display Name
                 VStack {
                     if isEditing {
                         TextField("Enter new display name", text: $newDisplayName)
@@ -301,7 +303,7 @@ struct ProfileView: View {
                     } else {
                         HStack {
                             Text("Display Name:  \(authViewModel.displayName)")
-                                .font(.system(size: minDimension / 18, weight: .bold, design: .serif))
+                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
                                 .lineLimit(1)
                                 .multilineTextAlignment(.leading)
                             
@@ -323,13 +325,12 @@ struct ProfileView: View {
                         }
                     }
                 }
-                //.padding(.bottom)
                 
-                // Country Selection Section
+                // MARK: Country Selection
                 HStack {
                     Text("Representing:")
                         //.font(.title)
-                        .font(.system(size: minDimension / 18, weight: .bold, design: .serif))
+                        .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
                     
                     Picker("Country", selection: $selectedCountry) {
                         ForEach(countries, id: \.self) { country in // Use id: \.self
@@ -350,43 +351,61 @@ struct ProfileView: View {
                     }
                 }
                 
+                // MARK: ELO Rating
                 Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)")
-                    .font(.system(size: minDimension / 18, weight: .bold, design: .serif))
+                    .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
                     //.lineLimit(1)
                     //.multilineTextAlignment(.leading)
-                    .padding(.bottom, screenHeight / 30)
+                    //.padding(.bottom, screenHeight / 30)
+                
+                // MARK: Sign Out Button
+                Button(action: authViewModel.signOut) { //maybe make this smaller?
+                    Text("Sign Out")
+                        .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
+                        .underline()
+                        .padding(5)
+                        .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
+                        //.frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                        //.background(Color.red)
+                        //.clipShape(HexagonEdgeRectangleShape())
+                }
                 
                 Divider()
-                    .padding(.bottom, screenHeight / 24)
+                    .padding(5)
                 
-                // Navigation buttons to different sections
                 VStack(spacing: 20) {
-                    
                     if !isKeyboardVisible {
-                        Button(action: showAchievements) {
-                            Text("Achievements")
+                        
+                        // MARK: - Achievements section
+                        HStack {
+                            Image(systemName: "trophy.fill")
                                 .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
-                                .padding()
-                                .frame(height: screenHeight / 18)
-                                .background(Color.accentColor)
-                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                .clipShape(HexagonEdgeRectangleShape())
-                                .padding(.bottom , screenHeight / 20)
+                                .foregroundColor(Color.accentColor)
+                            
+                            Text("Achievements")
+                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
                         }
                         
-                        // Sign Out Button
-                        Button(action: authViewModel.signOut) { //maybe make this smaller?
-                            Text("Sign Out")
-                                .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
-                                .padding()
-                                .frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                                .background(Color.red)
-                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
-                                .clipShape(HexagonEdgeRectangleShape())
+                        ScrollView {
+                            VStack(alignment: .leading, spacing: screenHeight / 40) {
+                                ForEach(1...10, id: \.self) { index in // Example achievements list
+                                    HStack {
+                                        Image(systemName: "star.fill")
+                                            .foregroundColor(.yellow)
+                                        
+                                        Text("Achievement \(index)")
+                                            .font(.system(size: screenHeight / 35, design: .default))
+                                    }
+                                    .padding()
+                                    .background(Color(UIColor.secondarySystemBackground))
+                                    .cornerRadius(10)
+                                }
+                            }
+                            .padding(.horizontal, screenHeight / 40)
                         }
                     }
                 }
-                .padding(.top)
+                //.padding(.top)
                 .onAppear { //seeing if the keyboard is on the screen, hides other button options
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                         isKeyboardVisible = true
@@ -399,12 +418,9 @@ struct ProfileView: View {
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
                 }
-            
+
                 
-/*
- SIGN IN SCREEN
- */
-                
+// MARK: - SIGN IN SCREEN
                 
             } else { //NOT LOGGED IN
 
@@ -506,11 +522,6 @@ struct ProfileView: View {
             }
         }
         .padding()
-    }
-    
-    private func showAchievements() {
-        //need to implement
-        //actually dont make this a button, always have achievements visible and scrollable
     }
     
     func loadSelectedCountry() {
