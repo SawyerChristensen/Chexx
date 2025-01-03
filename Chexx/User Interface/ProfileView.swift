@@ -393,6 +393,7 @@ struct ProfileView: View {
                                         VStack(alignment: .leading) {
                                             Text(achievement.title)
                                                 .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                                            
                                             Text(achievement.description)
                                                 .font(.body)
                                                 .padding(.bottom, 8)

@@ -109,19 +109,4 @@ class AchievementManager: ObservableObject {
         }
     }
     
-    // starter helper methods for debugging
-    func checkConditionForHexMachina(isCPUOpponent: Bool, didWinGame: Bool) {
-        // If player beat the CPU
-        if isCPUOpponent && didWinGame {
-            unlockAchievement(withID: "hex_machina")
-        }
-    }
-    
-    func checkConditionForHexcalibur(promotedPiece: String) {
-        // If user underpromoted to a knight
-        if promotedPiece.lowercased() == "knight" {
-            unlockAchievement(withID: "hexcalibur")
-        }
-    }
-
 }

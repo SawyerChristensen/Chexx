@@ -624,7 +624,11 @@ class GameScene: SKScene {
                 presentPromotionOptions { newType in
                     type = newType // Update the piece type to the chosen promotion type
                     
-                    AchievementManager.shared.checkConditionForHexcalibur(promotedPiece: type)
+                    AchievementManager.shared.unlockAchievement(withID: "hextra_power")
+                    
+                    if type == "knight" {
+                        AchievementManager.shared.unlockAchievement(withID: "hexcalibur")
+                    }
                     
                     if newType == "queen" { promotionOffsetInt = 91 } //for hexpgn representation
                     else if newType == "rook" { promotionOffsetInt = 92 }
@@ -696,7 +700,7 @@ class GameScene: SKScene {
         
         updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
         
-        if isVsCPU && gameState.currentPlayer == "black" { //comment this function out to control black for testing purposes
+        if isVsCPU && gameState.currentPlayer == "black" {
             self.whiteStatusTextUpdater?("Thinking.")
             let statusText = ["Thinking..", "Thinking...", "Thinking."]
             var currentIndex = 0
@@ -809,6 +813,13 @@ class GameScene: SKScene {
         if isGameOver {
             switch gameStatus {
             case "checkmate":
+                
+                if isVsCPU {
+                    if gameState.currentPlayer == "black" {
+                        AchievementManager.shared.unlockAchievement(withID: "hex_machina")
+                    }
+                }
+                
                 //print("Checkmate!", opponentColor, "wins!")
                 whiteStatusTextUpdater?("")
                 redStatusTextUpdater?("Checkmate!")
