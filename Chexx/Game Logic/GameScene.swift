@@ -624,6 +624,8 @@ class GameScene: SKScene {
                 presentPromotionOptions { newType in
                     type = newType // Update the piece type to the chosen promotion type
                     
+                    AchievementManager.shared.checkConditionForHexcalibur(promotedPiece: type)
+                    
                     if newType == "queen" { promotionOffsetInt = 91 } //for hexpgn representation
                     else if newType == "rook" { promotionOffsetInt = 92 }
                     else if newType == "bishop" { promotionOffsetInt = 93 }

@@ -9,8 +9,6 @@ import SwiftUI
 import SpriteKit
 
 struct GameView: View {
-    @ObservedObject var multiplayerManager = MultiplayerManager.shared
-    
     @State private var redStatusText: String = ""
     @State private var whiteStatusText: String = ""
     @State private var whiteStatusTextMini: String = ""
@@ -78,7 +76,7 @@ struct GameView: View {
                     VStack(spacing: 10) {
                         
                         //opponent info
-                        if multiplayerManager.opponentName != "" {
+                        if MultiplayerManager.shared.opponentName != "" {
                             HStack(spacing: 10) {
                                 Text("Opponent:")
                                     .font(.system(size: geometry.size.height / 32, design: .serif))
@@ -86,7 +84,7 @@ struct GameView: View {
                                 //.padding()
                                 
                                 // Opponent's Profile Image
-                                if let url = multiplayerManager.opponentProfileImageURL {
+                                if let url = MultiplayerManager.shared.opponentProfileImageURL {
                                     AsyncImage(url: url) { image in
                                         image.resizable()
                                             .aspectRatio(contentMode: .fill)
@@ -100,7 +98,7 @@ struct GameView: View {
                                 }
                                 
                                 // Opponent's Name
-                                Text(multiplayerManager.opponentName)
+                                Text(MultiplayerManager.shared.opponentName)
                                     .font(.system(size: geometry.size.height / 32, weight: .bold, design: .serif))
                                     .foregroundColor(.white)
                             }

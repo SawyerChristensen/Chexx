@@ -1,24 +1,31 @@
 online multiplayer (need name checking?)
     -implement ELO changing at the resolution of online games
 
-Achievements:
-    Hex Machina - Checkmate the CPU
-    Hexcalibur: Underpromote a pawn to a knight
-    Hexplorer - Visit every tile in a single game
-    Friendly Hexchange - Play an online game
+Achievements: (line means to be included at launch)
+    Hex Machina - Checkmate the CPU --------------------------------
+    Hexceeded Hexpectations - Win a joined game --------------------------------
+    Friendly Hexchange - Have a player join a game you created ----------------
+    Hexcalibur - Underpromote a pawn to a knight --------------------------------
+    Hexecutioner - Checkmate after capturing all enemy pieces --------------------------------
     Hexperimenter - Win with 10 different openings
-    Hexcommunicated - Checkmate using only bishops
-    Hexathon - Play 26 games
-    Hexpedition - Move your king to the opposing king’s starting position
+    Hexathon - Win 26 games
+    Hexpedition - Move your king to the opposing king’s starting position ----------------
+    Hexplorer - Visit every tile in a single game
+    Hextra Power - Promote a pawn for the first time ----------------
     Hexceptional Morale - Promote 3 pawns in a single game
-    Hexecutioner - Checkmate after capturing all enemy pieces
     The Great Hexcape - Checkmate after being put in check 3 times
     Hexclusion Zone - Deliver a smothered mate
-    Hextreme Measures - Checkmate using your own king
+    Hextreme Measures - Checkmate using your own king --------------------------------
     Tactical Hexcellence - Checkmate without losing any pieces
+    
+    Secret Achievements
+    Hexpect the Unexpected - Open by moving your king --------------------------------
+    Hexhausted - Have a game last over 100 turns --------------------------------
     Seasoned Hexpert - Complete all other achievements
     
     Hexceptional Win! - ???
+    Un-Hexciting Finish - Deliver a Stalemate
+    
 
 -facebook sign in
 

@@ -36,7 +36,7 @@ struct ProfileView: View {
     @State private var newDisplayName: String = ""
     @State private var password = ""
     
-    @State private var selectedCountry: Country? = nil // Store the selected country
+    @State private var selectedCountry: Country? = nil
     @State private var countries: [Country] = [
         Country(emoji: "🇦🇫", name: "Afghanistan"),
         Country(emoji: "🇦🇱", name: "Albania"),
@@ -383,30 +383,38 @@ struct ProfileView: View {
                                 .foregroundColor(Color.accentColor)
                             
                             Text("Achievements")
-                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                                .font(.system(size: minDimension / 18, weight: .bold, design: .serif))
                         }
                         
                         ScrollView {
-                            VStack(alignment: .leading, spacing: screenHeight / 40) {
-                                ForEach(1...10, id: \.self) { index in // Example achievements list
+                            VStack {
+                                ForEach(AchievementManager.shared.achievements) { achievement in
                                     HStack {
-                                        Image(systemName: "star.fill")
-                                            .foregroundColor(.yellow)
+                                        VStack(alignment: .leading) {
+                                            Text(achievement.title)
+                                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                                            Text(achievement.description)
+                                                .font(.body)
+                                                .padding(.bottom, 8)
+                                        }
                                         
-                                        Text("Achievement \(index)")
-                                            .font(.system(size: screenHeight / 35, design: .default))
+                                        Spacer()
+                                        
+                                        // Show a filled star if unlocked, otherwise an empty star
+                                        Image(systemName: achievement.isUnlocked ? "star.fill" : "star")
+                                            .foregroundColor(.yellow)
+                                            .font(.title2)
                                     }
-                                    .padding()
-                                    .background(Color(UIColor.secondarySystemBackground))
-                                    .cornerRadius(10)
                                 }
                             }
-                            .padding(.horizontal, screenHeight / 40)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                         }
                     }
                 }
-                //.padding(.top)
-                .onAppear { //seeing if the keyboard is on the screen, hides other button options
+
+                .onAppear { //if the keyboard is on screen, hide achievement section
+                    AchievementManager.shared.loadUserAchievements()
+                    
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                         isKeyboardVisible = true
                     }
@@ -563,7 +571,7 @@ struct ProfileView: View {
 
 
 
-//can remove below for production:
-#Preview {
-    ProfileView(screenHeight: 720, screenWidth: 200) //??????
-}
+//can remove for production:
+//#Preview {
+    //ProfileView(screenHeight: 720, screenWidth: 200) //??????
+//}

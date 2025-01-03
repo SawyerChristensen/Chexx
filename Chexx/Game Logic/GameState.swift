@@ -113,6 +113,31 @@ struct GameState: Codable {
             board[col][row] = piece
         }
     }
+ /*
+    mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
+        let initialPositions: [((Int, Int), Piece)] = [
+            ((1, 1), Piece(color: "white", type: "pawn")),
+            ((1, 5), Piece(color: "white", type: "bishop")),
+            ((2, 5), Piece(color: "white", type: "pawn")),
+            ((4, 5), Piece(color: "black", type: "queen")),
+            ((5, 8), Piece(color: "black", type: "king")),
+            ((5, 8), Piece(color: "black", type: "king")),
+            ((6, 6), Piece(color: "black", type: "pawn")),
+            ((7, 6), Piece(color: "black", type: "pawn")),
+            ((8, 6), Piece(color: "black", type: "pawn")),
+            ((9, 6), Piece(color: "black", type: "pawn")),
+            ((6, 2), Piece(color: "white", type: "pawn")),
+            ((7, 0), Piece(color: "white", type: "knight")),
+            ((7, 1), Piece(color: "white", type: "king")),
+            ((7, 5), Piece(color: "white", type: "pawn")),
+            ((8, 4), Piece(color: "white", type: "pawn")),
+            ((9, 2), Piece(color: "white", type: "pawn")),
+        ]
+        
+        for ((col, row), piece) in initialPositions {
+            board[col][row] = piece
+        }
+    }*/
 
     mutating func movePiece(from: String, to: String, promotionPiece: Piece?) {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
