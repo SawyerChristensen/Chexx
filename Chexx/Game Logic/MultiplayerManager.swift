@@ -75,6 +75,7 @@ class MultiplayerManager: ObservableObject {
                             } else {
                                 self.gameId = gameId //this stores the gameID in memory, might not need this?
                                 UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //this saves the most recent game code to t
+                                self.listenForOpponentJoined()
                                 completion(gameId)
                             }
                         }
@@ -196,6 +197,8 @@ class MultiplayerManager: ObservableObject {
             if let player2Id = data["player2Id"] as? String {
                 self.opponentId = player2Id
                 self.fetchOpponentInfo(userId: player2Id)
+                
+                AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
             }
         }
     }

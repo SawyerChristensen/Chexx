@@ -109,4 +109,34 @@ class AchievementManager: ObservableObject {
         }
     }
     
+    func resetAchievements() {
+        // Reset local achievements to locked
+        achievements = achievements.map { achievement in
+            var updatedAchievement = achievement
+            updatedAchievement.isUnlocked = false
+            return updatedAchievement
+        }
+        
+        // Update Firestore
+        let userDocRef = Firestore.firestore()
+            .collection("users")
+            .document(currentUserId)
+        
+        // Create a dictionary with all achievements set to false
+        var resetAchievements: [String: Bool] = [:]
+        for achievement in achievements {
+            resetAchievements[achievement.id] = false
+        }
+        
+        // Write the reset achievements to Firestore
+        userDocRef.setData(["achievements": resetAchievements], merge: true) { error in
+            if let error = error {
+                print("Error resetting achievements: \(error.localizedDescription)")
+            } else {
+                print("Achievements reset successfully in Firestore.")
+            }
+        }
+    }
+
+    
 }

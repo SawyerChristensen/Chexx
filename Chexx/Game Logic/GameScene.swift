@@ -614,7 +614,7 @@ class GameScene: SKScene {
         
         var promotionOffsetInt = UInt8(0)
         
-        // Pawn promotion logic without blocking the main thread
+        // player-initiated pawn promotion logic without blocking the main thread
         if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1) ||
            (color == "black" && type == "pawn" && rowIndex == 0) {
             if isVsCPU && color == "black" { //need to change this if implement a mode where CPU plays as white
@@ -814,9 +814,21 @@ class GameScene: SKScene {
             switch gameStatus {
             case "checkmate":
                 
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                
                 if isVsCPU {
-                    if gameState.currentPlayer == "black" {
+                    if winnerColor == "white" {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
+                    }
+                }
+                
+                if MultiplayerManager.shared.currentPlayerColor == winnerColor {
+                    if winnerColor == "white" {
+                        AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
+                        print("user joined the game")
+                    } else { //the user is black, and created the game
+                        AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
+                        print("user created the game")
                     }
                 }
                 

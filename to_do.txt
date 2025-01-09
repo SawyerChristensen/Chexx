@@ -1,17 +1,19 @@
 online multiplayer (need name checking?)
     -implement ELO changing at the resolution of online games
 
+-make updateGameState process 91+ indexes, ie, promotions for online play
+
 Achievements: (line means to be included at launch)
-    Hex Machina - Checkmate the CPU --------------------------------
-    Hexceeded Hexpectations - Win a joined game --------------------------------
-    Friendly Hexchange - Have a player join a game you created ----------------
-    Hexcalibur - Underpromote a pawn to a knight --------------------------------
+    Hex Machina - Checkmate the CPU -------------------------------- implemented
+    Hexceeded Hexpectations - Win a joined game -------------------------------- implemented? (test if doesnt activate if you created the game as well)
+    Friendly Hexchange - Have a player join a game you created ---------------- implemented
+    Hexcalibur - Underpromote a pawn to a knight -------------------------------- implemented
     Hexecutioner - Checkmate after capturing all enemy pieces --------------------------------
     Hexperimenter - Win with 10 different openings
     Hexathon - Win 26 games
     Hexpedition - Move your king to the opposing king’s starting position ----------------
     Hexplorer - Visit every tile in a single game
-    Hextra Power - Promote a pawn for the first time ----------------
+    Hextra Power - Promote a pawn for the first time ---------------- implemented
     Hexceptional Morale - Promote 3 pawns in a single game
     The Great Hexcape - Checkmate after being put in check 3 times
     Hexclusion Zone - Deliver a smothered mate
@@ -26,6 +28,8 @@ Achievements: (line means to be included at launch)
     Hexceptional Win! - ???
     Un-Hexciting Finish - Deliver a Stalemate
     
+can the cpu even promote pieces?
+
 
 -facebook sign in
 
