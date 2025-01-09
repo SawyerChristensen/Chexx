@@ -1,8 +1,12 @@
-online multiplayer (need name checking?)
-    -implement ELO changing at the resolution of online games
-
+-does pawn promotion truly work? can it be read correctly in save files after the fact? uhhhhhhhhh
 -make updateGameState process 91+ indexes, ie, promotions for online play
 
+-can the cpu even promote pieces???
+
+-make achievements consult the hard drive before bothering firestore with updates. costly if not implemented!
+    -just modify the unlockAchievement function
+
+//////////////////////////////////////////////////////
 Achievements: (line means to be included at launch)
     Hex Machina - Checkmate the CPU -------------------------------- implemented
     Hexceeded Hexpectations - Win a joined game -------------------------------- implemented? (test if doesnt activate if you created the game as well)
@@ -17,7 +21,7 @@ Achievements: (line means to be included at launch)
     Hexceptional Morale - Promote 3 pawns in a single game
     The Great Hexcape - Checkmate after being put in check 3 times
     Hexclusion Zone - Deliver a smothered mate
-    Hextreme Measures - Checkmate using your own king --------------------------------
+    Hextreme Measures - Checkmate using your own king -------------------------------- (when coding this, dont include the king check for every single checkmate check, just check if its checkmate first, then if the opposing king contributed with a second run after. this prevents slowing down the main game loop)
     Tactical Hexcellence - Checkmate without losing any pieces
     
     Secret Achievements
@@ -27,9 +31,10 @@ Achievements: (line means to be included at launch)
     
     Hexceptional Win! - ???
     Un-Hexciting Finish - Deliver a Stalemate
-    
-can the cpu even promote pieces?
+//////////////////////////////////////////////////////
 
+-implement ELO changing at the resolution of online games
+    -finalize game ending stuff
 
 -facebook sign in
 
@@ -38,12 +43,9 @@ can the cpu even promote pieces?
 
 
 
-
 Bugs:
--enpassant does not work in multiplayer with 2 center most columns
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
-
 
 
 
@@ -51,15 +53,11 @@ BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
     -launch screen (required) & main menu /is it???
-    
--need to atribute artist of the chess images somewhere in the app,
-maybe a credits section at the end of the tutorial
-the proper attribution:
-"By Cburnett - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/wiki/Category:SVG_chess_pieces"
-
--test if auto promote to queen actually works
 
 
+******************************
+RELEASE!! :D
+******************************
 
 
 FOR FUTURE UPDATES:

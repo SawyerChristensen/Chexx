@@ -68,7 +68,7 @@ struct GameState: Codable {
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
     }
-   /*
+   
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
@@ -112,9 +112,9 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }*/
- 
-    mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
+    }
+ /*
+    mutating func setInitialPiecePositions() { //for checkmate testing
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 1), Piece(color: "white", type: "pawn")),
             ((1, 5), Piece(color: "white", type: "bishop")),
@@ -136,7 +136,45 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }
+    }*/
+    /*
+    mutating func setInitialPiecePositions() { // for pawn promotion testing
+        let initialPositions: [((Int, Int), Piece)] = [
+            // White pawns ready to promote
+            ((0, 3), Piece(color: "white", type: "pawn")),
+            ((1, 4), Piece(color: "white", type: "pawn")),
+            ((2, 5), Piece(color: "white", type: "pawn")),
+            ((3, 6), Piece(color: "white", type: "pawn")),
+            ((4, 7), Piece(color: "white", type: "pawn")),
+            ((5, 8), Piece(color: "white", type: "pawn")),
+            ((6, 7), Piece(color: "white", type: "pawn")),
+            ((7, 6), Piece(color: "white", type: "pawn")),
+            ((8, 5), Piece(color: "white", type: "pawn")),
+            ((9, 4), Piece(color: "white", type: "pawn")),
+            ((10, 3), Piece(color: "white", type: "pawn")),
+            
+            //the kings
+            ((1, 3), Piece(color: "white", type: "king")),
+            ((9, 3), Piece(color: "black", type: "king")),
+            
+            // Black pawns ready to promote
+            ((0, 2), Piece(color: "black", type: "pawn")),
+            ((1, 2), Piece(color: "black", type: "pawn")),
+            ((2, 2), Piece(color: "black", type: "pawn")),
+            ((3, 2), Piece(color: "black", type: "pawn")),
+            ((4, 2), Piece(color: "black", type: "pawn")),
+            ((5, 2), Piece(color: "black", type: "pawn")),
+            ((6, 2), Piece(color: "black", type: "pawn")),
+            ((7, 2), Piece(color: "black", type: "pawn")),
+            ((8, 2), Piece(color: "black", type: "pawn")),
+            ((9, 2), Piece(color: "black", type: "pawn")),
+            ((10, 2), Piece(color: "black", type: "pawn")),
+        ]
+        
+        for ((col, row), piece) in initialPositions {
+            board[col][row] = piece
+        }
+    }*/
 
     mutating func movePiece(from: String, to: String, promotionPiece: Piece?) {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
@@ -361,7 +399,7 @@ struct GameState: Codable {
         let moveCount = (pgn.count - 1) / 2
         currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
 
-        printGameState()
+        //printGameState()
         
         // Return the updated game state
         return self
@@ -496,29 +534,6 @@ struct GameState: Codable {
 
         return (false, "")  // Game is still ongoing
     }
-    
-    func printGameState() {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
-        print("Game Variant: \(variant)")
-        print("Current Player: \(currentPlayer)")
-        print("Game Status: \(gameStatus)")
-        print("White King Position: \(whiteKingPosition)")
-        print("Black King Position: \(blackKingPosition)")
-        print("HexPgn: \(HexPgn)")
-        print("\nBoard:")
-
-        for (colIndex, column) in board.enumerated() {
-            let columnLetter = columns[colIndex]
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece {
-                    print("\(columnLetter)\(rowIndex + 1): \(piece.color) \(piece.type) (hasMoved: \(piece.hasMoved), enPassantTarget: \(piece.isEnPassantTarget))")
-                } else {
-                    print("\(columnLetter)\(rowIndex + 1): Empty")
-                }
-            }
-            print() // Separate columns for readability
-        }
-    }
 }
 
 func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {
@@ -546,7 +561,7 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
         if let saveData = try? decoder.decode(HexPgnSaveData.self, from: data) {
             var gameState = GameState() // Initialize empty GameState
             gameState = gameState.HexPgnToGameState(pgn: saveData.hexPgn) // Rebuild from HexPgn
-            print("Game state loaded from \(url.path)") //STILL AN ISSUE WITH RELOADING THE GAMESTATE EVERY UI UPDATE, NEED TO CHANGE
+            print("Game state loaded from \(url.path)")
             return gameState
         }
     }
