@@ -5,6 +5,7 @@
 
 -make achievements consult the hard drive before bothering firestore with updates. costly if not implemented!
     -just modify the unlockAchievement function
+    -achievement notifications?
 
 //////////////////////////////////////////////////////
 Achievements: (line means to be included at launch)
@@ -35,6 +36,8 @@ Achievements: (line means to be included at launch)
 
 -implement ELO changing at the resolution of online games
     -finalize game ending stuff
+    
+-make sure games auto delete themselves if they havent been interacted with in awhile. the game codes shoud just be for live games
 
 -facebook sign in
 
@@ -46,7 +49,7 @@ Achievements: (line means to be included at launch)
 Bugs:
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
-
+-pawn promotion screen should neever been seen in main menu
 
 
 BEFORE LAUNCH:

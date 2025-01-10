@@ -68,7 +68,7 @@ struct GameState: Codable {
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
     }
-   
+
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
@@ -366,11 +366,11 @@ struct GameState: Codable {
             
             currentPlayer = (((i - 1) / 2) % 2 == 0) ? "white" : "black"
             
-            if toIndex > 91 { //pawn getting promoted!
+            if toIndex >= 91 { //pawn getting promoted! (90 is the highest normal index)
                 if currentPlayer == "white" {
-                    promotionPiece = getPromotionPiece(for: toIndex)
+                    promotionPiece = getPromotionPiece(for: toIndex + 1)
                 } else {
-                    promotionPiece = getPromotionPiece(for: toIndex - 1)
+                    promotionPiece = getPromotionPiece(for: toIndex)
                 }
                 
                 switch promotionPiece?.type {
@@ -406,10 +406,10 @@ struct GameState: Codable {
     }
     
     func getPromotionPiece(for index: UInt8) -> Piece? { //helper function for HexPgnToGameState
-        let queenPromotionIndexArray: [UInt8] = [91, 96, 103, 111, 120, 130, 141, 151, 160, 168, 175, 181]
-        let rookPromotionIndexArray: [UInt8] = [92, 97, 104, 112, 121, 131, 142, 152, 161, 169, 176, 182]
-        let bishopPromotionIndexArray: [UInt8] = [93, 98, 105, 113, 122, 132, 143, 153, 162, 170, 177, 183]
-        let knightPromotionIndexArray: [UInt8] = [94, 99, 106, 114, 123, 133, 144, 154, 163, 171, 178, 184]
+        let queenPromotionIndexArray: [UInt8] = [91, 97, 104, 112, 121, 131, 142, 152, 161, 169, 176, 182]
+        let rookPromotionIndexArray: [UInt8] = [92, 98, 105, 113, 122, 132, 143, 153, 162, 170, 177, 183]
+        let bishopPromotionIndexArray: [UInt8] = [93, 99, 106, 114, 123, 133, 144, 154, 163, 171, 178, 184]
+        let knightPromotionIndexArray: [UInt8] = [94, 100, 107, 115, 124, 134, 145, 155, 164, 172, 179, 185]
         
         if queenPromotionIndexArray.contains(index) {
             return Piece(color: currentPlayer, type: "queen")

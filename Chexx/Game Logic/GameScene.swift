@@ -531,7 +531,7 @@ class GameScene: SKScene {
         }
     }
     
-    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?) { //still need to implement game status such as "ongoing" or "ended"
+    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?, promotionPiece: Piece? = nil) { //still need to implement game status such as "ongoing" or "ended"
         
         clearCheckHighlights() //this should also clear any status messages
         
@@ -584,9 +584,9 @@ class GameScene: SKScene {
 /*
         if type == "pawn" {
             fiftyMoveRule = 0
-        }*/
-        
-        //********** CAPTURING ********** // STILL NEED TO CHECK IF A KING IS CAPTURED & END THE GAME
+        }
+*/
+        //********** CAPTURING ********** //
         if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
@@ -612,37 +612,69 @@ class GameScene: SKScene {
                 }
             }
         
-        var promotionOffsetInt = UInt8(0)
-        
-        // player-initiated pawn promotion logic without blocking the main thread
-        if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1) ||
-           (color == "black" && type == "pawn" && rowIndex == 0) {
-            if isVsCPU && color == "black" { //need to change this if implement a mode where CPU plays as white
-                type = "queen" //CPU automatically chooses queen, possible update can be it choosing between queen or knight if knight is more advantageous
-                self.finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: 91)
-            } else {
-                presentPromotionOptions { newType in
-                    type = newType // Update the piece type to the chosen promotion type
-                    
-                    AchievementManager.shared.unlockAchievement(withID: "hextra_power")
-                    
-                    if type == "knight" {
-                        AchievementManager.shared.unlockAchievement(withID: "hexcalibur")
-                    }
-                    
-                    if newType == "queen" { promotionOffsetInt = 91 } //for hexpgn representation
-                    else if newType == "rook" { promotionOffsetInt = 92 }
-                    else if newType == "bishop" { promotionOffsetInt = 93 }
-                    else if newType == "knight" { promotionOffsetInt = 94 }
-                    
-                    self.finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: promotionOffsetInt)
+        // ********** PROMOTION LOGIC **********
+        // If promotionPiece was passed in (i.e., from applyHexPgn), skip user/CPU selection:
+        if let promo = promotionPiece {
+            type = promo.type
+            
+            // Figure out offset for hexPgn
+            let promotionOffsetInt: UInt8 = {
+                switch type {
+                case "queen":  return 91
+                case "rook":   return 92
+                case "bishop": return 93
+                case "knight": return 94
+                default:       return 0
                 }
-            }
+            }()
+            
+            // Finalize the move directly
+            finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
+                         originalColIndex, originalRowIndex, colIndex, rowIndex,
+                         promotionOffsetInt: promotionOffsetInt)
             return
         }
-
-        // Move logic for non-promotion case
-        finalizeMove(pieceNode, color, type, originalPosition, hexagonName, originalColIndex, originalRowIndex, colIndex, rowIndex, promotionOffsetInt: 0)
+        else {
+            // ********** EXISTING PROMOTION LOGIC (HUMAN/CPU) **********
+            if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1)
+                || (color == "black" && type == "pawn" && rowIndex == 0) {
+                // CPU auto-queen
+                if isVsCPU && color == "black" {
+                    type = "queen"
+                    finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
+                                 originalColIndex, originalRowIndex, colIndex, rowIndex,
+                                 promotionOffsetInt: 91)
+                }
+                else {
+                    // Show user promotion options
+                    presentPromotionOptions { newType in
+                        var promotionOffsetInt: UInt8 = 0
+                        switch newType {
+                        case "queen":  promotionOffsetInt = 91
+                        case "rook":   promotionOffsetInt = 92
+                        case "bishop": promotionOffsetInt = 93
+                        case "knight": promotionOffsetInt = 94
+                        default:       break
+                        }
+                        AchievementManager.shared.unlockAchievement(withID: "hextra_power")
+                        if newType == "knight" {
+                            AchievementManager.shared.unlockAchievement(withID: "hexcalibur")
+                        }
+                        // Then finalize move with user’s chosen promotion
+                        //why does this need self specifically?
+                        self.finalizeMove(pieceNode, color, newType, originalPosition, hexagonName,
+                                     originalColIndex, originalRowIndex, colIndex, rowIndex,
+                                     promotionOffsetInt: promotionOffsetInt)
+                    }
+                }
+                return
+            }
+        }
+        
+        // ********** NORMAL (NON-PROMOTION) CASE **********
+        finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
+                     originalColIndex, originalRowIndex, colIndex, rowIndex,
+                     promotionOffsetInt: 0)
     }
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
@@ -733,10 +765,10 @@ class GameScene: SKScene {
                 if let destinationHexagon = self.childNode(withName: move.destination) {
                     if let parent = cpuPieceNode.parent {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
-                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.2)
+                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.25)
                         //slideAction.timingMode = .linear
                         cpuPieceNode.run(slideAction)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in //pretty sure this improves the frame rate
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //pretty sure this improves the frame rate
                             guard let self = self else { return }
                             self.updateGameState(with: cpuPieceNode, at: move.destination)
                         }
@@ -755,36 +787,69 @@ class GameScene: SKScene {
         }
     }
     
-    func applyHexPgn(_ hexPgn: [UInt8]) { //for multiplayer, also moves the piece
+    func applyHexPgn(_ hexPgn: [UInt8]) {
         // Exit early if hexPgn is unchanged or empty
         guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else {
-            print("same as stored, returning...")
-            return }
+            //print("same as stored, returning...")
+            return
+        }
 
-        if gameState.HexPgn.count == 1, hexPgn.count >= 2 { //reentering game! (the only item is the variant definition)
+        // If we need to reconstruct the entire game for reentry
+        if gameState.HexPgn.count == 1, hexPgn.count >= 2 {
             var shortened_hexPgn = hexPgn
             shortened_hexPgn.removeLast(2)
             gameState = gameState.HexPgnToGameState(pgn: shortened_hexPgn)
             removeAllPieces(scene: self)
             placePieces(scene: self, gameState: gameState)
         }
-        
+
         // Extract the last move's start and destination
         let startIndex = hexPgn[hexPgn.count - 2]
         let destinationIndex = hexPgn[hexPgn.count - 1]
+
+        // -- PROMOTION LOGIC SAME AS HexPgnToGameState --
+        var adjustedIndex: UInt8 = 0
+        var promotionPiece: Piece? = nil
+
+        // If the destinationIndex is >= 91, we know it's a promotion
+        if destinationIndex >= 91 {
+            let totalMoves = (hexPgn.count - 1) / 2
+            let isWhiteTurn = !(totalMoves % 2 == 0)
+
+            if isWhiteTurn {
+                promotionPiece = gameState.getPromotionPiece(for: destinationIndex + 1)
+            } else {
+                promotionPiece = gameState.getPromotionPiece(for: destinationIndex)
+            }
+
+            switch promotionPiece?.type {
+            case "queen":
+                adjustedIndex = 91
+            case "rook":
+                adjustedIndex = 92
+            case "bishop":
+                adjustedIndex = 93
+            case "knight":
+                adjustedIndex = 94
+            default:
+                adjustedIndex = 0
+            }
+            
+        }
+
         let startPosition = gameState.positionIntToString(index: startIndex)
-        let destinationPosition = gameState.positionIntToString(index: destinationIndex)
+        let destinationPosition = gameState.positionIntToString(index: destinationIndex - adjustedIndex)
 
         // Animate the move
         if let pieceNode = findPieceNode(at: startPosition) {
             if let destinationHexagon = self.childNode(withName: destinationPosition) {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
-                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.2)
+                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
                     pieceNode.run(slideAction)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self] in//pretty sure this improves the frame rate
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                         guard let self = self else { return }
-                        self.updateGameState(with: pieceNode, at: destinationPosition)
+                        self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
                     }
                 }
             } else {
@@ -793,10 +858,10 @@ class GameScene: SKScene {
         } else {
             print("Error: Piece node not found at \(startPosition)")
         }
-        
-        // Update game status UI
+
         updateGameStatusUI()
     }
+
     
     func updateGameStatusUI() {
         let (isGameOver, gameStatus) = gameState.isGameOver()
