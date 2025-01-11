@@ -113,7 +113,7 @@ struct GameState: Codable {
             board[col][row] = piece
         }
     }
- /*
+/*
     mutating func setInitialPiecePositions() { //for checkmate testing
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 1), Piece(color: "white", type: "pawn")),
@@ -137,7 +137,7 @@ struct GameState: Codable {
             board[col][row] = piece
         }
     }*/
-    /*
+/*
     mutating func setInitialPiecePositions() { // for pawn promotion testing
         let initialPositions: [((Int, Int), Piece)] = [
             // White pawns ready to promote
@@ -248,6 +248,21 @@ struct GameState: Codable {
         // Update the board
         board[toColIndex][toRowIndex] = movingPiece
         board[fromColIndex][fromRowIndex] = nil
+        
+        if movingPiece?.type == "pawn" {
+            board[toColIndex][toRowIndex]?.hasMoved = true
+            if abs(fromRowIndex - toColIndex) == 2 {
+                board[toColIndex][toRowIndex]?.isEnPassantTarget = true
+            }
+            
+            if movingPiece?.color == "white" {
+                if (toRowIndex == board[toColIndex].count - 1) { //it will be promoted!
+                    board[toColIndex][toRowIndex]?.type = "queen"} //assuming queen over knight
+            } else { //...its black
+                if (toRowIndex == 0) { //it will be promoted!
+                    board[toColIndex][toRowIndex]?.type = "queen"} //cpu will not be able to see knight's moves
+            }
+        }
 
         // Update king's position if necessary
         if movingPiece?.type == "king" {

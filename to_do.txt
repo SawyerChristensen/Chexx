@@ -1,8 +1,3 @@
--does pawn promotion truly work? can it be read correctly in save files after the fact? uhhhhhhhhh
--make updateGameState process 91+ indexes, ie, promotions for online play
-
--can the cpu even promote pieces???
-
 -make achievements consult the hard drive before bothering firestore with updates. costly if not implemented!
     -just modify the unlockAchievement function
     -achievement notifications?
@@ -64,9 +59,10 @@ RELEASE!! :D
 
 
 FOR FUTURE UPDATES:
-
+----------------------
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
+-gameCPU will not see knight's moves upon promotion, only queen
 
 -add random matchmaking if youre signed in?
     -if added, need name checking for online play (just hide the icons, unless joining a friends game)
