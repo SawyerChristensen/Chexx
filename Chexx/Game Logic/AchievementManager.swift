@@ -60,6 +60,14 @@ class AchievementManager: ObservableObject {
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
+        
+        // Load achievements from UserDefaults and update the local array
+        for i in 0..<achievements.count {
+            let achievementID = achievements[i].id
+            // If found in UserDefaults, set isUnlocked
+            let isUnlockedLocally = UserDefaults.standard.bool(forKey: achievementID)
+            achievements[i].isUnlocked = isUnlockedLocally
+        }
     }
     
     // Firestore (Load)
@@ -84,22 +92,27 @@ class AchievementManager: ObservableObject {
         }
     }
     
-    // Firestore (Save)
     func unlockAchievement(withID id: String) {
-        // 1. Update local array
-        guard let index = achievements.firstIndex(where: { $0.id == id }) else { return }
-        if achievements[index].isUnlocked == false {
-            achievements[index].isUnlocked = true
-        } else {
-            return // Already unlocked, do nothing
+        // Check if the achievement is already unlocked in UserDefaults
+        let isAlreadyUnlockedLocally = UserDefaults.standard.bool(forKey: id)
+        if isAlreadyUnlockedLocally { //do nothing, its alread unlocked!
+            //print("Achievement \(id) is already unlocked locally.")
+            return
         }
         
-        // 2. Update Firestore
+        // Mark it unlocked in the local achievements array
+        guard let index = achievements.firstIndex(where: { $0.id == id }) else { return }
+        achievements[index].isUnlocked = true
+        
+        // Save to UserDefaults
+        UserDefaults.standard.set(true, forKey: id)
+        //print("Achievement \(id) set to unlocked in UserDefaults.")
+        
+        // Update Firestore
         let userDocRef = Firestore.firestore()
             .collection("users")
             .document(currentUserId)
         
-        // "achievements" is a dictionary field in the user's document
         userDocRef.updateData(["achievements.\(id)": true]) { error in
             if let error = error {
                 print("Error updating achievement: \(error.localizedDescription)")
@@ -108,7 +121,8 @@ class AchievementManager: ObservableObject {
             }
         }
     }
-    
+
+/*
     func resetAchievements() {
         // Reset local achievements to locked
         achievements = achievements.map { achievement in
@@ -136,7 +150,5 @@ class AchievementManager: ObservableObject {
                 print("Achievements reset successfully in Firestore.")
             }
         }
-    }
-
-    
+    }*/    
 }

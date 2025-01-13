@@ -33,7 +33,7 @@ func boardToHex(_ positions: [(Int, Int)]) -> [String] {
     return algebraicPositions
 }
 
-func validMovesForPiece(at position: String, color: String, type: String, in gameState: inout GameState/*, skipKingCheck: Bool = false*/) -> [String] {
+func validMovesForPiece(at position: String, color: String, type: String, in gameState: inout GameState, skipKingCheck: Bool = false) -> [String] {
     var possibleMoves: [String] = []
 
     switch type {
@@ -55,13 +55,12 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
         possibleMoves = []
     }
 
-    // Filter out any moves that would expose the king to check
-    //if skipKingCheck {
-        //print("Skipped king check...", possibleMoves, "for", color, type, "at", position)
-     //   return possibleMoves
-    //} else {
+    if skipKingCheck { //this adds overhead (albiest very little) just for that one silly achievement. there might be a better way, but it also might not be worth it
+        print("Skipped king check...", color, type, "can move to", possibleMoves)
+        return possibleMoves
+    } else { //normally this executes
         return filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: &gameState)
-    //}
+    }
 }
 
 func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {

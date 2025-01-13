@@ -1,33 +1,31 @@
--make achievements consult the hard drive before bothering firestore with updates. costly if not implemented!
-    -just modify the unlockAchievement function
-    -achievement notifications?
-
 //////////////////////////////////////////////////////
-Achievements: (line means to be included at launch)
-    Hex Machina - Checkmate the CPU -------------------------------- implemented
-    Hexceeded Hexpectations - Win a joined game -------------------------------- implemented? (test if doesnt activate if you created the game as well)
-    Friendly Hexchange - Have a player join a game you created ---------------- implemented
-    Hexcalibur - Underpromote a pawn to a knight -------------------------------- implemented
-    Hexecutioner - Checkmate after capturing all enemy pieces --------------------------------
+Achievements:
+(Implemented) --- Hex Machina - Checkmate the CPU
+(Implemented) --- Hexceeded Hexpectations - Win a joined game
+(Implemented) --- Friendly Hexchange - Have a player join a game you created
+(Implemented) --- Hexcalibur - Underpromote a pawn to a knight
+(Implemented) --- Hexecutioner - Checkmate after capturing all enemy pieces
     Hexperimenter - Win with 10 different openings
     Hexathon - Win 26 games
-    Hexpedition - Move your king to the opposing king’s starting position ----------------
+(Implemented) --- Hexpedition - Move your king to the opposing king’s starting position
     Hexplorer - Visit every tile in a single game
-    Hextra Power - Promote a pawn for the first time ---------------- implemented
+(Implemented) --- Hextra Power - Promote a pawn for the first time
     Hexceptional Morale - Promote 3 pawns in a single game
     The Great Hexcape - Checkmate after being put in check 3 times
     Hexclusion Zone - Deliver a smothered mate
-    Hextreme Measures - Checkmate using your own king -------------------------------- (when coding this, dont include the king check for every single checkmate check, just check if its checkmate first, then if the opposing king contributed with a second run after. this prevents slowing down the main game loop)
+(Implemented) --- Hextreme Measures - Checkmate using your own king
     Tactical Hexcellence - Checkmate without losing any pieces
     
     Secret Achievements
-    Hexpect the Unexpected - Open by moving your king --------------------------------
-    Hexhausted - Have a game last over 100 turns --------------------------------
+    Hexpect the Unexpected - Open by moving your king
+    Hexhausted - Have a game last over 100 turns
     Seasoned Hexpert - Complete all other achievements
     
     Hexceptional Win! - ???
     Un-Hexciting Finish - Deliver a Stalemate
-//////////////////////////////////////////////////////
+////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
+
+-better game end screen
 
 -implement ELO changing at the resolution of online games
     -finalize game ending stuff
@@ -38,13 +36,13 @@ Achievements: (line means to be included at launch)
 
 -enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
 -enable gamecenter achievements (need apple developer program)
-
-
+    -achievement notifications?
 
 Bugs:
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
 -pawn promotion screen should neever been seen in main menu
+-pass and play not registering checkmate?
 
 
 BEFORE LAUNCH:
@@ -64,11 +62,11 @@ Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -gameCPU will not see knight's moves upon promotion, only queen
 
--add random matchmaking if youre signed in?
-    -if added, need name checking for online play (just hide the icons, unless joining a friends game)
-    
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
     -display first name, country emoji, elo?
+
+-add random matchmaking if youre signed in?
+    -if added, need name checking for online play (just hide the icons, unless joining a friends game)
 
 -make games more secure? (this works perfectly fine for now)
 

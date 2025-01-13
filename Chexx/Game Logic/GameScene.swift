@@ -696,8 +696,14 @@ class GameScene: SKScene {
             //print("updating king position from", from, "to", to)
             if color == "white" {
                 gameState.whiteKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                if gameState.whiteKingPosition == "g10" { //achievement unlocked! (unlocks for both players, could maybe be more robust)
+                    AchievementManager.shared.unlockAchievement(withID: "hexpedition")
+                }
             } else if color == "black" {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                if gameState.blackKingPosition == "g1" && !isVsCPU { //at least this makes sure the cpu cant unlock it...
+                    AchievementManager.shared.unlockAchievement(withID: "hexpedition")
+                }
             }
         }
         if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
@@ -863,7 +869,7 @@ class GameScene: SKScene {
     }
 
     
-    func updateGameStatusUI() {
+    func updateGameStatusUI() { //should maybe seperate update game status with end of game achievement status
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
         if isOnlineMultiplayer {
@@ -879,14 +885,42 @@ class GameScene: SKScene {
             switch gameStatus {
             case "checkmate":
                 
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                //gameState.whiteKingPosition = "c6" //ONLY FOR TESTING
+                //gameState.blackKingPosition = "f9"
                 
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                let loserColor  = (winnerColor == "white") ? "black" : "white"
+                
+                // MARK: Hexecutioner Achievement
+                let loserPieces = gameState.getPieces(for: loserColor)
+                let nonKingPieces = loserPieces.filter { $0.type != "king" }
+                if nonKingPieces.isEmpty && loserPieces.count == 1 { //the loser only has their king left!
+                    AchievementManager.shared.unlockAchievement(withID: "hexecutioner")
+                }
+                
+                // MARK: Hextreme Measures Achievement
+                let winningKingPosition = (loserColor == "white") ? gameState.blackKingPosition : gameState.whiteKingPosition
+                let losingKingPosition = (loserColor == "white") ? gameState.whiteKingPosition : gameState.blackKingPosition
+                
+                let loserKingWouldBeValidMoves = validMovesForPiece(at: losingKingPosition, color: loserColor, type: "king", in: &gameState, skipKingCheck: true)
+                let winnerKingWouldBeValidMoves = validMovesForPiece(at: winningKingPosition, color: winnerColor, type: "king", in: &gameState, skipKingCheck: true)
+                let loserKingMovesSet = Set(loserKingWouldBeValidMoves)
+                let winnerKingMovesSet = Set(winnerKingWouldBeValidMoves)
+                let overlappingMoves = loserKingMovesSet.intersection(winnerKingMovesSet)
+
+                if !overlappingMoves.isEmpty {
+                    //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
+                    AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
+                }
+        
+                // MARK: Hex Machina Achievement
                 if isVsCPU {
                     if winnerColor == "white" {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                     }
                 }
                 
+                // MARK: Multiplayer Achievements
                 if MultiplayerManager.shared.currentPlayerColor == winnerColor {
                     if winnerColor == "white" {
                         AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")

@@ -68,7 +68,7 @@ struct GameState: Codable {
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
     }
-
+/*
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
@@ -112,22 +112,22 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }
-/*
+    }*/
+
     mutating func setInitialPiecePositions() { //for checkmate testing
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 1), Piece(color: "white", type: "pawn")),
             ((1, 5), Piece(color: "white", type: "bishop")),
-            ((2, 5), Piece(color: "white", type: "pawn")),
+            ((2, 5), Piece(color: "white", type: "king")),
             ((5, 8), Piece(color: "black", type: "king")),
-            ((6, 6), Piece(color: "white", type: "rook")),
-            ((6, 5), Piece(color: "white", type: "rook")),
-            ((7, 6), Piece(color: "white", type: "rook")),
-            ((8, 6), Piece(color: "white", type: "rook")),
-            ((9, 6), Piece(color: "white", type: "rook")),
-            ((6, 2), Piece(color: "white", type: "pawn")),
+            ((4, 0), Piece(color: "white", type: "rook")),
+            ((5, 0), Piece(color: "white", type: "rook")),
+            ((6, 0), Piece(color: "white", type: "rook")),
+            ((7, 0), Piece(color: "white", type: "rook")),
+            ((8, 0), Piece(color: "white", type: "rook")),
+            //((9, 6), Piece(color: "white", type: "rook")),
+            //((6, 2), Piece(color: "white", type: "pawn")),
             ((7, 0), Piece(color: "white", type: "knight")),
-            ((7, 1), Piece(color: "white", type: "king")),
             ((7, 5), Piece(color: "white", type: "rook")),
             ((8, 4), Piece(color: "white", type: "rook")),
             ((9, 2), Piece(color: "white", type: "rook")),
@@ -136,7 +136,7 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }*/
+    }
 /*
     mutating func setInitialPiecePositions() { // for pawn promotion testing
         let initialPositions: [((Int, Int), Piece)] = [
@@ -352,7 +352,7 @@ struct GameState: Codable {
             remainingIndex -= UInt8(size)
         }
         
-        // Convert remainingIndex back to row number (1-indexed)
+        // Hexagon names are not 0-indexed, unlike their Int representations
         let rowPos = remainingIndex + 1
         
         // Combine column letter and row number into position string
@@ -402,11 +402,9 @@ struct GameState: Codable {
                     }
             }
 
-            // Convert indices to position strings
             let fromPosition = positionIntToString(index: fromIndex)
             let toPosition = positionIntToString(index: toIndex - adjustedIndex)
 
-            // Perform the move
             movePiece(from: fromPosition, to: toPosition, promotionPiece: promotionPiece)
         }
         
@@ -416,7 +414,6 @@ struct GameState: Codable {
 
         //printGameState()
         
-        // Return the updated game state
         return self
     }
     
@@ -451,6 +448,23 @@ struct GameState: Codable {
 
         return board[colIndex][rowIndex]
     }
+    
+    func getPieces(for color: String) -> [Piece] {
+        var pieces = [Piece]()
+
+        for colIndex in 0..<board.count {
+            for rowIndex in 0..<board[colIndex].count {
+                if let piece = board[colIndex][rowIndex],
+                   piece.color == color {
+                    pieces.append(piece)
+                }
+            }
+        }
+
+        return pieces
+    }
+
+    
     /*
     func findKingPosition(for color: String) -> String? {
         let kingPosition: String
@@ -530,24 +544,24 @@ struct GameState: Codable {
     mutating func isGameOver() -> (Bool, String) {
         let kingPosition = currentPlayer == "white" ? whiteKingPosition : blackKingPosition
 
-        // Step 1: Check if the current player is in check
+        // 1) Check if the current player is in check
         let checkingPieces = findCheckingPieces(kingPosition: kingPosition, color: currentPlayer)
         let inCheck = !checkingPieces.isEmpty
 
-        // Step 2: Check if there are any valid moves for the current player
+        // 2) Check if there are any valid moves for the current player
         let hasLegalMoves = hasLegalMovesForCurrentPlayer()
 
         if inCheck {
             if !hasLegalMoves {
                 return (true, "checkmate")
             }
-            let checkingPiecesText = checkingPieces.joined(separator: ", ") //could also use an array but I dont want to return 3 seperate data types on i mean come on
+            let checkingPiecesText = checkingPieces.joined(separator: ", ") //could also use an array but I dont want to return 3 seperate data types i mean come on
             return (false, "check by \(checkingPiecesText)")
         } else if !hasLegalMoves {
             return (true, "stalemate")
         }
 
-        return (false, "")  // Game is still ongoing
+        return (false, "")  //the game can still be continued
     }
 }
 
