@@ -883,13 +883,25 @@ class GameScene: SKScene {
 
         if isGameOver {
             switch gameStatus {
+                
             case "checkmate":
-                
-                //gameState.whiteKingPosition = "c6" //ONLY FOR TESTING
-                //gameState.blackKingPosition = "f9"
-                
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 let loserColor  = (winnerColor == "white") ? "black" : "white"
+                
+                presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                        //do uhhh nothing? (this isnt a neccesary completion handler
+                        
+                    case "rematch":
+                        print("user wants a rematch")
+                        //self.startNewGame() //not a function atm...
+                        
+                    default:
+                        break
+                    }
+                }
                 
                 // MARK: Hexecutioner Achievement
                 let loserPieces = gameState.getPieces(for: loserColor)
@@ -933,16 +945,33 @@ class GameScene: SKScene {
                 
                 //print("Checkmate!", opponentColor, "wins!")
                 whiteStatusTextUpdater?("")
-                redStatusTextUpdater?("Checkmate!")
+                //redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
-                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
+                
             case "stalemate":
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                
+                presentGameOverOptions(winner: winnerColor, method: "Stalemate") { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                        //do uhhh nothing? (this isnt a neccesary completion handler
+                        
+                    case "rematch":
+                        print("user wants a rematch")
+                        //self.startNewGame() //not a function atm...
+                        
+                    default:
+                        break
+                    }
+                }
                 //print("Stalemate!")
                 whiteStatusTextUpdater?("")
-                redStatusTextUpdater?("Stalemate!")
+                //redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
-                if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             default:
                 break
@@ -1016,10 +1045,23 @@ class GameScene: SKScene {
         if let viewController = self.view?.window?.rootViewController {
             let promotionViewController = UIHostingController(rootView: PromotionView(completion: completion))
             promotionViewController.modalPresentationStyle = .overCurrentContext
-            promotionViewController.view.backgroundColor = .clear // Make the background transparent
+            promotionViewController.view.backgroundColor = .clear
             viewController.present(promotionViewController, animated: true, completion: nil)
         }
     }
+    
+    func presentGameOverOptions(winner: String, method: String, completion: @escaping (String) -> Void) {
+        if let viewController = self.view?.window?.rootViewController {
+            let gameOverViewController = UIHostingController(
+                rootView: GameOverView(winner: winner, method: method, completion: completion)
+            )
+            
+            gameOverViewController.modalPresentationStyle = .overCurrentContext
+            gameOverViewController.view.backgroundColor = .clear // Transparent background
+            viewController.present(gameOverViewController, animated: true, completion: nil)
+        }
+    }
+
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
         if let hexagon = childNode(withName: hexagonName) as? HexagonNode,

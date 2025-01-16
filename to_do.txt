@@ -37,6 +37,8 @@ Achievements:
 -enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
 -enable gamecenter achievements (need apple developer program)
     -achievement notifications?
+    
+-better game noises?
 
 Bugs:
 -entering in a weird join code can crash the app

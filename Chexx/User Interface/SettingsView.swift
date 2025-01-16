@@ -20,12 +20,12 @@ struct SettingsView: View {
 
     var body: some View {
         ZStack {
-            // Transparent background that dismisses the view when tapped
-            Color.white.opacity(0.0001) // Slightly transparent background
-                .edgesIgnoringSafeArea(.all) // Ensures it covers the entire screen, including safe areas
+            // semi-transparent background that dismisses the view when tapped
+            Color.white.opacity(0.0001) //annoyingly, I can't seem to get this to be 100% clear or else it breaks
+                .edgesIgnoringSafeArea(.all)
                 .onTapGesture {
-                    presentationMode.wrappedValue.dismiss()
-                }
+                    presentationMode.wrappedValue.dismiss()}
+            
             VStack {
                 //WaveText(text: "Settings", fontSize: screenHeight / 24) // Use the custom WaveText view from PromotionView
                 Text("Settings")

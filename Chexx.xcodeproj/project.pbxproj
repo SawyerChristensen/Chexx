@@ -99,6 +99,7 @@
 		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
+		BEB501AE2D396C7500143193 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB501AD2D396C7000143193 /* GameOverView.swift */; };
 		BECA2C092D01ED32002B14BE /* GameLinkSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
 /* End PBXBuildFile section */
@@ -190,6 +191,7 @@
 		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		BEB501AD2D396C7000143193 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
 		BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheetView.swift; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -321,6 +323,7 @@
 		BE7EB8C12C47787000D66EB0 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				BEB501AD2D396C7000143193 /* GameOverView.swift */,
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
 				BE9522602D2324B400836D0F /* TutorialView.swift */,
 				BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */,
@@ -553,6 +556,7 @@
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE9522612D2324BD00836D0F /* TutorialView.swift in Sources */,
+				BEB501AE2D396C7500143193 /* GameOverView.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
 				BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */,
 				BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */,
