@@ -21,8 +21,7 @@ struct GameView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            
-            //the board
+
             ZStack { //background color
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
@@ -125,22 +124,19 @@ struct GameView: View {
     }
 
     private func createScene(size: CGSize) -> SKScene {
-        let scene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay, isOnlineMultiplayer: isOnlineMultiplayer)
-        scene.scaleMode = .aspectFill
-        scene.isVsCPU = isVsCPU
+        var newScene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay, isOnlineMultiplayer: isOnlineMultiplayer)
+        newScene.scaleMode = .aspectFill
         //scene.variant = variant
-        scene.isPassAndPlay = isPassAndPlay
-        scene.isOnlineMultiplayer = isOnlineMultiplayer
-        scene.redStatusTextUpdater = { text in
+        newScene.redStatusTextUpdater = { text in
             self.redStatusText = text // Update the red status text from the GameScene
         }
-        scene.whiteStatusTextUpdater = { text in
+        newScene.whiteStatusTextUpdater = { text in
             self.whiteStatusText = text // Update the white status text from the GameScene
         }
-        scene.whiteStatusTextMiniUpdater = { text in
+        newScene.whiteStatusTextMiniUpdater = { text in
             self.whiteStatusTextMini = text // Update the mini white status text from the GameScene
         }
-        return scene
+        
+        return newScene
     }
-
 }

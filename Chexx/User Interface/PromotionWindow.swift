@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct PromotionView: View {
+struct PromotionWindow: View {
     var completion: (String) -> Void
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 

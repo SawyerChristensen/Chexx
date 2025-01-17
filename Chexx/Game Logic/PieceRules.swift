@@ -56,7 +56,7 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
     }
 
     if skipKingCheck { //this adds overhead (albiest very little) just for that one silly achievement. there might be a better way, but it also might not be worth it
-        print("Skipped king check...", color, type, "can move to", possibleMoves)
+        //print("Skipped king check...", color, type, "can move to", possibleMoves)
         return possibleMoves
     } else { //normally this executes
         return filterMovesThatExposeKing(possibleMoves, for: color, at: position, in: &gameState)

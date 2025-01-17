@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SettingsView: View {
+struct SettingsWindow: View {
     let screenHeight: CGFloat //built off of 720 for initial iphone 15 pro test
     @Environment(\.colorScheme) var colorScheme // Detecting the current color scheme
     @AppStorage("highlightEnabled") private var highlightEnabled = true

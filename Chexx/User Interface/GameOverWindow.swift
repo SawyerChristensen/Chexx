@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GameOverView: View {
+struct GameOverWindow: View {
     var winner: String
     var method: String
     var completion: (String) -> Void //why do we need this?
@@ -35,7 +35,7 @@ struct GameOverView: View {
                     WaveText(text: "Game Over!", fontSize: screenHeight / 20) //should adapt later!
                         .padding(.bottom, 5)
                     
-                    Text("\(winner.prefix(1).uppercased() + winner.dropFirst().lowercased()) wins by \(method)!")
+                    Text("\(winner.prefix(1).uppercased() + winner.dropFirst().lowercased()) wins by \(method)!") //maybe update
                         .font(.system(size: screenHeight / 36, weight: .semibold, design: .serif))
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 5)

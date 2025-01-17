@@ -56,7 +56,7 @@
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* to_do.txt */; };
 		BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA472C3F07F1009113B4 /* MainMenuView.swift */; };
-		BE76AA4E2C4620F9009113B4 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsView.swift */; };
+		BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */; };
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
 		BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA512C462765009113B4 /* BackgroundView.swift */; };
 		BE94E1112C82F02E005DCAD3 /* notify.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */; };
@@ -95,12 +95,12 @@
 		BE94E1322C82F02E005DCAD3 /* tenseconds.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */; };
 		BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */; };
 		BE94E1372C82FE6A005DCAD3 /* alert_from_mgs.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */; };
-		BE9522612D2324BD00836D0F /* TutorialView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialView.swift */; };
-		BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */; };
+		BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialSheet.swift */; };
+		BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
-		BEB501AE2D396C7500143193 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB501AD2D396C7000143193 /* GameOverView.swift */; };
-		BECA2C092D01ED32002B14BE /* GameLinkSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */; };
+		BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB501AD2D396C7000143193 /* GameOverWindow.swift */; };
+		BECA2C092D01ED32002B14BE /* GameLinkSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -148,7 +148,7 @@
 		BE76AA3F2C3720EE009113B4 /* PieceRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRules.swift; sourceTree = "<group>"; };
 		BE76AA412C3E34C6009113B4 /* to_do.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = to_do.txt; sourceTree = "<group>"; };
 		BE76AA472C3F07F1009113B4 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
-		BE76AA4D2C4620F9009113B4 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		BE76AA512C462765009113B4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
 		BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notify.mp3; sourceTree = "<group>"; };
@@ -187,12 +187,12 @@
 		BE94E1102C82F02D005DCAD3 /* tenseconds.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = tenseconds.mp3; sourceTree = "<group>"; };
 		BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = worldssmallestviolin.mp3; sourceTree = "<group>"; };
 		BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alert_from_mgs.mp3; sourceTree = "<group>"; };
-		BE9522602D2324B400836D0F /* TutorialView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialView.swift; sourceTree = "<group>"; };
-		BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionView.swift; sourceTree = "<group>"; };
+		BE9522602D2324B400836D0F /* TutorialSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSheet.swift; sourceTree = "<group>"; };
+		BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionWindow.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
-		BEB501AD2D396C7000143193 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
-		BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheetView.swift; sourceTree = "<group>"; };
+		BEB501AD2D396C7000143193 /* GameOverWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverWindow.swift; sourceTree = "<group>"; };
+		BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheet.swift; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -323,14 +323,14 @@
 		BE7EB8C12C47787000D66EB0 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
-				BEB501AD2D396C7000143193 /* GameOverView.swift */,
+				BEB501AD2D396C7000143193 /* GameOverWindow.swift */,
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
-				BE9522602D2324B400836D0F /* TutorialView.swift */,
-				BECA2C082D01ED2C002B14BE /* GameLinkSheetView.swift */,
+				BE9522602D2324B400836D0F /* TutorialSheet.swift */,
+				BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */,
 				BE76AA512C462765009113B4 /* BackgroundView.swift */,
-				BE76AA4D2C4620F9009113B4 /* SettingsView.swift */,
+				BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */,
 				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
-				BEB2FD7F2C653BF4008BCB26 /* PromotionView.swift */,
+				BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */,
 				BEB2FD832C6599BB008BCB26 /* GameView.swift */,
 			);
 			path = "User Interface";
@@ -546,24 +546,24 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BEB2FD802C653BF4008BCB26 /* PromotionView.swift in Sources */,
+				BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */,
 				BE76AA522C462765009113B4 /* BackgroundView.swift in Sources */,
 				BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */,
-				BE76AA4E2C4620F9009113B4 /* SettingsView.swift in Sources */,
+				BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */,
 				BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */,
 				BE091A572CC2889700C1A3EC /* AuthViewModel.swift in Sources */,
 				BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */,
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
-				BE9522612D2324BD00836D0F /* TutorialView.swift in Sources */,
-				BEB501AE2D396C7500143193 /* GameOverView.swift in Sources */,
+				BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */,
+				BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
 				BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */,
 				BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */,
 				BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,
 				BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */,
-				BECA2C092D01ED32002B14BE /* GameLinkSheetView.swift in Sources */,
+				BECA2C092D01ED32002B14BE /* GameLinkSheet.swift in Sources */,
 				BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

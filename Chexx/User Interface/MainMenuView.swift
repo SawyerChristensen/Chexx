@@ -100,7 +100,7 @@ struct MainMenuView: View {
                                 }
                                 .padding(8)
                                 .sheet(isPresented: $presentGameLink) {
-                                    GameLinkSheetView(
+                                    GameLinkSheet(
                                         isPresented: $presentGameLink,
                                         navigateToGameView: $navigateToGameView,
                                         gameLink: $gameLink,
@@ -447,7 +447,7 @@ struct MainMenuView: View {
                             if let windowScene = UIApplication.shared.connectedScenes
                                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
                                let rootViewController = windowScene.windows.first?.rootViewController {
-                                let settingsViewController = UIHostingController(rootView: SettingsView(screenHeight: maxScreenDimension))
+                                let settingsViewController = UIHostingController(rootView: SettingsWindow(screenHeight: maxScreenDimension))
                                 settingsViewController.modalPresentationStyle = .overCurrentContext
                                 settingsViewController.view.backgroundColor = .clear // Transparent background
                                 rootViewController.present(settingsViewController, animated: true, completion: nil)
@@ -471,7 +471,7 @@ struct MainMenuView: View {
                                 .padding(.trailing, maxScreenDimension / 30)
                         }
                         .sheet(isPresented: $isTutorialPresented) {
-                            TutorialView()
+                            TutorialSheet()
                                 .presentationDragIndicator(.visible)
                         }
                         

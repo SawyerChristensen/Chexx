@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct TutorialView: View {
+struct TutorialSheet: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .center, spacing: 10) {
@@ -200,6 +200,6 @@ struct TutorialView: View {
 
 struct TutorialView_Previews: PreviewProvider {
     static var previews: some View {
-        TutorialView()
+        TutorialSheet()
     }
 }

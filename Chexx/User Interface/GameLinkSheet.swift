@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct GameLinkSheetView: View {
+struct GameLinkSheet: View {
     @Binding var isPresented: Bool
     @Binding var navigateToGameView: Bool
     @Binding var gameLink: String

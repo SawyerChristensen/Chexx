@@ -18,6 +18,7 @@ class GameScene: SKScene {
     var isVsCPU: Bool
     var isPassAndPlay: Bool
     var isOnlineMultiplayer: Bool
+    var onRematch: (() -> Void)?
     //var variant: String = "Glinkski's"
     
     var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
@@ -40,7 +41,7 @@ class GameScene: SKScene {
     var whiteStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextMiniUpdater: ((String) -> Void)?
     
-    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) { // this can be modified to take in file name for gamesave
+    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) {
         self.isVsCPU = isVsCPU
         self.isPassAndPlay = isPassAndPlay
         self.isOnlineMultiplayer = isOnlineMultiplayer
@@ -55,10 +56,7 @@ class GameScene: SKScene {
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
-        //print("Loaded the game scene")
-        
-        // Center the scene
-        anchorPoint = CGPoint(x: 0.5, y: 0.5)
+        anchorPoint = CGPoint(x: 0.5, y: 0.5) //centers the scene
         
         // Load the game state (if exists) or create a new one
         if isPassAndPlay {
@@ -72,17 +70,27 @@ class GameScene: SKScene {
             print("No game mode detected!")
         }
         
-        //gameState = loadGameStateFromFile(from: "currentGameState") ?? GameState()
-        //gameState = gameState.HexPgnToGameState(pgn: [0, 6, 8, 84, 82])
-        
-        // Calculate hexagon size based on screen size
         hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
         
-        // Generate the board
         generateHexTiles(radius: hexagonSize, scene: self)
         
-        // Place pieces on the board based on the game state
         placePieces(scene: self, gameState: gameState)
+        
+        onRematch = { //if the rematch button was pressed...
+            self.gameState = GameState() //reset the game state
+            
+            self.removeAllPieces(scene: self) //clear the board
+            self.clearValidMoveHighlights()
+            self.clearCheckHighlights()
+            
+            self.placePieces(scene: self, gameState: self.gameState) //place all pieces in original positions
+            
+            if self.boardIsRotated { //if the board is rotated in Pass & Play mode, unrotate it
+                self.boardIsRotated.toggle()
+                self.rotateBoardImmediately()
+                self.rotateAllPiecesImmediately()
+            }
+        }
     }
     
     override func didMove(to view: SKView) {
@@ -108,7 +116,7 @@ class GameScene: SKScene {
             }
         }
         
-        updateGameStatusUI()
+        //updateGameStatusUI(gameStatus: gameStatus) //this is also called in applyHexPgn
     }
     
     enum Direction { //for use with calcualte new center
@@ -682,6 +690,7 @@ class GameScene: SKScene {
         
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] //jesus christ columns is defined in like every single function
         
+        //MARK: - Move the piece
         //maybe use gamestate.movepiece function? rn this works
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
@@ -736,7 +745,109 @@ class GameScene: SKScene {
             saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentPassAndPlay")
         }
         
-        updateGameStatusUI() //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
+        // MARK: - Is the game over now?
+        let (isGameOver, gameStatus) = gameState.isGameOver()
+        
+        if isGameOver {
+            switch gameStatus {
+            
+            case "checkmate":
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                let loserColor  = (winnerColor == "white") ? "black" : "white"
+                
+                presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                        //do uhhh nothing? (this isnt a neccesary completion handler
+                        
+                    case "rematch":
+                        print("user wants a rematch")
+                        self.onRematch?()
+                        //self.startNewGame() //not a function atm...
+                        
+                    default:
+                        break
+                    }
+                }
+                
+                // MARK: Hexecutioner Achievement
+                let loserPieces = gameState.getPieces(for: loserColor)
+                let nonKingPieces = loserPieces.filter { $0.type != "king" }
+                if nonKingPieces.isEmpty && loserPieces.count == 1 { //the loser only has their king left!
+                    AchievementManager.shared.unlockAchievement(withID: "hexecutioner")
+                }
+                
+                // MARK: Hextreme Measures Achievement
+                let winningKingPosition = (loserColor == "white") ? gameState.blackKingPosition : gameState.whiteKingPosition
+                let losingKingPosition = (loserColor == "white") ? gameState.whiteKingPosition : gameState.blackKingPosition
+                
+                let loserKingWouldBeValidMoves = validMovesForPiece(at: losingKingPosition, color: loserColor, type: "king", in: &gameState, skipKingCheck: true)
+                let winnerKingWouldBeValidMoves = validMovesForPiece(at: winningKingPosition, color: winnerColor, type: "king", in: &gameState, skipKingCheck: true)
+                let loserKingMovesSet = Set(loserKingWouldBeValidMoves)
+                let winnerKingMovesSet = Set(winnerKingWouldBeValidMoves)
+                let overlappingMoves = loserKingMovesSet.intersection(winnerKingMovesSet)
+
+                if !overlappingMoves.isEmpty {
+                    //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
+                    AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
+                }
+        
+                // MARK: Hex Machina Achievement
+                if isVsCPU {
+                    if winnerColor == "white" {
+                        AchievementManager.shared.unlockAchievement(withID: "hex_machina")
+                    }
+                }
+                
+                // MARK: Multiplayer Achievements
+                if MultiplayerManager.shared.currentPlayerColor == winnerColor {
+                    if winnerColor == "white" {
+                        AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
+                        print("user joined the game")
+                    } else { //the user is black, and created the game
+                        AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
+                        print("user created the game")
+                    }
+                }
+                
+                //print("Checkmate!", opponentColor, "wins!")
+                whiteStatusTextUpdater?("")
+                //redStatusTextUpdater?("Checkmate!")
+                gameState.gameStatus = "ended"
+                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                return
+                
+            case "stalemate":
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                
+                presentGameOverOptions(winner: winnerColor, method: "Stalemate") { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                        //do uhhh nothing? (this isnt a neccesary completion handler
+                        
+                    case "rematch":
+                        print("user wants a rematch")
+                        self.onRematch?()
+                        //self.startNewGame() //not a function atm...
+                        
+                    default:
+                        break
+                    }
+                }
+                //print("Stalemate!")
+                whiteStatusTextUpdater?("")
+                //redStatusTextUpdater?("Stalemate!")
+                gameState.gameStatus = "ended"
+                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
+                return
+            default:
+                break
+            }
+        }
+        
+        updateGameStatusUI(gameStatus: gameStatus) //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
         
         if isVsCPU && gameState.currentPlayer == "black" {
             self.whiteStatusTextUpdater?("Thinking.")
@@ -864,15 +975,17 @@ class GameScene: SKScene {
         } else {
             print("Error: Piece node not found at \(startPosition)")
         }
+        
+        let (isGameOver, gameStatus) = gameState.isGameOver()
 
-        updateGameStatusUI()
+        updateGameStatusUI(gameStatus: gameStatus)
     }
 
     
-    func updateGameStatusUI() { //should maybe seperate update game status with end of game achievement status
-        let (isGameOver, gameStatus) = gameState.isGameOver()
+    func updateGameStatusUI(gameStatus: String) { //should maybe seperate update game status with end of game achievement status
         
-        if isOnlineMultiplayer {
+        //MARK: display whose turn it is
+        if isOnlineMultiplayer { //can maybe be refactored out to a different function
             if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
                 whiteStatusTextMiniUpdater?("Your turn")
                 
@@ -880,104 +993,8 @@ class GameScene: SKScene {
                 whiteStatusTextMiniUpdater?("Waiting for opponent.")
             }
         }
-
-        if isGameOver {
-            switch gameStatus {
-                
-            case "checkmate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                let loserColor  = (winnerColor == "white") ? "black" : "white"
-                
-                presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                        //do uhhh nothing? (this isnt a neccesary completion handler
-                        
-                    case "rematch":
-                        print("user wants a rematch")
-                        //self.startNewGame() //not a function atm...
-                        
-                    default:
-                        break
-                    }
-                }
-                
-                // MARK: Hexecutioner Achievement
-                let loserPieces = gameState.getPieces(for: loserColor)
-                let nonKingPieces = loserPieces.filter { $0.type != "king" }
-                if nonKingPieces.isEmpty && loserPieces.count == 1 { //the loser only has their king left!
-                    AchievementManager.shared.unlockAchievement(withID: "hexecutioner")
-                }
-                
-                // MARK: Hextreme Measures Achievement
-                let winningKingPosition = (loserColor == "white") ? gameState.blackKingPosition : gameState.whiteKingPosition
-                let losingKingPosition = (loserColor == "white") ? gameState.whiteKingPosition : gameState.blackKingPosition
-                
-                let loserKingWouldBeValidMoves = validMovesForPiece(at: losingKingPosition, color: loserColor, type: "king", in: &gameState, skipKingCheck: true)
-                let winnerKingWouldBeValidMoves = validMovesForPiece(at: winningKingPosition, color: winnerColor, type: "king", in: &gameState, skipKingCheck: true)
-                let loserKingMovesSet = Set(loserKingWouldBeValidMoves)
-                let winnerKingMovesSet = Set(winnerKingWouldBeValidMoves)
-                let overlappingMoves = loserKingMovesSet.intersection(winnerKingMovesSet)
-
-                if !overlappingMoves.isEmpty {
-                    //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
-                    AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
-                }
         
-                // MARK: Hex Machina Achievement
-                if isVsCPU {
-                    if winnerColor == "white" {
-                        AchievementManager.shared.unlockAchievement(withID: "hex_machina")
-                    }
-                }
-                
-                // MARK: Multiplayer Achievements
-                if MultiplayerManager.shared.currentPlayerColor == winnerColor {
-                    if winnerColor == "white" {
-                        AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
-                        print("user joined the game")
-                    } else { //the user is black, and created the game
-                        AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
-                        print("user created the game")
-                    }
-                }
-                
-                //print("Checkmate!", opponentColor, "wins!")
-                whiteStatusTextUpdater?("")
-                //redStatusTextUpdater?("Checkmate!")
-                gameState.gameStatus = "ended"
-                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
-                return
-                
-            case "stalemate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                
-                presentGameOverOptions(winner: winnerColor, method: "Stalemate") { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                        //do uhhh nothing? (this isnt a neccesary completion handler
-                        
-                    case "rematch":
-                        print("user wants a rematch")
-                        //self.startNewGame() //not a function atm...
-                        
-                    default:
-                        break
-                    }
-                }
-                //print("Stalemate!")
-                whiteStatusTextUpdater?("")
-                //redStatusTextUpdater?("Stalemate!")
-                gameState.gameStatus = "ended"
-                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
-                return
-            default:
-                break
-            }
-        }
-        
+        //MARK: highlight any pieces in check
         if gameStatus.starts(with: "check") {
             //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") } //for some reason this isnt working rn
             // Extract positions after "check by " and highlight checking pieces
@@ -1043,7 +1060,7 @@ class GameScene: SKScene {
     
     func presentPromotionOptions(completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
-            let promotionViewController = UIHostingController(rootView: PromotionView(completion: completion))
+            let promotionViewController = UIHostingController(rootView: PromotionWindow(completion: completion))
             promotionViewController.modalPresentationStyle = .overCurrentContext
             promotionViewController.view.backgroundColor = .clear
             viewController.present(promotionViewController, animated: true, completion: nil)
@@ -1053,7 +1070,7 @@ class GameScene: SKScene {
     func presentGameOverOptions(winner: String, method: String, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let gameOverViewController = UIHostingController(
-                rootView: GameOverView(winner: winner, method: method, completion: completion)
+                rootView: GameOverWindow(winner: winner, method: method, completion: completion)
             )
             
             gameOverViewController.modalPresentationStyle = .overCurrentContext

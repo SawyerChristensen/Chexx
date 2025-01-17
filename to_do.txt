@@ -26,6 +26,8 @@ Achievements:
 ////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
 
 -better game end screen
+    -need to check if check highlighting works now
+    -rematch button working for multiplayer modes
 
 -implement ELO changing at the resolution of online games
     -finalize game ending stuff
@@ -66,6 +68,8 @@ Bugs:
 
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
     -display first name, country emoji, elo?
+    
+-end game screen displaying username instead of color?
 
 -add random matchmaking if youre signed in?
     -if added, need name checking for online play (just hide the icons, unless joining a friends game)

@@ -121,7 +121,7 @@ struct GameState: Codable {
             ((2, 5), Piece(color: "white", type: "king")),
             ((5, 8), Piece(color: "black", type: "king")),
             ((4, 0), Piece(color: "white", type: "rook")),
-            ((5, 0), Piece(color: "white", type: "rook")),
+            //((5, 0), Piece(color: "white", type: "rook")),
             ((6, 0), Piece(color: "white", type: "rook")),
             ((7, 0), Piece(color: "white", type: "rook")),
             ((8, 0), Piece(color: "white", type: "rook")),
@@ -562,6 +562,21 @@ struct GameState: Codable {
         }
 
         return (false, "")  //the game can still be continued
+    }
+    
+    func printGameState() { //just for debugging
+        print("********** CURRENT GAME STATE: **********")
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        
+        for (colIndex, column) in board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece {
+                    print("Piece at \(columns[colIndex])\(rowIndex + 1): \(piece.color) \(piece.type)")
+                } else {
+                    print("No piece at \(columns[colIndex])\(rowIndex + 1)")
+                }
+            }
+        }
     }
 }
 
