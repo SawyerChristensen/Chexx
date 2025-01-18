@@ -111,7 +111,7 @@ class GameScene: SKScene {
             MultiplayerManager.shared.stopListening()
             
             MultiplayerManager.shared.startListeningForMoves { [weak self] hexPgn in
-                print("Recieved from server: \(hexPgn)")
+                //print("Recieved from server: \(hexPgn)")
                 self?.applyHexPgn(hexPgn)
             }
         }
@@ -329,9 +329,9 @@ class GameScene: SKScene {
                         selectNewPiece(pieceNode)
                     }
                     break
-                } else {
-                    print("It's \(gameState.currentPlayer)'s turn")
-                }
+                } //else {
+                    //print("It's \(gameState.currentPlayer)'s turn")
+                //}
             }
         }
     }
@@ -695,7 +695,7 @@ class GameScene: SKScene {
         gameState.board[originalColIndex][originalRowIndex] = nil
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
-        gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt) //not sure if this has to be HERE specifically, could be earlier, could be later, might not matter at all
+        gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
         
         if isOnlineMultiplayer { //send move to cloud if online multiplayer and is our turn/move to send
             MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn, currentTurn: gameState.currentPlayer)
@@ -753,21 +753,47 @@ class GameScene: SKScene {
             
             case "checkmate":
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                let loserColor  = (winnerColor == "white") ? "black" : "white"
+                let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
                 
-                presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                        //do uhhh nothing? (this isnt a neccesary completion handler
+                // If online, do Elo updates
+                if isOnlineMultiplayer {
+                    let localUserId    = MultiplayerManager.shared.currentUserId
+                    let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
+                    
+                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor) //does this get changed???
+
+                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
+
+                        var eloText = ""
+                        let diff = newLocalElo - oldLocalElo
+                       
+                        eloText = "Your ELO rating changed from \(oldLocalElo) to \(newLocalElo) (\(diff >= 0 ? "+\(diff)" : "\(diff)"))"
                         
-                    case "rematch":
-                        print("user wants a rematch")
-                        self.onRematch?()
-                        //self.startNewGame() //not a function atm...
-                        
-                    default:
-                        break
+                        // Now present the game-over window with the eloText
+                        self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: eloText
+                        ) { action in
+                            switch action {
+                            case "viewBoard":
+                                print("user decided to view the board") //need SOMETHING to execute after case
+                            case "rematch":
+                                self.onRematch?()
+                            default:
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    // if single player game, there is no elo adjustment so present without eloText
+                    self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
+                    ) { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.onRematch?()
+                        default:
+                            break
+                        }
                     }
                 }
                 
@@ -804,10 +830,10 @@ class GameScene: SKScene {
                 if MultiplayerManager.shared.currentPlayerColor == winnerColor {
                     if winnerColor == "white" {
                         AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
-                        print("user joined the game")
+                        //print("user joined the game")
                     } else { //the user is black, and created the game
                         AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
-                        print("user created the game")
+                        //print("user created the game")
                     }
                 }
                 
@@ -821,21 +847,46 @@ class GameScene: SKScene {
             case "stalemate":
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 
-                presentGameOverOptions(winner: winnerColor, method: "Stalemate") { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                        //do uhhh nothing? (this isnt a neccesary completion handler
+                // If online, do Elo updates
+                if isOnlineMultiplayer {
+                    let localUserId    = MultiplayerManager.shared.currentUserId
+                    let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
+                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
+                    
+                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
+
+                        var eloText = ""
+                        let diff = newLocalElo - oldLocalElo
+                       
+                        eloText = "Your rating changed from \(oldLocalElo) to \(newLocalElo) (\(diff >= 0 ? "+\(diff)" : "\(diff)"))."
                         
-                    case "rematch":
-                        print("user wants a rematch")
-                        self.onRematch?()
-                        //self.startNewGame() //not a function atm...
-                        
-                    default:
-                        break
+                        // Now present the game-over window with the eloText
+                        self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: eloText
+                        ) { action in
+                            switch action {
+                            case "viewBoard":
+                                print("user decided to view the board")
+                            case "rematch":
+                                self.onRematch?()
+                            default:
+                                break
+                            }
+                        }
+                    }
+                } else {
+                    self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
+                    ) { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.onRematch?()
+                        default:
+                            break
+                        }
                     }
                 }
+                
                 //print("Stalemate!")
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Stalemate!")
@@ -1067,10 +1118,10 @@ class GameScene: SKScene {
         }
     }
     
-    func presentGameOverOptions(winner: String, method: String, completion: @escaping (String) -> Void) {
+    func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let gameOverViewController = UIHostingController(
-                rootView: GameOverWindow(winner: winner, method: method, completion: completion)
+                rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: isOnlineMultiplayer, eloText: eloText, completion: completion)
             )
             
             gameOverViewController.modalPresentationStyle = .overCurrentContext

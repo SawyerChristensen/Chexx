@@ -10,10 +10,11 @@ import SwiftUI
 struct GameOverWindow: View {
     var winner: String
     var method: String
+    var isOnlineMultiplayer: Bool
+    var eloText: String
     var completion: (String) -> Void //why do we need this?
     
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
-    
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     
@@ -40,6 +41,15 @@ struct GameOverWindow: View {
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 5)
                     
+                    if isOnlineMultiplayer { //show elo adjustment
+                        if !eloText.isEmpty { //this check probably isnt necessary
+                            Text(eloText)
+                                .font(.system(size: screenHeight / 36, weight: .semibold, design: .serif))
+                                .multilineTextAlignment(.center)
+                                .padding(5)
+                        }
+                    }
+                    
                     Button(action: {
                         completion("viewBoard")
                         presentationMode.wrappedValue.dismiss()
@@ -54,19 +64,21 @@ struct GameOverWindow: View {
                     }
                     .padding(5)
                     
-                    Button(action: {
-                        completion("rematch")
-                        presentationMode.wrappedValue.dismiss()
-                    }) {
-                        Text("Rematch")
-                            .font(.system(size: screenHeight / 26, weight: .bold, design: .serif))
-                            .padding()
-                            .frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                            .background(Color.accentColor)
-                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                            .clipShape(HexagonEdgeRectangleShape())
+                    if !isOnlineMultiplayer {
+                        Button(action: {
+                            completion("rematch")
+                            presentationMode.wrappedValue.dismiss()
+                        }) {
+                            Text("Rematch")
+                                .font(.system(size: screenHeight / 26, weight: .bold, design: .serif))
+                                .padding()
+                                .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                .background(Color.accentColor)
+                                .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                                .clipShape(HexagonEdgeRectangleShape())
+                        }
+                        .padding(5)
                     }
-                    .padding(5)
                 }
                 .padding()
                 .background(Color(UIColor.systemBackground))

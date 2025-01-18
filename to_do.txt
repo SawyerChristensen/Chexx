@@ -24,13 +24,11 @@ Achievements:
     Hexceptional Win! - ???
     Un-Hexciting Finish - Deliver a Stalemate
 ////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
+    
+-authviewmodel is still a little weird with ELO and signing in
 
--better game end screen
-    -need to check if check highlighting works now
-    -rematch button working for multiplayer modes
-
--implement ELO changing at the resolution of online games
-    -finalize game ending stuff
+-comment out leaderboard section? maybe replace with achievements section?
+-maybe a have a "recent games" field under the profile instead?
     
 -make sure games auto delete themselves if they havent been interacted with in awhile. the game codes shoud just be for live games
 
@@ -45,9 +43,7 @@ Achievements:
 Bugs:
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
--pawn promotion screen should neever been seen in main menu
 -pass and play not registering checkmate?
-
 
 BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
@@ -64,6 +60,7 @@ FOR FUTURE UPDATES:
 ----------------------
 Bugs:
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
+-elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -gameCPU will not see knight's moves upon promotion, only queen
 
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)

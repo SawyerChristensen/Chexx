@@ -26,7 +26,7 @@ class AuthViewModel: ObservableObject {
     @Published var profileImageURL: URL?
     @Published var errorMessage: String = ""
     @Published var userCountry: String = ""
-    @Published var eloScore: Int = 800 // the default ELO score
+    @Published var eloScore: Int = 1200 // the default ELO score
     
     let db = Firestore.firestore() //db for database (were using firestore)
     
@@ -61,9 +61,7 @@ class AuthViewModel: ObservableObject {
             self.profileImageURL = URL(string: imageUrlString)
         }
         self.userCountry = UserDefaults.standard.string(forKey: "country") ?? "none found on hard drive"
-        if (UserDefaults.standard.integer(forKey: "eloScore")) == 0 {
-            self.eloScore = -1
-        }
+        self.eloScore = UserDefaults.standard.integer(forKey: "eloScore") // ?? no else statement here due to int
         
         /* print("Local Email: \(self.email)")
         print("Local Display Name: \(self.displayName)")
@@ -85,11 +83,7 @@ class AuthViewModel: ObservableObject {
                 self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
                 self.displayName = data?["displayName"] as? String ?? "none found on server"
                 self.userCountry = data?["country"] as? String ?? "none found on server"
-                self.eloScore = data?["eloScore"] as? Int ?? 800 //does NOT set the Elo to 800, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
-                
-                if self.eloScore == 0 {
-                    self.eloScore = 800
-                }
+                self.eloScore = data?["eloScore"] as? Int ?? 1200 //does NOT set the Elo to 1200, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
                 
                 /* print("Firestore Email: \(self.email)")
                 print("Firestore Display Name: \(self.displayName)")
@@ -311,8 +305,7 @@ class AuthViewModel: ObservableObject {
                 UserDefaults.standard.set(imageURL, forKey: "profileImageURL")
             }
             
-            self.fetchUserDataFromFirestore(completion: {}) //empty completion handler, we dont care if its asychronous here as long as it happens
-
+            self.fetchUserDataFromFirestore(completion: {}) //empty completion handler
             return true
             
         } catch {
@@ -389,9 +382,10 @@ class AuthViewModel: ObservableObject {
            try Auth.auth().signOut()
            self.isLoggedIn = false
            self.email = ""
+           self.profileImageURL = URL("")
            self.displayName = ""
            self.userCountry = ""
-           self.profileImageURL = URL("")
+           self.eloScore = 0
            
            // Remove saved data
            UserDefaults.standard.removeObject(forKey: "isLoggedIn")

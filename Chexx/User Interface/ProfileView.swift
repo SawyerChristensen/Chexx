@@ -352,11 +352,14 @@ struct ProfileView: View {
                 }
                 
                 // MARK: ELO Rating
-                Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)")
+                Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)") //could be modified to use a local toggle that shows if its been updated, preventing the server call EVERY profile view, but we can implement that later
                     .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
-                    //.lineLimit(1)
-                    //.multilineTextAlignment(.leading)
-                    //.padding(.bottom, screenHeight / 30)
+                    .onAppear {
+                        // when the view appears, fetch elo (we already have a function for this in multiplayerManager)
+                        MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
+                            authViewModel.eloScore = elo!
+                        }
+                    }
                 
                 // MARK: Sign Out Button
                 Button(action: authViewModel.signOut) { //maybe make this smaller?
