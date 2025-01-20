@@ -36,20 +36,15 @@ class AudioManager: ObservableObject {
     func playSoundEffect(fileName: String, fileType: String) {
         guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else {
             print("Sound effect file not found: \(fileName).\(fileType)")
-            return
-        }
+            return }
+        
         let url = URL(fileURLWithPath: path)
 
         do {
             soundEffectPlayer = try AVAudioPlayer(contentsOf: url)
-            
-            if fileName == "piece_move" {
-                soundEffectPlayer?.volume = 0.1
-            }
-            else { //background music
-                soundEffectPlayer?.volume = 0.01
-            }
+            soundEffectPlayer?.volume = 0.1
             soundEffectPlayer?.play()
+            
         } catch {
             print("Could not play sound effect: \(error)")
         }

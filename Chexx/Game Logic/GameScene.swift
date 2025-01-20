@@ -715,7 +715,7 @@ class GameScene: SKScene {
                 }
             }
         }
-        if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
+        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")}
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
             gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
@@ -755,12 +755,17 @@ class GameScene: SKScene {
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
                 
-                // If online, do Elo updates
+                // If online, do Elo updates + sound effects
                 if isOnlineMultiplayer {
                     let localUserId    = MultiplayerManager.shared.currentUserId
                     let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
+                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
                     
-                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor) //does this get changed???
+                    if localUserIsWinner {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                    } else {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                    }
 
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
@@ -782,8 +787,10 @@ class GameScene: SKScene {
                             }
                         }
                     }
-                } else {
-                    // if single player game, there is no elo adjustment so present without eloText
+                } else { // its a single player game, so there is no elo adjustment
+                    if isPassAndPlay {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                    }
                     self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
                     ) { action in
                         switch action {
@@ -822,7 +829,10 @@ class GameScene: SKScene {
                 // MARK: Hex Machina Achievement
                 if isVsCPU {
                     if winnerColor == "white" {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
+                    } else {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
                 }
                 
@@ -837,11 +847,9 @@ class GameScene: SKScene {
                     }
                 }
                 
-                //print("Checkmate!", opponentColor, "wins!")
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Checkmate!")
                 gameState.gameStatus = "ended"
-                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
                 
             case "stalemate":
@@ -852,6 +860,12 @@ class GameScene: SKScene {
                     let localUserId    = MultiplayerManager.shared.currentUserId
                     let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
                     let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
+                    
+                    if localUserIsWinner {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                    } else {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                    }
                     
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
@@ -873,7 +887,19 @@ class GameScene: SKScene {
                             }
                         }
                     }
-                } else {
+                } else { //its a singe player game
+                    if isVsCPU {
+                        if winnerColor == "white" {
+                            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        } else {
+                            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                        }
+                    }
+                    
+                    if isPassAndPlay {
+                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                    }
+                    
                     self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
                     ) { action in
                         switch action {
@@ -887,11 +913,9 @@ class GameScene: SKScene {
                     }
                 }
                 
-                //print("Stalemate!")
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
-                //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3") }
                 return
             default:
                 break
@@ -1047,7 +1071,7 @@ class GameScene: SKScene {
         
         //MARK: highlight any pieces in check
         if gameStatus.starts(with: "check") {
-            //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "check", fileType: "mp3") } //for some reason this isnt working rn
+            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
             let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }

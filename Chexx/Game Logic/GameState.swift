@@ -68,7 +68,7 @@ struct GameState: Codable {
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
     }
-/*
+
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),
@@ -112,8 +112,8 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }*/
-
+    }
+/*
     mutating func setInitialPiecePositions() { //for checkmate testing
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 1), Piece(color: "white", type: "pawn")),
@@ -136,7 +136,7 @@ struct GameState: Codable {
         for ((col, row), piece) in initialPositions {
             board[col][row] = piece
         }
-    }
+    }*/
 /*
     mutating func setInitialPiecePositions() { // for pawn promotion testing
         let initialPositions: [((Int, Int), Piece)] = [

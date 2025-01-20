@@ -1,3 +1,38 @@
+-authviewmodel is still a little weird with ELO and signing in
+
+-comment out leaderboard section? maybe replace with achievements section?
+-maybe a have a "recent games" field under the profile instead?
+    
+-make sure games auto delete themselves if they havent been interacted with in awhile. the game codes shoud just be for live games
+
+-facebook sign in
+
+-enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
+-enable gamecenter achievements (need apple developer program)
+    -achievement notifications?
+
+Bugs:
+-entering in a weird join code can crash the app
+-login does not check if your email is actually real
+-"check" red status text doesnt show up if the cpu checks you
+
+BEFORE LAUNCH:
+-app delegate file and figure out the use for all the other template files (theyre there for a reason)
+-figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
+    -launch screen (required) & main menu /is it???
+
+
+******************************
+RELEASE!! :D
+******************************
+
+
+FOR FUTURE UPDATES:
+----------------------
+-user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
+-elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
+-store user picture on device and only load when it changes? having it load is a little jarring (low priority)
+
 //////////////////////////////////////////////////////
 Achievements:
 (Implemented) --- Hex Machina - Checkmate the CPU
@@ -24,43 +59,7 @@ Achievements:
     Hexceptional Win! - ???
     Un-Hexciting Finish - Deliver a Stalemate
 ////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
-    
--authviewmodel is still a little weird with ELO and signing in
 
--comment out leaderboard section? maybe replace with achievements section?
--maybe a have a "recent games" field under the profile instead?
-    
--make sure games auto delete themselves if they havent been interacted with in awhile. the game codes shoud just be for live games
-
--facebook sign in
-
--enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
--enable gamecenter achievements (need apple developer program)
-    -achievement notifications?
-    
--better game noises?
-
-Bugs:
--entering in a weird join code can crash the app
--login does not check if your email is actually real
--pass and play not registering checkmate?
-
-BEFORE LAUNCH:
--app delegate file and figure out the use for all the other template files (theyre there for a reason)
--figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
-    -launch screen (required) & main menu /is it???
-
-
-******************************
-RELEASE!! :D
-******************************
-
-
-FOR FUTURE UPDATES:
-----------------------
-Bugs:
--user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
--elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -gameCPU will not see knight's moves upon promotion, only queen
 
 -Leaderboard button underneath profile view, simply rank all users by ELO (icon represented by trophy)
@@ -98,8 +97,6 @@ enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as star
 -enable a "show row/columns A-L 1-11" option in settings
 
 -enable an option to play as black against the CPU (would need to change promotion logic)
-
--current implementation reloaded the gamescene every status text update. not important but it shouldnt be doing that
 
 
 

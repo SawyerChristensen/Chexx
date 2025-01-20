@@ -53,25 +53,24 @@ struct GameView: View {
             //game text in portrait mode
             if geometry.size.height > geometry.size.width {
                 
-                if isVsCPU {
+                if !isOnlineMultiplayer {
                     ZStack {
-                        Text(redStatusText)
-                            .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
-                            .foregroundColor(.red)
-                            .shadow(color: .red, radius: 5, x: 0, y: 0)
-                            //.padding(.bottom, geometry.size.height * 0.95)
-                        
-                        Text(whiteStatusText)
-                            .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
-                            .foregroundColor(.white)
-                            .shadow(color: .white, radius: 5, x: 0, y: 0)
-                            //.padding(.bottom, geometry.size.height * 0.95)
+                        if !redStatusText.isEmpty {
+                            Text(redStatusText)
+                                .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                                .foregroundColor(.red)
+                                .shadow(color: .red, radius: 5, x: 0, y: 0)
+                        } else {
+                            Text(whiteStatusText)
+                                .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                                .foregroundColor(.white)
+                                .shadow(color: .white, radius: 5, x: 0, y: 0)
+                        }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     .padding(.bottom, geometry.size.height * 0.95)
-                }
-                
-                if isOnlineMultiplayer {
+                    
+                } else {
                     VStack(spacing: 10) {
                         
                         //opponent info
@@ -124,7 +123,7 @@ struct GameView: View {
     }
 
     private func createScene(size: CGSize) -> SKScene {
-        var newScene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay, isOnlineMultiplayer: isOnlineMultiplayer)
+        let newScene = GameScene(size: size, isVsCPU: isVsCPU, isPassAndPlay: isPassAndPlay, isOnlineMultiplayer: isOnlineMultiplayer)
         newScene.scaleMode = .aspectFill
         //scene.variant = variant
         newScene.redStatusTextUpdater = { text in

@@ -17,9 +17,11 @@
 		BE091A542CC12A1800C1A3EC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A532CC12A1800C1A3EC /* GoogleSignInSwift */; };
 		BE091A572CC2889700C1A3EC /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE091A562CC2888100C1A3EC /* AuthViewModel.swift */; };
 		BE091A612CCBB62B00C1A3EC /* piece_move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */; };
-		BE091A632CCBB84C00C1A3EC /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* check.mp3 */; };
+		BE091A632CCBB84C00C1A3EC /* piece_move_light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */; };
 		BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */; };
 		BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE091A662CCBBFB900C1A3EC /* GameCPU.swift */; };
+		BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807EB2D3E8E7B00EC5973 /* check.mp3 */; };
+		BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */; };
 		BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64F0942D27333100F7B8C5 /* AchievementManager.swift */; };
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
 		BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B52C2A2602009113B4 /* GameScene.swift */; };
@@ -108,9 +110,11 @@
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move.mp3; sourceTree = "<group>"; };
-		BE091A622CCBB84C00C1A3EC /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
+		BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move_light.mp3; sourceTree = "<group>"; };
 		BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_loss.mp3; sourceTree = "<group>"; };
 		BE091A662CCBBFB900C1A3EC /* GameCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCPU.swift; sourceTree = "<group>"; };
+		BE3807EB2D3E8E7B00EC5973 /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
+		BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_win.mp3; sourceTree = "<group>"; };
 		BE64F0942D27333100F7B8C5 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -398,8 +402,10 @@
 		BE94E1332C82F30B005DCAD3 /* Sound Effects */ = {
 			isa = PBXGroup;
 			children = (
+				BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */,
+				BE3807EB2D3E8E7B00EC5973 /* check.mp3 */,
 				BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */,
-				BE091A622CCBB84C00C1A3EC /* check.mp3 */,
+				BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */,
 				BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */,
 			);
 			path = "Sound Effects";
@@ -472,6 +478,7 @@
 				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
 				BE94E1282C82F02E005DCAD3 /* game-win.mp3 in Resources */,
 				BE94E1112C82F02E005DCAD3 /* notify.mp3 in Resources */,
+				BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */,
 				BE76A9F92C2A3EDA009113B4 /* wn.png in Resources */,
 				BE94E1132C82F02E005DCAD3 /* illegal.mp3 in Resources */,
 				BE94E1212C82F02E005DCAD3 /* drawoffer.mp3 in Resources */,
@@ -508,6 +515,7 @@
 				BE76A9F12C2A3EDA009113B4 /* bb.png in Resources */,
 				BE76A9FA2C2A3EDA009113B4 /* wp.png in Resources */,
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
+				BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */,
 				BE76A9E62C2A3EDA009113B4 /* black_king.png in Resources */,
 				BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */,
 				BE091A4F2CC124C500C1A3EC /* GoogleService-Info.plist in Resources */,
@@ -530,7 +538,7 @@
 				BE94E11B2C82F02E005DCAD3 /* correct.mp3 in Resources */,
 				BE76A9FC2C2A3EDA009113B4 /* wr.png in Resources */,
 				BE94E1252C82F02E005DCAD3 /* game-start.mp3 in Resources */,
-				BE091A632CCBB84C00C1A3EC /* check.mp3 in Resources */,
+				BE091A632CCBB84C00C1A3EC /* piece_move_light.mp3 in Resources */,
 				BE76A9F22C2A3EDA009113B4 /* bk.png in Resources */,
 				BE94E1242C82F02E005DCAD3 /* puzzle-wrong.mp3 in Resources */,
 				BE94E1322C82F02E005DCAD3 /* tenseconds.mp3 in Resources */,
