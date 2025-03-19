@@ -357,7 +357,7 @@ struct ProfileView: View {
                     .onAppear {
                         // when the view appears, fetch elo (we already have a function for this in multiplayerManager)
                         MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
-                            authViewModel.eloScore = elo!
+                            authViewModel.eloScore = elo ?? 1000
                         }
                     }
                 

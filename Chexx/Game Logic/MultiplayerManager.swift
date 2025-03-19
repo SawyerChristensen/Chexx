@@ -36,7 +36,7 @@ class MultiplayerManager: ObservableObject {
     
     func createGame(completion: @escaping (String?) -> Void) {
         fetchElo(forUserId: self.currentUserId) { elo in //put the player one's elo into the game document
-            let playerOneElo = elo!
+            let playerOneElo = elo ?? 1000
             
             let maxAttempts = 5 // Maximum number of attempts to avoid infinite loops
             @MainActor
@@ -98,7 +98,7 @@ class MultiplayerManager: ObservableObject {
         let gameRef = db.collection("games").document(gameId)
         
         fetchElo(forUserId: self.currentUserId) { elo in
-            let playerTwoElo = elo!
+            let playerTwoElo = elo ?? 1000
             
             gameRef.getDocument { snapshot, error in
                 if let error = error {
@@ -352,8 +352,8 @@ class MultiplayerManager: ObservableObject {
             
             // extract fields from the game doc
             let p1Id         = data["player1Id"] as? String ?? ""
-            let p1StartElo   = data["player1Elo"] as? Int ?? 1200
-            let p2StartElo   = data["player2Elo"] as? Int ?? 1200
+            let p1StartElo   = data["player1Elo"] as? Int ?? 1000
+            let p2StartElo   = data["player2Elo"] as? Int ?? 1000
             
             var localStartElo: Int
             var oppStartElo: Int

@@ -26,19 +26,20 @@ class AuthViewModel: ObservableObject {
     @Published var profileImageURL: URL?
     @Published var errorMessage: String = ""
     @Published var userCountry: String = ""
-    @Published var eloScore: Int = 1200 // the default ELO score
+    @Published var eloScore: Int = 1000 // the default ELO score
     
     let db = Firestore.firestore() //db for database (were using firestore)
     
     init() {
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         if self.isLoggedIn {
+            print("isLoggedIn:", isLoggedIn)
             fetchUserDataFromHardDrive() //get data from local hard drive first (faster) (also just in case theres no connection)
             fetchUserDataFromFirestore { //get the data from the server and wait until we get a response
                 self.saveUserDataToDevice() //save the most recent data just in case
             }
-        } else {
-            // If not logged in, sign in anonymously? (this is currently not allowed)
+        } /*else { //does not create user document in user database, so no storing of achievements. need to be signed in properly for achievements
+            // If not logged in, sign in anonymously?
             if Auth.auth().currentUser == nil {
                 Auth.auth().signInAnonymously { (authResult, error) in
                     if let error = error {
@@ -51,7 +52,7 @@ class AuthViewModel: ObservableObject {
                     }
                 }
             }
-        }
+        }*/
     }
     
     func fetchUserDataFromHardDrive() { //gets the local data from the hard drive
@@ -83,7 +84,7 @@ class AuthViewModel: ObservableObject {
                 self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
                 self.displayName = data?["displayName"] as? String ?? "none found on server"
                 self.userCountry = data?["country"] as? String ?? "none found on server"
-                self.eloScore = data?["eloScore"] as? Int ?? 1200 //does NOT set the Elo to 1200, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
+                self.eloScore = data?["eloScore"] as? Int ?? 1000 //does NOT set the Elo to 1000, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
                 
                 /* print("Firestore Email: \(self.email)")
                 print("Firestore Display Name: \(self.displayName)")
@@ -289,7 +290,10 @@ class AuthViewModel: ObservableObject {
                 return false
             }
             let accessToken = user.accessToken
-            let credential = GoogleAuthProvider.credential(withIDToken: idToken.tokenString, accessToken: accessToken.tokenString)
+            let credential = GoogleAuthProvider.credential(
+                withIDToken: idToken.tokenString,
+                accessToken: accessToken.tokenString)
+            
             let result = try await Auth.auth().signIn(with: credential)
             let firebaseUser = result.user
             
@@ -382,7 +386,7 @@ class AuthViewModel: ObservableObject {
            try Auth.auth().signOut()
            self.isLoggedIn = false
            self.email = ""
-           self.profileImageURL = URL("")
+           self.profileImageURL = URL(filePath: "")
            self.displayName = ""
            self.userCountry = ""
            self.eloScore = 0
@@ -393,14 +397,15 @@ class AuthViewModel: ObservableObject {
            UserDefaults.standard.removeObject(forKey: "displayName")
            UserDefaults.standard.removeObject(forKey: "profileImageURL")
            UserDefaults.standard.removeObject(forKey: "country")
-           UserDefaults.standard.removeObject(forKey: "elo")
+           UserDefaults.standard.removeObject(forKey: "eloScore")
+           
+           AchievementManager.shared.resetLocalAchievements()
            
         } catch let signOutError as NSError {
             self.errorMessage = signOutError.localizedDescription
         }
-        //deleteUserAndData()
     }
-    
+    /*
     func deleteUserAndData() {
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
@@ -424,5 +429,5 @@ class AuthViewModel: ObservableObject {
                 }
             }
         }
-    }
+    }*/
 }

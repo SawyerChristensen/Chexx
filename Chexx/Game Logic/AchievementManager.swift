@@ -121,6 +121,20 @@ class AchievementManager: ObservableObject {
             }
         }
     }
+    
+    func resetLocalAchievements() {
+        // Reset all achievements in the local array
+        achievements = achievements.map { achievement in
+            var updatedAchievement = achievement
+            updatedAchievement.isUnlocked = false
+            return updatedAchievement
+        }
+        
+        // Remove achievement-related data from UserDefaults
+        for achievement in achievements {
+            UserDefaults.standard.removeObject(forKey: achievement.id)
+        }
+    }
 
 /*
     func resetAchievements() {
@@ -150,5 +164,5 @@ class AchievementManager: ObservableObject {
                 print("Achievements reset successfully in Firestore.")
             }
         }
-    }*/    
+    }*/
 }

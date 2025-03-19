@@ -1,5 +1,3 @@
--authviewmodel is still a little weird with ELO and signing in
-
 -comment out leaderboard section? maybe replace with achievements section?
 -maybe a have a "recent games" field under the profile instead?
     
