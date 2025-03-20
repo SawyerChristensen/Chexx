@@ -1,24 +1,19 @@
--comment out leaderboard section? maybe replace with achievements section?
--maybe a have a "recent games" field under the profile instead?
-    
--make sure games auto delete themselves if they havent been interacted with in awhile. the game codes shoud just be for live games
-
--facebook sign in
-
--enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
--enable gamecenter achievements (need apple developer program)
-    -achievement notifications?
+-if user is anonymous, do not update elo
 
 Bugs:
 -entering in a weird join code can crash the app
 -login does not check if your email is actually real
 -"check" red status text doesnt show up if the cpu checks you
+-game ending sound plays again when exiting board view
 
 BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
     -launch screen (required) & main menu /is it???
 
+-enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
+-enable gamecenter achievements (need apple developer program)
+    -achievement notifications?
 
 ******************************
 RELEASE!! :D
@@ -27,6 +22,8 @@ RELEASE!! :D
 
 FOR FUTURE UPDATES:
 ----------------------
+-facebook sign in?
+
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -store user picture on device and only load when it changes? having it load is a little jarring (low priority)
@@ -89,6 +86,8 @@ Achievements:
 -check if any flags have been added in new unicode versions
 
 -favorite opening in profile view?
+
+-delete online game with completion handler instead of timer
 
 enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
 

@@ -33,12 +33,12 @@ class AuthViewModel: ObservableObject {
     init() {
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
         if self.isLoggedIn {
-            print("isLoggedIn:", isLoggedIn)
             fetchUserDataFromHardDrive() //get data from local hard drive first (faster) (also just in case theres no connection)
             fetchUserDataFromFirestore { //get the data from the server and wait until we get a response
                 self.saveUserDataToDevice() //save the most recent data just in case
             }
-        } /*else { //does not create user document in user database, so no storing of achievements. need to be signed in properly for achievements
+        } else { //does not create user document in user database, so no storing of achievements. need to be signed in properly for achievements
+            //if anon users can start storing achievements and have a stored elo, need to change from deleting old account to linking accounts when signing in with an identity provider
             // If not logged in, sign in anonymously?
             if Auth.auth().currentUser == nil {
                 Auth.auth().signInAnonymously { (authResult, error) in
@@ -52,7 +52,7 @@ class AuthViewModel: ObservableObject {
                     }
                 }
             }
-        }*/
+        }
     }
     
     func fetchUserDataFromHardDrive() { //gets the local data from the hard drive
@@ -268,6 +268,8 @@ class AuthViewModel: ObservableObject {
     }
 
     func signInWithGoogle() async -> Bool {
+        let oldUser = Auth.auth().currentUser
+        
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("No client ID found in Firebase configuration")
         }
@@ -285,10 +287,12 @@ class AuthViewModel: ObservableObject {
         do {
             let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
             let user = userAuthentication.user
+            
             guard let idToken = user.idToken else {
                 print("ID token missing")
                 return false
             }
+            
             let accessToken = user.accessToken
             let credential = GoogleAuthProvider.credential(
                 withIDToken: idToken.tokenString,
@@ -296,6 +300,10 @@ class AuthViewModel: ObservableObject {
             
             let result = try await Auth.auth().signIn(with: credential)
             let firebaseUser = result.user
+            
+            if let oldUser = oldUser, oldUser.isAnonymous {
+                deleteUserAndFirestoreDoc(oldUser)
+            }
             
             let fullName = firebaseUser.displayName ?? user.profile?.name ?? "Player"
             let firstName = fullName.split(separator: " ").first.map(String.init) ?? "Player"
@@ -319,6 +327,8 @@ class AuthViewModel: ObservableObject {
     }
     
     func signInWithEmail(email: String, password: String) {
+        let oldUser = Auth.auth().currentUser
+        
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error as NSError? {
                 // Check the error code
@@ -345,6 +355,10 @@ class AuthViewModel: ObservableObject {
                 }
                 return
             }
+            if let oldUser = oldUser, oldUser.isAnonymous {
+                self.deleteUserAndFirestoreDoc(oldUser)
+            }
+            
             self.isLoggedIn = true
             self.errorMessage = ""
             self.email = result?.user.email ?? "error@notfound.com" //this should never display if the error catching is working properly
@@ -405,29 +419,26 @@ class AuthViewModel: ObservableObject {
             self.errorMessage = signOutError.localizedDescription
         }
     }
-    /*
-    func deleteUserAndData() {
-        guard let userID = Auth.auth().currentUser?.uid else { return }
-        
-        // Reference to the Firestore document for the user
-        let userDocumentRef = db.collection("users").document(userID)
-
-        // Delete Firestore document first
-        userDocumentRef.delete { error in
+    
+    func deleteUserAndFirestoreDoc(_ user: User) {
+        // delete Firestore doc (if they have one) (they wont)
+        /*let userDocRef = db.collection("users").document(user.uid)
+        userDocRef.delete { error in
             if let error = error {
-                print("Error deleting user document: \(error.localizedDescription)")
-                return
+                print("Error deleting Firestore doc for old user: \(error)")
+            } else {
+                print("Successfully deleted old user's Firestore doc.")
             }
-            print("User Firestore document successfully deleted.")
+        }*/
 
-            // Now delete the user from Firebase Authentication
-            Auth.auth().currentUser?.delete { error in
-                if let error = error {
-                    print("Error deleting user account: \(error.localizedDescription)")
-                } else {
-                    print("User account successfully deleted.")
-                }
+        // delete the user from Auth
+        user.delete { error in
+            if let error = error {
+                print("Error deleting old anonymous user: \(error)")
+            } else {
+                //print("Old anonymous user successfully deleted from Auth.")
             }
         }
-    }*/
+    }
+
 }

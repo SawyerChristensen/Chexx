@@ -92,6 +92,74 @@ class MultiplayerManager: ObservableObject {
         }
     }
     
+    // Deletes the current game from Firestore.
+    func deleteGame(completion: @escaping (Bool) -> Void) {
+        guard let gameId = gameId else {
+            print("No gameId found; cannot delete game.")
+            completion(false)
+            return
+        }
+        
+        let gameRef = db.collection("games").document(gameId)
+        gameRef.delete { error in
+            if let error = error {
+                print("Error deleting game: \(error)")
+                completion(false)
+            } else {
+                //print("Game \(gameId) deleted successfully.")
+                completion(true)
+            }
+        }
+    }
+    
+    //wait until both users are done accessing game information before deleting the game for good
+    func finalizeGame() {
+        guard let gameId = gameId else {
+            print("No gameId found; cannot finalize game.")
+            return
+        }
+
+        let gameRef = db.collection("games").document(gameId)
+        
+        gameRef.getDocument { docSnapshot, error in
+            if let error = error {
+                print("Error reading game doc: \(error.localizedDescription)")
+                return
+            }
+            guard let doc = docSnapshot, doc.exists else {
+                print("Game doc does not exist or was already deleted.")
+                return
+            }
+
+            let data = doc.data() ?? [:]
+            let readyToDelete = data["readyToDelete"] as? Bool ?? false
+            
+            if readyToDelete {
+                // If `readyToDelete` is already true, this must be the second
+                // finalize call, so actually delete the document
+                self.deleteGame { success in
+                    if success {
+                        self.gameId = nil
+                        self.opponentId = nil
+                        //print("Successfully deleted the game doc on second finalize call.")
+                    } else {
+                        print("Failed to delete the game doc.")
+                    }
+                }
+            } else {
+                // If `readyToDelete` is false or missing, set it to true so that
+                // next time `finalizeGame()` is called, we know to delete
+                gameRef.updateData(["readyToDelete": true]) { error in
+                    if let error = error {
+                        print("Error setting readyToDelete: \(error.localizedDescription)")
+                    } else {
+                        print("Set readyToDelete to true. Waiting for second finalize call.")
+                    }
+                }
+            }
+        }
+    }
+
     
     // Join an existing game
     func joinGame(gameId: String, completion: @escaping (Bool) -> Void) {

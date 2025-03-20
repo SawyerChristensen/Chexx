@@ -99,7 +99,13 @@ struct MainMenuView: View {
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
                                 .padding(8)
-                                .sheet(isPresented: $presentGameLink) {
+                                .sheet(isPresented: $presentGameLink, onDismiss: {
+                                    MultiplayerManager.shared.deleteGame { success in
+                                        if success {
+                                            //print("Game auto-deleted after dismissing the Create Game sheet.")
+                                        }
+                                    }
+                                }) {
                                     GameLinkSheet(
                                         isPresented: $presentGameLink,
                                         navigateToGameView: $navigateToGameView,
@@ -109,6 +115,7 @@ struct MainMenuView: View {
                                     .presentationDetents([.medium])
                                     .presentationDragIndicator(.visible)
                                 }
+
 
                                 // --------------------------------
                                 // Join Game Button
@@ -422,7 +429,7 @@ struct MainMenuView: View {
                             }
                         }
                         
-                        // Leaderboard Icon
+                       /* // Leaderboard Icon
                         Button(action: {
                         //    isLeaderboardPresented = true
                         }) {
@@ -434,8 +441,8 @@ struct MainMenuView: View {
                         }
                         //.sheet(isPresented: $isLeaderboardPresented) {
                          //   LeaderboardView()
-                            // Replace with your actual leaderboard implementation
-                        //}
+                            // replace with actual leaderboard implementation
+                        //}z*/
                     }
                     
                     Spacer()

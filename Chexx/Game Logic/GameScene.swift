@@ -749,8 +749,9 @@ class GameScene: SKScene {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
         if isGameOver {
-            switch gameStatus {
             
+            switch gameStatus {
+    
             case "checkmate":
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
@@ -786,7 +787,10 @@ class GameScene: SKScene {
                                 break
                             }
                         }
+                        
+                        MultiplayerManager.shared.finalizeGame()
                     }
+                    
                 } else { // its a single player game, so there is no elo adjustment
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
@@ -886,7 +890,9 @@ class GameScene: SKScene {
                                 break
                             }
                         }
+                        MultiplayerManager.shared.finalizeGame()
                     }
+                    
                 } else { //its a singe player game
                     if isVsCPU {
                         if winnerColor == "white" {
@@ -917,12 +923,13 @@ class GameScene: SKScene {
                 //redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
                 return
+                
             default:
                 break
             }
         }
         
-        updateGameStatusUI(gameStatus: gameStatus) //NEED TO DO MORE THAN UPDATE UI FOR ONLINE GAMES, LIKE UPDATE ELO AND GAMESTATUS
+        updateGameStatusUI(gameStatus: gameStatus)
         
         if isVsCPU && gameState.currentPlayer == "black" {
             self.whiteStatusTextUpdater?("Thinking.")
