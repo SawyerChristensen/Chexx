@@ -1,10 +1,4 @@
--if user is anonymous, do not update elo
-
-Bugs:
--entering in a weird join code can crash the app
--login does not check if your email is actually real
--"check" red status text doesnt show up if the cpu checks you
--game ending sound plays again when exiting board view
+-if you create a game, enter, do nothing, and leave, the game does not get deleted, but that can maybe be cleaned up later
 
 BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
@@ -15,6 +9,7 @@ BEFORE LAUNCH:
 -enable gamecenter achievements (need apple developer program)
     -achievement notifications?
 
+
 ******************************
 RELEASE!! :D
 ******************************
@@ -23,6 +18,10 @@ RELEASE!! :D
 FOR FUTURE UPDATES:
 ----------------------
 -facebook sign in?
+
+-login does not check if your email is actually real
+
+-if user is anonymous, do not update elo
 
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)

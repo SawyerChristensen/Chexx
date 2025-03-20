@@ -100,9 +100,11 @@ struct MainMenuView: View {
                                 }
                                 .padding(8)
                                 .sheet(isPresented: $presentGameLink, onDismiss: {
-                                    MultiplayerManager.shared.deleteGame { success in
-                                        if success {
-                                            //print("Game auto-deleted after dismissing the Create Game sheet.")
+                                    if !navigateToGameView {
+                                        MultiplayerManager.shared.deleteGame { success in
+                                            if success {
+                                                //print("Game auto-deleted after dismissing the Create Game sheet.")
+                                            }
                                         }
                                     }
                                 }) {
@@ -115,7 +117,6 @@ struct MainMenuView: View {
                                     .presentationDetents([.medium])
                                     .presentationDragIndicator(.visible)
                                 }
-
 
                                 // --------------------------------
                                 // Join Game Button
@@ -140,7 +141,11 @@ struct MainMenuView: View {
                                                 self.gameIDToJoin
                                             },
                                             set: { newValue in
-                                                self.gameIDToJoin = newValue.uppercased()
+                                                let sanitized = newValue
+                                                    .replacingOccurrences(of: "/", with: "")
+                                                    .replacingOccurrences(of: "\\", with: "")
+                                                
+                                                self.gameIDToJoin = sanitized.uppercased()
                                             }
                                         ))
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
