@@ -5,7 +5,6 @@ BEFORE LAUNCH:
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
     -launch screen (required) & main menu /is it???
 
--enable Sign in with Apple (LAST STEP, NEEDS AN APPLE DEVELOPER ACCOUNT)(COSTS $100 A YEAR)
 -enable gamecenter achievements (need apple developer program)
     -achievement notifications?
 

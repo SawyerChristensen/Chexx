@@ -155,6 +155,7 @@
 		BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
 		BE76AA512C462765009113B4 /* BackgroundView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundView.swift; sourceTree = "<group>"; };
+		BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chexx.entitlements; sourceTree = "<group>"; };
 		BE94E0EF2C82F02C005DCAD3 /* notify.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = notify.mp3; sourceTree = "<group>"; };
 		BE94E0F02C82F02C005DCAD3 /* move-opponent.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "move-opponent.mp3"; sourceTree = "<group>"; };
 		BE94E0F12C82F02D005DCAD3 /* illegal.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = illegal.mp3; sourceTree = "<group>"; };
@@ -239,6 +240,7 @@
 		BE76A9AE2C2A2602009113B4 /* Chexx */ = {
 			isa = PBXGroup;
 			children = (
+				BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */,
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
 				BE091A562CC2888100C1A3EC /* AuthViewModel.swift */,
 				BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */,
@@ -722,6 +724,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4X76DT8A23;
@@ -754,6 +757,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4X76DT8A23;

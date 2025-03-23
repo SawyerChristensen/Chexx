@@ -9,7 +9,8 @@ import Firebase
 import FirebaseAuth
 import FirebaseFirestore
 import GoogleSignIn
-//need to implement sign in with apple & facebook
+import CryptoKit
+import AuthenticationServices
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -17,7 +18,7 @@ class AuthViewModel: ObservableObject {
     
     @Published var isLoggedIn: Bool = false {
         didSet {
-            // Persist login state
+            // persist the login state
             UserDefaults.standard.set(isLoggedIn, forKey: "isLoggedIn")
         }
     }
@@ -27,6 +28,8 @@ class AuthViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var userCountry: String = ""
     @Published var eloScore: Int = 1000 // the default ELO score
+    
+    private var currentNonce: String? //(for apple sign in)
     
     let db = Firestore.firestore() //db for database (were using firestore)
     
@@ -71,7 +74,7 @@ class AuthViewModel: ObservableObject {
         
     }
     
-    func fetchUserDataFromFirestore(completion: @escaping () -> Void) { //gets the latest data from the server & saves it to device
+    func fetchUserDataFromFirestore(completion: @escaping () -> Void) { //gets the latest data from the server
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
         //if theres no data in firestore, we need the values set to default
@@ -326,6 +329,55 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func signInWithAppleRequest(_ request: ASAuthorizationAppleIDRequest) { //https://youtu.be/HyiNbqLOCQ8
+        request.requestedScopes = [.fullName]
+        let nonce = randomNonceString()
+        currentNonce = nonce
+        request.nonce = sha256(nonce)
+    }
+    
+    func signInWithAppleCompletion(_ result: Result<ASAuthorization, Error>) { //see above link
+        if case .failure(let failure) = result {
+            errorMessage = failure.localizedDescription
+        }
+        else if case .success(let success) = result {
+            let oldUser = Auth.auth().currentUser
+            
+            if let appleIDCrediential = success.credential as? ASAuthorizationAppleIDCredential {
+                guard let nonce = currentNonce else {
+                    fatalError("Invalid state: a login callback was recieved, but no login request was sent")
+                }
+                guard let appleIDToken = appleIDCrediential.identityToken else {
+                    print("Unable to fetch identity token.")
+                    return
+                }
+                guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+                    print("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
+                    return
+                }
+                
+                let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+                
+                Task {
+                    do {
+                        let result = try await Auth.auth().signIn(with: credential)
+                        await updateDisplayName(for: result.user, with: appleIDCrediential)
+                        
+                        if let oldUser = oldUser, oldUser.isAnonymous {
+                            deleteUserAndFirestoreDoc(oldUser)
+                        }
+                        self.isLoggedIn = true
+                        //self.profileImageURL = URL(string: ("https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/240px-Chess_qlt45.svg.png"))
+                        self.fetchUserDataFromFirestore(completion: {})
+                        
+                    } catch {
+                        print("Error authenticating: \(error.localizedDescription)")
+                    }
+                }
+            }
+        }
+    }
+    
     func signInWithEmail(email: String, password: String) {
         let oldUser = Auth.auth().currentUser
         
@@ -440,5 +492,66 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+    
+    private func randomNonceString(length: Int = 32) -> String {
+      precondition(length > 0)
+      let charset: [Character] =
+      Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+      var result = ""
+      var remainingLength = length
 
+      while remainingLength > 0 {
+        let randoms: [UInt8] = (0 ..< 16).map { _ in
+          var random: UInt8 = 0
+          let errorCode = SecRandomCopyBytes(kSecRandomDefault, 1, &random)
+          if errorCode != errSecSuccess {
+            fatalError(
+              "Unable to generate nonce. SecRandomCopyBytes failed with OSStatus \(errorCode)"
+            )
+          }
+          return random
+        }
+
+        randoms.forEach { random in
+          if remainingLength == 0 {
+            return
+          }
+
+          if random < charset.count {
+            result.append(charset[Int(random)])
+            remainingLength -= 1
+          }
+        }
+      }
+
+      return result
+    }
+
+    private func sha256(_ input: String) -> String {
+      let inputData = Data(input.utf8)
+      let hashedData = SHA256.hash(data: inputData)
+      let hashString = hashedData.compactMap {
+        String(format: "%02x", $0)
+      }.joined()
+
+      return hashString
+    }
+
+    func updateDisplayName(for user: User, with appleIDCredential: ASAuthorizationAppleIDCredential, force: Bool = false) async {
+      if let currentDisplayName = Auth.auth().currentUser?.displayName, !currentDisplayName.isEmpty {
+        // current user is non-empty, don't overwrite it
+      }
+      else {
+        let changeRequest = user.createProfileChangeRequest()
+          changeRequest.displayName = appleIDCredential.fullName?.givenName
+        do {
+          try await changeRequest.commitChanges()
+          self.displayName = Auth.auth().currentUser?.displayName ?? ""
+        }
+        catch {
+          print("Unable to update the user's displayname: \(error.localizedDescription)")
+          errorMessage = error.localizedDescription
+        }
+      }
+    }
 }

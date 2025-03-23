@@ -170,7 +170,7 @@ struct TutorialSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic()
                 
-                Text("      App by Sawyer Christensen")
+                Text("      iOS App by Sawyer Christensen")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic()

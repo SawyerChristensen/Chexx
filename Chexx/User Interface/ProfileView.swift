@@ -10,6 +10,7 @@ import FirebaseCore
 import FirebaseAuth
 import GoogleSignIn
 import GoogleSignInSwift
+import AuthenticationServices
 
 private enum FocusableField: Hashable {
     case email
@@ -440,6 +441,7 @@ struct ProfileView: View {
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.bottom, 10)
                 
                 HStack {
                     //Image(systemName: "at")
@@ -513,7 +515,9 @@ struct ProfileView: View {
                     Text("or")
                     VStack { Divider() }
                 }
+                .padding(.bottom, 10)
                 
+                // Sign in with Google
                 Button(action: {
                     Task {
                         await authViewModel.signInWithGoogle()
@@ -529,8 +533,19 @@ struct ProfileView: View {
                                 .frame(width: 32, height: 32, alignment: .center)
                         }
                 }
+                .padding(.vertical, 10)
                 .buttonStyle(.bordered)
                 
+                // Sign in with Apple
+                SignInWithAppleButton { request in
+                    authViewModel.signInWithAppleRequest(request)
+                } onCompletion: { result in
+                    authViewModel.signInWithAppleCompletion(result)
+                }
+                .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
+                .id(colorScheme) //this forces swiftui to switch the button color scheme when the user changes the scheme
+                .frame(height: 50)
+                .cornerRadius(8)
             }
         }
         .padding()
