@@ -764,6 +764,7 @@ class GameScene: SKScene {
                     
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -792,9 +793,12 @@ class GameScene: SKScene {
                     }
                     
                 } else { // its a single player game, so there is no elo adjustment
+                    
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                     }
+                    
                     self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
                     ) { action in
                         switch action {
@@ -834,6 +838,7 @@ class GameScene: SKScene {
                 if isVsCPU {
                     if winnerColor == "white" {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
@@ -867,6 +872,7 @@ class GameScene: SKScene {
                     
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -893,10 +899,11 @@ class GameScene: SKScene {
                         MultiplayerManager.shared.finalizeGame()
                     }
                     
-                } else { //its a singe player game
+                } else { //its a single player game
                     if isVsCPU {
                         if winnerColor == "white" {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                            AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
@@ -904,6 +911,7 @@ class GameScene: SKScene {
                     
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                     }
                     
                     self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""

@@ -22,6 +22,10 @@ class AchievementManager: ObservableObject {
     static let shared = AchievementManager()
     
     @Published var achievements: [Achievement] = [
+            Achievement(id: "hexceptional_win",
+                        title: "Hexceptional Win!",
+                        description: "Win your first game",
+                        isUnlocked: false),
             Achievement(id: "hex_machina",
                         title: "Hex Machina",
                         description: "Checkmate the CPU",

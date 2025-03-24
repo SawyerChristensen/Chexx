@@ -6,7 +6,9 @@ BEFORE LAUNCH:
     -launch screen (required) & main menu /is it???
 
 -enable gamecenter achievements (need apple developer program)
-    -achievement notifications?
+    -game center icon used when signing in with apple
+    -put apple on top if this can be done
+    -game center achievement icons
 
 
 ******************************
@@ -28,6 +30,7 @@ FOR FUTURE UPDATES:
 
 //////////////////////////////////////////////////////
 Achievements:
+    Hexceptional Win! - Win your first game
 (Implemented) --- Hex Machina - Checkmate the CPU
 (Implemented) --- Hexceeded Hexpectations - Win a joined game
 (Implemented) --- Friendly Hexchange - Have a player join a game you created
@@ -48,8 +51,7 @@ Achievements:
     Hexpect the Unexpected - Open by moving your king
     Hexhausted - Have a game last over 100 turns
     Seasoned Hexpert - Complete all other achievements
-    
-    Hexceptional Win! - ???
+
     Un-Hexciting Finish - Deliver a Stalemate
 ////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
 
