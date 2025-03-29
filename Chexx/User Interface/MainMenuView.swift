@@ -369,9 +369,8 @@ struct MainMenuView: View {
                 }
                 .id(refreshID)  //attach a (rendering?) ID
                 .onAppear {
-                    refreshID = UUID() // Force a re-init of the view whenever the main menu appears
-                
-                    DispatchQueue.main.async {
+                    refreshID = UUID() // force a re-init of the view whenever the main menu appears...
+                    DispatchQueue.main.async { // ...to determine if resume game buttons are applicable
                         checkForSavedOnlineGame()
                         checkForSavedSinglePlayerGame()
                         checkForSavedPassAndPlayGame()
@@ -494,6 +493,7 @@ struct MainMenuView: View {
                 
             }
             .onAppear { // (of geometry view)
+                authenticateGameCenter()
                 if backgroundMusicEnabled {
                     audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
                 }
@@ -508,6 +508,13 @@ struct MainMenuView: View {
             .background(Color(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
+    }
+    
+    func authenticateGameCenter() {
+        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+           let root = scene.windows.first?.rootViewController {
+            GameCenterManager.shared.authenticateLocalPlayer(presentingViewController: root)
+        }
     }
     
     // MARK: - Main Menu Helper functions

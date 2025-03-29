@@ -1,14 +1,10 @@
--if you create a game, enter, do nothing, and leave, the game does not get deleted, but that can maybe be cleaned up later
+-game center icon used when signing in with apple?
+-put apple on top if this can be done?
 
 BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
     -launch screen (required) & main menu /is it???
-
--enable gamecenter achievements (need apple developer program)
-    -game center icon used when signing in with apple
-    -put apple on top if this can be done
-
 
 ******************************
 RELEASE!! :D
@@ -17,6 +13,7 @@ RELEASE!! :D
 
 FOR FUTURE UPDATES:
 ----------------------
+-if you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. this is currently not an issue since each account is "allowed" one empty created game. any previously created game is removed from the server every new create game function call, although it would be better to just delete the game when the game view is dismissed and it is empty
 
 -facebook sign in?
 

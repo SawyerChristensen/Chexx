@@ -287,6 +287,7 @@ class MultiplayerManager: ObservableObject {
                 self.fetchOpponentInfo(userId: player2Id)
                 
                 AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
+                GameCenterManager.shared.reportAchievement(identifier: "FriendlyHexchange")
             }
         }
     }

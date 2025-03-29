@@ -11,8 +11,7 @@ import GoogleSignIn
 
 // Define the AppDelegate to handle Firebase configuration and any UIKit-specific app lifecycle events
 class AppDelegate: NSObject, UIApplicationDelegate {
-    func application(_ application: UIApplication,
-                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         // Configure Firebase
         FirebaseApp.configure()
         return true

@@ -665,8 +665,10 @@ class GameScene: SKScene {
                         default:       break
                         }
                         AchievementManager.shared.unlockAchievement(withID: "hextra_power")
+                        GameCenterManager.shared.reportAchievement(identifier: "HextraPower")
                         if newType == "knight" {
                             AchievementManager.shared.unlockAchievement(withID: "hexcalibur")
+                            GameCenterManager.shared.reportAchievement(identifier: "Hexcalibur")
                         }
                         // Then finalize move with user’s chosen promotion
                         //why does this need self specifically?
@@ -707,11 +709,13 @@ class GameScene: SKScene {
                 gameState.whiteKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
                 if gameState.whiteKingPosition == "g10" { //achievement unlocked! (unlocks for both players, could maybe be more robust)
                     AchievementManager.shared.unlockAchievement(withID: "hexpedition")
+                    GameCenterManager.shared.reportAchievement(identifier: "Hexpedition")
                 }
             } else if color == "black" {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
                 if gameState.blackKingPosition == "g1" && !isVsCPU { //at least this makes sure the cpu cant unlock it...
                     AchievementManager.shared.unlockAchievement(withID: "hexpedition")
+                    GameCenterManager.shared.reportAchievement(identifier: "Hexpedition")
                 }
             }
         }
@@ -765,6 +769,7 @@ class GameScene: SKScene {
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -798,6 +803,7 @@ class GameScene: SKScene {
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         deleteGameFile(filename: "currentPassAndPlay")
                     }
                     
@@ -819,6 +825,7 @@ class GameScene: SKScene {
                 let nonKingPieces = loserPieces.filter { $0.type != "king" }
                 if nonKingPieces.isEmpty && loserPieces.count == 1 { //the loser only has their king left!
                     AchievementManager.shared.unlockAchievement(withID: "hexecutioner")
+                    GameCenterManager.shared.reportAchievement(identifier: "Hexecutioner")
                 }
                 
                 // MARK: Hextreme Measures Achievement
@@ -834,6 +841,7 @@ class GameScene: SKScene {
                 if !overlappingMoves.isEmpty {
                     //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
                     AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
+                    GameCenterManager.shared.reportAchievement(identifier: "HextremeMeasures")
                 }
         
                 // MARK: Hex Machina Achievement
@@ -842,6 +850,8 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -852,9 +862,11 @@ class GameScene: SKScene {
                 if MultiplayerManager.shared.currentPlayerColor == winnerColor {
                     if winnerColor == "white" {
                         AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceededHexpectations")
                         //print("user joined the game")
                     } else { //the user is black, and created the game
                         AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
+                        GameCenterManager.shared.reportAchievement(identifier: "FriendlyHexchange")
                         //print("user created the game")
                     }
                 }
@@ -876,6 +888,7 @@ class GameScene: SKScene {
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -909,6 +922,7 @@ class GameScene: SKScene {
                         if winnerColor == "white" {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                            GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
@@ -918,6 +932,7 @@ class GameScene: SKScene {
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         deleteGameFile(filename: "currentPassAndPlay")
                     }
                     

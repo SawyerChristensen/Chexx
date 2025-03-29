@@ -98,6 +98,7 @@
 		BE94E1362C82FE6A005DCAD3 /* worldssmallestviolin.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */; };
 		BE94E1372C82FE6A005DCAD3 /* alert_from_mgs.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */; };
 		BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialSheet.swift */; };
+		BE9EA2522D977848006D9FAC /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EA2512D977843006D9FAC /* GameCenterManager.swift */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
@@ -193,6 +194,7 @@
 		BE94E1342C82FE6A005DCAD3 /* worldssmallestviolin.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = worldssmallestviolin.mp3; sourceTree = "<group>"; };
 		BE94E1352C82FE6A005DCAD3 /* alert_from_mgs.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = alert_from_mgs.mp3; sourceTree = "<group>"; };
 		BE9522602D2324B400836D0F /* TutorialSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSheet.swift; sourceTree = "<group>"; };
+		BE9EA2512D977843006D9FAC /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionWindow.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -242,6 +244,7 @@
 			children = (
 				BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */,
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
+				BE9EA2512D977843006D9FAC /* GameCenterManager.swift */,
 				BE091A562CC2888100C1A3EC /* AuthViewModel.swift */,
 				BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */,
 				BE7EB8C12C47787000D66EB0 /* User Interface */,
@@ -564,6 +567,7 @@
 				BE091A572CC2889700C1A3EC /* AuthViewModel.swift in Sources */,
 				BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */,
 				BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */,
+				BE9EA2522D977848006D9FAC /* GameCenterManager.swift in Sources */,
 				BE76A9B82C2A2602009113B4 /* GameViewController.swift in Sources */,
 				BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */,
 				BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */,
