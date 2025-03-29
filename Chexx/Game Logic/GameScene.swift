@@ -1088,7 +1088,7 @@ class GameScene: SKScene {
             print("Error: Piece node not found at \(startPosition)")
         }
         
-        let (isGameOver, gameStatus) = gameState.isGameOver()
+        let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
 
         updateGameStatusUI(gameStatus: gameStatus)
     }

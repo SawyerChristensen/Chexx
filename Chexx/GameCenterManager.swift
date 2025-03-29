@@ -23,7 +23,7 @@ class GameCenterManager: NSObject {
             guard let self = self else { return }
             
             if let error = error {
-                print("Game Center authentication error: \(error.localizedDescription)")
+                //print("Game Center authentication error: \(error.localizedDescription)")
                 return
             }
             

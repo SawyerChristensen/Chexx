@@ -191,9 +191,10 @@ struct MainMenuView: View {
                                 }
                                 
                                 // NavigationLink to GameView
-                                NavigationLink(destination: GameView(isOnlineMultiplayer: true).onAppear {
-                                    audioManager.stopBackgroundMusic()
-                                }, isActive: $navigateToGameView) {
+                                NavigationLink(destination: GameView(isOnlineMultiplayer: true)
+                                    .onAppear {
+                                        audioManager.stopBackgroundMusic()
+                                    }, isActive: $navigateToGameView) {
                                     EmptyView()
                                 }
                             }

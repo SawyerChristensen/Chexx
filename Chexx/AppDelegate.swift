@@ -9,15 +9,13 @@ import SwiftUI
 import FirebaseCore
 import GoogleSignIn
 
-// Define the AppDelegate to handle Firebase configuration and any UIKit-specific app lifecycle events
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        // Configure Firebase
         FirebaseApp.configure()
         return true
     }
     
-    // Handle Google Sign-In callback
+    // handle Google Sign-In callback
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
     }
@@ -41,15 +39,11 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct ChexxApp: App {
-    // Use @UIApplicationDelegateAdaptor to integrate the AppDelegate with SwiftUI
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
 
     var body: some Scene {
         WindowGroup {
-            MainMenuView() // Your main SwiftUI view
-                .onAppear {
-                    // Additional setup if needed
-                }
+            MainMenuView()
         }
     }
 }

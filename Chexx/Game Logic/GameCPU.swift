@@ -81,8 +81,8 @@ class GameCPU {
         
         //print(bestMove)
         
-        let endTime = Date() //for testing
-        let timeInterval = endTime.timeIntervalSince(startTime) //for testing
+        //let endTime = Date() //for testing
+        //let timeInterval = endTime.timeIntervalSince(startTime) //for testing
         //print("Time taken for minimaxMove: \(timeInterval) seconds")
         
         return parseMove(bestMove.move)

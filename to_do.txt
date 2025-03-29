@@ -1,8 +1,3 @@
-BEFORE LAUNCH:
--app delegate file and figure out the use for all the other template files (theyre there for a reason)
--figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
-    -launch screen (required) & main menu /is it???
-
 ******************************
 RELEASE!! :D
 ******************************

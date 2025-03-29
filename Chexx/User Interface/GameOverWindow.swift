@@ -21,7 +21,7 @@ struct GameOverWindow: View {
     var body: some View {
         GeometryReader { geometry in
             let screenHeight = geometry.size.height
-            let screenWidth = geometry.size.width
+            //let screenWidth = geometry.size.width
             //let maxScreenDimension = max(screenHeight, screenWidth)
             
             ZStack {
