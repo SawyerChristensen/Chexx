@@ -346,7 +346,7 @@ struct MainMenuView: View {
                         
                         Spacer()
                         
-                        if onlineOptions || singlePlayerOptions || passAndPlayOptions {
+                        if onlineOptions || singlePlayerOptions || passAndPlayOptions { // the "<" button that goes back to the parent menu
                             Button(action: {
                                 withAnimation {
                                     onlineOptions = false
@@ -550,8 +550,9 @@ struct MainMenuView: View {
             if success {
                 self.navigateToGameView = true
             } else {
-                self.errorMessage = "No game to resume or an error occurred."
-                self.showErrorAlert = true
+                self.errorMessage = "No game to resume."
+                UserDefaults.standard.removeObject(forKey: "mostRecentGameId")
+                //self.showErrorAlert = true
             }
         }
     }

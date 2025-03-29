@@ -8,7 +8,6 @@ BEFORE LAUNCH:
 -enable gamecenter achievements (need apple developer program)
     -game center icon used when signing in with apple
     -put apple on top if this can be done
-    -game center achievement icons
 
 
 ******************************
@@ -18,6 +17,7 @@ RELEASE!! :D
 
 FOR FUTURE UPDATES:
 ----------------------
+
 -facebook sign in?
 
 -login does not check if your email is actually real
@@ -30,7 +30,7 @@ FOR FUTURE UPDATES:
 
 //////////////////////////////////////////////////////
 Achievements:
-    Hexceptional Win! - Win your first game
+(Implemented) --- Hexceptional Win! - Win your first game
 (Implemented) --- Hex Machina - Checkmate the CPU
 (Implemented) --- Hexceeded Hexpectations - Win a joined game
 (Implemented) --- Friendly Hexchange - Have a player join a game you created

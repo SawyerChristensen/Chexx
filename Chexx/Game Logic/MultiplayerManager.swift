@@ -35,6 +35,16 @@ class MultiplayerManager: ObservableObject {
     }
     
     func createGame(completion: @escaping (String?) -> Void) {
+        //delete the previously saved game because we're creating a new one
+        self.deleteGame { success in
+            if success {
+                self.gameId = nil
+                self.opponentId = nil
+            } else {
+                print("Failed to delete the game doc.")
+            }
+        }
+        
         fetchElo(forUserId: self.currentUserId) { elo in //put the player one's elo into the game document
             let playerOneElo = elo ?? 1000
             
@@ -77,8 +87,8 @@ class MultiplayerManager: ObservableObject {
                                     print("Error creating game: \(error)")
                                     completion(nil)
                                 } else {
-                                    self.gameId = gameId //this stores the gameID in memory, might not need this?
-                                    UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //this saves the most recent game code to t
+                                    self.gameId = gameId //this stores the gameID in memory? might not need this?
+                                    UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //this saves the most recent game code to hard drive
                                     self.listenForOpponentJoined()
                                     completion(gameId)
                                 }

@@ -788,15 +788,17 @@ class GameScene: SKScene {
                                 break
                             }
                         }
-                        
                         MultiplayerManager.shared.finalizeGame()
                     }
+                    
+                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId") //removes the "resume" button for online because the game has ended
                     
                 } else { // its a single player game, so there is no elo adjustment
                     
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        deleteGameFile(filename: "currentPassAndPlay")
                     }
                     
                     self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
@@ -843,6 +845,7 @@ class GameScene: SKScene {
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
+                    deleteGameFile(filename: "currentSinglePlayer")
                 }
                 
                 // MARK: Multiplayer Achievements
@@ -899,6 +902,8 @@ class GameScene: SKScene {
                         MultiplayerManager.shared.finalizeGame()
                     }
                     
+                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId")
+                    
                 } else { //its a single player game
                     if isVsCPU {
                         if winnerColor == "white" {
@@ -907,11 +912,13 @@ class GameScene: SKScene {
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
+                        deleteGameFile(filename: "currentSinglePlayer")
                     }
                     
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
+                        deleteGameFile(filename: "currentPassAndPlay")
                     }
                     
                     self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
