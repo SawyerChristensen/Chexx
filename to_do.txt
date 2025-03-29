@@ -1,6 +1,3 @@
--game center icon used when signing in with apple?
--put apple on top if this can be done?
-
 BEFORE LAUNCH:
 -app delegate file and figure out the use for all the other template files (theyre there for a reason)
 -figure out if I really need these silly storyboard files still, can probably delete with some modification to other files
@@ -13,11 +10,15 @@ RELEASE!! :D
 
 FOR FUTURE UPDATES:
 ----------------------
+-game center icon only loads the second time looking at the profile
+
 -if you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. this is currently not an issue since each account is "allowed" one empty created game. any previously created game is removed from the server every new create game function call, although it would be better to just delete the game when the game view is dismissed and it is empty
 
 -facebook sign in?
 
 -login does not check if your email is actually real
+
+-in multiplayer, show opponents game center icon if they dont have a google icon
 
 -if user is anonymous, do not update elo
 

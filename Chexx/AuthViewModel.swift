@@ -49,7 +49,7 @@ class AuthViewModel: ObservableObject {
                         print("Anonymous sign-in failed: \(error)")
                         // Handle error if needed, maybe retry or set default state
                     } else {
-                        print("Anonymous sign-in succeeded.")
+                        //print("Anonymous sign-in succeeded.")
                         //self.isLoggedIn = true
                         // Optionally fetch user data if needed
                     }

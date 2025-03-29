@@ -31,7 +31,7 @@ class GameCenterManager: NSObject {
                 // Present the Game Center authentication view controller
                 presenter.present(gcAuthVC, animated: true, completion: nil)
             } else if self.localPlayer.isAuthenticated {
-                print("Game Center: Player already authenticated.")
+                //print("Game Center: Player already authenticated.")
             } else {
                 print("Game Center: Player not authenticated and no login UI available.")
             }
@@ -60,6 +60,24 @@ class GameCenterManager: NSObject {
             }
         }
     }
+    
+    /// Loads the Game Center profile image (if available)
+    /// - Parameter completion: Called with the UIImage if successful, or nil on failure
+    func loadGameCenterProfileImage(completion: @escaping (UIImage?) -> Void) {
+        guard localPlayer.isAuthenticated else {
+            print("Game Center: Local player not authenticated — can't load profile image.")
+            completion(nil)
+            return
+        }
+        
+        localPlayer.loadPhoto(for: .normal) { image, error in
+            if let error = error {
+                print("Game Center: Failed to load profile image: \(error.localizedDescription)")
+            }
+            completion(image)
+        }
+    }
+
     
     // MARK: - Viewing Game Center UI
     

@@ -32,6 +32,7 @@ struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
     @FocusState private var focus: FocusableField?
     
+    @State private var gameCenterImage: UIImage?
     @State private var isEditing = false
     @State private var isKeyboardVisible = false
     @State private var newDisplayName: String = ""
@@ -274,12 +275,20 @@ struct ProfileView: View {
                         image
                             .resizable()
                             .scaledToFit()
-                            .clipShape(Circle()) // Make it circular
-                            .frame(width: 100, height: 100) // Set size for the image
+                            .clipShape(Circle())
+                            .frame(width: 100, height: 100)
                             .padding(.bottom)
                     } placeholder: {
-                        ProgressView() // Show a loading spinner while the image loads
+                        //ProgressView() // loading spinner while the image loads
                     }
+                    
+                } else if let gcImage = gameCenterImage {
+                    Image(uiImage: gcImage)
+                        .resizable()
+                        .scaledToFit()
+                        .clipShape(Circle())
+                        .frame(width: 100, height: 100)
+                        .padding(.bottom)
                 }
                 
                 // MARK: Display Name
@@ -546,6 +555,13 @@ struct ProfileView: View {
                 .id(colorScheme) //this forces swiftui to switch the button color scheme when the user changes the scheme
                 .frame(height: 50)
                 .cornerRadius(8)
+            }
+        }
+        .onAppear {
+            GameCenterManager.shared.loadGameCenterProfileImage { image in
+                DispatchQueue.main.async { // remember to switch to the main thread before updating SwiftUI state
+                    self.gameCenterImage = image
+                }
             }
         }
         .padding()
