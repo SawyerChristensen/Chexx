@@ -493,6 +493,47 @@ class AuthViewModel: ObservableObject {
         }
     }
     
+    func deleteUserAndData() { //deletes the current users document and account
+        guard let userID = Auth.auth().currentUser?.uid else { return }
+        
+        // Reference to the Firestore document for the user
+        let userDocumentRef = db.collection("users").document(userID)
+
+        // Delete Firestore document first
+        userDocumentRef.delete { error in
+            if let error = error {
+                print("Error deleting user document: \(error.localizedDescription)")
+                return
+            }
+            print("User Firestore document successfully deleted.")
+                
+            // Now delete the user from Firebase Authentication
+            Auth.auth().currentUser?.delete { error in
+                if let error = error {
+                    print("Error deleting user account: \(error.localizedDescription)")
+                } else {
+                    print("User account successfully deleted.")
+                }
+            }
+        }
+        //sign out and reset local data as well!
+        self.isLoggedIn = false
+        self.email = ""
+        self.profileImageURL = URL(filePath: "")
+        self.displayName = ""
+        self.userCountry = ""
+        self.eloScore = 0
+        
+        UserDefaults.standard.removeObject(forKey: "isLoggedIn")
+        UserDefaults.standard.removeObject(forKey: "email")
+        UserDefaults.standard.removeObject(forKey: "displayName")
+        UserDefaults.standard.removeObject(forKey: "profileImageURL")
+        UserDefaults.standard.removeObject(forKey: "country")
+        UserDefaults.standard.removeObject(forKey: "eloScore")
+        
+        AchievementManager.shared.resetLocalAchievements()
+    }
+    
     private func randomNonceString(length: Int = 32) -> String {
       precondition(length > 0)
       let charset: [Character] =

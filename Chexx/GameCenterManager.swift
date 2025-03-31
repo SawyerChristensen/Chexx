@@ -22,10 +22,10 @@ class GameCenterManager: NSObject {
         localPlayer.authenticateHandler = { [weak self] gcAuthVC, error in
             guard let self = self else { return }
             
-            if let error = error {
+            //if let error = error {
                 //print("Game Center authentication error: \(error.localizedDescription)")
-                return
-            }
+            //    return
+            //}
             
             if let gcAuthVC = gcAuthVC, let presenter = presentingViewController {
                 // Present the Game Center authentication view controller

@@ -35,6 +35,7 @@ struct ProfileView: View {
     @State private var gameCenterImage: UIImage?
     @State private var isEditing = false
     @State private var isKeyboardVisible = false
+    @State private var showDeleteConfirmation = false
     @State private var newDisplayName: String = ""
     @State private var password = ""
     
@@ -371,16 +372,33 @@ struct ProfileView: View {
                         }
                     }
                 
-                // MARK: Sign Out Button
-                Button(action: authViewModel.signOut) { //maybe make this smaller?
-                    Text("Sign Out")
-                        .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
-                        .underline()
-                        .padding(5)
-                        .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
-                        //.frame(width: screenHeight / 4.5, height: screenHeight / 18)
-                        //.background(Color.red)
-                        //.clipShape(HexagonEdgeRectangleShape())
+                // MARK: Sign Out Button / Delete Account Button
+                HStack(spacing: 20) {
+                    Button(action: authViewModel.signOut) { //maybe make this smaller?
+                        Text("Sign Out")
+                            .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
+                            .underline()
+                            .padding(5)
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
+                    }
+                    
+                    Button(action: {showDeleteConfirmation = true}) {
+                        Text("Delete Account")
+                            .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
+                            .underline()
+                            .padding(5)
+                            .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
+                    }
+                    .alert(isPresented: $showDeleteConfirmation) {
+                        Alert(
+                            title: Text("Delete Account"),
+                            message: Text("Are you sure you want to delete your account? This action cannot be undone."),
+                            primaryButton: .destructive(Text("Delete")) {
+                                authViewModel.deleteUserAndData()
+                            },
+                            secondaryButton: .cancel()
+                        )
+                    }
                 }
                 
                 Divider()

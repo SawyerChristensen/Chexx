@@ -1102,7 +1102,7 @@ class GameScene: SKScene {
                 whiteStatusTextMiniUpdater?("Your turn")
                 
             } else {
-                whiteStatusTextMiniUpdater?("Waiting for opponent.")
+                whiteStatusTextMiniUpdater?("Waiting for opponent...")
             }
         }
         
