@@ -775,11 +775,19 @@ class GameScene: SKScene {
                     }
 
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
-
-                        var eloText = ""
+                        
                         let diff = newLocalElo - oldLocalElo
+                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
                        
-                        eloText = "Your ELO rating changed from \(oldLocalElo) to \(newLocalElo) (\(diff >= 0 ? "+\(diff)" : "\(diff)"))"
+                        let eloText = String(
+                            format: NSLocalizedString(
+                                "Your ELO rating changed from %d to %d (%@)",
+                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
+                            ),
+                            oldLocalElo,
+                            newLocalElo,
+                            sign
+                        )
                         
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: eloText
@@ -895,10 +903,18 @@ class GameScene: SKScene {
                     
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
-                        var eloText = ""
                         let diff = newLocalElo - oldLocalElo
+                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
                        
-                        eloText = "Your rating changed from \(oldLocalElo) to \(newLocalElo) (\(diff >= 0 ? "+\(diff)" : "\(diff)"))."
+                        let eloText = String(
+                            format: NSLocalizedString(
+                                "Your ELO rating changed from %d to %d (%@)",
+                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
+                            ),
+                            oldLocalElo,
+                            newLocalElo,
+                            sign
+                        )
                         
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: eloText

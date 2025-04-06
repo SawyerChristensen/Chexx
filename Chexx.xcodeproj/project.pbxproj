@@ -20,6 +20,7 @@
 		BE091A632CCBB84C00C1A3EC /* piece_move_light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */; };
 		BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */; };
 		BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE091A662CCBBFB900C1A3EC /* GameCPU.swift */; };
+		BE2896A62D9D01FB003F96F3 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */; };
 		BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807EB2D3E8E7B00EC5973 /* check.mp3 */; };
 		BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */; };
 		BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64F0942D27333100F7B8C5 /* AchievementManager.swift */; };
@@ -53,6 +54,7 @@
 		BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move_light.mp3; sourceTree = "<group>"; };
 		BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_loss.mp3; sourceTree = "<group>"; };
 		BE091A662CCBBFB900C1A3EC /* GameCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCPU.swift; sourceTree = "<group>"; };
+		BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		BE3807EB2D3E8E7B00EC5973 /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
 		BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_win.mp3; sourceTree = "<group>"; };
 		BE64F0942D27333100F7B8C5 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
@@ -123,6 +125,7 @@
 				BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
+				BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */,
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
 				BE9EA2512D977843006D9FAC /* GameCenterManager.swift */,
 				BE091A562CC2888100C1A3EC /* AuthViewModel.swift */,
@@ -235,6 +238,13 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
+				fr,
+				es,
+				ru,
+				pl,
+				hi,
+				"zh-Hans",
 			);
 			mainGroup = BE76A9A32C2A2602009113B4;
 			packageReferences = (
@@ -257,6 +267,7 @@
 			files = (
 				BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */,
 				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
+				BE2896A62D9D01FB003F96F3 /* Localizable.xcstrings in Resources */,
 				BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */,
 				BE091A612CCBB62B00C1A3EC /* piece_move.mp3 in Resources */,
 				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
@@ -379,6 +390,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -435,6 +447,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;

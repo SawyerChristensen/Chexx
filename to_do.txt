@@ -1,45 +1,45 @@
+ADDED MULTIPLE LANGUAGE SUPPORT FOR:
+    -german
+    -french
+    -spanish
+    -russian
+    -polish
+    -hindi
+    -chinese
+    
+Still have to:
+-make sure buttons stretch based on text size now, not based on hard-coded values
+
+-update achievement text! (the puns will be hard to translate)
+
+*----------* UPDATE 1.1 *----------* (Multiple Language Support)
+
+
+
+-Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25 (implement for multiplayer ruling)
+
+-in multiplayer, add the players flag next to their username if they have a country selected in profile view
+
 -game center icon only loads the second time looking at the profile
 
 -if you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. this is currently not an issue since each account is "allowed" one empty created game. any previously created game is removed from the server every new create game function call, although it would be better to just delete the game when the game view is dismissed and it is empty
 
--facebook sign in?
-
 -login does not check if your email is actually real
+
+-facebook sign in?
 
 -in multiplayer, show opponents game center icon if they dont have a google icon
 
 -if user is anonymous, do not update elo
-
+    -is this still needed?
+    
 -user country loads from firestore every time profile is opened, local storage should update from firestore once the app is opened, then pull from local every profile view
 -elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -store user picture on device and only load when it changes? having it load is a little jarring (low priority)
 
-//////////////////////////////////////////////////////
-Achievements:
-(Implemented) --- Hexceptional Win! - Win your first game
-(Implemented) --- Hex Machina - Checkmate the CPU
-(Implemented) --- Hexceeded Hexpectations - Win a joined game
-(Implemented) --- Friendly Hexchange - Have a player join a game you created
-(Implemented) --- Hexcalibur - Underpromote a pawn to a knight
-(Implemented) --- Hexecutioner - Checkmate after capturing all enemy pieces
-    Hexperimenter - Win with 10 different openings
-    Hexathon - Win 26 games
-(Implemented) --- Hexpedition - Move your king to the opposing king’s starting position
-    Hexplorer - Visit every tile in a single game
-(Implemented) --- Hextra Power - Promote a pawn for the first time
-    Hexceptional Morale - Promote 3 pawns in a single game
-    The Great Hexcape - Checkmate after being put in check 3 times
-    Hexclusion Zone - Deliver a smothered mate
-(Implemented) --- Hextreme Measures - Checkmate using your own king
-    Tactical Hexcellence - Checkmate without losing any pieces
-    
-    Secret Achievements
-    Hexpect the Unexpected - Open by moving your king
-    Hexhausted - Have a game last over 100 turns
-    Seasoned Hexpert - Complete all other achievements
+*----------* UPDATE 1.2 *----------* (Multiplayer Update)
 
-    Un-Hexciting Finish - Deliver a Stalemate
-////////////////////////////////////////////////////// 8 is enough @ launch, implement the rest later
+
 
 -gameCPU will not see knight's moves upon promotion, only queen
 
@@ -53,36 +53,9 @@ Achievements:
 
 -make games more secure? (this works perfectly fine for now)
 
--50 move no capture rule for draw
-
--threefold repetition rule for draw
-    -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
-
--optimizations to game CPU
-
--game history button in profile view? (store past user games, who vs who, and then display hex fen format)
-    -single player stored on device, multiplayer stored in cloud
-
--haptic feedback on check?
-
-    -alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
-        beige:  Light tile: #ffce9e     "Grey" tile: #e8ab6f        Dark tile: #d18b47
-    -put ^ in profile view?
-        
--check if any flags have been added in new unicode versions
-
--favorite opening in profile view?
-
--delete online game with completion handler instead of timer
-
-enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
-
--enable a "show row/columns A-L 1-11" option in settings
-
 -enable an option to play as black against the CPU (would need to change promotion logic)
 
-
-
+-optimizations to game CPU
 
 Current Minimax algorithm takes: (seems to multiply by 10 every depth)
 Depth 1:    0.01 seconds
@@ -110,10 +83,68 @@ Null Move Pruning 10-20% speedup
 
 Might be able to get to depth 4 with all of these improvements
 
+*----------* UPDATE 1.2 *----------* (CPU Update)
+
+
+
+Achievements:
+(Implemented) --- Hexceptional Win! - Win your first game
+(Implemented) --- Hex Machina - Checkmate the CPU
+(Implemented) --- Hexceeded Hexpectations - Win a joined game
+(Implemented) --- Friendly Hexchange - Have a player join a game you created
+(Implemented) --- Hexcalibur - Underpromote a pawn to a knight
+(Implemented) --- Hexecutioner - Checkmate after capturing all enemy pieces
+    Hexperimenter - Win with 10 different openings
+    Hexathon - Win 26 games
+(Implemented) --- Hexpedition - Move your king to the opposing king’s starting position
+    Hexplorer - Visit every tile in a single game
+(Implemented) --- Hextra Power - Promote a pawn for the first time
+    Hexceptional Morale - Promote 3 pawns in a single game
+    The Great Hexcape - Checkmate after being put in check 3 times
+    Hexclusion Zone - Deliver a smothered mate
+(Implemented) --- Hextreme Measures - Checkmate using your own king
+    Tactical Hexcellence - Checkmate without losing any pieces
+    
+    Secret Achievements
+    Hexpect the Unexpected - Open by moving your king
+    Hexhausted - Have a game last over 100 turns
+    Seasoned Hexpert - Complete all other achievements
+
+    Un-Hexciting Finish - Deliver a Stalemate
+    
+*----------* UPDATE 1.3 *----------* (Achievements Update)
+
+
+
+Other changes:
+
+-50 move no capture rule for draw
+
+-threefold repetition rule for draw
+    -Zobrist hashing for more efficient computation of three-fold rule detection, not needed at launch, could be an important update
+
+-get rid of "not verified for MacOS" badge in macos app store (its still available as is)
+
+-game history button in profile view? (store past user games, who vs who, and then display hex fen format)
+    -single player stored on device, multiplayer stored in cloud
+
+-haptic feedback on check?
+
+    -alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
+        beige:  Light tile: #ffce9e     "Grey" tile: #e8ab6f        Dark tile: #d18b47
+    -put ^ in profile view?
+        
+-check if any flags have been added in new unicode versions
+
+-favorite opening in profile view?
+
+enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
+
+-enable a "show row/columns A-L 1-11" option in settings
+
+
 
 RESOURCES:
-
--Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25 (implement for multiplayer ruling)
 
 ways to update chess AI/increase computational efficiency:
 https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm

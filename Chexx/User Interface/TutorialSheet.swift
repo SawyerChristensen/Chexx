@@ -30,7 +30,7 @@ struct TutorialSheet: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Text("      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During it's peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played simarly to regular chess albeit with some notable differences.")
+                Text("      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played simarly to regular chess albeit with some notable differences.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
@@ -61,7 +61,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The bishop still moves along the diagonals (towards the points of a tile instead of it's edges) and always stays on it's color. Like the rook, because a hexagon has six points, there are six possible diagonal directions.")
+                Text("      The bishop still moves along the diagonals (towards the points of a tile instead of its edges) and always stays on its color. Like the rook, because a hexagon has six points, there are six possible diagonal directions.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -125,7 +125,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The pawn normally moves forward one tile at a time, but can also move two tiles forward if it hasn't moved yet. It captures pieces to it's immediate left and right and can get promoted to any piece if it reaches the last row.")
+                Text("      The pawn normally moves forward one tile at a time, but can also move two tiles forward if it hasn't moved yet. It captures pieces to its immediate left and right and can get promoted to any piece if it reaches the last row.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 

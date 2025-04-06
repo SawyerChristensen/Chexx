@@ -33,10 +33,16 @@ struct GameOverWindow: View {
                 //the visible card
                 VStack() {
                     
-                    WaveText(text: "Game Over!", fontSize: screenHeight / 20) //should adapt later!
+                    WaveText(text: NSLocalizedString("Game Over!", comment: ""), fontSize: screenHeight / 20) //should adapt later!
                         .padding(.bottom, 5)
                     
-                    Text("\(winner.prefix(1).uppercased() + winner.dropFirst().lowercased()) wins by \(method)!") //maybe update
+                    Text(
+                          String(
+                            format: NSLocalizedString("%@ wins by %@!", comment: "Game over message: {Winner Color} wins by {Method}!"),
+                            NSLocalizedString(winner, comment: "Winner color (white/black)"), //white/black show up as "stale" due to not being directly refereneced, but conditionally referenced here. it is safe to ignore them being "stale" in the localizable file. same with Checkmate/Stalemate:
+                            NSLocalizedString(method, comment: "Winning method (Checkmate, etc.)")
+                          )
+                        )
                         .font(.system(size: screenHeight / 36, weight: .semibold, design: .serif))
                         .multilineTextAlignment(.center)
                         .padding(.bottom, 5)
