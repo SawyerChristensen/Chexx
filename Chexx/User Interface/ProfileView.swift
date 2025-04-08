@@ -18,10 +18,13 @@ private enum FocusableField: Hashable {
     case displayName
 }
 
-struct Country: Identifiable, Hashable {
-    let id = UUID()
-    let emoji: String
-    let name: String
+struct Country: Hashable {
+    let code: String     // "US", "DE", "FR"
+    let emoji: String    // "🇺🇸", "🇩🇪", "🇫🇷"
+
+    var localizedName: String {
+        Locale.current.localizedString(forRegionCode: code) ?? code
+    }
 }
 
 struct ProfileView: View {
@@ -41,227 +44,275 @@ struct ProfileView: View {
     
     @State private var selectedCountry: Country? = nil
     @State private var countries: [Country] = [
-        Country(emoji: "🇦🇫", name: "Afghanistan"),
-        Country(emoji: "🇦🇱", name: "Albania"),
-        Country(emoji: "🇩🇿", name: "Algeria"),
-        Country(emoji: "🇦🇸", name: "American Samoa"),
-        Country(emoji: "🇦🇩", name: "Andorra"),
-        Country(emoji: "🇦🇴", name: "Angola"),
-        Country(emoji: "🇦🇮", name: "Anguilla"),
-        Country(emoji: "🇦🇬", name: "Antigua and Barbuda"),
-        Country(emoji: "🇦🇷", name: "Argentina"),
-        Country(emoji: "🇦🇲", name: "Armenia"),
-        Country(emoji: "🇦🇼", name: "Aruba"),
-        Country(emoji: "🇦🇺", name: "Australia"),
-        Country(emoji: "🇦🇹", name: "Austria"),
-        Country(emoji: "🇦🇿", name: "Azerbaijan"),
-        Country(emoji: "🇧🇸", name: "Bahamas"),
-        Country(emoji: "🇧🇭", name: "Bahrain"),
-        Country(emoji: "🇧🇩", name: "Bangladesh"),
-        Country(emoji: "🇧🇧", name: "Barbados"),
-        Country(emoji: "🇧🇾", name: "Belarus"),
-        Country(emoji: "🇧🇪", name: "Belgium"),
-        Country(emoji: "🇧🇿", name: "Belize"),
-        Country(emoji: "🇧🇯", name: "Benin"),
-        Country(emoji: "🇧🇲", name: "Bermuda"),
-        Country(emoji: "🇧🇹", name: "Bhutan"),
-        Country(emoji: "🇧🇴", name: "Bolivia"),
-        Country(emoji: "🇧🇦", name: "Bosnia and Herzegovina"),
-        Country(emoji: "🇧🇼", name: "Botswana"),
-        Country(emoji: "🇧🇷", name: "Brazil"),
-        Country(emoji: "🇻🇬", name: "British Virgin Islands"),
-        Country(emoji: "🇻🇨", name: "Saint Vincent and the Grenadines"),
-        Country(emoji: "🇧🇳", name: "Brunei"),
-        Country(emoji: "🇧🇬", name: "Bulgaria"),
-        Country(emoji: "🇧🇫", name: "Burkina Faso"),
-        Country(emoji: "🇧🇮", name: "Burundi"),
-        Country(emoji: "🇨🇻", name: "Cabo Verde"),
-        Country(emoji: "🇨🇲", name: "Cameroon"),
-        Country(emoji: "🇰🇭", name: "Cambodia"),
-        Country(emoji: "🇨🇦", name: "Canada"),
-        Country(emoji: "🇰🇾", name: "Cayman Islands"),
-        Country(emoji: "🇨🇫", name: "Central African Republic"),
-        Country(emoji: "🇹🇩", name: "Chad"),
-        Country(emoji: "🇨🇱", name: "Chile"),
-        Country(emoji: "🇨🇳", name: "China"),
-        Country(emoji: "🇨🇴", name: "Colombia"),
-        Country(emoji: "🇰🇲", name: "Comoros"),
-        Country(emoji: "🇨🇩", name: "Congo - Kinshasa"),
-        Country(emoji: "🇨🇬", name: "Congo - Brazzaville"),
-        Country(emoji: "🇨🇷", name: "Costa Rica"),
-        Country(emoji: "🇭🇷", name: "Croatia"),
-        Country(emoji: "🇨🇺", name: "Cuba"),
-        Country(emoji: "🇨🇼", name: "Curaçao"),
-        Country(emoji: "🇨🇾", name: "Cyprus"),
-        Country(emoji: "🇨🇿", name: "Czech Republic"),
-        Country(emoji: "🇩🇰", name: "Denmark"),
-        Country(emoji: "🇩🇯", name: "Djibouti"),
-        Country(emoji: "🇩🇲", name: "Dominica"),
-        Country(emoji: "🇩🇴", name: "Dominican Republic"),
-        Country(emoji: "🇪🇨", name: "Ecuador"),
-        Country(emoji: "🇪🇬", name: "Egypt"),
-        Country(emoji: "🇸🇻", name: "El Salvador"),
-        Country(emoji: "🇬🇶", name: "Equatorial Guinea"),
-        Country(emoji: "🇪🇷", name: "Eritrea"),
-        Country(emoji: "🇪🇪", name: "Estonia"),
-        Country(emoji: "🇪🇹", name: "Ethiopia"),
-        Country(emoji: "🇫🇯", name: "Fiji"),
-        Country(emoji: "🇫🇮", name: "Finland"),
-        Country(emoji: "🇫🇷", name: "France"),
-        Country(emoji: "🇬🇦", name: "Gabon"),
-        Country(emoji: "🇬🇲", name: "Gambia"),
-        Country(emoji: "🇬🇪", name: "Georgia"),
-        Country(emoji: "🇩🇪", name: "Germany"),
-        Country(emoji: "🇬🇭", name: "Ghana"),
-        Country(emoji: "🇬🇷", name: "Greece"),
-        Country(emoji: "🇬🇩", name: "Grenada"),
-        Country(emoji: "🇬🇺", name: "Guam"),
-        Country(emoji: "🇬🇹", name: "Guatemala"),
-        Country(emoji: "🇬🇬", name: "Guernsey"),
-        Country(emoji: "🇬🇳", name: "Guinea"),
-        Country(emoji: "🇬🇼", name: "Guinea-Bissau"),
-        Country(emoji: "🇬🇾", name: "Guyana"),
-        Country(emoji: "🇭🇹", name: "Haiti"),
-        Country(emoji: "🇭🇳", name: "Honduras"),
-        Country(emoji: "🇭🇰", name: "Hong Kong"),
-        Country(emoji: "🇭🇺", name: "Hungary"),
-        Country(emoji: "🇮🇸", name: "Iceland"),
-        Country(emoji: "🇮🇳", name: "India"),
-        Country(emoji: "🇮🇩", name: "Indonesia"),
-        Country(emoji: "🇮🇷", name: "Iran"),
-        Country(emoji: "🇮🇶", name: "Iraq"),
-        Country(emoji: "🇮🇪", name: "Ireland"),
-        Country(emoji: "🇮🇲", name: "Isle of Man"),
-        Country(emoji: "🇮🇱", name: "Israel"),
-        Country(emoji: "🇮🇹", name: "Italy"),
-        Country(emoji: "🇯🇲", name: "Jamaica"),
-        Country(emoji: "🇯🇵", name: "Japan"),
-        Country(emoji: "🇯🇪", name: "Jersey"),
-        Country(emoji: "🇯🇴", name: "Jordan"),
-        Country(emoji: "🇰🇿", name: "Kazakhstan"),
-        Country(emoji: "🇰🇪", name: "Kenya"),
-        Country(emoji: "🇰🇮", name: "Kiribati"),
-        Country(emoji: "🇰🇼", name: "Kuwait"),
-        Country(emoji: "🇰🇬", name: "Kyrgyzstan"),
-        Country(emoji: "🇱🇦", name: "Laos"),
-        Country(emoji: "🇱🇻", name: "Latvia"),
-        Country(emoji: "🇱🇧", name: "Lebanon"),
-        Country(emoji: "🇱🇸", name: "Lesotho"),
-        Country(emoji: "🇱🇷", name: "Liberia"),
-        Country(emoji: "🇱🇾", name: "Libya"),
-        Country(emoji: "🇱🇮", name: "Liechtenstein"),
-        Country(emoji: "🇱🇹", name: "Lithuania"),
-        Country(emoji: "🇱🇺", name: "Luxembourg"),
-        Country(emoji: "🇲🇴", name: "Macau"),
-        Country(emoji: "🇲🇰", name: "North Macedonia"),
-        Country(emoji: "🇲🇬", name: "Madagascar"),
-        Country(emoji: "🇲🇼", name: "Malawi"),
-        Country(emoji: "🇲🇾", name: "Malaysia"),
-        Country(emoji: "🇲🇻", name: "Maldives"),
-        Country(emoji: "🇲🇱", name: "Mali"),
-        Country(emoji: "🇲🇹", name: "Malta"),
-        Country(emoji: "🇲🇭", name: "Marshall Islands"),
-        Country(emoji: "🇲🇶", name: "Martinique"),
-        Country(emoji: "🇲🇷", name: "Mauritania"),
-        Country(emoji: "🇲🇺", name: "Mauritius"),
-        Country(emoji: "🇾🇹", name: "Mayotte"),
-        Country(emoji: "🇲🇽", name: "Mexico"),
-        Country(emoji: "🇫🇲", name: "Micronesia"),
-        Country(emoji: "🇲🇩", name: "Moldova"),
-        Country(emoji: "🇲🇨", name: "Monaco"),
-        Country(emoji: "🇲🇳", name: "Mongolia"),
-        Country(emoji: "🇲🇪", name: "Montenegro"),
-        Country(emoji: "🇲🇸", name: "Montserrat"),
-        Country(emoji: "🇲🇦", name: "Morocco"),
-        Country(emoji: "🇲🇿", name: "Mozambique"),
-        Country(emoji: "🇲🇲", name: "Myanmar"),
-        Country(emoji: "🇳🇦", name: "Namibia"),
-        Country(emoji: "🇳🇷", name: "Nauru"),
-        Country(emoji: "🇳🇵", name: "Nepal"),
-        Country(emoji: "🇳🇱", name: "Netherlands"),
-        Country(emoji: "🇳🇨", name: "New Caledonia"),
-        Country(emoji: "🇳🇿", name: "New Zealand"),
-        Country(emoji: "🇳🇮", name: "Nicaragua"),
-        Country(emoji: "🇳🇪", name: "Niger"),
-        Country(emoji: "🇳🇬", name: "Nigeria"),
-        Country(emoji: "🇳🇺", name: "Niue"),
-        Country(emoji: "🇳🇫", name: "Norfolk Island"),
-        Country(emoji: "🇰🇵", name: "North Korea"),
-        Country(emoji: "🇲🇵", name: "Northern Mariana Islands"),
-        Country(emoji: "🇳🇴", name: "Norway"),
-        Country(emoji: "🇴🇲", name: "Oman"),
-        Country(emoji: "🇵🇰", name: "Pakistan"),
-        Country(emoji: "🇵🇼", name: "Palau"),
-        Country(emoji: "🇵🇸", name: "Palestine"),
-        Country(emoji: "🇵🇦", name: "Panama"),
-        Country(emoji: "🇵🇬", name: "Papua New Guinea"),
-        Country(emoji: "🇵🇾", name: "Paraguay"),
-        Country(emoji: "🇵🇪", name: "Peru"),
-        Country(emoji: "🇵🇭", name: "Philippines"),
-        Country(emoji: "🇵🇳", name: "Pitcairn Islands"),
-        Country(emoji: "🇵🇱", name: "Poland"),
-        Country(emoji: "🇵🇹", name: "Portugal"),
-        Country(emoji: "🇵🇷", name: "Puerto Rico"),
-        Country(emoji: "🇶🇦", name: "Qatar"),
-        Country(emoji: "🇷🇴", name: "Romania"),
-        Country(emoji: "🇷🇺", name: "Russia"),
-        Country(emoji: "🇷🇼", name: "Rwanda"),
-        Country(emoji: "🇷🇪", name: "Réunion"),
-        Country(emoji: "🇼🇸", name: "Samoa"),
-        Country(emoji: "🇸🇲", name: "San Marino"),
-        Country(emoji: "🇸🇹", name: "São Tomé & Príncipe"),
-        Country(emoji: "🇸🇦", name: "Saudi Arabia"),
-        Country(emoji: "🇸🇳", name: "Senegal"),
-        Country(emoji: "🇷🇸", name: "Serbia"),
-        Country(emoji: "🇸🇨", name: "Seychelles"),
-        Country(emoji: "🇸🇱", name: "Sierra Leone"),
-        Country(emoji: "🇸🇬", name: "Singapore"),
-        Country(emoji: "🇸🇽", name: "Sint Maarten"),
-        Country(emoji: "🇸🇰", name: "Slovakia"),
-        Country(emoji: "🇸🇮", name: "Slovenia"),
-        Country(emoji: "🇸🇧", name: "Solomon Islands"),
-        Country(emoji: "🇸🇴", name: "Somalia"),
-        Country(emoji: "🇿🇦", name: "South Africa"),
-        Country(emoji: "🇬🇸", name: "South Georgia & South Sandwich Islands"),
-        Country(emoji: "🇰🇷", name: "South Korea"),
-        Country(emoji: "🇸🇸", name: "South Sudan"),
-        Country(emoji: "🇪🇸", name: "Spain"),
-        Country(emoji: "🇱🇰", name: "Sri Lanka"),
-        Country(emoji: "🇸🇩", name: "Sudan"),
-        Country(emoji: "🇸🇷", name: "Suriname"),
-        Country(emoji: "🇸🇿", name: "Eswatini (Swaziland)"),
-        Country(emoji: "🇸🇪", name: "Sweden"),
-        Country(emoji: "🇨🇭", name: "Switzerland"),
-        Country(emoji: "🇸🇾", name: "Syria"),
-        Country(emoji: "🇹🇼", name: "Taiwan"),
-        Country(emoji: "🇹🇯", name: "Tajikistan"),
-        Country(emoji: "🇹🇿", name: "Tanzania"),
-        Country(emoji: "🇹🇭", name: "Thailand"),
-        Country(emoji: "🇹🇱", name: "Timor-Leste"),
-        Country(emoji: "🇹🇬", name: "Togo"),
-        Country(emoji: "🇹🇰", name: "Tokelau"),
-        Country(emoji: "🇹🇴", name: "Tonga"),
-        Country(emoji: "🇹🇹", name: "Trinidad and Tobago"),
-        Country(emoji: "🇹🇳", name: "Tunisia"),
-        Country(emoji: "🇹🇷", name: "Turkey"),
-        Country(emoji: "🇹🇲", name: "Turkmenistan"),
-        Country(emoji: "🇹🇻", name: "Tuvalu"),
-        Country(emoji: "🇺🇬", name: "Uganda"),
-        Country(emoji: "🇺🇦", name: "Ukraine"),
-        Country(emoji: "🇦🇪", name: "United Arab Emirates"),
-        Country(emoji: "🇬🇧", name: "United Kingdom"),
-        Country(emoji: "🇺🇸", name: "United States"),
-        Country(emoji: "🇺🇾", name: "Uruguay"),
-        Country(emoji: "🇺🇿", name: "Uzbekistan"),
-        Country(emoji: "🇻🇺", name: "Vanuatu"),
-        Country(emoji: "🇻🇦", name: "Vatican City"),
-        Country(emoji: "🇻🇪", name: "Venezuela"),
-        Country(emoji: "🇻🇳", name: "Vietnam"),
-        Country(emoji: "🇼🇫", name: "Wallis & Futuna"),
-        Country(emoji: "🇪🇭", name: "Western Sahara"),
-        Country(emoji: "🇾🇪", name: "Yemen"),
-        Country(emoji: "🇿🇲", name: "Zambia"),
-        Country(emoji: "🇿🇼", name: "Zimbabwe")
+
+        // A
+        Country(code: "AF", emoji: "🇦🇫"),
+        Country(code: "AL", emoji: "🇦🇱"),
+        Country(code: "DZ", emoji: "🇩🇿"), // Algeria
+        Country(code: "AS", emoji: "🇦🇸"),
+        Country(code: "AD", emoji: "🇦🇩"),
+        Country(code: "AO", emoji: "🇦🇴"),
+        Country(code: "AI", emoji: "🇦🇮"),
+        Country(code: "AG", emoji: "🇦🇬"),
+        Country(code: "AR", emoji: "🇦🇷"),
+        Country(code: "AM", emoji: "🇦🇲"),
+        Country(code: "AW", emoji: "🇦🇼"),
+        Country(code: "AU", emoji: "🇦🇺"),
+        Country(code: "AT", emoji: "🇦🇹"),
+        Country(code: "AZ", emoji: "🇦🇿"),
+
+        // B
+        Country(code: "BS", emoji: "🇧🇸"),
+        Country(code: "BH", emoji: "🇧🇭"),
+        Country(code: "BD", emoji: "🇧🇩"),
+        Country(code: "BB", emoji: "🇧🇧"),
+        Country(code: "BY", emoji: "🇧🇾"),
+        Country(code: "BE", emoji: "🇧🇪"),
+        Country(code: "BZ", emoji: "🇧🇿"),
+        Country(code: "BJ", emoji: "🇧🇯"),
+        Country(code: "BM", emoji: "🇧🇲"),
+        Country(code: "BT", emoji: "🇧🇹"),
+        Country(code: "BO", emoji: "🇧🇴"),
+        Country(code: "BA", emoji: "🇧🇦"),
+        Country(code: "BW", emoji: "🇧🇼"),
+        Country(code: "BR", emoji: "🇧🇷"),
+        Country(code: "VG", emoji: "🇻🇬"), // British Virgin Islands
+        Country(code: "VC", emoji: "🇻🇨"), // Saint Vincent & Grenadines
+        Country(code: "BN", emoji: "🇧🇳"),
+        Country(code: "BG", emoji: "🇧🇬"),
+        Country(code: "BF", emoji: "🇧🇫"),
+        Country(code: "BI", emoji: "🇧🇮"),
+
+        // C
+        Country(code: "CV", emoji: "🇨🇻"),
+        Country(code: "CM", emoji: "🇨🇲"),
+        Country(code: "KH", emoji: "🇰🇭"), // Cambodia
+        Country(code: "CA", emoji: "🇨🇦"),
+        Country(code: "KY", emoji: "🇰🇾"), // Cayman Islands
+        Country(code: "CF", emoji: "🇨🇫"),
+        Country(code: "TD", emoji: "🇹🇩"), // Chad
+        Country(code: "CL", emoji: "🇨🇱"),
+        Country(code: "CN", emoji: "🇨🇳"),
+        Country(code: "CO", emoji: "🇨🇴"),
+        Country(code: "KM", emoji: "🇰🇲"), // Comoros
+        Country(code: "CD", emoji: "🇨🇩"),
+        Country(code: "CG", emoji: "🇨🇬"),
+        Country(code: "CR", emoji: "🇨🇷"),
+        Country(code: "HR", emoji: "🇭🇷"), // Croatia
+        Country(code: "CU", emoji: "🇨🇺"),
+        Country(code: "CW", emoji: "🇨🇼"),
+        Country(code: "CY", emoji: "🇨🇾"),
+        Country(code: "CZ", emoji: "🇨🇿"),
+
+        // D
+        Country(code: "DK", emoji: "🇩🇰"),
+        Country(code: "DJ", emoji: "🇩🇯"),
+        Country(code: "DM", emoji: "🇩🇲"),
+        Country(code: "DO", emoji: "🇩🇴"),
+
+        // E
+        Country(code: "EC", emoji: "🇪🇨"),
+        Country(code: "EG", emoji: "🇪🇬"),
+        Country(code: "SV", emoji: "🇸🇻"), // El Salvador
+        Country(code: "GQ", emoji: "🇬🇶"), // Equitorial Guinea
+        Country(code: "ER", emoji: "🇪🇷"),
+        Country(code: "EE", emoji: "🇪🇪"),
+        Country(code: "ET", emoji: "🇪🇹"),
+
+        // F
+        Country(code: "FJ", emoji: "🇫🇯"),
+        Country(code: "FI", emoji: "🇫🇮"),
+        Country(code: "FR", emoji: "🇫🇷"),
+
+        // G
+        Country(code: "GA", emoji: "🇬🇦"),
+        Country(code: "GM", emoji: "🇬🇲"),
+        Country(code: "GE", emoji: "🇬🇪"),
+        Country(code: "DE", emoji: "🇩🇪"),
+        Country(code: "GH", emoji: "🇬🇭"),
+        Country(code: "GR", emoji: "🇬🇷"),
+        Country(code: "GD", emoji: "🇬🇩"),
+        Country(code: "GU", emoji: "🇬🇺"),
+        Country(code: "GT", emoji: "🇬🇹"),
+        Country(code: "GG", emoji: "🇬🇬"),
+        Country(code: "GN", emoji: "🇬🇳"),
+        Country(code: "GW", emoji: "🇬🇼"),
+        Country(code: "GY", emoji: "🇬🇾"),
+
+        // H
+        Country(code: "HT", emoji: "🇭🇹"),
+        Country(code: "HN", emoji: "🇭🇳"),
+        Country(code: "HK", emoji: "🇭🇰"),
+        Country(code: "HU", emoji: "🇭🇺"),
+
+        // I
+        Country(code: "IS", emoji: "🇮🇸"),
+        Country(code: "IN", emoji: "🇮🇳"),
+        Country(code: "ID", emoji: "🇮🇩"),
+        Country(code: "IR", emoji: "🇮🇷"),
+        Country(code: "IQ", emoji: "🇮🇶"),
+        Country(code: "IE", emoji: "🇮🇪"),
+        Country(code: "IM", emoji: "🇮🇲"),
+        Country(code: "IL", emoji: "🇮🇱"),
+        Country(code: "IT", emoji: "🇮🇹"),
+
+        // J
+        Country(code: "JM", emoji: "🇯🇲"),
+        Country(code: "JP", emoji: "🇯🇵"),
+        Country(code: "JE", emoji: "🇯🇪"),
+        Country(code: "JO", emoji: "🇯🇴"),
+
+        // K
+        Country(code: "KZ", emoji: "🇰🇿"),
+        Country(code: "KE", emoji: "🇰🇪"),
+        Country(code: "KI", emoji: "🇰🇮"),
+        Country(code: "KW", emoji: "🇰🇼"),
+        Country(code: "KG", emoji: "🇰🇬"),
+
+        // L
+        Country(code: "LA", emoji: "🇱🇦"),
+        Country(code: "LV", emoji: "🇱🇻"),
+        Country(code: "LB", emoji: "🇱🇧"),
+        Country(code: "LS", emoji: "🇱🇸"),
+        Country(code: "LR", emoji: "🇱🇷"),
+        Country(code: "LY", emoji: "🇱🇾"),
+        Country(code: "LI", emoji: "🇱🇮"),
+        Country(code: "LT", emoji: "🇱🇹"),
+        Country(code: "LU", emoji: "🇱🇺"),
+
+        // M
+        Country(code: "MO", emoji: "🇲🇴"),
+        Country(code: "MK", emoji: "🇲🇰"),
+        Country(code: "MG", emoji: "🇲🇬"),
+        Country(code: "MW", emoji: "🇲🇼"),
+        Country(code: "MY", emoji: "🇲🇾"),
+        Country(code: "MV", emoji: "🇲🇻"),
+        Country(code: "ML", emoji: "🇲🇱"),
+        Country(code: "MT", emoji: "🇲🇹"),
+        Country(code: "MH", emoji: "🇲🇭"),
+        Country(code: "MQ", emoji: "🇲🇶"),
+        Country(code: "MR", emoji: "🇲🇷"),
+        Country(code: "MU", emoji: "🇲🇺"),
+        Country(code: "YT", emoji: "🇾🇹"), // Mayotte
+        Country(code: "MX", emoji: "🇲🇽"),
+        Country(code: "FM", emoji: "🇫🇲"), // Micronesia
+        Country(code: "MD", emoji: "🇲🇩"),
+        Country(code: "MC", emoji: "🇲🇨"),
+        Country(code: "MN", emoji: "🇲🇳"),
+        Country(code: "ME", emoji: "🇲🇪"),
+        Country(code: "MS", emoji: "🇲🇸"),
+        Country(code: "MA", emoji: "🇲🇦"),
+        Country(code: "MZ", emoji: "🇲🇿"),
+        Country(code: "MM", emoji: "🇲🇲"),
+
+        // N
+        Country(code: "NA", emoji: "🇳🇦"),
+        Country(code: "NR", emoji: "🇳🇷"),
+        Country(code: "NP", emoji: "🇳🇵"),
+        Country(code: "NL", emoji: "🇳🇱"),
+        Country(code: "NC", emoji: "🇳🇨"),
+        Country(code: "NZ", emoji: "🇳🇿"),
+        Country(code: "NI", emoji: "🇳🇮"),
+        Country(code: "NE", emoji: "🇳🇪"),
+        Country(code: "NG", emoji: "🇳🇬"),
+        Country(code: "NU", emoji: "🇳🇺"),
+        Country(code: "NF", emoji: "🇳🇫"),
+        Country(code: "KP", emoji: "🇰🇵"), // North Korea
+        Country(code: "MP", emoji: "🇲🇵"), // Northern Mariana Islands
+        Country(code: "NO", emoji: "🇳🇴"),
+
+        // O
+        Country(code: "OM", emoji: "🇴🇲"),
+
+        // P
+        Country(code: "PK", emoji: "🇵🇰"),
+        Country(code: "PW", emoji: "🇵🇼"),
+        Country(code: "PS", emoji: "🇵🇸"),
+        Country(code: "PA", emoji: "🇵🇦"),
+        Country(code: "PG", emoji: "🇵🇬"),
+        Country(code: "PY", emoji: "🇵🇾"),
+        Country(code: "PE", emoji: "🇵🇪"),
+        Country(code: "PH", emoji: "🇵🇭"),
+        Country(code: "PN", emoji: "🇵🇳"),
+        Country(code: "PL", emoji: "🇵🇱"),
+        Country(code: "PT", emoji: "🇵🇹"),
+        Country(code: "PR", emoji: "🇵🇷"),
+        Country(code: "QA", emoji: "🇶🇦"), // Qatar
+
+        // R
+        Country(code: "RO", emoji: "🇷🇴"),
+        Country(code: "RU", emoji: "🇷🇺"),
+        Country(code: "RW", emoji: "🇷🇼"),
+        Country(code: "RE", emoji: "🇷🇪"),
+
+        // S
+        Country(code: "WS", emoji: "🇼🇸"), // Samoa
+        Country(code: "SM", emoji: "🇸🇲"),
+        Country(code: "ST", emoji: "🇸🇹"),
+        Country(code: "SA", emoji: "🇸🇦"),
+        Country(code: "SN", emoji: "🇸🇳"),
+        Country(code: "RS", emoji: "🇷🇸"), // Serbia
+        Country(code: "SC", emoji: "🇸🇨"),
+        Country(code: "SL", emoji: "🇸🇱"),
+        Country(code: "SG", emoji: "🇸🇬"),
+        Country(code: "SX", emoji: "🇸🇽"),
+        Country(code: "SK", emoji: "🇸🇰"),
+        Country(code: "SI", emoji: "🇸🇮"),
+        Country(code: "SB", emoji: "🇸🇧"),
+        Country(code: "SO", emoji: "🇸🇴"),
+        Country(code: "ZA", emoji: "🇿🇦"),
+        Country(code: "GS", emoji: "🇬🇸"), // South Georgia & Sandwich
+        Country(code: "KR", emoji: "🇰🇷"), // South Korea
+        Country(code: "SS", emoji: "🇸🇸"),
+        Country(code: "ES", emoji: "🇪🇸"), // Spain
+        Country(code: "LK", emoji: "🇱🇰"), // Sri Lanka
+        Country(code: "SD", emoji: "🇸🇩"),
+        Country(code: "SR", emoji: "🇸🇷"),
+        Country(code: "SZ", emoji: "🇸🇿"), // Eswatini
+        Country(code: "SE", emoji: "🇸🇪"),
+        Country(code: "CH", emoji: "🇨🇭"), // Switzerland
+        Country(code: "SY", emoji: "🇸🇾"),
+
+        // T
+        Country(code: "TW", emoji: "🇹🇼"),
+        Country(code: "TJ", emoji: "🇹🇯"),
+        Country(code: "TZ", emoji: "🇹🇿"),
+        Country(code: "TH", emoji: "🇹🇭"),
+        Country(code: "TL", emoji: "🇹🇱"), // Timor-Leste
+        Country(code: "TG", emoji: "🇹🇬"),
+        Country(code: "TK", emoji: "🇹🇰"),
+        Country(code: "TO", emoji: "🇹🇴"),
+        Country(code: "TT", emoji: "🇹🇹"),
+        Country(code: "TN", emoji: "🇹🇳"),
+        Country(code: "TR", emoji: "🇹🇷"),
+        Country(code: "TM", emoji: "🇹🇲"),
+        Country(code: "TV", emoji: "🇹🇻"),
+
+        // U
+        Country(code: "UG", emoji: "🇺🇬"),
+        Country(code: "UA", emoji: "🇺🇦"),
+        Country(code: "AE", emoji: "🇦🇪"), // United Arab Emirates
+        Country(code: "GB", emoji: "🇬🇧"), // United Kingdon
+        Country(code: "US", emoji: "🇺🇸"),
+        Country(code: "UY", emoji: "🇺🇾"),
+        Country(code: "UZ", emoji: "🇺🇿"),
+
+        // V
+        Country(code: "VU", emoji: "🇻🇺"),
+        Country(code: "VA", emoji: "🇻🇦"),
+        Country(code: "VE", emoji: "🇻🇪"),
+        Country(code: "VN", emoji: "🇻🇳"),
+
+        // W
+        Country(code: "WF", emoji: "🇼🇫"),
+        Country(code: "EH", emoji: "🇪🇭"), // Western Sahara
+
+        // Y
+        Country(code: "YE", emoji: "🇾🇪"),
+
+        // Z
+        Country(code: "ZM", emoji: "🇿🇲"),
+        Country(code: "ZW", emoji: "🇿🇼")
     ]
     
     var body: some View {
@@ -344,21 +395,24 @@ struct ProfileView: View {
                         .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
                     
                     Picker("Country", selection: $selectedCountry) {
-                        ForEach(countries, id: \.self) { country in // Use id: \.self
-                            Text("\(country.emoji) \(country.name)").tag(country as Country?)
+                        ForEach(
+                            countries.sorted(by: { $0.localizedName < $1.localizedName }),
+                            id: \.self
+                        ) { country in
+                            Text("\(country.emoji) \(country.localizedName)")
+                                .tag(country as Country?)
                         }
                     }
-                    .pickerStyle(MenuPickerStyle()) // Change this to your preferred style
+                    .pickerStyle(MenuPickerStyle())
                     .onAppear {
-                        loadSelectedCountry() // Load the selected country when the view appears
-                    }
+                        loadSelectedCountry()} // load the selected country when the view appears
                     .onChange(of: selectedCountry) {
-                        // Update Firebase Firestore (server storage)
-                        authViewModel.userCountry = selectedCountry!.name
-                        authViewModel.updateUserCountryInFirestore(country: selectedCountry!.name)
-                        
-                        //update local storage
-                        UserDefaults.standard.set(selectedCountry?.name, forKey: "country") // Persist the selection
+                        // update memory:
+                        authViewModel.userCountry = selectedCountry!.code
+                        // update server storage:
+                        authViewModel.updateUserCountryInFirestore(country: selectedCountry!.code)
+                        // update local long-term storage:
+                        UserDefaults.standard.set(selectedCountry?.code, forKey: "country")
                     }
                 }
                 
@@ -586,40 +640,39 @@ struct ProfileView: View {
     }
     
     func loadSelectedCountry() {
-        // First, try loading the country from UserDefaults
-        if let savedCountryName = UserDefaults.standard.string(forKey: "country"),
-           let country = countries.first(where: { $0.name == savedCountryName }) {
-            // If found in UserDefaults and matches a known country, assign it
-            selectedCountry = country
+        // try loading the ISO code from UserDefaults
+        if let savedCountryCode = UserDefaults.standard.string(forKey: "country"),
+           let matchingCountry = countries.first(where: { $0.code == savedCountryCode }) {
+            // found a valid country in local storage, assign it
+            self.selectedCountry = matchingCountry
         }
-        
-        // Regardless of whether it's found locally, attempt to load the latest from Firestore
-        //if theres no service, the function should still update selectedCountry to what is found on the hard drive
-        authViewModel.loadUserCountryFromFirestore { loadedCountry in
-            if let loadedCountry = loadedCountry,
-               let country = self.countries.first(where: { $0.name == loadedCountry }) {
-                // Update the selectedCountry from Firestore
-                self.selectedCountry = country
+
+        // regardless, also attempt to load the latest code from Firestore
+        authViewModel.loadUserCountryFromFirestore { loadedCode in
+            // if Firestore returns a valid code that we have in our array, update
+            if let loadedCode = loadedCode,
+               let matchingCountry = self.countries.first(where: { $0.code == loadedCode }) {
+                self.selectedCountry = matchingCountry
             }
         }
     }
     
     private func resetPasswordTextAppend() -> AttributedString {
-            var attributedString = AttributedString(authViewModel.errorMessage)
+        var attributedString = AttributedString(authViewModel.errorMessage)
+        
+        if authViewModel.errorMessage == "The email address is already in use by another account." {
+            attributedString += AttributedString(" Reset Password?")
             
-            if authViewModel.errorMessage == "The email address is already in use by another account." {
-                attributedString += AttributedString(" Reset Password?")
-                
-                // Apply underline to "Reset Password?"
-                if let range = attributedString.range(of: "Reset Password?") {
-                    attributedString[range].underlineStyle = .single
-                }
-            } else { authViewModel.errorMessage = ""
+            // Apply underline to "Reset Password?"
+            if let range = attributedString.range(of: "Reset Password?") {
+                attributedString[range].underlineStyle = .single
             }
-                
-            
-            return attributedString
+        } else { authViewModel.errorMessage = ""
         }
+            
+        
+        return attributedString
+    }
 }
 
 

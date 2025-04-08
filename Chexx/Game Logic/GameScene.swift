@@ -498,7 +498,7 @@ class GameScene: SKScene {
             let repeatPulse = SKAction.repeatForever(pulse)
             glowOverlay.run(repeatPulse)
             
-            redStatusTextUpdater?("Check!")
+            redStatusTextUpdater?(NSLocalizedString("Check!", comment: ""))
         }
     }
 
@@ -1115,10 +1115,10 @@ class GameScene: SKScene {
         //MARK: display whose turn it is
         if isOnlineMultiplayer { //can maybe be refactored out to a different function
             if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
-                whiteStatusTextMiniUpdater?("Your turn")
+                whiteStatusTextMiniUpdater?(NSLocalizedString("Your turn", comment: ""))
                 
             } else {
-                whiteStatusTextMiniUpdater?("Waiting for opponent...")
+                whiteStatusTextMiniUpdater?(NSLocalizedString("Waiting for opponent...", comment: ""))
             }
         }
         

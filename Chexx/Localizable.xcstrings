@@ -1125,6 +1125,53 @@
         }
       }
     },
+    "Check!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Schach!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Jaque!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Échec !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "शह!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szach!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шах!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将军"
+          }
+        }
+      }
+    },
     "Checkmate" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -1827,37 +1874,37 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajedrez hexagonal"
+            "value" : "Ajedrez hex"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Échecs hexagonaux"
+            "value" : "Échecs Hex"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज"
+            "value" : "हैक्स शतरंज"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Szachy Heksagonalne"
+            "value" : "Heks-szachy"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гексагональные шахматы"
+            "value" : "Гекс-шахматы"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "六角象棋"
+            "value" : "六角棋"
           }
         }
       }
@@ -3473,6 +3520,52 @@
         }
       }
     },
+    "Waiting for opponent..." : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warten auf den Gegner…"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando al oponente…"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente de l'adversaire…"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "प्रतिद्वंद्वी की प्रतीक्षा कर रहे हैं..."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oczekiwanie na przeciwnika…"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидание соперника…"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在等待对手…"
+          }
+        }
+      }
+    },
     "white" : {
       "extractionState" : "stale",
       "localizations" : {
@@ -3575,6 +3668,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "您的 ELO 评分已从 %1$d 提升/降至 %2$d (%3$@)"
+          }
+        }
+      }
+    },
+    "Your turn" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bist dran"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te toca a ti"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C’est ton tour"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "आपकी बारी"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twoja kolej"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Твой ход"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该你了"
           }
         }
       }

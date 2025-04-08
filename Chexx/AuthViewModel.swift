@@ -239,14 +239,14 @@ class AuthViewModel: ObservableObject {
     func loadUserCountryFromFirestore(completion: @escaping (String?) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user logged in to load country.")
-            completion(nil) // Return nil if no user is logged in
+            completion(nil) //if no user is logged in
             return
         }
 
         db.collection("users").document(userID).getDocument { document, error in
             if let error = error {
                 print("Error loading user country from Firestore: \(error.localizedDescription)")
-                completion(nil) // Return nil if there was an error
+                completion(nil) //general error
                 return
             }
             
@@ -258,14 +258,14 @@ class AuthViewModel: ObservableObject {
                     self.userCountry = firestoreCountry
                     UserDefaults.standard.set(firestoreCountry, forKey: "country")
                     print("User country loaded from Firestore: \(firestoreCountry)")
-                    completion(firestoreCountry) // Return the loaded country
+                    completion(firestoreCountry)
                 } else {
-                    completion(nil) // Return nil if no country is found
+                    completion(nil) // if no country is found
                     print("No country found in Firestore.")
                 }
             } else {
                 print("User document does not exist.")
-                completion(nil) // Return nil if the document does not exist
+                completion(nil) // if the document does not exist
             }
         }
     }
