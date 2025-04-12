@@ -10,14 +10,19 @@ import SwiftUI
 struct PromotionWindow: View {
     var completion: (String) -> Void
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
+    let promotionOptions: [String: String] = [
+        "queen": NSLocalizedString("promotion_queen", comment: "Promotion option"),
+        "rook": NSLocalizedString("promotion_rook", comment: "Promotion option"),
+        "bishop": NSLocalizedString("promotion_bishop", comment: "Promotion option"),
+        "knight": NSLocalizedString("promotion_knight", comment: "Promotion option")
+    ]
+
 
     var body: some View {
         VStack {
-            WaveText(text: "Pawn Promotion!", fontSize: 25) // Use the custom WaveText view
-                .padding()
-                //.background(Color.accentColor)
-                //.foregroundColor(Color.primary)
-                //.clipShape(HexagonEdgeRectangleShape())
+            
+            WaveText(text: NSLocalizedString("Pawn Promotion!", comment: ""), fontSize: 40)
+                .padding(8)
             
             Text("Choose a piece to promote to:")
                 .font(.system(size: 18, weight: .regular, design: .serif))
@@ -29,10 +34,10 @@ struct PromotionWindow: View {
                         self.completion(option)
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text(option.capitalized)
-                            .font(.system(size: 20, weight: .bold, design: .serif))
+                        Text(promotionOptions[option] ?? option.capitalized)
+                            .font(.system(size: 24, weight: .bold, design: .serif))
                             .padding()
-                            .frame(width: 160, height: 40)
+                            .frame(minWidth: 160, maxHeight: 40)
                             .background(Color.accentColor)
                             .foregroundColor(Color.primary)
                             .clipShape(HexagonEdgeRectangleShape())
@@ -59,7 +64,8 @@ struct WaveText: View {
         HStack(spacing: 0) {
             ForEach(0..<text.count, id: \.self) { index in
                 Text(String(Array(text)[index]))
-                    .font(.system(size: fontSize, weight: .bold, design: .serif))
+                    //.fixedSize()
+                    .font(.system(size: fontSize - CGFloat((text.count)) * 0.5, weight: .bold, design: .serif))
                     .offset(y: startWave ? waveOffset(for: index) : 0) // so the text starts out flat
             }
         }

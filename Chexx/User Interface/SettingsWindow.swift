@@ -65,7 +65,7 @@ struct SettingsWindow: View {
                     Text("Close")
                         .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
                         .padding()
-                        .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                        .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 18)
                         .background(Color.accentColor)
                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                         .clipShape(HexagonEdgeRectangleShape())

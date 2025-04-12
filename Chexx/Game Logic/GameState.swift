@@ -117,7 +117,7 @@ struct GameState: Codable {
     mutating func setInitialPiecePositions() { //for checkmate testing
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 1), Piece(color: "white", type: "pawn")),
-            ((1, 5), Piece(color: "white", type: "bishop")),
+            ((1, 4), Piece(color: "white", type: "pawn")),
             ((2, 5), Piece(color: "white", type: "king")),
             ((5, 8), Piece(color: "black", type: "king")),
             ((4, 0), Piece(color: "white", type: "rook")),

@@ -61,9 +61,9 @@ struct GameOverWindow: View {
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("View Board")
-                            .font(.system(size: screenHeight / 26, weight: .bold, design: .serif))
+                            .font(.system(size: screenHeight / 28, weight: .bold, design: .serif))
                             .padding()
-                            .frame(width: screenHeight / 3.66, height: screenHeight / 18)
+                            .frame(minWidth: screenHeight / 3.66, maxHeight: screenHeight / 20)
                             .background(Color.accentColor)
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
@@ -76,9 +76,9 @@ struct GameOverWindow: View {
                             presentationMode.wrappedValue.dismiss()
                         }) {
                             Text("Rematch")
-                                .font(.system(size: screenHeight / 26, weight: .bold, design: .serif))
+                                .font(.system(size: screenHeight / 28, weight: .bold, design: .serif))
                                 .padding()
-                                .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 20)
                                 .background(Color.accentColor)
                                 .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                                 .clipShape(HexagonEdgeRectangleShape())

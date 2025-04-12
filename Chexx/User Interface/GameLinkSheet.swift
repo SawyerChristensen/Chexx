@@ -47,7 +47,8 @@ struct GameLinkSheet: View {
             }) {
                 Text("Start Game →")
                     .font(.system(size: 30, weight: .bold, design: .serif))
-                    .frame(width: 240, height: 60)
+                    .padding()
+                    .frame(minWidth: 240, maxHeight: 60)
                     .background(Color.accentColor)
                     .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
                     .clipShape(HexagonEdgeRectangleShape())

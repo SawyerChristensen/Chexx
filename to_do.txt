@@ -8,8 +8,6 @@ ADDED MULTIPLE LANGUAGE SUPPORT FOR:
     -chinese
     
 Still have to:
--make sure buttons stretch based on text size now, not based on hard-coded values
-
 -update achievement text! (the puns will be hard to translate)
 
 *----------* UPDATE 1.1 *----------* (Multiple Language Support)

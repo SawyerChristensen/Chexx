@@ -93,7 +93,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("Create Game")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -126,7 +127,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("Join Game")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -161,7 +163,8 @@ struct MainMenuView: View {
                                         }) {
                                             Text("Join Game →")
                                                 .font(.system(size: 30, weight: .bold, design: .serif)) //join is HARDCODED, UNLIKE CREATE
-                                                .frame(width: 240, height: 60)
+                                                .padding()
+                                                .frame(minWidth: 240, maxHeight: 60)
                                                 .background(Color.accentColor)
                                                 .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
                                                 .clipShape(HexagonEdgeRectangleShape())
@@ -182,7 +185,8 @@ struct MainMenuView: View {
                                     }) {
                                         Text("Resume")
                                             .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .padding()
+                                            .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -210,7 +214,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("New Game")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -222,7 +227,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("Resume")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -247,7 +253,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("New Game")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -259,7 +266,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("Resume")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -279,7 +287,8 @@ struct MainMenuView: View {
                                     }) {
                                         Text("Single Player")
                                             .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .padding()
+                                            .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -292,7 +301,8 @@ struct MainMenuView: View {
                                     }) {
                                         Text("Single Player")
                                             .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .padding()
+                                            .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -307,7 +317,8 @@ struct MainMenuView: View {
                                     }) {
                                         Text("Pass & Play")
                                             .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .padding()
+                                            .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -320,7 +331,8 @@ struct MainMenuView: View {
                                     }) {
                                         Text("Pass & Play")
                                             .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                            .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                            .padding()
+                                            .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -335,7 +347,8 @@ struct MainMenuView: View {
                                 }) {
                                     Text("Online")
                                         .font(.system(size: maxScreenDimension / 24, weight: .bold, design: .serif))
-                                        .frame(width: maxScreenDimension * 0.32, height: maxScreenDimension / 12)
+                                        .padding()
+                                        .frame(minWidth: maxScreenDimension * 0.32, maxHeight: maxScreenDimension / 12)
                                         .background(Color.accentColor)
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
@@ -411,7 +424,7 @@ struct MainMenuView: View {
                                         Text("Close")
                                             .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
                                             .padding()
-                                            .frame(width: screenHeight / 4.5, height: screenHeight / 18)
+                                            .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 18)
                                             .background(Color.accentColor)
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
@@ -447,7 +460,20 @@ struct MainMenuView: View {
                         //.sheet(isPresented: $isLeaderboardPresented) {
                          //   LeaderboardView()
                             // replace with actual leaderboard implementation
-                        //}z*/
+                        //}*/
+                        
+                        // Temporary Game Center Achievement Button until leaderboard is implemented
+                        Button(action: {
+                            if let rootVC = UIApplication.shared.windows.first?.rootViewController {
+                                GameCenterManager.shared.showAchievements(from: rootVC)
+                            }
+                        }) {
+                            Image(systemName: "trophy")
+                                .resizable()
+                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .padding(.top, maxScreenDimension / 30)
+                                .padding(.leading, maxScreenDimension / 30)
+                        }
                     }
                     
                     Spacer()
