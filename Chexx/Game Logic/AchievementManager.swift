@@ -9,8 +9,12 @@ import Foundation
 
 struct Achievement: Identifiable, Codable {
     let id: String          // "hex_machina"
-    let title: String       // "Hex Machina"
-    let description: String // "Checkmate the CPU"
+    var title: String {     // "Hex Machina"
+        NSLocalizedString("ach_\(id)_title", comment: "")
+    }
+    var description: String {   // "Checkmate the CPU"
+        NSLocalizedString("ach_\(id)_description", comment: "")
+    }
     var isUnlocked: Bool    // false by default; set to true when unlocked
 }
 
@@ -23,40 +27,40 @@ class AchievementManager: ObservableObject {
     
     @Published var achievements: [Achievement] = [
             Achievement(id: "hexceptional_win",
-                        title: "Hexceptional Win!",
-                        description: "Win your first game",
+                        //title: "Hexceptional Win!",
+                        //description: "Win your first game",
                         isUnlocked: false),
             Achievement(id: "hex_machina",
-                        title: "Hex Machina",
-                        description: "Checkmate the CPU",
+                        //title: "Hex Machina",
+                        //description: "Checkmate the CPU",
                         isUnlocked: false),
             Achievement(id: "hextra_power",
-                        title: "Hextra Power",
-                        description: "Promote a pawn for the first time",
+                        //title: "Hextra Power",
+                        //description: "Promote a pawn for the first time",
                         isUnlocked: false),
             Achievement(id: "hexceeded_hexpectations",
-                        title: "Hexceeded Hexpectations",
-                        description: "Win a joined game",
+                        //title: "Hexceeded Hexpectations",
+                        //description: "Win a joined game",
                         isUnlocked: false),
             Achievement(id: "friendly_hexchange",
-                        title: "Friendly Hexchange",
-                        description: "Have a player join a game you created",
+                        //title: "Friendly Hexchange",
+                        //description: "Have a player join a game you created",
                         isUnlocked: false),
             Achievement(id: "hexcalibur",
-                        title: "Hexcalibur",
-                        description: "Underpromote a pawn to a knight",
+                        //title: "Hexcalibur",
+                        //description: "Underpromote a pawn to a knight",
                         isUnlocked: false),
             Achievement(id: "hexecutioner",
-                        title: "Hexecutioner",
-                        description: "Checkmate after capturing all enemy pieces",
+                        //title: "Hexecutioner",
+                        //description: "Checkmate after capturing all enemy pieces",
                         isUnlocked: false),
             Achievement(id: "hexpedition",
-                        title: "Hexpedition",
-                        description: "Move your king to the opposing king's starting position",
+                        //title: "Hexpedition",
+                        //description: "Move your king to the opposing king's starting position",
                         isUnlocked: false),
             Achievement(id: "hextreme_measures",
-                        title: "Hextreme Measures",
-                        description: "Checkmate using your own king",
+                        //title: "Hextreme Measures",
+                        //description: "Checkmate using your own king",
                         isUnlocked: false),
         ]
 

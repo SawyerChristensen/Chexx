@@ -44,7 +44,6 @@ struct ProfileView: View {
     
     @State private var selectedCountry: Country? = nil
     @State private var countries: [Country] = [
-
         // A
         Country(code: "AF", emoji: "🇦🇫"),
         Country(code: "AL", emoji: "🇦🇱"),
@@ -516,7 +515,7 @@ struct ProfileView: View {
                 
 // MARK: - SIGN IN SCREEN
                 
-            } else { //NOT LOGGED IN
+            } else { //USER ISN'T LOGGED IN
 
                 Text("Login")
                     .font(.largeTitle)
@@ -598,7 +597,7 @@ struct ProfileView: View {
                 }
                 .padding(.bottom, 10)
                 
-                // Sign in with Google
+                // MARK: Sign in with Google
                 Button(action: {
                     Task {
                         await authViewModel.signInWithGoogle()
@@ -617,7 +616,7 @@ struct ProfileView: View {
                 .padding(.vertical, 10)
                 .buttonStyle(.bordered)
                 
-                // Sign in with Apple
+                // MARK: Sign in with Apple
                 SignInWithAppleButton { request in
                     authViewModel.signInWithAppleRequest(request)
                 } onCompletion: { result in

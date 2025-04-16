@@ -31,7 +31,7 @@ class AuthViewModel: ObservableObject {
     
     private var currentNonce: String? //(for apple sign in)
     
-    let db = Firestore.firestore() //db for database (were using firestore)
+    let db = Firestore.firestore() //db for database (currently using firestore)
     
     init() {
         self.isLoggedIn = UserDefaults.standard.bool(forKey: "isLoggedIn")
@@ -202,23 +202,19 @@ class AuthViewModel: ObservableObject {
     }
     
     func updateUserCountryInFirestore(country: String) {
-        // Ensure the country is not empty or nil and does not match the stored value
         guard let userID = Auth.auth().currentUser?.uid else {
             print("No user logged in to update country.")
             return
         }
         
-        // Check if the new country is different from the stored country
         if country.isEmpty {
             print("Country is empty, not updating Firestore.")
             return
         }
 
-        // Load the current stored country from UserDefaults
         let currentStoredCountry = UserDefaults.standard.string(forKey: "country") ?? ""
         
         if currentStoredCountry != country {
-            // Update the `userCountry` field in Firestore
             db.collection("users").document(userID).updateData([
                 "country": country
             ]) { error in
@@ -227,7 +223,7 @@ class AuthViewModel: ObservableObject {
                 } else {
                     print("User country successfully updated to \(country).")
                     
-                    // Optionally update the local UserDefaults after successful update
+                    // Update the local UserDefaults after successful update (although this isn't strictly necessary)
                     UserDefaults.standard.set(country, forKey: "country")
                 }
             }
@@ -383,10 +379,8 @@ class AuthViewModel: ObservableObject {
         
         Auth.auth().signIn(withEmail: email, password: password) { result, error in
             if let error = error as NSError? {
-                // Check the error code
                 let errorCode = AuthErrorCode(rawValue: error.code)
                 
-                // Log the actual error code to help debug
                 print("Auth Error Code: \(error.code)")
                 
                 switch errorCode {
@@ -420,7 +414,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    // Registration Function
     func registerWithEmail(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -496,7 +489,6 @@ class AuthViewModel: ObservableObject {
     func deleteUserAndData() { //deletes the current users document and account
         guard let userID = Auth.auth().currentUser?.uid else { return }
         
-        // Reference to the Firestore document for the user
         let userDocumentRef = db.collection("users").document(userID)
 
         // Delete Firestore document first
@@ -516,6 +508,7 @@ class AuthViewModel: ObservableObject {
                 }
             }
         }
+        
         //sign out and reset local data as well!
         self.isLoggedIn = false
         self.email = ""

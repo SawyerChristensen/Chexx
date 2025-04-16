@@ -77,9 +77,6 @@ class GameCenterManager: NSObject {
             completion(image)
         }
     }
-
-    
-    // MARK: - Viewing Game Center UI
     
     /// Show the standard Game Center Achievements interface.
     /// - Parameter viewController: The UIViewController that presents the Game Center view.
@@ -93,24 +90,6 @@ class GameCenterManager: NSObject {
         gcVC.gameCenterDelegate = self
         viewController.present(gcVC, animated: true, completion: nil)
     }
-/*
-    /// Show the standard Game Center Leaderboards interface.
-    /// - Parameters:
-    ///   - viewController: The UIViewController that presents the Game Center view.
-    ///   - leaderboardID: The leaderboard ID to show, or pass nil to show the default.
-    func showLeaderboards(from viewController: UIViewController, leaderboardID: String? = nil) {
-        guard localPlayer.isAuthenticated else {
-            print("Game Center: Local player is not authenticated, cannot show leaderboards.")
-            return
-        }
-        
-        let gcVC = GKGameCenterViewController(state: .leaderboards)
-        if let leaderboardID = leaderboardID {
-            gcVC.leaderboardIdentifier = leaderboardID
-        }
-        gcVC.gameCenterDelegate = self
-        viewController.present(gcVC, animated: true, completion: nil)
-    }*/
 }
 
 extension GameCenterManager: GKGameCenterControllerDelegate {
