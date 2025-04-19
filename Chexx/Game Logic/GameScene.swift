@@ -102,7 +102,7 @@ class GameScene: SKScene {
         }
         
         if (isOnlineMultiplayer && gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor) {
-            self.whiteStatusTextMiniUpdater?("Your Turn")
+            self.whiteStatusTextMiniUpdater?(NSLocalizedString("Your turn", comment: ""))
         } else {
             self.whiteStatusTextMiniUpdater?("")
         }

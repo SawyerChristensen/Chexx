@@ -296,7 +296,7 @@ class MultiplayerManager: ObservableObject {
     private func fetchOpponentInfo(userId: String) {
         AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL in
             DispatchQueue.main.async {
-                self?.opponentName = name ?? "Unknown Player"
+                self?.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
                 if let profileURL = profileURL {
                     self?.opponentProfileImageURL = URL(string: profileURL)
                 } else {

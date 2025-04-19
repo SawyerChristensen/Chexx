@@ -2822,7 +2822,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex-Schach"
+            "value" : "Hexschach"
           }
         },
         "es" : {
@@ -2840,7 +2840,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हैक्स शतरंज"
+            "value" : "हेक्स शतरंज"
           }
         },
         "pl" : {
@@ -2858,7 +2858,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "六角棋"
+            "value" : "六角象棋"
           }
         }
       }
@@ -4682,6 +4682,52 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "教程"
+          }
+        }
+      }
+    },
+    "Unknown Player" : {
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unbekannter Spieler"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jugador desconocido"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joueur inconnu"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "अज्ञात खिलाड़ी"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieznany gracz"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неизвестный игрок"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未知玩家"
           }
         }
       }
