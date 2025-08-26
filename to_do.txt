@@ -1,3 +1,8 @@
+Make a hexchess-lite version that works with iMessage
+
+*----------* UPDATE 1.2 *----------* (iMessage Update)
+
+
 -changing google icon breaks google icon retrieval in app
 
 -Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25 (implement for multiplayer ruling)
@@ -21,10 +26,10 @@
 -elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -store user picture on device and only load when it changes? having it load is a little jarring (low priority)
 
-*----------* UPDATE 1.2 *----------* (Multiplayer Update)
+*----------* UPDATE 1.3 *----------* (Multiplayer Update)
 
 
-
+-turn into AI? (Tensorflow, PyTorch) (AlphaZero loop on GPU?)
 
 -gameCPU will not see knight's moves upon promotion, only queen
 
@@ -68,7 +73,7 @@ Null Move Pruning 10-20% speedup
 
 Might be able to get to depth 4 with all of these improvements
 
-*----------* UPDATE 1.3 *----------* (CPU Update)
+*----------* UPDATE 1.4 *----------* (CPU Update)
 
 
 
@@ -98,7 +103,7 @@ Achievements:
 
     Un-Hexciting Finish - Deliver a Stalemate
     
-*----------* UPDATE 1.4 *----------* (Achievements Update)
+*----------* UPDATE 1.5 *----------* (Achievements Update)
 
 
 
@@ -133,11 +138,15 @@ enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as star
 
 RESOURCES:
 
-ways to update chess AI/increase computational efficiency:
+-Ways to update chess AI/increase computational efficiency:
 https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm
 
-General Chess Programming Info:
+-General Chess Programming Info:
 https://www.chessprogramming.org/Main_Page
 
-Glinski's Hexchess:
+-Glinski's Hexchess:
 https://en.wikipedia.org/wiki/Hexagonal_chess
+
+
+
+-Maybe delete storyboards? (safer to not mess around with them unless I know exactly what I'm doing, they seem to be "ignored" already, but deleting them also seems to cause problems)
