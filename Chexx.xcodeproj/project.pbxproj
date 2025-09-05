@@ -38,6 +38,8 @@
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
 		BE7D04B22E5A77D6000920FC /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7D04B12E5A77D6000920FC /* Messages.framework */; };
 		BE7D04BE2E5A77D7000920FC /* HexChessLite.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
+		BE7D04EF2E625E1C000920FC /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialSheet.swift */; };
 		BE9EA2522D977848006D9FAC /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EA2512D977843006D9FAC /* GameCenterManager.swift */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
@@ -45,6 +47,15 @@
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
 		BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB501AD2D396C7000143193 /* GameOverWindow.swift */; };
 		BECA2C092D01ED32002B14BE /* GameLinkSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */; };
+		BECCB4A12E62853D00742EAF /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
+		BECCB4A62E628CC100742EAF /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
+		BECCB4BE2E62C9BB00742EAF /* game_win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */; };
+		BECCB4BF2E62C9BF00742EAF /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807EB2D3E8E7B00EC5973 /* check.mp3 */; };
+		BECCB4C02E62C9C300742EAF /* game_loss.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A642CCBB95B00C1A3EC /* game_loss.mp3 */; };
+		BECCB4C12E62C9C700742EAF /* piece_move.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */; };
+		BECCB4C22E62C9CA00742EAF /* piece_move_light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */; };
+		BECCB4E42E6A05FA00742EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BC2C2A2603009113B4 /* Assets.xcassets */; };
+		BECCB4E52E6A072000742EAF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
 /* End PBXBuildFile section */
 
@@ -113,14 +124,22 @@
 		BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				Differences.txt,
 				Info.plist,
 			);
 			target = BE7D04AE2E5A77D6000920FC /* HexChessLite */;
 		};
+		BECCB4E32E675DEE00742EAF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Differences.txt,
+			);
+			target = BE76A9AB2C2A2602009113B4 /* Chexx */;
+		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
+		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BECCB4E32E675DEE00742EAF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -370,6 +389,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BECCB4BE2E62C9BB00742EAF /* game_win.mp3 in Resources */,
+				BECCB4C02E62C9C300742EAF /* game_loss.mp3 in Resources */,
+				BECCB4C12E62C9C700742EAF /* piece_move.mp3 in Resources */,
+				BECCB4BF2E62C9BF00742EAF /* check.mp3 in Resources */,
+				BECCB4E42E6A05FA00742EAF /* Assets.xcassets in Resources */,
+				BECCB4C22E62C9CA00742EAF /* piece_move_light.mp3 in Resources */,
+				BECCB4E52E6A072000742EAF /* Localizable.xcstrings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -405,6 +431,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BECCB4A62E628CC100742EAF /* PromotionWindow.swift in Sources */,
+				BECCB4A12E62853D00742EAF /* AudioManager.swift in Sources */,
+				BE7D04EF2E625E1C000920FC /* PieceRules.swift in Sources */,
+				BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -636,7 +666,7 @@
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -663,7 +693,7 @@
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

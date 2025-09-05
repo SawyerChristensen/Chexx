@@ -6,10 +6,11 @@
 //
 
 import SwiftUI
+import Messages
 
 struct MessagesMainMenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    
+    @ObservedObject var viewModel: MenuViewViewModel
     var onStartGame: () -> Void
     
     var body: some View {
@@ -23,17 +24,16 @@ struct MessagesMainMenuView: View {
                     Image("king_stencil240")
                         .resizable()
                         .scaledToFit()
-                        .frame(height: screenWidth * 0.1)
+                        .frame(height: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
                         .colorInvertIfDarkMode(colorScheme: colorScheme)
                         .padding(.trailing, 5)
                     
                     Text("Hex Chess")
-                        .font(.system(size: screenWidth * 0.07, weight: .semibold, design: .serif))
+                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.1, weight: .semibold, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }
                 .padding(.bottom, 5)
                 .frame(maxWidth: .infinity)
-                .background(Color(.white))
                 
                 Divider()
 
@@ -42,31 +42,34 @@ struct MessagesMainMenuView: View {
                     Image("StartingPositions")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 420, height: 420)
-                        .position(x: screenWidth * 0.37, y: screenHeight * 0.9)
-                        .rotationEffect(.degrees(15))
+                        .frame(
+                            width: viewModel.presentationStyle == .compact ? 420 : 600,
+                            height: viewModel.presentationStyle == .compact ? 420 : 600)
+                        .position(
+                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.37 : screenWidth * 0.5,
+                            y: viewModel.presentationStyle == .compact ? screenHeight * 0.9 : screenHeight * 0.8)
+                        .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
                     Button(action: {
                         onStartGame()
                     }) {
-                        WaveText(text: "Start Game!", fontSize: screenWidth * 0.08)
+                        WaveText(text: "Start Game!", fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
                             //.font(.system(size: screenWidth * 0.1, weight: .semibold, design: .serif))
                             .padding()
-                            .frame(minWidth: screenWidth * 0.33, maxHeight: screenWidth * 0.1)
-                            .background(Color("HexChessAccentColor"))
+                            .frame(
+                                minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
+                                maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
+                            .background(Color("AccentColor"))
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
-                            //.overlay(
-                            //    HexagonEdgeRectangleShape()
-                            //        .stroke(colorScheme == .dark ? Color.white : Color.black, lineWidth: 1)
-                            //)
-                            .position(x: screenWidth * 0.7, y: screenHeight * 0.13)
+                            .position(
+                                x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
+                                y: viewModel.presentationStyle == .compact ? screenHeight * 0.13 : screenHeight * 0.2)
                     }
                 }
-                //.padding(.top, 5)
             }
         }
-        //.background(Color(.systemGray6))
+        .background(colorScheme == .dark ? Color(UIColor(hex: "#262626")) : Color.white)
     }
 }
 
@@ -108,34 +111,11 @@ struct ColorInvertIfDarkModeModifier: ViewModifier {
     }
 }
 
-struct WaveText: View {
-    let text: String
-    let fontSize: CGFloat
-    @State private var waveOffset: CGFloat = 0
-    @State private var startWave: Bool = false
-    private let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
-    
-    var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<text.count, id: \.self) { index in
-                Text(String(Array(text)[index]))
-                    //.fixedSize()
-                    .font(.system(size: fontSize - CGFloat((text.count)) * 0.5, weight: .bold, design: .serif))
-                    .offset(y: startWave ? waveOffset(for: index) : 0) // so the text starts out flat
-            }
-        }
-        .onReceive(timer) { _ in
-            withAnimation(Animation.linear(duration: 4)) { // wave speed
-                if startWave {
-                   waveOffset += 1
-                } else {
-                    startWave = true //starts the wave after 0.1 seconds on flat text
-                }
-            }
-        }
-    }
-    
-    private func waveOffset(for index: Int) -> CGFloat {
-        return sin((Double(index) + Double(waveOffset)) * .pi / 5) * 30 // wave amplitude
+// This class will act as the bridge between UIKit and your SwiftUI view.
+class MenuViewViewModel: ObservableObject {//this is effectively rerouting from didTransition to this
+    @Published var presentationStyle: MSMessagesAppPresentationStyle
+
+    init(presentationStyle: MSMessagesAppPresentationStyle) {
+        self.presentationStyle = presentationStyle
     }
 }

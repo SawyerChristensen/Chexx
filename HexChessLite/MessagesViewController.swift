@@ -8,12 +8,18 @@
 import UIKit
 import Messages
 import SwiftUI
+import SpriteKit
+
+//notes: there should be two game-creating menus, compact, and expanded for ipad
+//the device should be defaulting to these two menus if it is not continuing a game save (from opening a bubble)
+
 
 class MessagesViewController: MSMessagesAppViewController {
     
+    private var menuViewModel: MenuViewViewModel?
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
     }
     
     // MARK: - Conversation Handling
@@ -21,99 +27,194 @@ class MessagesViewController: MSMessagesAppViewController {
     override func willBecomeActive(with conversation: MSConversation) {
         // Called when the extension is about to move from the inactive to active state.
         // This will happen when the extension is about to present UI.
-        
         // Use this method to configure the extension and restore previously stored state.
-        
         super.willBecomeActive(with: conversation)
-               
-       let menuView = MessagesMainMenuView { [weak self] in
-           self?.startGame(conversation: conversation)
-       }
-       
-       let hostingController = UIHostingController(rootView: menuView)
-       
-       // Remove old children
-       children.forEach { $0.removeFromParent() }
-       view.subviews.forEach { $0.removeFromSuperview() }
-       
-       // Add new
-       addChild(hostingController)
-       view.addSubview(hostingController.view)
-       hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-       NSLayoutConstraint.activate([
-           hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-           hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-           hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-           hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-       ])
-       
-       hostingController.didMove(toParent: self)
-   }
-   
-   private func startGame(conversation: MSConversation) {
-       let message = MSMessage(session: MSSession())
-       let layout = MSMessageTemplateLayout()
+        presentUI(for: presentationStyle, with: conversation)
+    }
     
-       if let boardImage = UIImage(named: "iMessageGameInvite") {
-           layout.image = boardImage
-       }
-       layout.caption = "Let's Play Hex Chess!"
-       
-       message.layout = layout
-       
-       conversation.insert(message) { error in
-           if let error = error {
-               print("Error inserting message: \(error.localizedDescription)")
-           }
-       }
-   }
-    
-    override func didSelect(_ message: MSMessage, conversation: MSConversation) {
-        if let url = message.url, let components = URLComponents(url: url, resolvingAgainstBaseURL: false) {
-            if let state = components.queryItems?.first(where: { $0.name == "state" })?.value {
-                // Load the board from HexFen here
-                print("Loaded game state: \(state)")
+    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        // Called before the extension transitions to a new presentation style.
+        // Use this method to prepare for the change in presentation style.
+        // Check if the currently displayed controller is the menu.
+        if children.first is UIHostingController<MessagesMainMenuView> {
+            // If the view model exists, just update its property.
+            withAnimation(.easeInOut(duration: 0.2)) {
+                menuViewModel?.presentationStyle = presentationStyle
             }
-        }
+        } else {
+            // Fallback for cases where the menu isn't currently displayed.
+            // (e.g., if the game view is open)
+            guard let conversation = activeConversation else { return }
+            presentUI(for: presentationStyle, with: conversation)
+                }
     }
-
-    override func didResignActive(with conversation: MSConversation) {
-        // Called when the extension is about to move from the active to inactive state.
-        // This will happen when the user dismisses the extension, changes to a different
-        // conversation or quits Messages.
-        
-        // Use this method to release shared resources, save user data, invalidate timers,
-        // and store enough state information to restore your extension to its current state
-        // in case it is terminated later.
+    
+    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        // Called after the extension transitions to a new presentation style.
+        // Use this method to finalize any behaviors associated with the change in presentation style.
+        //guard let conversation = activeConversation else { fatalError("Expected an active converstation") }
+        //presentUI(for: presentationStyle, with: conversation)
     }
-   
+    
     override func didReceive(_ message: MSMessage, conversation: MSConversation) {
         // Called when a message arrives that was generated by another instance of this
         // extension on a remote device.
         
         // Use this method to trigger UI updates in response to the message.
+        // This is for updating the UI in real-time if another user sends a move WHILE THE EXTENSION IS ALREADY OPEN
+        guard let newMove = decodeMoves(from: message) else { return }
+        if let hosting = children.first as? UIHostingController<MessagesGameView> {
+            let gameView = hosting.rootView //accessing MessagesGameView...
+            if let scene = gameView.scene as? MessagesGameScene { //accessing MessageGameScene...
+                scene.applyHexPgn(newMove)
+            }
+        }
     }
     
-    override func didStartSending(_ message: MSMessage, conversation: MSConversation) {
-        // Called when the user taps the send button.
+    // MARK: - Helper functions
+    private func presentUI(for presentationStyle: MSMessagesAppPresentationStyle, with conversation: MSConversation) {
+        removeAllChildViewControllers()
+        
+        let controller: UIViewController
+        
+        if let message = conversation.selectedMessage,
+           let newHexPgn = decodeMoves(from: message) {
+            controller = instantiateGameController(with: newHexPgn)
+        } else {
+            controller = instantiateMenuController(for: presentationStyle, with: conversation)
+        }
+        
+        addChild(controller)
+        controller.view.frame = view.bounds
+        controller.view.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(controller.view)
+        
+        NSLayoutConstraint.activate([
+            controller.view.topAnchor.constraint(equalTo: view.topAnchor),
+            controller.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            controller.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            controller.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+        ])
+        
+        controller.didMove(toParent: self)
+        //present(controller, animated: true)//figure out how present works!
     }
     
-    override func didCancelSending(_ message: MSMessage, conversation: MSConversation) {
-        // Called when the user deletes the message without sending it.
-    
-        // Use this to clean up state related to the deleted message.
+    private func removeAllChildViewControllers() {
+        for child in children {
+            child.willMove(toParent: nil)
+            child.view.removeFromSuperview()
+            child.removeFromParent()
+        }
     }
     
-    override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        // Called before the extension transitions to a new presentation style.
-    
-        // Use this method to prepare for the change in presentation style.
+    private func instantiateMenuController(for presentationStyle: MSMessagesAppPresentationStyle, with conversation: MSConversation) -> UIViewController {
+        let viewModel = MenuViewViewModel(presentationStyle: presentationStyle)
+                
+        self.menuViewModel = viewModel
+        
+        let menuView = MessagesMainMenuView(viewModel: viewModel) { [weak self] in
+            self?.createGame(conversation: conversation)
+        }
+                
+        return UIHostingController(rootView: menuView)
     }
     
-    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        // Called after the extension transitions to a new presentation style.
-    
-        // Use this method to finalize any behaviors associated with the change in presentation style.
+    private func instantiateGameController(with moves: [UInt8]) -> UIViewController {
+        let gameView = MessagesGameView(hexPGN: moves, delegate: self)
+        return UIHostingController(rootView: gameView)
     }
+    
+    //when the user presses "start game" from main menu, create a game state and load it into the chat
+    private func createGame(conversation: MSConversation) {
+        let session = MSSession()
+        let message = MSMessage(session: session)
+        let layout = MSMessageTemplateLayout()
+    
+        if let boardImage = UIImage(named: "iMessageGameInvite") {
+            layout.image = boardImage
+        }
+        layout.caption = "Let's Play Hex Chess!"
+        message.layout = layout
+        message.summaryText = "Let's Play Hex Chess!"
+        
+        let hexPgn: [UInt8] = []
+        
+        let hexPgnData = Data(hexPgn)
+        let hexPgnString = hexPgnData.base64EncodedString()
+
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "hexPgn", value: hexPgnString)
+        ]
+        message.url = components.url
+       
+        conversation.insert(message) { error in
+            if let error = error {
+                print("Error inserting message: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func decodeMoves(from message: MSMessage) -> [UInt8]? {
+        guard let url = message.url,
+              let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+              let hexPgnString = components.queryItems?.first(where: { $0.name == "hexPgn" })?.value,
+              let data = Data(base64Encoded: hexPgnString)
+        else {
+            print("⚠️ Failed to decode HexPgn from message.")
+            return nil
+        }
+
+        let hexPgn = [UInt8](data) // convert Data to [UInt8]
+        return hexPgn
+    }
+
+}
+
+extension MessagesViewController: GameSceneDelegate {
+    func autoSend(_ scene: MessagesGameScene,
+                   updatedHexPGN hexPgn: [UInt8],
+                   currentTurn: String) {
+
+        // Encode into MSMessage (like MultiplayerManager does for Firestore)
+        let message = encodeMoves(hexPgn: hexPgn, currentTurn: currentTurn)
+
+        activeConversation?.send(message, completionHandler: { error in //can switch to insert for testing
+            if let error = error {
+                print("Failed to send move: \(error)")
+            }
+        })
+    }
+    
+    private func encodeMoves(hexPgn: [UInt8], currentTurn: String) -> MSMessage {
+        let session = activeConversation?.selectedMessage?.session ?? MSSession()
+        let message = MSMessage(session: session)
+        let layout = MSMessageTemplateLayout()
+        
+        if currentTurn == "white" {
+            layout.image = UIImage(named: "whiteToMove")
+        } else { //black to move
+            layout.image = UIImage(named: "blackToMove")
+        }
+        
+        layout.caption = "Hex Chess – \(currentTurn)'s turn!"
+        message.layout = layout
+        message.summaryText = "Your move in Hex Chess!"
+
+        // encoding only HexPgn as Data!
+        let hexPgnData = Data(hexPgn)
+        let hexPgnString = hexPgnData.base64EncodedString()
+
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "hexPgn", value: hexPgnString),
+            //URLQueryItem(name: "currentTurn", value: currentTurn)
+        ]
+        message.url = components.url
+
+        return message
+    }
+
 
 }

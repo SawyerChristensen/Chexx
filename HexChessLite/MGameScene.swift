@@ -1,29 +1,29 @@
 //
-//  GameScene.swift
+//  MessagesGameScene.swift
 //  Chexx
 //
-//  Created by Sawyer Christensen on 6/24/24.
+//  Created by Sawyer Christensen on 8/29/25.
 //
 
 import SpriteKit
 import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
 import SwiftUI
 
-class GameScene: SKScene {
+protocol GameSceneDelegate: AnyObject {
+    func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8], currentTurn: String)
+}
+
+class MessagesGameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     
     let audioManager = AudioManager()
-    var isVsCPU: Bool
-    var isPassAndPlay: Bool
-    var isOnlineMultiplayer: Bool
     var onRematch: (() -> Void)?
-    //var variant: String = "Glinkski's"
     
-    var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
-    var gameCPU: GameCPU!
-    var hexPgn: [UInt8] = [] //pretty sure this isn't needed if hexPgn is used via gameState.hexPgn...
+    var gameState: GameState!
+    weak var gameDelegate: GameSceneDelegate? //to send the new gamestate through imessage
+    var hexPgn: [UInt8]
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -41,10 +41,8 @@ class GameScene: SKScene {
     var whiteStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextMiniUpdater: ((String) -> Void)?
     
-    init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) {
-        self.isVsCPU = isVsCPU
-        self.isPassAndPlay = isPassAndPlay
-        self.isOnlineMultiplayer = isOnlineMultiplayer
+    init(size: CGSize, hexPgn: [UInt8]) {
+        self.hexPgn = hexPgn
         super.init(size: size)
     }
 
@@ -56,21 +54,15 @@ class GameScene: SKScene {
     override func sceneDidLoad() {
         super.sceneDidLoad()
         
+        //print(gameState?)
+        
+        gameState = GameState()
+        
         anchorPoint = CGPoint(x: 0.5, y: 0.5) //centers the scene
         
-        // Load the game state (if exists) or create a new one
-        if isPassAndPlay {
-            gameState = loadGameStateFromFile(from: "currentPassAndPlay") ?? GameState()
-        } else if isVsCPU {
-            gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
-            gameCPU = GameCPU(difficulty: CPUDifficulty.hard)
-        } else if isOnlineMultiplayer {
-            gameState = GameState()
-        } else {
-            print("No game mode detected!")
-        }
+        hexagonSize = min(self.size.width, self.size.height) * 0.055 // 5.5% of minimum screen dimension
         
-        hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
+        //print("GameScene game state: \(gameState.HexPgn)")
         
         generateHexTiles(radius: hexagonSize, scene: self)
         
@@ -95,28 +87,7 @@ class GameScene: SKScene {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        
-        if (isPassAndPlay && gameState.currentPlayer == "black") || (isOnlineMultiplayer && MultiplayerManager.shared.currentPlayerColor == "black") {
-            rotateBoardImmediately()
-            rotateAllPiecesImmediately()
-        }
-        
-        if (isOnlineMultiplayer && gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor) {
-            self.whiteStatusTextMiniUpdater?(NSLocalizedString("Your turn", comment: ""))
-        } else {
-            self.whiteStatusTextMiniUpdater?("")
-        }
-        
-        if isOnlineMultiplayer {
-            MultiplayerManager.shared.stopListening()
-            
-            MultiplayerManager.shared.startListeningForMoves { [weak self] hexPgn in
-                //print("Recieved from server: \(hexPgn)")
-                self?.applyHexPgn(hexPgn)
-            }
-        }
-        
-        //updateGameStatusUI(gameStatus: gameStatus) //this is also called in applyHexPgn
+        self.applyHexPgn(hexPgn)
     }
     
     enum Direction { //for use with calcualte new center
@@ -319,9 +290,7 @@ class GameScene: SKScene {
                pieceDetails.count > 1, // Ensure there is a color component
                let pieceColor = String(pieceDetails[1]) as String? {
 
-                if (pieceColor == gameState.currentPlayer &&
-                    (!isVsCPU || gameState.currentPlayer == "white") &&
-                    (!isOnlineMultiplayer || pieceColor == MultiplayerManager.shared.currentPlayerColor)) {
+                if (pieceColor == gameState.currentPlayer) {
                     if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
                         deselectCurrentPiece()
                     } else { // Tapped on a different piece
@@ -481,7 +450,7 @@ class GameScene: SKScene {
         }
     }
     
-    func highlightCheckingPiece(at position: String) { //sdfsf
+    func highlightCheckingPiece(at position: String) {
         if let hexagon = childNode(withName: position) as? HexagonNode {
             let glowOverlay = SKShapeNode(path: hexagon.path!)
             glowOverlay.fillColor = UIColor.red.withAlphaComponent(0.3)
@@ -608,7 +577,7 @@ class GameScene: SKScene {
             if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex - 1] = nil 
+                    gameState.board[colIndex][rowIndex - 1] = nil
                     //fiftyMoveRule = 0
                 }
             }
@@ -646,38 +615,23 @@ class GameScene: SKScene {
             // ********** EXISTING PROMOTION LOGIC (HUMAN/CPU) **********
             if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1)
                 || (color == "black" && type == "pawn" && rowIndex == 0) {
-                // CPU auto-queen
-                if isVsCPU && color == "black" {
-                    type = "queen"
-                    finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
-                                 originalColIndex, originalRowIndex, colIndex, rowIndex,
-                                 promotionOffsetInt: 91)
-                }
-                else {
-                    // Show user promotion options
-                    presentPromotionOptions { newType in
-                        var promotionOffsetInt: UInt8 = 0
-                        switch newType {
-                        case "queen":  promotionOffsetInt = 91
-                        case "rook":   promotionOffsetInt = 92
-                        case "bishop": promotionOffsetInt = 93
-                        case "knight": promotionOffsetInt = 94
-                        default:       break
-                        }
-                        AchievementManager.shared.unlockAchievement(withID: "hextra_power")
-                        GameCenterManager.shared.reportAchievement(identifier: "HextraPower")
-                        if newType == "knight" {
-                            AchievementManager.shared.unlockAchievement(withID: "hexcalibur")
-                            GameCenterManager.shared.reportAchievement(identifier: "Hexcalibur")
-                        }
-                        // Then finalize move with user’s chosen promotion
-                        //why does this need self specifically?
-                        self.finalizeMove(pieceNode, color, newType, originalPosition, hexagonName,
-                                     originalColIndex, originalRowIndex, colIndex, rowIndex,
-                                     promotionOffsetInt: promotionOffsetInt)
+                // Show user promotion options
+                presentPromotionOptions { newType in
+                    var promotionOffsetInt: UInt8 = 0
+                    switch newType {
+                    case "queen":  promotionOffsetInt = 91
+                    case "rook":   promotionOffsetInt = 92
+                    case "bishop": promotionOffsetInt = 93
+                    case "knight": promotionOffsetInt = 94
+                    default:       break
                     }
+                    // Then finalize move with user’s chosen promotion
+                    //why does this need self specifically?
+                    self.finalizeMove(pieceNode, color, newType, originalPosition, hexagonName,
+                                 originalColIndex, originalRowIndex, colIndex, rowIndex,
+                                 promotionOffsetInt: promotionOffsetInt)
                 }
-                return
+            return
             }
         }
         
@@ -699,24 +653,12 @@ class GameScene: SKScene {
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
         
-        if isOnlineMultiplayer { //send move to cloud if online multiplayer and is our turn/move to send
-            MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn, currentTurn: gameState.currentPlayer)
-        }
-        
         if type == "king" {
             //print("updating king position from", from, "to", to)
             if color == "white" {
                 gameState.whiteKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                if gameState.whiteKingPosition == "g10" { //achievement unlocked! (unlocks for both players, could maybe be more robust)
-                    AchievementManager.shared.unlockAchievement(withID: "hexpedition")
-                    GameCenterManager.shared.reportAchievement(identifier: "Hexpedition")
-                }
             } else if color == "black" {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                if gameState.blackKingPosition == "g1" && !isVsCPU { //at least this makes sure the cpu cant unlock it...
-                    AchievementManager.shared.unlockAchievement(withID: "hexpedition")
-                    GameCenterManager.shared.reportAchievement(identifier: "Hexpedition")
-                }
             }
         }
         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")}
@@ -738,16 +680,7 @@ class GameScene: SKScene {
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
         
-        if isPassAndPlay {
-            if lowMotionEnabled {
-                rotateBoardImmediately()
-                rotateAllPiecesImmediately()
-            } else {
-                rotateBoard()
-                rotateAllPieces()
-            }
-            saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentPassAndPlay")
-        }
+        gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer)
         
         // MARK: - Is the game over now?
         let (isGameOver, gameStatus) = gameState.isGameOver()
@@ -759,125 +692,18 @@ class GameScene: SKScene {
             case "checkmate":
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
-                
-                // If online, do Elo updates + sound effects
-                if isOnlineMultiplayer {
-                    let localUserId    = MultiplayerManager.shared.currentUserId
-                    let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
-                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
                     
-                    if localUserIsWinner {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                    } else {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                /*self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
+                ) { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                    case "rematch":
+                        self.onRematch?()
+                    default:
+                        break
                     }
-
-                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
-                        
-                        let diff = newLocalElo - oldLocalElo
-                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
-                       
-                        let eloText = String(
-                            format: NSLocalizedString(
-                                "Your ELO rating changed from %d to %d (%@)",
-                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
-                            ),
-                            oldLocalElo,
-                            newLocalElo,
-                            sign
-                        )
-                        
-                        // Now present the game-over window with the eloText
-                        self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: eloText
-                        ) { action in
-                            switch action {
-                            case "viewBoard":
-                                print("user decided to view the board") //need SOMETHING to execute after case
-                            case "rematch":
-                                self.onRematch?()
-                            default:
-                                break
-                            }
-                        }
-                        MultiplayerManager.shared.finalizeGame()
-                    }
-                    
-                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId") //removes the "resume" button for online because the game has ended
-                    
-                } else { // its a single player game, so there is no elo adjustment
-                    
-                    if isPassAndPlay {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        deleteGameFile(filename: "currentPassAndPlay")
-                    }
-                    
-                    self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
-                    ) { action in
-                        switch action {
-                        case "viewBoard":
-                            print("user decided to view the board")
-                        case "rematch":
-                            self.onRematch?()
-                        default:
-                            break
-                        }
-                    }
-                }
-                
-                // MARK: Hexecutioner Achievement
-                let loserPieces = gameState.getPieces(for: loserColor)
-                let nonKingPieces = loserPieces.filter { $0.type != "king" }
-                if nonKingPieces.isEmpty && loserPieces.count == 1 { //the loser only has their king left!
-                    AchievementManager.shared.unlockAchievement(withID: "hexecutioner")
-                    GameCenterManager.shared.reportAchievement(identifier: "Hexecutioner")
-                }
-                
-                // MARK: Hextreme Measures Achievement
-                let winningKingPosition = (loserColor == "white") ? gameState.blackKingPosition : gameState.whiteKingPosition
-                let losingKingPosition = (loserColor == "white") ? gameState.whiteKingPosition : gameState.blackKingPosition
-                
-                let loserKingWouldBeValidMoves = validMovesForPiece(at: losingKingPosition, color: loserColor, type: "king", in: &gameState, skipKingCheck: true)
-                let winnerKingWouldBeValidMoves = validMovesForPiece(at: winningKingPosition, color: winnerColor, type: "king", in: &gameState, skipKingCheck: true)
-                let loserKingMovesSet = Set(loserKingWouldBeValidMoves)
-                let winnerKingMovesSet = Set(winnerKingWouldBeValidMoves)
-                let overlappingMoves = loserKingMovesSet.intersection(winnerKingMovesSet)
-
-                if !overlappingMoves.isEmpty {
-                    //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
-                    AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
-                    GameCenterManager.shared.reportAchievement(identifier: "HextremeMeasures")
-                }
-        
-                // MARK: Hex Machina Achievement
-                if isVsCPU {
-                    if winnerColor == "white" {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                        AchievementManager.shared.unlockAchievement(withID: "hex_machina")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
-                    } else {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
-                    }
-                    deleteGameFile(filename: "currentSinglePlayer")
-                }
-                
-                // MARK: Multiplayer Achievements
-                if MultiplayerManager.shared.currentPlayerColor == winnerColor {
-                    if winnerColor == "white" {
-                        AchievementManager.shared.unlockAchievement(withID: "hexceeded_hexpectations")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceededHexpectations")
-                        //print("user joined the game")
-                    } else { //the user is black, and created the game
-                        AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
-                        GameCenterManager.shared.reportAchievement(identifier: "FriendlyHexchange")
-                        //print("user created the game")
-                    }
-                }
+                }*/
                 
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Checkmate!")
@@ -887,83 +713,17 @@ class GameScene: SKScene {
             case "stalemate":
                 let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
                 
-                // If online, do Elo updates
-                if isOnlineMultiplayer {
-                    let localUserId    = MultiplayerManager.shared.currentUserId
-                    let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
-                    let localUserIsWinner = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
-                    
-                    if localUserIsWinner {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                    } else {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                /*self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
+                ) { action in
+                    switch action {
+                    case "viewBoard":
+                        print("user decided to view the board")
+                    case "rematch":
+                        self.onRematch?()
+                    default:
+                        break
                     }
-                    
-                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
-
-                        let diff = newLocalElo - oldLocalElo
-                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
-                       
-                        let eloText = String(
-                            format: NSLocalizedString(
-                                "Your ELO rating changed from %d to %d (%@)",
-                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
-                            ),
-                            oldLocalElo,
-                            newLocalElo,
-                            sign
-                        )
-                        
-                        // Now present the game-over window with the eloText
-                        self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: eloText
-                        ) { action in
-                            switch action {
-                            case "viewBoard":
-                                print("user decided to view the board")
-                            case "rematch":
-                                self.onRematch?()
-                            default:
-                                break
-                            }
-                        }
-                        MultiplayerManager.shared.finalizeGame()
-                    }
-                    
-                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId")
-                    
-                } else { //its a single player game
-                    if isVsCPU {
-                        if winnerColor == "white" {
-                            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                            AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                            GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        } else {
-                            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
-                        }
-                        deleteGameFile(filename: "currentSinglePlayer")
-                    }
-                    
-                    if isPassAndPlay {
-                        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
-                        AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
-                        GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        deleteGameFile(filename: "currentPassAndPlay")
-                    }
-                    
-                    self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
-                    ) { action in
-                        switch action {
-                        case "viewBoard":
-                            print("user decided to view the board")
-                        case "rematch":
-                            self.onRematch?()
-                        default:
-                            break
-                        }
-                    }
-                }
+                }*/
                 
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Stalemate!")
@@ -976,60 +736,6 @@ class GameScene: SKScene {
         }
         
         updateGameStatusUI(gameStatus: gameStatus)
-        
-        if isVsCPU && gameState.currentPlayer == "black" {
-            self.whiteStatusTextUpdater?("Thinking.")
-            let statusText = ["Thinking..", "Thinking...", "Thinking."]
-            var currentIndex = 0
-            let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-                self.whiteStatusTextUpdater?(statusText[currentIndex])
-                currentIndex = (currentIndex + 1) % statusText.count
-            }
-            
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1 //delay isnt really needed
-            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
-                self.cpuMakeMove()
-                
-                // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
-                DispatchQueue.main.async {
-                    thinkingTimer.invalidate() // Stop the timer
-                    self.whiteStatusTextUpdater?("") // Clear the status text
-                }
-            }
-        }
-        
-        if isVsCPU {
-            saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentSinglePlayer")
-        }
-        
-    }
-    
-    func cpuMakeMove() { //for single player, also moves the piece
-        if let move = gameCPU.findMove(gameState: &gameState) {
-            if let cpuPieceNode = findPieceNode(at: move.start) {
-                if let destinationHexagon = self.childNode(withName: move.destination) {
-                    if let parent = cpuPieceNode.parent {
-                        let destinationPosition = parent.convert(destinationHexagon.position, from: self)
-                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.25)
-                        //slideAction.timingMode = .linear
-                        cpuPieceNode.run(slideAction)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //pretty sure this improves the frame rate
-                            guard let self = self else { return }
-                            self.updateGameState(with: cpuPieceNode, at: move.destination)
-                        }
-                    }
-                } else {
-                    print("Error: Destination hexagon not found for \(move.destination)")
-                }
-            } else {
-                print("Error: CPU's piece node not found at \(move.start)")
-            }
-        } else {
-            // Handle no valid moves (e.g., checkmate or stalemate)
-            print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
-            //redStatusTextUpdater?("CPU has no valid moves. Game over.")
-            gameState.gameStatus = "ended"
-        }
     }
     
     func applyHexPgn(_ hexPgn: [UInt8]) {
@@ -1038,6 +744,7 @@ class GameScene: SKScene {
             //print("same as stored, returning...")
             return
         }
+        print("Applying hexPgn: \(hexPgn)")
 
         // If we need to reconstruct the entire game for reentry
         if gameState.HexPgn.count == 1, hexPgn.count >= 2 {
@@ -1104,26 +811,19 @@ class GameScene: SKScene {
             print("Error: Piece node not found at \(startPosition)")
         }
         
+        if gameState.currentPlayer == "black" {
+            rotateBoardImmediately()
+            rotateAllPiecesImmediately()
+        }
+        
         let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
 
         updateGameStatusUI(gameStatus: gameStatus)
     }
 
     
-    func updateGameStatusUI(gameStatus: String) { //should maybe seperate update game status with end of game achievement status
-        
-        //MARK: display whose turn it is
-        if isOnlineMultiplayer { //can maybe be refactored out to a different function
-            if gameState.currentPlayer == MultiplayerManager.shared.currentPlayerColor {
-                whiteStatusTextMiniUpdater?(NSLocalizedString("Your turn", comment: ""))
-                
-            } else {
-                whiteStatusTextMiniUpdater?(NSLocalizedString("Waiting for opponent...", comment: ""))
-            }
-        }
-        
-        //MARK: highlight any pieces in check
-        if gameStatus.starts(with: "check") {
+    func updateGameStatusUI(gameStatus: String) {
+        if gameStatus.starts(with: "check") { //highlight any pieces in check
             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
@@ -1137,18 +837,6 @@ class GameScene: SKScene {
     
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
     
-    func rotateBoard() {
-        guard self.view != nil else {
-            print("View is nil, can't rotate board")
-            return
-        }
-        
-        boardIsRotated.toggle()
-        UIView.animate(withDuration: 0.5) {
-            self.view?.transform = (self.view?.transform.rotated(by: .pi))!
-        }
-    }
-    
     func rotateBoardImmediately() {
         guard let view = self.view else {
             print("View is nil, can't rotate board")
@@ -1158,20 +846,6 @@ class GameScene: SKScene {
         boardIsRotated.toggle()
         // Set the transform directly without animation
         view.transform = view.transform.rotated(by: .pi)
-    }
-    
-    func rotateAllPieces() {
-        let rotateAction = SKAction.rotate(byAngle: .pi, duration: 0.5) // Rotate 180 degrees
-
-        for node in children {
-            if let hexagon = node as? HexagonNode {
-                for pieceNode in hexagon.children {
-                    if let pieceNode = pieceNode as? SKSpriteNode {
-                        pieceNode.run(rotateAction)
-                    }
-                }
-            }
-        }
     }
     
     func rotateAllPiecesImmediately() {
@@ -1194,7 +868,7 @@ class GameScene: SKScene {
             viewController.present(promotionViewController, animated: true, completion: nil)
         }
     }
-    
+    /*
     func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let gameOverViewController = UIHostingController(
@@ -1205,7 +879,7 @@ class GameScene: SKScene {
             gameOverViewController.view.backgroundColor = .clear // Transparent background
             viewController.present(gameOverViewController, animated: true, completion: nil)
         }
-    }
+    }*/
 
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
@@ -1261,11 +935,6 @@ class GameScene: SKScene {
     }
     
     deinit { //(upon memory deninitialization of the GameScene (i actually have no idea when this triggers)
-        if isOnlineMultiplayer {
-            Task { @MainActor in
-                MultiplayerManager.shared.stopListening()
-            }
-        }
     }
     
 }

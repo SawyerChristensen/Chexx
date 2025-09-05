@@ -1,5 +1,11 @@
 Make a hexchess-lite version that works with iMessage
 
+-game over options/window for imessage, restart game option??
+-figure out memory problem with resizing the window??
+-have a win counter on the bottom of the hexchess screen
+-figure out promotion window dismiss bug/promotion quirks
+-establish proper "send move" timeline
+
 *----------* UPDATE 1.2 *----------* (iMessage Update)
 
 
