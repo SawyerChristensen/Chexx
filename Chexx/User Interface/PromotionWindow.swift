@@ -84,19 +84,11 @@ struct WaveText: View {
 }
 
 struct WaveEffect: GeometryEffect {
-    // The current time/phase of the wave, which we will animate.
     var time: Double
-    
-    // The index of the character in the string.
-    let index: Int
-    
-    // How high the wave should be.
-    let amplitude: CGFloat
-    
-    // How tight the wave cycles are.
-    let frequency: Double = 0.5
+    let index: Int //index of the current character in the string
+    let amplitude: CGFloat //how high the wave should be
+    let frequency: Double = 0.5 //how tight the wave cycles are
 
-    // This tells SwiftUI which property to animate.
     var animatableData: Double {
         get { time }
         set { time = newValue }

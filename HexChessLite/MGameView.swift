@@ -9,13 +9,12 @@ import SwiftUI
 import SpriteKit
 
 struct MessagesGameView: View {
-    var hexPGN: [UInt8]
     @State var scene: SKScene?
     weak var delegate: GameSceneDelegate?
     
     @State private var redStatusText: String = ""
-    @State private var whiteStatusText: String = ""
-    @State private var whiteStatusTextMini: String = ""
+    @State private var waitingForOpponentText: String = "Waiting for opponent"
+    @State private var waitingTimer: Timer?
 
     var body: some View {
         GeometryReader { geometry in
@@ -27,12 +26,35 @@ struct MessagesGameView: View {
                     SpriteView(scene: scene)
                         //.ignoresSafeArea()
                 }
+                
+                Text(redStatusText)
+                    .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                    .foregroundColor(.red)
+                    .shadow(color: .red, radius: 5, x: 0, y: 0)
+                    .padding(.bottom, geometry.size.height * 0.8) //5% away from the top
+                
+                if !isLocalPlayersTurn && !isGameOver {
+                    Color.black.opacity(0.4) //should block all touches to the scene...
+                        .ignoresSafeArea()
+                        //.transition(.opacity)
+                        //.contentShape(Rectangle()) //TEST IF I NEED THIS
+                        //.allowsHitTesting(true) //maybeeee need this. uncomment this before ^
+                    
+                    Text(waitingForOpponentText)
+                        .font(.system(size: geometry.size.width / 20, weight: .semibold, design: .serif))
+                        .foregroundColor(.white)
+                        .padding()
+                        .background(Color(UIColor(hex: "#262626"))) //or Color(white: 0.2)
+                        .cornerRadius(10)
+                        .onAppear { startWaitingAnimation() }
+                        .onDisappear { stopWaitingAnimation() }
+                }
             }
 
-            .onChange(of: geometry.size) { _, newSize in
+            .onChange(of: geometry.size) { _, newSize in //this is likely not needed as the scene should NOT be changing sizes (only portrait!)
                 if newSize.height > newSize.width {
                     if scene == nil {
-                        scene = renderScene(size: newSize, hexPgn: hexPGN)
+                        scene = renderScene(size: newSize, hexPgn: latestHexPGN!)
                     } else {
                         scene?.size = newSize
                     }
@@ -45,75 +67,45 @@ struct MessagesGameView: View {
                 }
             }
             
-            //game text in portrait mode
-            if geometry.size.height > geometry.size.width {
-                
-                VStack(spacing: 10) {
-
-                    //opponent info
-                    /*if MultiplayerManager.shared.opponentName != "" {
-                        HStack(spacing: 10) {
-                            Text("Opponent:")
-                                .font(.system(size: geometry.size.height / 32, design: .serif))
-                                .foregroundColor(.white)
-                            //.padding()
-                            
-                            // Opponent's Profile Image
-                            if let url = MultiplayerManager.shared.opponentProfileImageURL {
-                                AsyncImage(url: url) { image in
-                                    image.resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 40, height: 40)
-                                        .clipShape(Circle())
-                                } placeholder: {
-                                    Circle()
-                                        .fill(Color.gray)
-                                        .frame(width: 40, height: 40)
-                                }
-                            }
-                            
-                            // Opponent's Name
-                            Text(MultiplayerManager.shared.opponentName)
-                                .font(.system(size: geometry.size.height / 32, weight: .bold, design: .serif))
-                                .foregroundColor(.white)
-                        }
-                    }*/
-                    
-                    if !redStatusText.isEmpty {
-                        Text(redStatusText)
-                            .font(.system(size: geometry.size.height / 28, weight: .bold, design: .serif))
-                            .foregroundColor(.red)
-                            .shadow(color: .red, radius: 5, x: 0, y: 0)
-                    } else {
-                        //whose turn is it, anyway?
-                        Text(whiteStatusTextMini)
-                            .font(.system(size: geometry.size.height / 36, design: .serif))
-                            .foregroundColor(.white)
-                            //.shadow(color: .white, radius: 5, x: 0, y: 0)
-                    }
+            .onChange(of: isLocalPlayersTurn) { oldvalue, newValue in
+                if newValue == false {
+                    startWaitingAnimation()
+                } else {
+                    stopWaitingAnimation()
                 }
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
-                .padding(.bottom, geometry.size.height)
             }
         }
     }
 
     private func renderScene(size: CGSize, hexPgn: [UInt8]) -> SKScene {
         //print("scene size:", size)
-        let newScene = MessagesGameScene(size: size, hexPgn: hexPgn)
+        let newScene = MessagesGameScene(size: size)
         newScene.gameDelegate = delegate
         newScene.scaleMode = .aspectFill
 
         newScene.redStatusTextUpdater = { text in
-            self.redStatusText = text // Update the red status text from the GameScene
-        }
-        newScene.whiteStatusTextUpdater = { text in
-            self.whiteStatusText = text // Update the white status text from the GameScene
-        }
-        newScene.whiteStatusTextMiniUpdater = { text in
-            self.whiteStatusTextMini = text // Update the mini white status text from the GameScene
+            self.redStatusText = text // update the red status text from the GameScene
         }
         
         return newScene
+    }
+    
+    private func startWaitingAnimation() {
+        let baseText = "Waiting for opponent"
+        let dots = ["", ".", "..", "..."]
+        var currentIndex = 0
+        
+        waitingTimer?.invalidate() // stop any previous timer
+        
+        waitingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+            waitingForOpponentText = baseText + dots[currentIndex]
+            currentIndex = (currentIndex + 1) % dots.count
+        }
+    }
+
+    private func stopWaitingAnimation() {
+        waitingTimer?.invalidate()
+        waitingTimer = nil
+        waitingForOpponentText = ""
     }
 }

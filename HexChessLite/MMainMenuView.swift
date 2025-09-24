@@ -10,8 +10,9 @@ import Messages
 
 struct MessagesMainMenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    @ObservedObject var viewModel: MenuViewViewModel
+    @ObservedObject var viewModel: MenuViewModel
     var onStartGame: () -> Void
+    @State private var winCount = 0
     
     var body: some View {
         GeometryReader { geometry in
@@ -32,10 +33,10 @@ struct MessagesMainMenuView: View {
                         .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.1, weight: .semibold, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }
-                .padding(.bottom, 5)
                 .frame(maxWidth: .infinity)
                 
                 Divider()
+                    .padding(.bottom, 5)
 
                 ZStack {
                     
@@ -46,7 +47,7 @@ struct MessagesMainMenuView: View {
                             width: viewModel.presentationStyle == .compact ? 420 : 600,
                             height: viewModel.presentationStyle == .compact ? 420 : 600)
                         .position(
-                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.37 : screenWidth * 0.5,
+                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.5,
                             y: viewModel.presentationStyle == .compact ? screenHeight * 0.9 : screenHeight * 0.8)
                         .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
@@ -64,10 +65,21 @@ struct MessagesMainMenuView: View {
                             .clipShape(HexagonEdgeRectangleShape())
                             .position(
                                 x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
-                                y: viewModel.presentationStyle == .compact ? screenHeight * 0.13 : screenHeight * 0.2)
+                                y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
                     }
+                    
+                    Text("Total Wins: \(winCount)")
+                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .regular, design: .serif))
+                        .foregroundColor(colorScheme == .dark ? Color(white: 0.8) : Color(white: 0.3))
+                        .position(
+                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
+                            y: viewModel.presentationStyle == .compact ? screenHeight * 0.25 : screenHeight * 0.25
+                        )
+                    
                 }
             }
+            .onAppear {
+                self.winCount = WinTracker.shared.getWinCount()}
         }
         .background(colorScheme == .dark ? Color(UIColor(hex: "#262626")) : Color.white)
     }
@@ -111,11 +123,30 @@ struct ColorInvertIfDarkModeModifier: ViewModifier {
     }
 }
 
-// This class will act as the bridge between UIKit and your SwiftUI view.
-class MenuViewViewModel: ObservableObject {//this is effectively rerouting from didTransition to this
+//so we can smoothly transition between the compact and expanded menu
+class MenuViewModel: ObservableObject {
     @Published var presentationStyle: MSMessagesAppPresentationStyle
 
     init(presentationStyle: MSMessagesAppPresentationStyle) {
         self.presentationStyle = presentationStyle
+    }
+}
+
+class WinTracker {
+    static let shared = WinTracker()
+    private let winsKey = "totalWins"
+
+    func getWinCount() -> Int {
+        return UserDefaults.standard.integer(forKey: winsKey)
+    }
+    
+    func incrementWins() {
+        var currentWins = getWinCount()
+        currentWins += 1
+        UserDefaults.standard.set(currentWins, forKey: winsKey)
+    }
+    
+    func resetWins() {
+        UserDefaults.standard.removeObject(forKey: winsKey)
     }
 }

@@ -124,22 +124,14 @@
 		BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Differences.txt,
 				Info.plist,
 			);
 			target = BE7D04AE2E5A77D6000920FC /* HexChessLite */;
 		};
-		BECCB4E32E675DEE00742EAF /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Differences.txt,
-			);
-			target = BE76A9AB2C2A2602009113B4 /* Chexx */;
-		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BECCB4E32E675DEE00742EAF /* PBXFileSystemSynchronizedBuildFileExceptionSet */, BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
+		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */

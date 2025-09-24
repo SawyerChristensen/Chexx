@@ -11,6 +11,7 @@ import SwiftUI
 
 protocol GameSceneDelegate: AnyObject {
     func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8], currentTurn: String)
+    func requestRematch()
 }
 
 class MessagesGameScene: SKScene {
@@ -19,11 +20,9 @@ class MessagesGameScene: SKScene {
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     
     let audioManager = AudioManager()
-    var onRematch: (() -> Void)?
     
     var gameState: GameState!
     weak var gameDelegate: GameSceneDelegate? //to send the new gamestate through imessage
-    var hexPgn: [UInt8]
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -38,11 +37,8 @@ class MessagesGameScene: SKScene {
     //var fiftyMoveRule = 0 // Still need to implement
     
     var redStatusTextUpdater: ((String) -> Void)?
-    var whiteStatusTextUpdater: ((String) -> Void)?
-    var whiteStatusTextMiniUpdater: ((String) -> Void)?
     
-    init(size: CGSize, hexPgn: [UInt8]) {
-        self.hexPgn = hexPgn
+    override init(size: CGSize) {
         super.init(size: size)
     }
 
@@ -67,27 +63,16 @@ class MessagesGameScene: SKScene {
         generateHexTiles(radius: hexagonSize, scene: self)
         
         placePieces(scene: self, gameState: gameState)
-        
-        onRematch = { //if the rematch button was pressed...
-            self.gameState = GameState() //reset the game state
-            
-            self.removeAllPieces(scene: self) //clear the board
-            self.clearValidMoveHighlights()
-            self.clearCheckHighlights()
-            
-            self.placePieces(scene: self, gameState: self.gameState) //place all pieces in original positions
-            
-            if self.boardIsRotated { //if the board is rotated in Pass & Play mode, unrotate it
-                self.boardIsRotated.toggle()
-                self.rotateBoardImmediately()
-                self.rotateAllPiecesImmediately()
-            }
-        }
     }
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        self.applyHexPgn(hexPgn)
+        currentGameScene = self   // register this scene as active
+
+        // If a global already exists, apply it immediately
+        if let latest = latestHexPGN {
+            applyHexPgn(latest)
+        }
     }
     
     enum Direction { //for use with calcualte new center
@@ -290,7 +275,7 @@ class MessagesGameScene: SKScene {
                pieceDetails.count > 1, // Ensure there is a color component
                let pieceColor = String(pieceDetails[1]) as String? {
 
-                if (pieceColor == gameState.currentPlayer) {
+                if (pieceColor == gameState.currentPlayer) && isLocalPlayersTurn && !isGameOver {
                     if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
                         deselectCurrentPiece()
                     } else { // Tapped on a different piece
@@ -508,9 +493,11 @@ class MessagesGameScene: SKScene {
         }
     }
     
-    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?, promotionPiece: Piece? = nil) { //still need to implement game status such as "ongoing" or "ended"
+    func updateGameState(with pieceNode: SKSpriteNode, at hexagonName: String?, promotionPiece: Piece? = nil, applyingUpdate: Bool = false) { //still need to implement game status such as "ongoing" or "ended"
         
         clearCheckHighlights() //this should also clear any status messages
+        
+        print("current game state hexpgn:", gameState.HexPgn)
         
         guard let hexagonName = hexagonName else {
             print("Hexagon name is nil")
@@ -608,7 +595,7 @@ class MessagesGameScene: SKScene {
             // Finalize the move directly
             finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
                          originalColIndex, originalRowIndex, colIndex, rowIndex,
-                         promotionOffsetInt: promotionOffsetInt)
+                         promotionOffsetInt: promotionOffsetInt, applyingUpdate: applyingUpdate)
             return
         }
         else {
@@ -629,7 +616,7 @@ class MessagesGameScene: SKScene {
                     //why does this need self specifically?
                     self.finalizeMove(pieceNode, color, newType, originalPosition, hexagonName,
                                  originalColIndex, originalRowIndex, colIndex, rowIndex,
-                                 promotionOffsetInt: promotionOffsetInt)
+                                 promotionOffsetInt: promotionOffsetInt, applyingUpdate: applyingUpdate)
                 }
             return
             }
@@ -638,11 +625,10 @@ class MessagesGameScene: SKScene {
         // ********** NORMAL (NON-PROMOTION) CASE **********
         finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
                      originalColIndex, originalRowIndex, colIndex, rowIndex,
-                     promotionOffsetInt: 0)
+                     promotionOffsetInt: 0, applyingUpdate: applyingUpdate)
     }
 
-    //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
-    func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ originalPosition: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int, promotionOffsetInt: UInt8) {
+    func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ originalPosition: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int, promotionOffsetInt: UInt8, applyingUpdate: Bool) {
         
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] //jesus christ columns is defined in like every single function
         
@@ -652,6 +638,7 @@ class MessagesGameScene: SKScene {
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
+        print("updated hexpgn:", gameState.HexPgn)
         
         if type == "king" {
             //print("updating king position from", from, "to", to)
@@ -680,68 +667,68 @@ class MessagesGameScene: SKScene {
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
         
-        gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer)
-        
         // MARK: - Is the game over now?
-        let (isGameOver, gameStatus) = gameState.isGameOver()
+        let (theGameIsOver, gameStatus) = gameState.isGameOver()
         
-        if isGameOver {
+        if theGameIsOver {
+            let winnerColor = gameState.currentPlayer == "white" ? "black" : "white" //opposite of current
             
             switch gameStatus {
-    
-            case "checkmate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
-                    
-                /*self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: ""
-                ) { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                    case "rematch":
-                        self.onRematch?()
-                    default:
-                        break
+                
+                case "checkmate":
+                print("checkmated!")
+                if applyingUpdate {
+                    print("this should not print")
+                }
+                    self.presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.gameDelegate?.requestRematch()
+                        default:
+                            break
+                        }
                     }
-                }*/
+                    //redStatusTextUpdater?("Checkmate!")
                 
-                whiteStatusTextUpdater?("")
-                //redStatusTextUpdater?("Checkmate!")
-                gameState.gameStatus = "ended"
-                return
-                
-            case "stalemate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                
-                /*self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: ""
-                ) { action in
-                    switch action {
-                    case "viewBoard":
-                        print("user decided to view the board")
-                    case "rematch":
-                        self.onRematch?()
-                    default:
-                        break
+                case "stalemate":
+                    self.presentGameOverOptions(winner: winnerColor, method: "Stalemate") { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.gameDelegate?.requestRematch()
+                        default:
+                            break
+                        }
                     }
-                }*/
+                    //redStatusTextUpdater?("Stalemate!")
                 
-                whiteStatusTextUpdater?("")
-                //redStatusTextUpdater?("Stalemate!")
-                gameState.gameStatus = "ended"
-                return
-                
-            default:
-                break
-            }
+                default:
+                    break //probably not needed
+                }
+            
+            isGameOver = true
+        }
+        
+        if !applyingUpdate { //dont want to bounce the update back!
+            print("Sending game state hexpgn:", gameState.HexPgn)
+            gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer)
         }
         
         updateGameStatusUI(gameStatus: gameStatus)
     }
     
     func applyHexPgn(_ hexPgn: [UInt8]) {
+        //update the iMessage UI depending on if its the local players color to move
+        isLocalPlayersTurn =
+            (gameState.currentPlayer == "white" && localPlayerColor == .white) ||
+            (gameState.currentPlayer == "black" && localPlayerColor == .black)
+        
         // Exit early if hexPgn is unchanged or empty
         guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else {
-            //print("same as stored, returning...")
+            print("same as stored, returning...")
             return
         }
         print("Applying hexPgn: \(hexPgn)")
@@ -773,7 +760,7 @@ class MessagesGameScene: SKScene {
             } else {
                 promotionPiece = gameState.getPromotionPiece(for: destinationIndex)
             }
-
+            
             switch promotionPiece?.type {
             case "queen":
                 adjustedIndex = 91
@@ -798,10 +785,11 @@ class MessagesGameScene: SKScene {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
+                    print("animating slide")
                     pieceNode.run(slideAction)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                         guard let self = self else { return }
-                        self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
+                        self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece, applyingUpdate: true)
                     }
                 }
             } else {
@@ -809,11 +797,6 @@ class MessagesGameScene: SKScene {
             }
         } else {
             print("Error: Piece node not found at \(startPosition)")
-        }
-        
-        if gameState.currentPlayer == "black" {
-            rotateBoardImmediately()
-            rotateAllPiecesImmediately()
         }
         
         let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
@@ -868,18 +851,17 @@ class MessagesGameScene: SKScene {
             viewController.present(promotionViewController, animated: true, completion: nil)
         }
     }
-    /*
-    func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
+    
+    func presentGameOverOptions(winner: String, method: String, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let gameOverViewController = UIHostingController(
-                rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: isOnlineMultiplayer, eloText: eloText, completion: completion)
-            )
+                rootView: MessagesGameOverWindow(winner: winner, method: method, completion: completion))
             
             gameOverViewController.modalPresentationStyle = .overCurrentContext
             gameOverViewController.view.backgroundColor = .clear // Transparent background
             viewController.present(gameOverViewController, animated: true, completion: nil)
         }
-    }*/
+    }
 
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
@@ -934,9 +916,11 @@ class MessagesGameScene: SKScene {
         }
     }
     
-    deinit { //(upon memory deninitialization of the GameScene (i actually have no idea when this triggers)
+    deinit {
+        if currentGameScene === self {
+            currentGameScene = nil
+        }
     }
-    
 }
 
 extension UIColor {

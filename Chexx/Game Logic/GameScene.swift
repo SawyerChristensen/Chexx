@@ -23,7 +23,7 @@ class GameScene: SKScene {
     
     var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
     var gameCPU: GameCPU!
-    var hexPgn: [UInt8] = [] //pretty sure this isn't needed if hexPgn is used via gameState.hexPgn...
+    var hexPgn: [UInt8] = [0] //pretty sure this isn't needed if hexPgn is used via gameState.hexPgn...
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -757,7 +757,7 @@ class GameScene: SKScene {
             switch gameStatus {
     
             case "checkmate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
+                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white" //opposite of current
                 let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
                 
                 // If online, do Elo updates + sound effects
