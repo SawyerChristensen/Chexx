@@ -37,6 +37,7 @@ class MessagesGameScene: SKScene {
     //var fiftyMoveRule = 0 // Still need to implement
     
     var redStatusTextUpdater: ((String) -> Void)?
+    var turnStateUpdater: ((_ isLocalPlayersTurn: Bool) -> Void)? //what notifies GameView of the turn changing
     
     override init(size: CGSize) {
         super.init(size: size)
@@ -67,11 +68,16 @@ class MessagesGameScene: SKScene {
     
     override func didMove(to view: SKView) {
         super.didMove(to: view)
-        currentGameScene = self   // register this scene as active
+        currentGameScene = self //register this scene as active globally
 
-        // If a global already exists, apply it immediately
+        //if a global latest state already exists, apply it immediately
         if let latest = latestHexPGN {
             applyHexPgn(latest)
+        }
+        
+        if localPlayerColor == .black {
+            rotateBoardImmediately()
+            rotateAllPiecesImmediately()
         }
     }
     
@@ -275,7 +281,7 @@ class MessagesGameScene: SKScene {
                pieceDetails.count > 1, // Ensure there is a color component
                let pieceColor = String(pieceDetails[1]) as String? {
 
-                if (pieceColor == gameState.currentPlayer) && isLocalPlayersTurn && !isGameOver {
+                if (pieceColor == gameState.currentPlayer) && pieceColor == localPlayerColor!.rawValue && !isGameOver {
                     if selectedPiece == pieceNode { // Tapped on the already selected piece, deselect it
                         deselectCurrentPiece()
                     } else { // Tapped on a different piece
@@ -497,8 +503,6 @@ class MessagesGameScene: SKScene {
         
         clearCheckHighlights() //this should also clear any status messages
         
-        print("current game state hexpgn:", gameState.HexPgn)
-        
         guard let hexagonName = hexagonName else {
             print("Hexagon name is nil")
             return
@@ -526,11 +530,6 @@ class MessagesGameScene: SKScene {
             return
         }
         
-        /*print(originalPosition)
-        print(gameState.positionStringToInt(position: originalPosition))
-        print(hexagonName)
-        print(gameState.positionStringToInt(position: hexagonName))*/
-        
         originalRowIndex = originalRowIndex - 1 //originalRowIndex is originally not 0 indexed, have to - 1)
         
         // Get piece details from identifier
@@ -540,7 +539,7 @@ class MessagesGameScene: SKScene {
         
         // Ensure the move is made by the current player (touchDown should catch this first!)
         guard color == gameState.currentPlayer else {
-            //print("It's not \(color)'s turn")
+            print("It's not \(color)'s turn")
             return
         }
         
@@ -638,7 +637,7 @@ class MessagesGameScene: SKScene {
         gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
-        print("updated hexpgn:", gameState.HexPgn)
+        //print("updated hexpgn:", gameState.HexPgn)
         
         if type == "king" {
             //print("updating king position from", from, "to", to)
@@ -671,15 +670,16 @@ class MessagesGameScene: SKScene {
         let (theGameIsOver, gameStatus) = gameState.isGameOver()
         
         if theGameIsOver {
+            if !applyingUpdate { //you just won the game! (could also check this by comparing winnerColor & localPlayerColor)
+                WinTracker.shared.incrementWins()
+            }
+            
             let winnerColor = gameState.currentPlayer == "white" ? "black" : "white" //opposite of current
             
             switch gameStatus {
                 
                 case "checkmate":
-                print("checkmated!")
-                if applyingUpdate {
-                    print("this should not print")
-                }
+                
                     self.presentGameOverOptions(winner: winnerColor, method: "Checkmate") { action in
                         switch action {
                         case "viewBoard":
@@ -712,8 +712,8 @@ class MessagesGameScene: SKScene {
             isGameOver = true
         }
         
-        if !applyingUpdate { //dont want to bounce the update back!
-            print("Sending game state hexpgn:", gameState.HexPgn)
+        if !applyingUpdate { //game not over, and you dont want to bounce the update back!
+            //print("Sending game state hexpgn:", gameState.HexPgn)
             gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer)
         }
         
@@ -721,17 +721,15 @@ class MessagesGameScene: SKScene {
     }
     
     func applyHexPgn(_ hexPgn: [UInt8]) {
-        //update the iMessage UI depending on if its the local players color to move
-        isLocalPlayersTurn =
-            (gameState.currentPlayer == "white" && localPlayerColor == .white) ||
-            (gameState.currentPlayer == "black" && localPlayerColor == .black)
-        
         // Exit early if hexPgn is unchanged or empty
         guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else {
-            print("same as stored, returning...")
+            //print("Same hexPgn as stored, returning...")
+            let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
+            updateGameStatusUI(gameStatus: gameStatus)
             return
         }
-        print("Applying hexPgn: \(hexPgn)")
+        //print("gamestate hexpgn:", gameState.HexPgn)
+        //print("Applying hexPgn: \(hexPgn)")
 
         // If we need to reconstruct the entire game for reentry
         if gameState.HexPgn.count == 1, hexPgn.count >= 2 {
@@ -785,7 +783,6 @@ class MessagesGameScene: SKScene {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
-                    print("animating slide")
                     pieceNode.run(slideAction)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                         guard let self = self else { return }
@@ -798,14 +795,15 @@ class MessagesGameScene: SKScene {
         } else {
             print("Error: Piece node not found at \(startPosition)")
         }
-        
-        let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
-
-        updateGameStatusUI(gameStatus: gameStatus)
     }
 
     
     func updateGameStatusUI(gameStatus: String) {
+        //print("updating game status")
+        //update the iMessage UI depending on if its the local players color to move
+        let isUsersTurn = (gameState.currentPlayer == localPlayerColor!.rawValue)
+        turnStateUpdater?(isUsersTurn)
+        
         if gameStatus.starts(with: "check") { //highlight any pieces in check
             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
             // Extract positions after "check by " and highlight checking pieces
@@ -818,8 +816,8 @@ class MessagesGameScene: SKScene {
         }
     }
     
-    var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
-    
+    var boardIsRotated: Bool = false
+
     func rotateBoardImmediately() {
         guard let view = self.view else {
             print("View is nil, can't rotate board")
@@ -901,7 +899,7 @@ class MessagesGameScene: SKScene {
         }
     }
   
-    func printGameState() { //just for debugging
+    /*func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         
@@ -914,7 +912,7 @@ class MessagesGameScene: SKScene {
                 }
             }
         }
-    }
+    }*/
     
     deinit {
         if currentGameScene === self {

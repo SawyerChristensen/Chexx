@@ -16,17 +16,16 @@ import SpriteKit
 //project-wide variables:
 weak var currentGameScene: MessagesGameScene?
 
-enum PlayerColor { //do we need these if we have the others?
-    case white, black
-}
+enum PlayerColor: String {
+    case white, black }
 var localPlayerColor: PlayerColor?
 var blackPlayerID: String?
-var isLocalPlayersTurn: Bool = true
 
 var isGameOver: Bool = false //not used yet
 
 var latestHexPGN: [UInt8]? {
     didSet {
+        guard latestHexPGN != oldValue else { return } //oldValue is a value provided by Swift
         if let scene = currentGameScene, let hexPgn = latestHexPGN {
             scene.applyHexPgn(hexPgn)
         }
@@ -45,7 +44,7 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: - Conversation Handling
     
     override func willBecomeActive(with conversation: MSConversation) {
-        print("willBecomeActive")
+        //print("willBecomeActive")
         super.willBecomeActive(with: conversation)
         
         if let selectedMessage = conversation.selectedMessage,
@@ -59,13 +58,14 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     override func didSelect(_ message: MSMessage, conversation: MSConversation) { //note: we need to make sure that this does NOT fire when the message is sent, it could result in applyHexPGN being called after the most recent move, which shouldnt happen
-        print("didSelect")
+        //this is for when you tap on a sent game bubble when the menu is open
+        //print("didSelect")
         guard let moves = decodeMoves(from: message, in: conversation) else { return }
         latestHexPGN = moves
     }
     
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
-        print("willTransition")
+        //print("willTransition")
         super.willTransition(to: presentationStyle)
         guard let conversation = activeConversation else { return }
 
@@ -84,7 +84,7 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     override func didReceive(_ message: MSMessage, conversation: MSConversation) {
-        print("didReceive")
+        //print("didReceive")
         guard let moves = decodeMoves(from: message, in: conversation) else { return }
         latestHexPGN = moves
     }
@@ -102,7 +102,7 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     private func presentGameController() {
-        print("presentGameController")
+        //print("presentGameController")
         //removeAllChildViewControllers()
         let gameView = MessagesGameView(delegate: self)
         let gameController = UIHostingController(rootView: gameView)
@@ -150,7 +150,7 @@ class MessagesViewController: MSMessagesAppViewController {
     
     //when the user presses "start game" from main menu, create a game state and load it into the chat
     private func createGame(conversation: MSConversation) {
-        print("createGame")
+        //print("createGame")
         let session = MSSession()
         let message = MSMessage(session: session)
         let layout = MSMessageTemplateLayout()
@@ -195,14 +195,11 @@ class MessagesViewController: MSMessagesAppViewController {
         if blackPlayerID == nil {
             if let blackIDFromMessage = components.queryItems?.first(where: { $0.name == "blackPlayerID" })?.value {
                 blackPlayerID = blackIDFromMessage
-                print("blackPlayerID:", blackPlayerID)
-                print("you are:", conversation.localParticipantIdentifier.uuidString)
             }
         }
         
         let myID = conversation.localParticipantIdentifier.uuidString
         localPlayerColor = (myID == blackPlayerID) ? .black : .white
-        //print(localPlayerColor)
 
         let hexPgn = [UInt8](data) // convert Data to [UInt8]
         return hexPgn
@@ -211,7 +208,7 @@ class MessagesViewController: MSMessagesAppViewController {
 
 extension MessagesViewController: GameSceneDelegate {
     func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8],currentTurn: String) {
-        print("autoSend move")
+        //print("autoSend move")
         let message = encodeMoves(hexPgn: hexPgn, currentTurn: currentTurn)
 
         activeConversation?.send(message, completionHandler: { error in

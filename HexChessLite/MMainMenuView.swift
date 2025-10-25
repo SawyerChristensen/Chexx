@@ -36,7 +36,6 @@ struct MessagesMainMenuView: View {
                 .frame(maxWidth: .infinity)
                 
                 Divider()
-                    .padding(.bottom, 5)
 
                 ZStack {
                     
@@ -47,7 +46,7 @@ struct MessagesMainMenuView: View {
                             width: viewModel.presentationStyle == .compact ? 420 : 600,
                             height: viewModel.presentationStyle == .compact ? 420 : 600)
                         .position(
-                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.5,
+                            x: viewModel.presentationStyle == .compact ? screenWidth * 0.34 : screenWidth * 0.5,
                             y: viewModel.presentationStyle == .compact ? screenHeight * 0.9 : screenHeight * 0.8)
                         .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
@@ -61,27 +60,27 @@ struct MessagesMainMenuView: View {
                                 minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
                                 maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
                             .background(Color("AccentColor"))
-                            .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                            .foregroundColor(Color(uiColor: .systemBackground))
                             .clipShape(HexagonEdgeRectangleShape())
                             .position(
                                 x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
                                 y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
                     }
                     
+                    //if winCount > 0 { // hides the count if the user has no wins
                     Text("Total Wins: \(winCount)")
                         .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .regular, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color(white: 0.8) : Color(white: 0.3))
                         .position(
                             x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
-                            y: viewModel.presentationStyle == .compact ? screenHeight * 0.25 : screenHeight * 0.25
-                        )
+                            y: viewModel.presentationStyle == .compact ? screenHeight * 0.25 : screenHeight * 0.25)
                     
                 }
             }
             .onAppear {
                 self.winCount = WinTracker.shared.getWinCount()}
         }
-        .background(colorScheme == .dark ? Color(UIColor(hex: "#262626")) : Color.white)
+        //.background(colorScheme == .dark ? (.systemGray6) : Color.white)
     }
 }
 

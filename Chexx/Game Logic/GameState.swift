@@ -198,7 +198,7 @@ struct GameState: Codable {
         }
         
         if pieceToMove?.type == "pawn" { // remove the opening bonus if it moved
-            board[toColumnRow.0][toColumnRow.1]?.hasMoved = true //this modifies the actual pawn's metadata
+            pieceToMove?.hasMoved = true //this modifies the actual pawn's metadata
             
             //dont forget to remove enpassant!
             if abs(fromColumnRow.0 - toColumnRow.0) == 1 { //if the pawn is moving to another row

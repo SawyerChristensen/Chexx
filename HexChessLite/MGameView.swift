@@ -13,7 +13,9 @@ struct MessagesGameView: View {
     weak var delegate: GameSceneDelegate?
     
     @State private var redStatusText: String = ""
+    @State private var isLocalPlayersTurn = true
     @State private var waitingForOpponentText: String = "Waiting for opponent"
+    @State private var waitingForOpponentBackgroundOpacity: Double = 0.8
     @State private var waitingTimer: Timer?
 
     var body: some View {
@@ -34,20 +36,33 @@ struct MessagesGameView: View {
                     .padding(.bottom, geometry.size.height * 0.8) //5% away from the top
                 
                 if !isLocalPlayersTurn && !isGameOver {
-                    Color.black.opacity(0.4) //should block all touches to the scene...
-                        .ignoresSafeArea()
+                    //Color.black.opacity(0.2) //should block all touches to the scene...
+                        //.ignoresSafeArea()
                         //.transition(.opacity)
-                        //.contentShape(Rectangle()) //TEST IF I NEED THIS
-                        //.allowsHitTesting(true) //maybeeee need this. uncomment this before ^
                     
                     Text(waitingForOpponentText)
                         .font(.system(size: geometry.size.width / 20, weight: .semibold, design: .serif))
                         .foregroundColor(.white)
                         .padding()
-                        .background(Color(UIColor(hex: "#262626"))) //or Color(white: 0.2)
+                    
+                        .frame(width: geometry.size.width * 0.66)
+                        .background(
+                            Color(white: 0.2)
+                                .cornerRadius(10).opacity(waitingForOpponentBackgroundOpacity))
                         .cornerRadius(10)
-                        .onAppear { startWaitingAnimation() }
-                        .onDisappear { stopWaitingAnimation() }
+                        .onAppear {
+                            startWaitingTextAnimation()
+                            
+                            waitingForOpponentBackgroundOpacity = 0.8
+                            withAnimation(
+                                .easeInOut(duration: 0.75)
+                                .repeatForever(autoreverses: true)
+                            ) { waitingForOpponentBackgroundOpacity = 0.65 }
+                        }
+                        .onDisappear {
+                            stopWaitingAnimation()
+                            waitingForOpponentBackgroundOpacity = 0.8
+                        }
                 }
             }
 
@@ -67,13 +82,17 @@ struct MessagesGameView: View {
                 }
             }
             
-            .onChange(of: isLocalPlayersTurn) { oldvalue, newValue in
-                if newValue == false {
-                    startWaitingAnimation()
-                } else {
-                    stopWaitingAnimation()
-                }
+            .onChange(of: isLocalPlayersTurn) { _, newValue in //_ is the old value //test if true works to remove the initial display!
+                updateWaitingBlock(for: newValue)
             }
+        }
+    }
+    
+    private func updateWaitingBlock(for isTurn: Bool) {
+        if isTurn == false {
+            startWaitingTextAnimation()
+        } else {
+            stopWaitingAnimation()
         }
     }
 
@@ -87,12 +106,16 @@ struct MessagesGameView: View {
             self.redStatusText = text // update the red status text from the GameScene
         }
         
+        newScene.turnStateUpdater = { isTurn in
+            self.isLocalPlayersTurn = isTurn
+        }
+        
         return newScene
     }
     
-    private func startWaitingAnimation() {
+    private func startWaitingTextAnimation() {
         let baseText = "Waiting for opponent"
-        let dots = ["", ".", "..", "..."]
+        let dots = ["..", "...", "."]
         var currentIndex = 0
         
         waitingTimer?.invalidate() // stop any previous timer
@@ -106,6 +129,6 @@ struct MessagesGameView: View {
     private func stopWaitingAnimation() {
         waitingTimer?.invalidate()
         waitingTimer = nil
-        waitingForOpponentText = ""
+        //waitingForOpponentText = ""
     }
 }

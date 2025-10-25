@@ -1,21 +1,6 @@
-ipad defauts to empty game controller, not menu!
-
--board needs to rotate if the player is black!
-
--see if we can make "waiting for opponent..." appears automatically when using 2 devices!
--check how it appears when a game is just being started. the user sending should be black, and have it appear for them.
--the person opening the message should not have it appear for them at all.
-
--test if applyUpdate actually works when recieving another move, and if the animation works
--hide text notifs on the top if the change is displayed on the board already?
-
--have a completion handler for animating the newest move? maybe wait until didTransition triggers?
--can look into didTransition vs willTransition. didTransition might be useful!
-
--photo preview has a gap on the right or something, use a shorter preview image?
-
+for future Hex Chess iMessage update?:
 -figure out memory problem with resizing the window??
--have a win counter on the bottom of the compact menu screen??
+-see if we can make the applyUpdate more elegant and wait until the view is completely on the screen before showing what the last user did. right now is applies the move AS the view is scrolling up and being presented, jumping the gun a little. right now we call applyUpdate by setting latestHexPGN whenever the view is activated or selected
 
 *----------* UPDATE 1.2 *----------* (iMessage Update)
 
