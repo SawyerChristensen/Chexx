@@ -550,8 +550,7 @@ class MessagesGameScene: SKScene {
         }
 */
         //********** CAPTURING ********** //
-        if let capturedPiece = gameState.board[colIndex][rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
-            //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
+        if gameState.board[colIndex][rowIndex] != nil {
             
             //remove the piecenode at the designation hexagon, note this is different than updating the board state, but we take care of that later
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode

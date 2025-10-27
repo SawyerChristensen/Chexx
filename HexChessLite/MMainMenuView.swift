@@ -39,7 +39,7 @@ struct MessagesMainMenuView: View {
 
                 ZStack {
                     
-                    Image("StartingPositions")
+                    Image("StartingPositionsSmall")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(

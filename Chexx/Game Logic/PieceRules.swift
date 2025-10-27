@@ -813,7 +813,6 @@ func validMovesForKnight(_ color: String, at position: String, in gameState: Gam
         if isValidPosition(columnToCheck: col, rowToCheck: row, in: gameState),
            gameState.board[col][row] == nil || gameState.board[col][row]?.color != color {
             validBoardMoves.append((col, row))
-            let moveStr = boardToHex([(col, row)]).first ?? "?"
         }
     }
     

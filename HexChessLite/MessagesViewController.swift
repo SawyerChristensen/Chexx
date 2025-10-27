@@ -42,7 +42,6 @@ class MessagesViewController: MSMessagesAppViewController {
     }
     
     // MARK: - Conversation Handling
-    
     override func willBecomeActive(with conversation: MSConversation) {
         //print("willBecomeActive")
         super.willBecomeActive(with: conversation)
