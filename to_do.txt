@@ -1,11 +1,14 @@
-for future Hex Chess iMessage update?:
--figure out memory problem with resizing the window??
--see if we can make the applyUpdate more elegant and wait until the view is completely on the screen before showing what the last user did. right now is applies the move AS the view is scrolling up and being presented, jumping the gun a little. right now we call applyUpdate by setting latestHexPGN whenever the view is activated or selected
+-refine UI for iPad (country picker, font, achievement stars)
+-better App Store pictures for iPad (1/3 of all users!!)
 
-*----------* UPDATE 1.2 *----------* (iMessage Update)
+*----------* UPDATE 1.2.2 *----------* (iPad UI Minor Update)
+
+-waiting for opponent... should be animated like in iMessage
 
 -see if how we determine winner color is redundant
+
 -make "thinking..." animation 0-3 dots instead of 1-3 (in main)
+
 -changing google icon breaks google icon retrieval in app
 
 -Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated receives 0.25 (implement for multiplayer ruling)
@@ -113,6 +116,14 @@ Achievements:
 
 Other changes:
 
+in iMessage:
+-figure out memory problem with resizing the window??
+-see if we can make the applyUpdate more elegant and wait until the view is completely on the screen before showing what the last user did. right now is applies the move AS the view is scrolling up and being presented, jumping the gun a little. right now we call applyUpdate by setting latestHexPGN whenever the view is activated or selected
+-make the message captions different based on user and also animated (like GamePigeon)
+-standardize the start game button across languages. (we currently have a bandaid fix) make the text able to be adjusted for accesibility/device?? rn its hardcoded by screensize
+-"waiting for opponent" in spanish is really weird and breaks to multiple lines
+
+General:
 -50 move no capture rule for draw
 
 -threefold repetition rule for draw

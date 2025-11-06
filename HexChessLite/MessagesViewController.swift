@@ -157,9 +157,9 @@ class MessagesViewController: MSMessagesAppViewController {
         if let boardImage = UIImage(named: "iMessageGameInvite") {
             layout.image = boardImage
         }
-        layout.caption = "Let's Play Hex Chess!"
+        layout.caption = NSLocalizedString("Let's Play Hex Chess!", comment: "iMessage layout text")
         message.layout = layout
-        message.summaryText = "Let's Play Hex Chess!"
+        message.summaryText = NSLocalizedString("Let's Play Hex Chess!", comment: "1st iMessage summary text")
         
         let hexPgn: [UInt8] = []
         let hexPgnData = Data(hexPgn)
@@ -222,27 +222,27 @@ extension MessagesViewController: GameSceneDelegate {
         let message = MSMessage(session: session)
         let layout = MSMessageTemplateLayout()
         
-        if !isGameOver {
+        if !isGameOver { //game is not over. it is somebody's turn
             if currentTurn == "white" {
                 layout.image = UIImage(named: "whiteToMove")
+                layout.caption = NSLocalizedString("Hex Chess – white's turn!", comment: "iMessage caption")
             } else { //black to move
                 layout.image = UIImage(named: "blackToMove")
+                layout.caption = NSLocalizedString("Hex Chess – black's turn!", comment: "iMessage caption")
             }
             
-            layout.caption = "Hex Chess – \(currentTurn)'s turn!"
-            message.layout = layout
-            message.summaryText = "Your move in Hex Chess!"
-        } else {
-            if currentTurn == "white" {
+            
+        } else { //game over! somebody won!
+            if currentTurn == "white" { //because black won last turn
                 layout.image = UIImage(named: "blackWon")
-                layout.caption = "Hex Chess – Black Won!"
             } else {
                 layout.image = UIImage(named: "whiteWon")
-                layout.caption = "Hex Chess – White Won!"
             }
-            message.layout = layout
-            message.summaryText = "I won in Hex Chess!"
+            layout.caption = NSLocalizedString("I won in Hex Chess!", comment: "iMessage caption")
         }
+        
+        message.layout = layout
+        message.summaryText = NSLocalizedString("Hex Chess", comment: "")
         
         //encoding HexPGN...
         let hexPgnData = Data(hexPgn)

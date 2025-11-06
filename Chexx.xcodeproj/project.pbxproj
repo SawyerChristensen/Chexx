@@ -42,6 +42,7 @@
 		BE7D04EF2E625E1C000920FC /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialSheet.swift */; };
 		BE9EA2522D977848006D9FAC /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EA2512D977843006D9FAC /* GameCenterManager.swift */; };
+		BEA218822EB0DB14006FDE0B /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = BEA218812EB0DB14006FDE0B /* InfoPlist.strings */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
@@ -112,6 +113,14 @@
 		BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chexx.entitlements; sourceTree = "<group>"; };
 		BE9522602D2324B400836D0F /* TutorialSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSheet.swift; sourceTree = "<group>"; };
 		BE9EA2512D977843006D9FAC /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
+		BEA218802EB0DB14006FDE0B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218832EB0DB1C006FDE0B /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		BEA218842EB0DB33006FDE0B /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218852EB0DB36006FDE0B /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218862EB0DB38006FDE0B /* hi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hi; path = hi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218872EB0DB39006FDE0B /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218882EB0DB39006FDE0B /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BEA218892EB0DB3A006FDE0B /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PromotionWindow.swift; sourceTree = "<group>"; };
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
@@ -184,6 +193,7 @@
 		BE76A9AE2C2A2602009113B4 /* Chexx */ = {
 			isa = PBXGroup;
 			children = (
+				BEA218812EB0DB14006FDE0B /* InfoPlist.strings */,
 				BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
@@ -365,6 +375,7 @@
 				BE091A652CCBB95B00C1A3EC /* game_loss.mp3 in Resources */,
 				BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */,
 				BE2896A62D9D01FB003F96F3 /* Localizable.xcstrings in Resources */,
+				BEA218822EB0DB14006FDE0B /* InfoPlist.strings in Resources */,
 				BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */,
 				BE091A612CCBB62B00C1A3EC /* piece_move.mp3 in Resources */,
 				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
@@ -455,6 +466,21 @@
 				BE76A9BF2C2A2603009113B4 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		BEA218812EB0DB14006FDE0B /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				BEA218802EB0DB14006FDE0B /* en */,
+				BEA218832EB0DB1C006FDE0B /* zh-Hans */,
+				BEA218842EB0DB33006FDE0B /* fr */,
+				BEA218852EB0DB36006FDE0B /* de */,
+				BEA218862EB0DB38006FDE0B /* hi */,
+				BEA218872EB0DB39006FDE0B /* pl */,
+				BEA218882EB0DB39006FDE0B /* ru */,
+				BEA218892EB0DB3A006FDE0B /* es */,
+			);
+			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
@@ -594,7 +620,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -610,7 +636,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -626,7 +652,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 5;
+				CURRENT_PROJECT_VERSION = 6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -642,7 +668,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.2.1;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -656,7 +682,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -667,7 +693,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -682,7 +708,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -693,7 +719,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.1;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

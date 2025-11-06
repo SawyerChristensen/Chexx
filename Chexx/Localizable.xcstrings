@@ -180,7 +180,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "与普通国际象棋一样，车沿着纵列移动。另一种理解方式是让车沿棋格的边缘移动。由于六边形有六条边（而正方形有四条），在六角象棋中就会有六条可供车移动的纵列。"
+            "value" : "与普通国际象棋一样，车沿着纵列移动。另一种理解方式是让车沿棋格的边缘移动。由于六边形有六条边（而正方形有四条），在六角国际象棋中就会有六条可供车移动的纵列。"
           }
         }
       }
@@ -415,48 +415,48 @@
         }
       }
     },
-    "      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played simarly to regular chess albeit with some notable differences." : {
+    "      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played similarly to regular chess albeit with some notable differences." : {
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die bekannteste Form des hexagonalen Schachs wurde 1936 von Władysław Gliński entwickelt. Auf dem Höhepunkt in Osteuropa gab es einst mehr als eine halbe Million Spieler von Glińskis Hex-Schach. Seitdem wurden weitere Varianten entwickelt, doch Glińskis Version ist nach wie vor die beliebteste. Sie wird ähnlich wie gewöhnliches Schach gespielt, jedoch mit einigen bemerkenswerten Unterschieden."
+            "value" : "Die beliebteste Form des Hexagonales Schach wurde 1936 von Władysław Gliński entwickelt. Zu seiner Blütezeit in Osteuropa gab es mehr als eine halbe Million Spieler von Glińskis Hexagonales Schach. Seitdem wurden noch weitere Varianten entwickelt, doch Glińskis Version ist nach wie vor die beliebteste. Es wird ähnlich wie normales Schach gespielt, allerdings mit einigen bemerkenswerten Unterschieden."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La forma más popular de ajedrez hexagonal fue creada por Władysław Gliński en 1936. Durante su apogeo en Europa del Este, hubo una vez más de medio millón de jugadores del ajedrez hexagonal de Gliński. Desde entonces se han creado aún más variantes, aunque la de Gliński sigue siendo la más popular. Se juega de forma similar al ajedrez regular, aunque con algunas diferencias notables."
+            "value" : "La forma más popular de ajedrez hexagonal fue creada por Władysław Gliński en 1936. Durante su apogeo en Europa del Este, hubo más de medio millón de jugadores de ajedrez hexagonal de Gliński. Desde entonces se han creado aún más variantes, aunque la de Gliński sigue siendo la más popular. Se juega de forma similar al ajedrez normal, aunque con algunas diferencias notables."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La forme la plus populaire des échecs hexagonaux a été créée par Władysław Gliński en 1936. À son apogée en Europe de l’Est, on comptait plus d’un demi-million de joueurs de la version de Gliński. Depuis, plusieurs variantes ont été créées, mais celle de Gliński reste la plus connue. Elle se joue de manière similaire aux échecs classiques, avec quelques différences notables."
+            "value" : "La forme la plus populaire des échecs hexagonaux a été créée par Władysław Gliński en 1936. À son apogée en Europe de l'Est, les échecs hexagonaux de Gliński comptaient plus d'un demi-million de joueurs. Depuis, d'autres variantes ont vu le jour, mais celle de Gliński reste la plus populaire. Elle se joue de manière similaire aux échecs classiques, à quelques différences notables près."
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "षट्कोणीय शतरंज का सबसे लोकप्रिय रूप 1936 में व्लादिस्लाव ग्लिंस्की द्वारा बनाया गया था। पूर्वी यूरोप में अपने चरम के दौरान, ग्लिंस्की के हेक्स शतरंज के एक बार पांच लाख से अधिक खिलाड़ी थे। तब से और भी प्रकार बनाए गए हैं, हालांकि ग्लिंस्की का संस्करण सबसे लोकप्रिय बना हुआ है। यह नियमित शतरंज के समान ही खेला जाता है, यद्यपि कुछ उल्लेखनीय अंतरों के साथ।"
+            "value" : "हेक्सागोनल शतरंज का सबसे लोकप्रिय रूप 1936 में व्लादिस्लाव ग्लिंस्की द्वारा बनाया गया था। पूर्वी यूरोप में इसके चरम के दौरान ग्लिंस्की के हेक्स शतरंज के आधे मिलियन से अधिक खिलाड़ी थे। तब से और भी कई संस्करण बनाए गए हैं, हालांकि ग्लिंस्की का संस्करण अब भी सबसे लोकप्रिय है। इसे सामान्य शतरंज की तरह ही खेला जाता है, हालांकि इसमें कुछ उल्लेखनीय अंतर हैं।"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Najpopularniejsza forma szachów heksagonalnych została stworzona przez Władysława Glińskiego w 1936 roku. W okresie szczytowej popularności w Europie Wschodniej było ponad pół miliona graczy w szachy heksagonalne Glińskiego. Od tego czasu powstało jeszcze więcej wariantów, chociaż wersja Glińskiego pozostaje najpopularniejsza. Gra się w nią podobnie do zwykłych szachów, aczkolwiek z pewnymi zauważalnymi różnicami."
+            "value" : "Najpopularniejsza odmiana szachów sześciokątnych została stworzona przez Władysława Glińskiego w 1936 roku. W okresie największej popularności w Europie Wschodniej w szachy sześciokątne Glińskiego grało ponad pół miliona osób. Od tego czasu powstało jeszcze więcej odmian tej gry, jednak wersja Glińskiego pozostaje najpopularniejsza. Gra się w nią podobnie jak w tradycyjne szachy, choć istnieją pewne istotne różnice."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Самая популярная форма гексагональных шахмат была создана Владиславом Глинским в 1936 году. В период своего пика в Восточной Европе насчитывалось более полумиллиона игроков в гексагональные шахматы Глинского. С тех пор было создано еще больше вариантов, хотя вариант Глинского остается самым популярным. Игра ведется аналогично обычным шахматам, хотя и с некоторыми заметными отличиями."
+            "value" : "Самая популярная форма шестиугольных шахмат была создана Владиславом Глинским в 1936 году. В период своего расцвета в Восточной Европе в шестиугольные шахматы Глинского играло более полумиллиона человек. С тех пор было создано еще больше вариантов, хотя шахматы Глинского остаются самыми популярными. Они играются аналогично обычным шахматам, хотя и имеют некоторые заметные отличия."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "最受欢迎的六角象棋版本由 Władysław Gliński 于 1936 年创立。在其于东欧流行的巅峰时期，格林斯基六角象棋（Gliński’s Hex Chess）的玩家曾超过五十万人。此后又衍生了更多变体，但格林斯基的版本仍然最受欢迎。它的玩法与传统国际象棋相似，但也有一些显著的差异。"
+            "value" : "六角棋最流行的形式由瓦迪斯瓦夫·格林斯基于1936年创立。在其东欧鼎盛时期，格林斯基六角棋的玩家曾超过五十万人。此后虽衍生出更多变体，但格林斯基版本仍是最受欢迎的。其玩法与传统国际象棋相似，但存在若干显著差异。"
           }
         }
       }
@@ -2834,7 +2834,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Échecs Hex"
+            "value" : "Hexa-Échecs"
           }
         },
         "hi" : {
@@ -2846,7 +2846,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heks-szachy"
+            "value" : "Hekszachy"
           }
         },
         "ru" : {
@@ -2858,7 +2858,101 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "六角象棋"
+            "value" : "六角国际象棋"
+          }
+        }
+      }
+    },
+    "Hex Chess – black's turn!" : {
+      "comment" : "iMessage caption",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexschach – Schwarz ist am Zug!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajedrez hex – Turno de las negras"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexa-Échecs - c'est au tour des noirs !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हेक्स शतरंज – काले की बारी!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hekszachy – ruch czarnych!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гекс-шахматы – ход чёрных!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "六角国际象棋——黑方走棋！"
+          }
+        }
+      }
+    },
+    "Hex Chess – white's turn!" : {
+      "comment" : "iMessage caption",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexschach - Weiß ist am Zug!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajedrez hex – Turno de las blancas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexa-Échecs - c'est au tour des blancs !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हेक्स शतरंज – सफ़ेद की बारी!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hekszachy – ruch białych!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гекс-шахматы – ход белых!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "六角国际象棋——白方走棋！"
           }
         }
       }
@@ -2868,7 +2962,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex-Schach-Elo-Wertung: %1$lld"
+            "value" : "Hexschach-Elo-Wertung: %1$lld"
           }
         },
         "es" : {
@@ -2904,7 +2998,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "六角象棋 ELO 评分：%lld"
+            "value" : "六角国际象棋 ELO 评分：%lld"
           }
         }
       }
@@ -2926,7 +3020,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comment jouer aux échecs hexagonaux"
+            "value" : "Comment jouer aux Hexa-Échecs"
           }
         },
         "hi" : {
@@ -2951,6 +3045,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "如何玩六角象棋"
+          }
+        }
+      }
+    },
+    "I won in Hex Chess!" : {
+      "comment" : "iMessage caption",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ich habe bei Hexschach gewonnen!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡He ganado en Ajedrez hex!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'ai gagné aux échecs hexagonaux !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "हेक्स शतरंज में जीत हुई!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wygrałem w Hekszachy!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Я выиграл в Гекс-шахматы!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我在六角国际象棋中赢了！"
           }
         }
       }
@@ -3043,6 +3184,53 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "加入游戏 →"
+          }
+        }
+      }
+    },
+    "Let's Play Hex Chess!" : {
+      "comment" : "1st iMessage summary text\niMessage layout text",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lass uns Hexschach spielen!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Juguemos Ajedrez hex!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jouons aux Hexa-Échecs !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "चलो हेक्स शतरंज खेलें!"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zagrajmy w Hekszachy"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Давайте сыграем в Гекс-шахматы!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来玩六角国际象棋吧！"
           }
         }
       }
@@ -4364,6 +4552,53 @@
         }
       }
     },
+    "Start Game!" : {
+      "comment" : "iMessage Start Button",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spiel starten!"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¡Comenzar partida!"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer la partie !"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "खेल शुरू करें"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij grę!"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Начать игру!"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开始游戏！"
+          }
+        }
+      }
+    },
     "The Bishop" : {
       "localizations" : {
         "de" : {
@@ -4642,7 +4877,51 @@
     },
     "Total Wins: %lld" : {
       "comment" : "A label displaying the total number of wins the user has achieved in the game.",
-      "isCommentAutoGenerated" : true
+      "isCommentAutoGenerated" : true,
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gesamtsiege: %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total de victorias: %lld"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total des victoires : %lld"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "कुल जीत: %lld"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Łączna liczba zwycięstw: %lld"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Общее количество побед: %lld"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总胜场数：%lld"
+          }
+        }
+      }
     },
     "Tutorial" : {
       "localizations" : {
@@ -4782,12 +5061,60 @@
         }
       }
     },
-    "Waiting for opponent..." : {
+    "Waiting for opponent" : {
+      "comment" : "Waiting text in iMessage",
       "localizations" : {
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Warten auf den Gegner…"
+            "value" : "Warten auf Gegner"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esperando al oponente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En attente de l'adversaire"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "विरोधी का इंतज़ार"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oczekiwanie na przeciwnika"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ожидание соперника"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等待对手"
+          }
+        }
+      }
+    },
+    "Waiting for opponent..." : {
+      "comment" : "iMessage caption",
+      "localizations" : {
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Warten auf Gegner…"
           }
         },
         "es" : {
@@ -4805,7 +5132,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "प्रतिद्वंद्वी की प्रतीक्षा कर रहे हैं..."
+            "value" : "विरोधी का इंतज़ार..."
           }
         },
         "pl" : {
@@ -4823,7 +5150,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在等待对手…"
+            "value" : "等待对手..."
           }
         }
       }

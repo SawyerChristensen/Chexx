@@ -14,7 +14,7 @@ struct MessagesGameView: View {
     
     @State private var redStatusText: String = ""
     @State private var isLocalPlayersTurn = true
-    @State private var waitingForOpponentText: String = "Waiting for opponent"
+    @State private var waitingForOpponentText: String = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
     @State private var waitingForOpponentBackgroundOpacity: Double = 0.8
     @State private var waitingTimer: Timer?
 
@@ -114,7 +114,7 @@ struct MessagesGameView: View {
     }
     
     private func startWaitingTextAnimation() {
-        let baseText = "Waiting for opponent"
+        let baseText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
         let dots = ["..", "...", "."]
         var currentIndex = 0
         

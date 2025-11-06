@@ -10,6 +10,7 @@ import Messages
 
 struct MessagesMainMenuView: View {
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.locale) var locale //for language detection
     @ObservedObject var viewModel: MenuViewModel
     var onStartGame: () -> Void
     @State private var winCount = 0
@@ -50,27 +51,53 @@ struct MessagesMainMenuView: View {
                             y: viewModel.presentationStyle == .compact ? screenHeight * 0.9 : screenHeight * 0.8)
                         .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
-                    Button(action: {
-                        onStartGame()
-                    }) {
-                        WaveText(text: "Start Game!", fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
+                    // MARK:  Start Game Button
+                    if locale.language.languageCode?.identifier != "fr" && locale.language.languageCode?.identifier != "es" {
+                        Button(action: {
+                            onStartGame()
+                        }) {
+                            WaveText(text: NSLocalizedString("Start Game!", comment: "iMessage Start Button"), fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
                             //.font(.system(size: screenWidth * 0.1, weight: .semibold, design: .serif))
-                            .padding()
-                            .frame(
-                                minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
-                                maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
-                            .background(Color("AccentColor"))
-                            .foregroundColor(Color(uiColor: .systemBackground))
-                            .clipShape(HexagonEdgeRectangleShape())
-                            .position(
-                                x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
-                                y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
+                                .padding()
+                                .frame(
+                                    //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
+                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.5 : screenWidth * 0.9,
+                                    maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
+                                .background(Color("AccentColor"))
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .clipShape(HexagonEdgeRectangleShape())
+                                .position(
+                                    x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
+                                    y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
+                        }
+                    } else { //the alternative view for french and spanish:
+                        Button(action: {
+                            onStartGame()
+                        }) {
+                            Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
+                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.06 : screenWidth * 0.1, weight: .semibold, design: .serif))
+                                .minimumScaleFactor(0.6)
+                                .padding()
+                                .frame(
+                                    //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
+                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.5 : screenWidth * 0.9,
+                                    maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
+                                .background(Color("AccentColor"))
+                                .foregroundColor(Color(uiColor: .systemBackground))
+                                .clipShape(HexagonEdgeRectangleShape())
+                                .position(
+                                    x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
+                                    y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
+                        }
                     }
                     
                     //if winCount > 0 { // hides the count if the user has no wins
                     Text("Total Wins: \(winCount)")
                         .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .regular, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color(white: 0.8) : Color(white: 0.3))
+                        .frame(maxWidth: screenWidth * 0.5)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
                         .position(
                             x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
                             y: viewModel.presentationStyle == .compact ? screenHeight * 0.25 : screenHeight * 0.25)
@@ -78,7 +105,7 @@ struct MessagesMainMenuView: View {
                 }
             }
             .onAppear {
-                self.winCount = WinTracker.shared.getWinCount()}
+                self.winCount = WinTracker.shared.getWinCount() }
         }
         //.background(colorScheme == .dark ? (.systemGray6) : Color.white)
     }

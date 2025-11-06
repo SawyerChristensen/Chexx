@@ -30,7 +30,7 @@ struct TutorialSheet: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Text("      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played simarly to regular chess albeit with some notable differences.")
+                Text("      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played similarly to regular chess albeit with some notable differences.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)

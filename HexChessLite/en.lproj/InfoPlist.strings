@@ -1,0 +1,9 @@
+//
+//  InfoPlist.strings
+//  Chexx
+//
+//  Created by Sawyer Christensen on 10/28/25.
+//
+
+"CFBundleDisplayName" = "Hex Chess";
+//this might not be needed, but we're just making sure it works in english (which is default anyway)
