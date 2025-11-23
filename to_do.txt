@@ -1,7 +1,7 @@
 -refine UI for iPad (country picker, font, achievement stars)
 -better App Store pictures for iPad (1/3 of all users!!)
 
-*----------* UPDATE 1.2.2 *----------* (iPad UI Minor Update)
+*----------* UPDATE 1.2.3 *----------* (iPad UI Minor Update)
 
 -waiting for opponent... should be animated like in iMessage
 
@@ -21,7 +21,7 @@
 
 -login does not check if your email is actually real
 
--facebook sign in?
+-facebook sign in? (nah)
 
 -in multiplayer, show opponents game center icon if they dont have a google icon
 

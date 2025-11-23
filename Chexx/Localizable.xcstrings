@@ -3,6 +3,18 @@
   "strings" : {
     "      All legal moves are highlighted by default when playing in any mode. To disable this, simply toggle the \"Highlight Legal Moves\" option in settings." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      يتم تظليل جميع النقلات القانونية افتراضيًا عند اللعب في أي وضع. لتعطيل هذا، ما عليك سوى تبديل خيار \"تظليل النقلات القانونية\" في الإعدادات."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      যেকোনো মোডে খেলার সময় সমস্ত বৈধ চালগুলি ডিফল্টরূপে হাইলাইট করা থাকে। এটি নিষ্ক্রিয় করতে, সেটিংসে কেবল \"বৈধ চাল হাইলাইট করুন\" বিকল্পটি টগল করুন।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27,10 +39,34 @@
             "value" : "किसी भी मोड में खेलते समय सभी कानूनी चालें डिफ़ॉल्ट रूप से हाइलाइट की जाती हैं। इसे अक्षम करने के लिए, बस सेटिंग्स में \"कानूनी चालें हाइलाइट करें\" विकल्प को टॉगल करें।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Tutte le mosse legali sono evidenziate per impostazione predefinita in qualsiasi modalità. Per disabilitare questa funzione, basta disattivare l'opzione \"Evidenzia mosse legali\" nelle impostazioni."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      どのモードでプレイする場合でも、合法手（ルール上可能な動き）はデフォルトでハイライト表示されます。これを無効にするには、設定の「合法手のハイライト」オプションを切り替えてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      모든 모드에서 규칙상 가능한 수는 기본적으로 강조 표시됩니다. 이 기능을 끄려면 설정에서 \"이동 가능 구역 표시\" 옵션을 끄면 됩니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wszystkie dozwolone ruchy są domyślnie podświetlane podczas gry w dowolnym trybie. Aby to wyłączyć, po prostu przełącz opcję „Podświetlaj dozwolone ruchy” w ustawieniach."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Todos os movimentos legais são destacados por padrão ao jogar em qualquer modo. Para desativar isso, basta alternar a opção \"Destacar Movimentos Legais\" nos ajustes."
           }
         },
         "ru" : {
@@ -49,6 +85,18 @@
     },
     "      Habanera (Main Menu Theme) by Georges Bizet, 1875, via the YouTube Audio Library" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Habanera (موسيقى القائمة الرئيسية) للمؤلف Georges Bizet، 1875، عبر مكتبة صوتيات يوتيوب"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      হাবানেরা (প্রধান মেনু থিম) জর্জেস বিজেট দ্বারা, ১৮৭৫, ইউটিউব অডিও লাইব্রেরির মাধ্যমে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -73,10 +121,34 @@
             "value" : "हबानेरा (मुख्य मेनू थीम) जॉर्ज बिजेट द्वारा, 1875, यूट्यूब ऑडियो लाइब्रेरी के माध्यम से"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Habanera (Tema Menu Principale) di Georges Bizet, 1875, via YouTube Audio Library"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ハバネラ（メインメニューテーマ）作曲：ジョルジュ・ビゼー (1875年) - YouTube Audio Library提供"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      하바네라 (메인 메뉴 테마) - 조르주 비제, 1875, YouTube 오디오 라이브러리 제공"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Habanera (Motyw Głównego Menu) autorstwa Georgesa Bizeta, 1875, za pośrednictwem Biblioteki Audio YouTube"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Habanera (Tema do Menu Principal) por Georges Bizet, 1875, via YouTube Audio Library"
           }
         },
         "ru" : {
@@ -95,6 +167,18 @@
     },
     "      iOS App by Sawyer Christensen" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      تطبيق iOS بواسطة Sawyer Christensen"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      সয়ার ক্রিস্টেনসেন দ্বারা তৈরি iOS অ্যাপ"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -119,10 +203,34 @@
             "value" : "सॉयर क्रिस्टेंसन द्वारा आईओएस ऐप"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      App iOS di Sawyer Christensen"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      iOS App by Sawyer Christensen"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      iOS 앱 개발: Sawyer Christensen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aplikacja iOS autorstwa Sawyera Christensena"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      App iOS por Sawyer Christensen"
           }
         },
         "ru" : {
@@ -141,6 +249,18 @@
     },
     "      Just like in normal chess, the rook moves along the columns. Another way to think about it is the rook moving along the edges of the tiles. Because a hexagon has six edges instead of a square's four, there are six possible columns in hex chess." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      تمامًا كما في الشطرنج العادي، تتحرك القلعة (الرخ) عبر الأعمدة. طريقة أخرى للتفكير في الأمر هي أن القلعة تتحرك بمحاذاة حواف الخانات. ولأن الشكل السداسي له ستة حواف بدلاً من أربعة في المربع، فهناك ستة أعمدة ممكنة في الشطرنج السداسي."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      সাধারণ দাবার মতোই, নৌকা (Rook) কলাম বরাবর চলে। এটি ভাবার আরেকটি উপায় হলো নৌকা টাইলসের ধার বরাবর চলে। যেহেতু একটি ষড়ভুজের বর্গক্ষেত্রের চারটির পরিবর্তে ছয়টি ধার থাকে, তাই হেক্স দাবায় ছয়টি সম্ভাব্য কলাম রয়েছে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -165,10 +285,34 @@
             "value" : "सामान्य शतरंज की तरह ही, हाथी कॉलम के साथ चलता है। इसके बारे में सोचने का दूसरा तरीका यह है कि हाथी टाइल्स के किनारों के साथ चलता है। क्योंकि एक षट्कोण में वर्ग के चार किनारों के बजाय छह किनारे होते हैं, हेक्स शतरंज में छह संभावित कॉलम होते हैं।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Proprio come negli scacchi normali, la Torre si muove lungo le colonne. Un altro modo di vederlo è che la Torre si muove lungo i lati delle caselle. Poiché un esagono ha sei lati invece dei quattro di un quadrato, negli scacchi esagonali ci sono sei possibili colonne."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      通常のチェスと同様に、ルークは列（カラム）に沿って移動します。マスの辺に沿って動くと考えることもできます。正方形には4つの辺がありますが、六角形には6つの辺があるため、ヘックスチェスには6つの移動可能な列が存在します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      일반 체스와 마찬가지로 룩은 열을 따라 이동합니다. 타일의 가장자리를 따라 이동한다고 생각하면 쉽습니다. 육각형은 사각형(4개)과 달리 모서리가 6개이므로 헥스 체스에는 6개의 열이 존재합니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Podobnie jak w zwykłych szachach, wieża porusza się wzdłuż kolumn. Innym sposobem myślenia jest ruch wieży wzdłuż krawędzi pól. Ponieważ sześciokąt ma sześć krawędzi zamiast czterech kwadratu, w szachach heksagonalnych jest sześć możliwych kolumn."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Assim como no xadrez normal, a torre move-se ao longo das colunas. Outra maneira de pensar nisso é a torre movendo-se ao longo das bordas das casas. Como um hexágono tem seis arestas em vez das quatro de um quadrado, existem seis colunas possíveis no xadrez hexagonal."
           }
         },
         "ru" : {
@@ -187,6 +331,18 @@
     },
     "      Original Rules by Władysław Gliński" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      القواعد الأصلية بواسطة فلاديسلاف جلينسكي (Władysław Gliński)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      মূল নিয়মাবলী - ভ্লাদিস্লাভ গ্লিনস্কি দ্বারা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -211,10 +367,34 @@
             "value" : "व्लादिस्लाव ग्लिंस्की द्वारा मूल नियम"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Regole originali di Władysław Gliński"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      オリジナルルール考案：ヴワディスワフ・グリンスキ (Władysław Gliński)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      오리지널 규칙 고안: Władysław Gliński"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oryginalne zasady autorstwa Władysława Glińskiego"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Regras Originais por Władysław Gliński"
           }
         },
         "ru" : {
@@ -233,6 +413,18 @@
     },
     "      Pieces by Cburnett, CC BY-SA 3.0, via Wikimedia Commons" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      قطع الشطرنج بواسطة Cburnett، رخصة CC BY-SA 3.0، عبر ويكيميديا كومنز"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ঘুঁটিসমূহ - Cburnett দ্বারা, CC BY-SA 3.0, উইকিমিডিয়া কমন্স এর মাধ্যমে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -257,10 +449,34 @@
             "value" : "मोहरे Cburnett द्वारा, CC BY-SA 3.0, विकिमीडिया कॉमन्स के माध्यम से"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Pezzi di Cburnett, CC BY-SA 3.0, via Wikimedia Commons"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      駒デザイン：Cburnett (CC BY-SA 3.0, Wikimedia Commons経由)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      기물 디자인: Cburnett, CC BY-SA 3.0, 위키미디어 공용 제공"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Figury autorstwa Cburnett, CC BY-SA 3.0, za pośrednictwem Wikimedia Commons"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Peças por Cburnett, CC BY-SA 3.0, via Wikimedia Commons"
           }
         },
         "ru" : {
@@ -279,6 +495,18 @@
     },
     "      The bishop still moves along the diagonals (towards the points of a tile instead of its edges) and always stays on its color. Like the rook, because a hexagon has six points, there are six possible diagonal directions." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      لا يزال الفيل يتحرك عبر الأقطار (باتجاه زوايا الخانة بدلاً من حوافها) ويبقى دائمًا على لونه. ومثل القلعة، نظرًا لأن الشكل السداسي له ست نقاط، فهناك ستة اتجاهات قطرية ممكنة."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      গজ (Bishop) এখনও কোণাকুণি চলে (টাইলসের ধারের পরিবর্তে কোণার দিকে) এবং সর্বদা তার নিজের রঙে থাকে। নৌকার মতো, যেহেতু একটি ষড়ভুজের ছয়টি কোণ রয়েছে, তাই ছয়টি সম্ভাব্য কোণাকুণি দিক রয়েছে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -303,10 +531,34 @@
             "value" : "ऊंट अभी भी विकर्णों के साथ चलता है (टाइल के किनारों के बजाय उसके बिंदुओं की ओर) और हमेशा अपने रंग पर रहता है। हाथी की तरह, क्योंकि एक षट्कोण में छह बिंदु होते हैं, छह संभावित विकर्ण दिशाएँ होती हैं।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      L'Alfiere si muove lungo le diagonali (verso le punte di una casella invece che lungo i lati) e rimane sempre sul suo colore. Come per la Torre, poiché un esagono ha sei punte, ci sono sei possibili direzioni diagonali."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ビショップは依然として斜め（マスの辺ではなく角に向かう方向）に移動し、常に同じ色のマスにとどまります。ルークと同様、六角形には6つの角があるため、6つの斜め方向に移動可能です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      비숍은 여전히 대각선(타일의 가장자리가 아닌 꼭짓점 방향)을 따라 이동하며 항상 같은 색상의 타일에 머무릅니다. 룩과 마찬가지로 육각형에는 6개의 꼭짓점이 있으므로 6가지 대각선 방향이 있습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Goniec nadal porusza się po przekątnych (w kierunku wierzchołków pola zamiast jego krawędzi) i zawsze pozostaje na swoim kolorze. Podobnie jak wieża, ponieważ sześciokąt ma sześć wierzchołków, istnieje sześć możliwych kierunków po przekątnej."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      O bispo ainda se move ao longo das diagonais (em direção às pontas de uma casa em vez de suas bordas) e sempre permanece na sua cor. Como a torre, porque um hexágono tem seis pontas, existem seis direções diagonais possíveis."
           }
         },
         "ru" : {
@@ -325,6 +577,18 @@
     },
     "      The king can move along columns and diagonals, with the restriction of only one tile in any direction. A beginner's mistake is forgetting about the one-tile diagonal movement, which on first glance is not connected to the home tile of the king." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      يمكن للملك التحرك عبر الأعمدة والأقطار، مع تقييد الحركة لخانة واحدة فقط في أي اتجاه. من أخطاء المبتدئين نسيان الحركة القطرية لخانة واحدة، والتي قد لا تبدو للوهلة الأولى متصلة بالخانة التي يقف عليها الملك."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      রাজা কলাম এবং কোণাকুণি বরাবর চলতে পারে, তবে যেকোনো দিকে কেবল একটি ঘরের সীমাবদ্ধতা থাকে। নতুনদের একটি সাধারণ ভুল হলো এক-ঘরের কোণাকুণি চালের কথা ভুলে যাওয়া, যা প্রথম দর্শনে রাজার মূল ঘরের সাথে সংযুক্ত বলে মনে হয় না।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -349,10 +613,34 @@
             "value" : "राजा कॉलम और विकर्णों के साथ चल सकता है, जिसमें किसी भी दिशा में केवल एक टाइल का प्रतिबंध होता है। शुरुआती लोगों की गलती एक-टाइल विकर्ण चाल को भूल जाना है, जो पहली नज़र में राजा की होम टाइल से जुड़ा नहीं है।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Il Re può muoversi lungo colonne e diagonali, con la restrizione di una sola casella in qualsiasi direzione. Un errore comune dei principianti è dimenticare il movimento diagonale di una casella, che a prima vista non sembra collegato alla casella di partenza del Re."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      キングは列および斜め方向に移動できますが、どの方向にも1マスしか進めません。初心者がよく犯す間違いは、一見キングのいるマスとつながっていないように見える斜め方向への1マス移動を忘れてしまうことです。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      킹은 열과 대각선을 따라 모든 방향으로 한 칸씩 이동할 수 있습니다. 초보자들이 흔히 범하는 실수는 대각선 이동을 잊는 것인데, 언뜻 보기에는 킹의 현재 위치와 연결되어 있지 않은 것처럼 보이기 때문입니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Król może poruszać się wzdłuż kolumn i przekątnych, z ograniczeniem do jednego pola w dowolnym kierunku. Błędem początkujących jest zapominanie o ruchu po przekątnej o jedno pole, który na pierwszy rzut oka nie jest połączony z polem startowym króla."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      O rei pode mover-se ao longo de colunas e diagonais, com a restrição de apenas uma casa em qualquer direção. Um erro de iniciante é esquecer o movimento diagonal de uma casa, que à primeira vista não está conectado à casa inicial do rei."
           }
         },
         "ru" : {
@@ -371,6 +659,18 @@
     },
     "      The knight moves two tiles along a column, and then one tile to the left or right." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      يتحرك الحصان خانتين عبر العمود، ثم خانة واحدة إلى اليسار أو اليمين."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ঘোড়া (Knight) একটি কলাম বরাবর দুটি ঘর যায়, এবং তারপর বাম বা ডানে একটি ঘর যায়।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -395,10 +695,34 @@
             "value" : "घोड़ा एक कॉलम के साथ दो टाइल चलता है, और फिर बाईं या दाईं ओर एक टाइल।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Il Cavallo si muove di due caselle lungo una colonna, e poi di una casella a sinistra o a destra."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ナイトは列に沿って2マス進み、その後、左または右に1マス移動します。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      나이트는 열을 따라 두 칸 이동한 후, 왼쪽이나 오른쪽으로 한 칸 이동합니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skoczek porusza się o dwa pola wzdłuż kolumny, a następnie o jedno pole w lewo lub w prawo."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      O cavalo move-se duas casas ao longo de uma coluna e, em seguida, uma casa para a esquerda ou para a direita."
           }
         },
         "ru" : {
@@ -417,6 +741,18 @@
     },
     "      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played similarly to regular chess albeit with some notable differences." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      الشكل الأكثر شيوعًا للشطرنج السداسي ابتكره فلاديسلاف جلينسكي في عام 1936. خلال ذروة انتشاره في أوروبا الشرقية، كان هناك أكثر من نصف مليون لاعب لشطرنج جلينسكي السداسي. تم إنشاء المزيد من المتغيرات منذ ذلك الحين، على الرغم من أن نسخة جلينسكي تظل الأكثر شعبية. تُلعب بطريقة مشابهة للشطرنج العادي ولكن مع بعض الاختلافات الملحوظة."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      হেক্সাগোনাল দাবার সবচেয়ে জনপ্রিয় রূপটি ১৯৩৬ সালে ভ্লাদিস্লাভ গ্লিনস্কি তৈরি করেছিলেন। পূর্ব ইউরোপে এর জনপ্রিয়তার শীর্ষে থাকাকালীন গ্লিনস্কির হেক্স দাবার পাঁচ লাখেরও বেশি খেলোয়াড় ছিল। এরপর থেকে আরও অনেক সংস্করণ তৈরি হয়েছে, যদিও গ্লিনস্কির সংস্করণটিই সবচেয়ে জনপ্রিয়। এটি সাধারণ দাবার মতোই খেলা হয়, তবে কিছু উল্লেখযোগ্য পার্থক্য রয়েছে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -441,10 +777,34 @@
             "value" : "हेक्सागोनल शतरंज का सबसे लोकप्रिय रूप 1936 में व्लादिस्लाव ग्लिंस्की द्वारा बनाया गया था। पूर्वी यूरोप में इसके चरम के दौरान ग्लिंस्की के हेक्स शतरंज के आधे मिलियन से अधिक खिलाड़ी थे। तब से और भी कई संस्करण बनाए गए हैं, हालांकि ग्लिंस्की का संस्करण अब भी सबसे लोकप्रिय है। इसे सामान्य शतरंज की तरह ही खेला जाता है, हालांकि इसमें कुछ उल्लेखनीय अंतर हैं।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      La forma più popolare di scacchi esagonali fu creata da Władysław Gliński nel 1936. Durante il suo picco nell'Europa dell'Est, c'erano oltre mezzo milione di giocatori di scacchi esagonali di Gliński. Da allora sono state create molte altre varianti, anche se quella di Gliński rimane la più diffusa. Si gioca in modo simile agli scacchi tradizionali, sebbene con alcune differenze notevoli."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      最も人気のあるヘキサゴナルチェス（六角チェス）は、1936年にヴワディスワフ・グリンスキによって考案されました。東欧での最盛期には、50万人以上のプレイヤーがいました。その後さらに多くのバリエーションが生まれましたが、グリンスキ版が依然として最も人気があります。通常のチェスと似ていますが、いくつかの重要な違いがあります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      가장 대중적인 육각형 체스는 1936년 블라디슬라프 글린스키(Władysław Gliński)가 창안했습니다. 동유럽에서 인기가 절정일 때는 50만 명이 넘는 사람들이 글린스키의 헥스 체스를 즐겼습니다. 이후 더 많은 변형이 만들어졌지만, 글린스키의 방식이 여전히 가장 유명합니다. 일반 체스와 비슷하지만 몇 가지 눈에 띄는 차이점이 있습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Najpopularniejsza odmiana szachów sześciokątnych została stworzona przez Władysława Glińskiego w 1936 roku. W okresie największej popularności w Europie Wschodniej w szachy sześciokątne Glińskiego grało ponad pół miliona osób. Od tego czasu powstało jeszcze więcej odmian tej gry, jednak wersja Glińskiego pozostaje najpopularniejsza. Gra się w nią podobnie jak w tradycyjne szachy, choć istnieją pewne istotne różnice."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      A forma mais popular de Xadrez Hexagonal foi criada por Władysław Gliński em 1936. Durante seu auge na Europa Oriental, havia mais de meio milhão de jogadores do Xadrez Hexagonal de Gliński. Desde então, ainda mais variantes foram criadas, embora a de Gliński continue sendo a mais popular. É jogado de forma semelhante ao xadrez regular, embora com algumas diferenças notáveis."
           }
         },
         "ru" : {
@@ -463,6 +823,18 @@
     },
     "      The pawn normally moves forward one tile at a time, but can also move two tiles forward if it hasn't moved yet. It captures pieces to its immediate left and right and can get promoted to any piece if it reaches the last row." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      يتحرك البيدق عادة خانة واحدة للأمام، ولكن يمكنه أيضًا التحرك خانتين للأمام إذا لم يتحرك بعد. يلتقط البيدق القطع الموجودة مباشرة على يساره ويمينه ويمكن ترقيته لأي قطعة إذا وصل إلى الصف الأخير."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      বোড়ে (Pawn) সাধারণত একবারে একটি ঘর সামনে চলে, তবে এটি এখনও চাল না দিলে দুটি ঘর সামনে যেতে পারে। এটি তার ঠিক বাম এবং ডান দিকের ঘুঁটিগুলিকে কাটতে পারে এবং শেষ সারিতে পৌঁছালে যেকোনো ঘুঁটিতে উন্নীত (promote) হতে পারে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -487,10 +859,34 @@
             "value" : "प्यादा सामान्य रूप से एक बार में एक टाइल आगे बढ़ता है, लेकिन यदि यह अभी तक नहीं चला है तो दो टाइल आगे भी बढ़ सकता है। यह अपने तत्काल बाएं और दाएं मोहरों को पकड़ता है और यदि यह अंतिम पंक्ति तक पहुंचता है तो किसी भी मोहरे में पदोन्नत हो सकता है।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Il Pedone si muove normalmente in avanti di una casella alla volta, ma può anche avanzare di due caselle se non si è ancora mosso. Cattura i pezzi alla sua immediata sinistra e destra e può essere promosso a qualsiasi pezzo se raggiunge l'ultima riga."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ポーンは通常、一度に1マス前進しますが、まだ動いていない場合は2マス進むこともできます。ポーンはすぐ左または右にある駒を捕獲（キャプチャ）し、最後の列に到達すると任意の駒に昇格（プロモーション）できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      폰은 보통 앞으로 한 칸씩 이동하지만, 아직 움직이지 않은 상태라면 두 칸을 전진할 수도 있습니다. 폰은 바로 왼쪽과 오른쪽 앞의 기물을 잡을 수 있으며, 마지막 줄에 도달하면 원하는 기물로 승급할 수 있습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pion normalnie porusza się o jedno pole do przodu, ale może również przesunąć się o dwa pola do przodu, jeśli jeszcze się nie ruszył. Bije figury bezpośrednio po lewej i prawej stronie i może zostać promowany na dowolną figurę, jeśli dotrze do ostatniego rzędu."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      O peão normalmente move-se para frente uma casa por vez, mas também pode mover-se duas casas para frente se ainda não tiver se movido. Ele captura peças à sua esquerda e direita imediatas e pode ser promovido a qualquer peça se atingir a última linha."
           }
         },
         "ru" : {
@@ -509,6 +905,18 @@
     },
     "      The queen combines the movement of the rook and bishop. It can move along the columns as well as along the diagonals." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      تجمع الملكة بين حركة القلعة والفيل. يمكنها التحرك عبر الأعمدة وكذلك عبر الأقطار."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      রানি (Queen) নৌকা এবং গজের চালের সমন্বয় করে। এটি কলামের পাশাপাশি কোণাকুণি বরাবরও চলতে পারে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,10 +941,34 @@
             "value" : "रानी हाथी और ऊंट की चाल को जोड़ती है। यह कॉलम के साथ-साथ विकर्णों के साथ भी चल सकती है।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      La Regina combina il movimento della Torre e dell'Alfiere. Può muoversi sia lungo le colonne che lungo le diagonali."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      クイーンはルークとビショップの動きを兼ね備えています。列に沿っても、斜め方向にも移動できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      퀸은 룩과 비숍의 움직임을 결합한 기물입니다. 열을 따라 이동할 수도 있고 대각선을 따라 이동할 수도 있습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hetman łączy ruchy wieży i gońca. Może poruszać się wzdłuż kolumn, jak również wzdłuż przekątnych."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      A dama combina o movimento da torre e do bispo. Ela pode mover-se tanto ao longo das colunas quanto ao longo das diagonais."
           }
         },
         "ru" : {
@@ -555,6 +987,18 @@
     },
     "      There is no castling in Hexagonal Chess. There are also nine pawns instead of eight, as well as three bishops (one for each color still) instead of the usual two. Pawns can still be captured through en passant." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      لا يوجد \"تبييت\" (Castling) في الشطرنج السداسي. يوجد أيضًا تسعة بيادق بدلاً من ثمانية، بالإضافة إلى ثلاثة فيلة (واحد لكل لون) بدلاً من الاثنين المعتادين. لا يزال بالإمكان أسر البيادق عبر قاعدة \"الأخذ بالتجاوز\" (En Passant)."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      হেক্সাগোনাল দাবায় কোনো ক্যাসলিং (Castling) নেই। এখানে আটের পরিবর্তে নয়টি বোড়ে থাকে, এবং সাধারণ দুটির পরিবর্তে তিনটি গজ থাকে (প্রতিটি রঙের জন্য একটি করে)। বোড়েকে এখনও এন পাসান্ট (en passant)-এর মাধ্যমে কাটা যেতে পারে।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -579,10 +1023,34 @@
             "value" : "षट्कोणीय शतरंज में कोई कैसलिंग नहीं है। आठ के बजाय नौ प्यादे भी हैं, साथ ही सामान्य दो के बजाय तीन ऊंट (अभी भी प्रत्येक रंग के लिए एक) हैं। प्यादों को अभी भी एन पासेंट के माध्यम से पकड़ा जा सकता है।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Non esiste l'arrocco negli scacchi esagonali. Ci sono inoltre nove pedoni invece di otto, così come tre alfieri (sempre uno per ogni colore) invece dei soliti due. I pedoni possono comunque essere catturati tramite \"en passant\"."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      ヘキサゴナルチェスにキャスリングはありません。また、ポーンは8個ではなく9個あり、ビショップは通常の2個ではなく3個（各色1個ずつ）あります。アンパッサンによるポーンの捕獲は可能です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      헥스 체스에는 캐슬링이 없습니다. 또한 폰은 8개가 아닌 9개이며, 비숍은 2개가 아닌 3개(각 색상 칸마다 하나씩)입니다. 폰은 여전히 앙파상(en passant)을 통해 잡을 수 있습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "W szachach heksagonalnych nie ma roszady. Jest również dziewięć pionów zamiast ośmiu, a także trzy gońce (po jednym dla każdego koloru) zamiast zwykłych dwóch. Piony nadal mogą być bite w przelocie (en passant)."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "      Não há roque no Xadrez Hexagonal. Há também nove peões em vez de oito, bem como três bispos (um para cada cor) em vez dos dois habituais. Os peões ainda podem ser capturados através de en passant."
           }
         },
         "ru" : {
@@ -601,6 +1069,18 @@
     },
     "(Glińkski's Variant)" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(نسخة جلينسكي)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(গ্লিনস্কির সংস্করণ)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -625,10 +1105,34 @@
             "value" : "(ग्लिंस्की का संस्करण)"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Variante di Gliński)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(グリンスキ・バリアント)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(글린스키 변형 규칙)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "(Wariant Glińskiego)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "(Variante de Gliński)"
           }
         },
         "ru" : {
@@ -647,6 +1151,18 @@
     },
     "%@ %@" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -677,7 +1193,31 @@
             "value" : "%1$@ %2$@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ %2$@"
@@ -700,6 +1240,18 @@
     "%@ wins by %@!" : {
       "comment" : "Game over message: {Winner Color} wins by {Method}!",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فاز %1$@ بـ %2$@!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ জিতেছে %2$@ এর মাধ্যমে!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -730,10 +1282,34 @@
             "value" : "%1$@ ने %2$@ से जीत हासिल की!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vince per %2$@!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@が%2$@で勝利！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ 승리! (%2$@)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ wygrywa przez %2$@!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ vence por %2$@!"
           }
         },
         "ru" : {
@@ -752,6 +1328,18 @@
     },
     "1. Introduction" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. مقدمة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "১. ভূমিকা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -776,10 +1364,34 @@
             "value" : "1. परिचय"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Introduzione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. はじめに"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. 소개"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "1. Wprowadzenie"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. Introdução"
           }
         },
         "ru" : {
@@ -798,6 +1410,18 @@
     },
     "2. Piece Movement" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. حركة القطع"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "২. ঘুঁটির চাল"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -822,10 +1446,34 @@
             "value" : "2. मोहरों की चाल"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Movimento dei Pezzi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 駒の動き"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. 기물 이동"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "2. Ruchy figur"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "2. Movimento das Peças"
           }
         },
         "ru" : {
@@ -844,6 +1492,18 @@
     },
     "3. Other Differences" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. اختلافات أخرى"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "৩. অন্যান্য পার্থক্য"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -868,10 +1528,34 @@
             "value" : "3. अन्य अंतर"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Altre Differenze"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. その他の違い"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. 기타 차이점"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "3. Inne różnice"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3. Outras Diferenças"
           }
         },
         "ru" : {
@@ -890,6 +1574,18 @@
     },
     "4. Acknowledgements" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. شكر وتقدير"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "৪. কৃতজ্ঞতা স্বীকার"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -914,10 +1610,34 @@
             "value" : "4. आभार"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Riconoscimenti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. 謝辞"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. 감사의 말"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "4. Podziękowania"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "4. Agradecimentos"
           }
         },
         "ru" : {
@@ -937,6 +1657,18 @@
     "ach_friendly_hexchange_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اجعل لاعبًا ينضم إلى لعبة أنشأتها"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার তৈরি করা গেমে একজন খেলোয়াড়কে যোগ করান"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -967,10 +1699,34 @@
             "value" : "किसी खिलाड़ी को आपके बनाए गेम में शामिल करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fai unire un giocatore a una partita creata da te"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "作成したゲームに他のプレイヤーが参加する"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "직접 생성한 게임에 다른 플레이어가 참가"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Do gry, którą stworzyłeś, dołączy inny gracz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faça um jogador entrar em um jogo criado por você"
           }
         },
         "ru" : {
@@ -990,6 +1746,18 @@
     "ach_friendly_hexchange_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تبادل سداسي ودي"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বন্ধুত্বপূর্ণ হেক্সচেঞ্জ"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1020,10 +1788,34 @@
             "value" : "मित्रवत चालबाज़ी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scambio Amichevole"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フレンドリー・ヘクスチェンジ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "친선 헥스 게임"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przyjazna Hekszmiana"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Troca Amigável"
           }
         },
         "ru" : {
@@ -1043,6 +1835,18 @@
     "ach_hex_machina_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قم بعمل \"كش ملك\" للكمبيوتر"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সিপিইউ (CPU)-কে কিস্তিমাত করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1073,10 +1877,34 @@
             "value" : "CPU को चेकमेट करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dai Scacco Matto alla CPU"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPUをチェックメイトする"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "CPU를 상대로 체크메이트 승리"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamat w partii przeciwko komputerowi"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dê xeque-mate na CPU"
           }
         },
         "ru" : {
@@ -1096,6 +1924,18 @@
     "ach_hex_machina_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "آلة سداسية (Hex Machina)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্স মেকিনা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1126,7 +1966,31 @@
             "value" : "हेक्स मशीन"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hex Machina"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックス・マキナ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 마키나"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hex Machina"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hex Machina"
@@ -1149,6 +2013,18 @@
     "ach_hexcalibur_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قم بترقية بيدق إلى حصان (ترقية أدنى)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "একটি বোড়েকে ঘোড়ায় আন্ডার-প্রমোট করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1179,10 +2055,34 @@
             "value" : "किसी प्यादे को घोड़े (नाइट) में पदोन्नत करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sottopromuovi un pedone a cavallo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポーンをナイトに昇格（アンダープロモーション）させる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폰을 나이트로 언더프로모션(하위 승급) 하기"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamiast hetmana awansuj pionka na skoczka"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subpromova um peão para um cavalo"
           }
         },
         "ru" : {
@@ -1202,6 +2102,18 @@
     "ach_hexcalibur_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "سيف سداسي (Hexcalibur)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সক্যালিবার"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1232,7 +2144,31 @@
             "value" : "हेक्सकैलिबर"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexcalibur"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘクスカリバー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스칼리버"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexcalibur"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hexcalibur"
@@ -1255,6 +2191,18 @@
     "ach_hexceeded_hexpectations_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فز في لعبة انضممت إليها"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "একটি জয়েন করা গেমে জিতুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1285,10 +2233,34 @@
             "value" : "एक जॉइन किए गए गेम में जीतें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vinci una partita a cui ti sei unito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "参加したゲームで勝利する"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "참가한 게임에서 승리"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wygraj mecz dołączony do innego gracza"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vença um jogo em que entrou"
           }
         },
         "ru" : {
@@ -1308,6 +2280,18 @@
     "ach_hexceeded_hexpectations_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فاق التوقعات السداسية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সিডেড হেক্সপেকটেশনস"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1338,10 +2322,34 @@
             "value" : "अपेक्षाओं से परे"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aspettative Superate"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "期待以上の大勝利"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기대 이상의 헥스"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ponad Hekspektacje"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Superou as Hexpectativas"
           }
         },
         "ru" : {
@@ -1361,6 +2369,18 @@
     "ach_hexceptional_win_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فز بمباراتك الأولى"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার প্রথম গেম জিতুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1391,10 +2411,34 @@
             "value" : "अपना पहला मैच जीतें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vinci la tua prima partita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "初勝利をあげる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첫 게임 승리"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wygraj swoją pierwszą partię"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vença seu primeiro jogo"
           }
         },
         "ru" : {
@@ -1414,6 +2458,18 @@
     "ach_hexceptional_win_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فوز سداسي استثنائي!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সেপশনাল জয়!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1444,10 +2500,34 @@
             "value" : "शानदार जीत"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vittoria Eccezionale!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘクセプショナルな勝利！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "놀라운 승리!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wyjątkowe Zwycięstwo"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitória Hexcepcional!"
           }
         },
         "ru" : {
@@ -1467,6 +2547,18 @@
     "ach_hexecutioner_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قم بعمل \"كش ملك\" بعد أسر جميع قطع العدو"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "শত্রুর সমস্ত ঘুঁটি কাটার পরে কিস্তিমাত করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1497,10 +2589,34 @@
             "value" : "सभी विरोधी मोहरे पकड़ने के बाद चेकमेट करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dai Scacco Matto dopo aver catturato tutti i pezzi nemici"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "敵の駒を全て取ってからチェックメイトする"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 적 기물을 잡은 후 체크메이트"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamat po zbiciu wszystkich figur przeciwnika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dê xeque-mate após capturar todas as peças inimigas"
           }
         },
         "ru" : {
@@ -1520,6 +2636,18 @@
     "ach_hexecutioner_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الجلاد السداسي"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সিকিউশনার"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1550,10 +2678,34 @@
             "value" : "शह और मात विशेषज्ञ"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esecutore"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスキューショナー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 집행자"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heks-kucja"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexecutador"
           }
         },
         "ru" : {
@@ -1573,6 +2725,18 @@
     "ach_hexpedition_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حرك ملكك إلى موقع بداية ملك الخصم"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার রাজাকে প্রতিপক্ষ রাজার শুরুর অবস্থানে নিয়ে যান"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1603,10 +2767,34 @@
             "value" : "अपने राजा को विरोधी राजा की शुरुआती स्थिति तक पहुँचाएं"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muovi il tuo Re nella posizione di partenza del Re avversario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分のキングを相手のキングの初期位置に移動させる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 킹을 상대방 킹의 시작 위치로 이동"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przesuń króla na początkowe pole króla przeciwnika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mova seu rei para a posição inicial do rei oponente"
           }
         },
         "ru" : {
@@ -1626,6 +2814,18 @@
     "ach_hexpedition_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حملة سداسية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সপেডিশন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1656,10 +2856,34 @@
             "value" : "राजा की यात्रा"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexpedition"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘクスペディション"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 원정"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hekspedycja"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexpedição"
           }
         },
         "ru" : {
@@ -1679,6 +2903,18 @@
     "ach_hextra_power_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قم بترقية بيدق للمرة الأولى"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রথমবারের মতো একটি বোড়ে প্রমোট করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1709,10 +2945,34 @@
             "value" : "पहली बार किसी प्यादे को पदोन्नत करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promuovi un pedone per la prima volta"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "初めてポーンを昇格させる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "처음으로 폰 승급 달성"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Awansuj pionka po raz pierwszy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promova um peão pela primeira vez"
           }
         },
         "ru" : {
@@ -1732,6 +2992,18 @@
     "ach_hextra_power_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قوة سداسية إضافية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সট্রা পাওয়ার"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1762,10 +3034,34 @@
             "value" : "अतिरिक्त शक्ति"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potere Extra"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘクストラ・パワー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스트라 파워"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Heksowa Moc"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hextra Poder"
           }
         },
         "ru" : {
@@ -1785,6 +3081,18 @@
     "ach_hextreme_measures_description" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قم بعمل \"كش ملك\" باستخدام ملكك الخاص"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার নিজের রাজা ব্যবহার করে কিস্তিমাত করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1815,10 +3123,34 @@
             "value" : "अपने राजा की मदद से चेकमेट करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dai Scacco Matto usando il tuo Re"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自分のキングを使ってチェックメイトする"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "자신의 킹을 사용하여 체크메이트"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamat wykonany twoim własnym królem"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dê xeque-mate usando seu próprio rei"
           }
         },
         "ru" : {
@@ -1838,6 +3170,18 @@
     "ach_hextreme_measures_title" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تدابير سداسية قصوى"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্সট্রিম ব্যবস্থা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1868,10 +3212,34 @@
             "value" : "अत्यधिक उपाय"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Misure Estreme"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘクストリームな手段"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "극단적인 헥스"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hekstremalne Środki"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Medidas Hextremas"
           }
         },
         "ru" : {
@@ -1890,6 +3258,18 @@
     },
     "Achievements" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإنجازات"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অর্জনসমূহ"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1914,10 +3294,34 @@
             "value" : "उपलब्धियां"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obiettivi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "実績"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업적"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Osiągnięcia"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conquistas"
           }
         },
         "ru" : {
@@ -1936,6 +3340,18 @@
     },
     "Are you sure you want to delete your account? This action cannot be undone." : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "هل أنت متأكد أنك تريد حذف حسابك؟ لا يمكن التراجع عن هذا الإجراء."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনি কি নিশ্চিত যে আপনি আপনার অ্যাকাউন্ট মুছে ফেলতে চান? এই কাজটি আর ফিরিয়ে আনা যাবে না।"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1960,10 +3376,34 @@
             "value" : "क्या आप वाकई अपना खाता हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei sicuro di voler eliminare il tuo account? Questa azione non può essere annullata."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "本当にアカウントを削除しますか？この操作は取り消せません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정말로 계정을 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Czy na pewno chcesz usunąć swoje konto? Tej operacji nie można cofnąć."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tem certeza de que deseja excluir sua conta? Esta ação não pode ser desfeita."
           }
         },
         "ru" : {
@@ -1982,6 +3422,18 @@
     },
     "Background Music" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موسيقى الخلفية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ব্যাকগ্রাউন্ড মিউজিক"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2006,10 +3458,34 @@
             "value" : "पृष्ठभूमि संगीत"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Musica di Sottofondo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "BGM"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "배경 음악"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Muzyka w tle"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Música de Fundo"
           }
         },
         "ru" : {
@@ -2029,6 +3505,18 @@
     "black" : {
       "extractionState" : "stale",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أسود"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "কালো"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -2059,10 +3547,34 @@
             "value" : "काला"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nero"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "黒"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "흑 (Black)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Czarny"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pretas"
           }
         },
         "ru" : {
@@ -2082,6 +3594,18 @@
     "Check!" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كش!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "চেক!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2106,10 +3630,34 @@
             "value" : "शह!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scacco!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チェック！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "체크!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szach!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xeque!"
           }
         },
         "ru" : {
@@ -2129,6 +3677,18 @@
     "Checkmate" : {
       "extractionState" : "stale",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كش ملك"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "কিস্তিমাত"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2153,10 +3713,34 @@
             "value" : "शह और मात"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scacco Matto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チェックメイト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "체크메이트"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szach-mat"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Xeque-mate"
           }
         },
         "ru" : {
@@ -2175,6 +3759,18 @@
     },
     "Choose a piece to promote to:" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اختر قطعة للترقية إليها:"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রমোশনের জন্য একটি ঘুঁটি বেছে নিন:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2199,10 +3795,34 @@
             "value" : "पदोन्नति के लिए एक मोहरा चुनें:"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli un pezzo per la promozione:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "昇格する駒を選択："
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "승급할 기물을 선택하세요:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wybierz figurę do promocji:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha uma peça para a promoção:"
           }
         },
         "ru" : {
@@ -2221,6 +3841,18 @@
     },
     "Close" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إغلاق"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বন্ধ করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2245,10 +3877,34 @@
             "value" : "बंद करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chiudi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "閉じる"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "닫기"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamknij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fechar"
           }
         },
         "ru" : {
@@ -2267,6 +3923,18 @@
     },
     "Copy to Clipboard" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخ إلى الحافظة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ক্লিপবোর্ডে কপি করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2291,10 +3959,34 @@
             "value" : "क्लिपबोर्ड पर कॉपी करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia negli Appunti"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クリップボードにコピー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "클립보드에 복사"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopiuj do schowka"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar para a Área de Transferência"
           }
         },
         "ru" : {
@@ -2313,6 +4005,18 @@
     },
     "Country" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدولة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "দেশ"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2337,10 +4041,34 @@
             "value" : "देश"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paese"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "国"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "국가"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kraj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "País"
           }
         },
         "ru" : {
@@ -2359,6 +4087,18 @@
     },
     "Create Game" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إنشاء لعبة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গেম তৈরি করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2383,10 +4123,34 @@
             "value" : "खेल बनाएँ"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crea Partita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームを作成"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 생성"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utwórz grę"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar Jogo"
           }
         },
         "ru" : {
@@ -2405,6 +4169,18 @@
     },
     "Delete" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "মুছে ফেলুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2429,10 +4205,34 @@
             "value" : "हटाएं"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "삭제"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usuń"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir"
           }
         },
         "ru" : {
@@ -2451,6 +4251,18 @@
     },
     "Delete Account" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حذف الحساب"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অ্যাকাউন্ট মুছে ফেলুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2475,10 +4287,34 @@
             "value" : "खाता हटाएँ"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elimina Account"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アカウント削除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정 삭제"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usuń konto"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Excluir Conta"
           }
         },
         "ru" : {
@@ -2497,6 +4333,18 @@
     },
     "Display Name:  %@" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "اسم العرض:  %@"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ডিসপ্লে নাম:  %@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2521,10 +4369,34 @@
             "value" : "प्रदर्शन नाम: %1$@"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome Visualizzato: %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "表示名: %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "표시 이름: %@"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nazwa wyświetlana: %1$@"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nome de Exibição:  %@"
           }
         },
         "ru" : {
@@ -2543,6 +4415,18 @@
     },
     "Email" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البريد الإلكتروني"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ইমেল"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2567,7 +4451,31 @@
             "value" : "ईमेल"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールアドレス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mail"
@@ -2589,6 +4497,18 @@
     },
     "Enter Game ID:" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أدخل معرف اللعبة:"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গেম আইডি লিখুন:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2613,10 +4533,34 @@
             "value" : "खेल आईडी दर्ज करें:"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci ID Partita:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームIDを入力:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 ID 입력:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wprowadź ID gry:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insira o ID do Jogo:"
           }
         },
         "ru" : {
@@ -2635,6 +4579,18 @@
     },
     "Enter new display name" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أدخل اسم عرض جديد"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নতুন ডিসপ্লে নাম লিখুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2659,10 +4615,34 @@
             "value" : "नया प्रदर्शन नाम दर्ज करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inserisci nuovo nome visualizzato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい表示名を入力"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 표시 이름 입력"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wprowadź nową nazwę wyświetlaną"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Insira o novo nome de exibição"
           }
         },
         "ru" : {
@@ -2681,6 +4661,18 @@
     },
     "Error" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "خطأ"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ত্রুটি"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2705,10 +4697,34 @@
             "value" : "त्रुटि"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Errore"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "エラー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오류"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Błąd"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro"
           }
         },
         "ru" : {
@@ -2727,6 +4743,18 @@
     },
     "Game ID" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "معرف اللعبة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গেম আইডি"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2751,10 +4779,34 @@
             "value" : "खेल आईडी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID Partita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームID"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 ID"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "ID gry"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ID do Jogo"
           }
         },
         "ru" : {
@@ -2773,6 +4825,18 @@
     },
     "Game Over!" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انتهت اللعبة!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "খেলা শেষ!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2797,10 +4861,34 @@
             "value" : "खेल खत्म!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Partita Terminata!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームオーバー！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 종료!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Koniec gry!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fim de Jogo!"
           }
         },
         "ru" : {
@@ -2819,6 +4907,18 @@
     },
     "Hex Chess" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الشطرنج السداسي"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্স চেস"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2843,10 +4943,34 @@
             "value" : "हेक्स शतरंज"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scacchi Esagonali"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェス"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hekszachy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexadrez"
           }
         },
         "ru" : {
@@ -2866,6 +4990,18 @@
     "Hex Chess – black's turn!" : {
       "comment" : "iMessage caption",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الشطرنج السداسي – دور الأسود!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্স চেস – কালোর চাল!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2890,10 +5026,34 @@
             "value" : "हेक्स शतरंज – काले की बारी!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scacchi Esagonali – tocca al nero!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェス – 黒のターン！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스 – 흑의 차례!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hekszachy – ruch czarnych!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexadrez – vez das pretas!"
           }
         },
         "ru" : {
@@ -2913,6 +5073,18 @@
     "Hex Chess – white's turn!" : {
       "comment" : "iMessage caption",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الشطرنج السداسي – دور الأبيض!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্স চেস – সাদার চাল!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2937,10 +5109,34 @@
             "value" : "हेक्स शतरंज – सफ़ेद की बारी!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scacchi Esagonali – tocca al bianco!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェス – 白のターン！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스 – 백의 차례!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hekszachy – ruch białych!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexadrez – vez das brancas!"
           }
         },
         "ru" : {
@@ -2959,6 +5155,18 @@
     },
     "Hex Chess Elo Rating:  %lld" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تصنيف Elo للشطرنج السداسي:  %lld"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "হেক্স চেস ইলো রেটিং:  %lld"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2983,10 +5191,34 @@
             "value" : "हेक्स शतरंज एलो रेटिंग: %1$lld"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Punteggio Elo Scacchi Esagonali: %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェスELOレート: %lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스 Elo 점수: %lld"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ranking Elo Szachów Heksagonalnych: %1$lld"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pontuação Elo de Hexadrez: %lld"
           }
         },
         "ru" : {
@@ -3005,6 +5237,18 @@
     },
     "How to Play Hexagonal Chess" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كيفية لعب الشطرنج السداسي"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "কিভাবে হেক্সাগোনাল দাবা খেলতে হয়"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3029,10 +5273,34 @@
             "value" : "षट्कोणीय शतरंज कैसे खेलें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Come Giocare a Scacchi Esagonali"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘキサゴナルチェスの遊び方"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "육각형 체스 플레이 방법"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jak grać w szachy heksagonalne"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Como Jogar Xadrez Hexagonal"
           }
         },
         "ru" : {
@@ -3052,6 +5320,18 @@
     "I won in Hex Chess!" : {
       "comment" : "iMessage caption",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لقد فزت في الشطرنج السداسي!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আমি হেক্স চেসে জিতেছি!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3076,10 +5356,34 @@
             "value" : "हेक्स शतरंज में जीत हुई!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ho vinto a Scacchi Esagonali!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェスで勝利しました！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스에서 승리했습니다!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wygrałem w Hekszachy!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eu ganhei no Xadrez Hexagonal!"
           }
         },
         "ru" : {
@@ -3098,6 +5402,18 @@
     },
     "Join Game" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انضم للعبة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গেমে যোগ দিন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3122,10 +5438,34 @@
             "value" : "खेल में शामिल हों"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisciti alla Partita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームに参加"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 참가"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dołącz do gry"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar no Jogo"
           }
         },
         "ru" : {
@@ -3144,6 +5484,18 @@
     },
     "Join Game →" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "انضم للعبة ←"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গেমে যোগ দিন →"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3168,10 +5520,34 @@
             "value" : "खेल में शामिल हों →"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unisciti alla Partita →"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲームに参加 →"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 참가 →"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dołącz do gry →"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar no Jogo →"
           }
         },
         "ru" : {
@@ -3191,6 +5567,18 @@
     "Let's Play Hex Chess!" : {
       "comment" : "1st iMessage summary text\niMessage layout text",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لنلعب الشطرنج السداسي!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আসুন হেক্স চেস খেলি!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3215,10 +5603,34 @@
             "value" : "चलो हेक्स शतरंज खेलें!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giochiamo a Scacchi Esagonali!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ヘックスチェスを遊ぼう！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "헥스 체스 한 판 해요!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zagrajmy w Hekszachy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vamos Jogar Xadrez Hexagonal!"
           }
         },
         "ru" : {
@@ -3237,6 +5649,18 @@
     },
     "Login" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الدخول"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "লগইন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3261,10 +5685,34 @@
             "value" : "लॉग इन करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accedi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ログイン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaloguj się"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar"
           }
         },
         "ru" : {
@@ -3283,6 +5731,18 @@
     },
     "Low Motion" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حركة مخففة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "লো মোশন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3307,10 +5767,34 @@
             "value" : "कम गति"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riduci movimento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "視差効果を減らす"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모션 줄이기"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ograniczony ruch"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reduzir Movimento"
           }
         },
         "ru" : {
@@ -3329,6 +5813,18 @@
     },
     "New Game" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لعبة جديدة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নতুন খেলা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3353,10 +5849,34 @@
             "value" : "नया खेल"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nuova Partita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいゲーム"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새 게임"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nowa gra"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo Jogo"
           }
         },
         "ru" : {
@@ -3375,6 +5895,18 @@
     },
     "OK" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "موافق"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ঠিক আছে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3399,7 +5931,31 @@
             "value" : "ठीक है"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "확인"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
@@ -3421,6 +5977,18 @@
     },
     "Online" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أونلاين"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অনলাইন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3445,7 +6013,31 @@
             "value" : "ऑनलाइन"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オンライン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "온라인"
+          }
+        },
         "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Online"
+          }
+        },
+        "pt" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Online"
@@ -3467,6 +6059,18 @@
     },
     "Opponent:" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الخصم:"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রতিপক্ষ:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3491,10 +6095,34 @@
             "value" : "प्रतिद्वंद्वी:"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avversario:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "対戦相手:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상대:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Przeciwnik:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oponente:"
           }
         },
         "ru" : {
@@ -3513,6 +6141,18 @@
     },
     "or" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أو"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অথবা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3537,10 +6177,34 @@
             "value" : "या"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "o"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "または"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "또는"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "lub"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ou"
           }
         },
         "ru" : {
@@ -3559,6 +6223,18 @@
     },
     "Pass & Play" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مرر والعب"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পাস এবং প্লে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3583,10 +6259,34 @@
             "value" : "पास करें और खेलें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passa e Gioca"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パス＆プレイ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "패스 앤 플레이"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Podaj i graj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passar e Jogar"
           }
         },
         "ru" : {
@@ -3605,6 +6305,18 @@
     },
     "Password" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "كلمة المرور"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পাসওয়ার্ড"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3629,10 +6341,34 @@
             "value" : "पासवर्ड"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Password"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "パスワード"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비밀번호"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hasło"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Senha"
           }
         },
         "ru" : {
@@ -3651,6 +6387,18 @@
     },
     "Pawn Promotion!" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ترقية البيدق!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বোড়ের প্রমোশন!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3675,10 +6423,34 @@
             "value" : "प्यादा पदोन्नति!"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promozione del Pedone!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポーンの昇格！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폰 승급!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Promocja piona"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promoção de Peão!"
           }
         },
         "ru" : {
@@ -3698,6 +6470,18 @@
     "promotion_bishop" : {
       "comment" : "Promotion option",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "فيل"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গজ (Bishop)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3728,10 +6512,34 @@
             "value" : "ऊँट"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alfiere"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ビショップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비숍"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Goniec"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bispo"
           }
         },
         "ru" : {
@@ -3751,6 +6559,18 @@
     "promotion_knight" : {
       "comment" : "Promotion option",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "حصان"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ঘোড়া (Knight)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3781,10 +6601,34 @@
             "value" : "घोड़ा"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cavallo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ナイト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나이트"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skoczek"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cavalo"
           }
         },
         "ru" : {
@@ -3804,6 +6648,18 @@
     "promotion_queen" : {
       "comment" : "Promotion option",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ملكة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "রানি (Queen)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3834,10 +6690,34 @@
             "value" : "वज़ीर"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Regina"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クイーン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "퀸"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hetman"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dama"
           }
         },
         "ru" : {
@@ -3857,6 +6737,18 @@
     "promotion_rook" : {
       "comment" : "Promotion option",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "قلعة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নৌকা (Rook)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3887,10 +6779,34 @@
             "value" : "हाथी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torre"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーク"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "룩"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wieża"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Torre"
           }
         },
         "ru" : {
@@ -3909,6 +6825,18 @@
     },
     "Register" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নিবন্ধন করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3933,10 +6861,34 @@
             "value" : "पंजीकरण करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrati"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登録"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "등록"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zarejestruj się"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Registrar"
           }
         },
         "ru" : {
@@ -3955,6 +6907,18 @@
     },
     "Rematch" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "إعادة المباراة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "পুনরায় ম্যাচ"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3979,10 +6943,34 @@
             "value" : "पुनर्मिलान"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rivincita"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再戦"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "재대결"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rewanż"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Revanche"
           }
         },
         "ru" : {
@@ -4001,6 +6989,18 @@
     },
     "Representing:" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يمثل:"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রতিনিধিত্ব করছেন:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4025,10 +7025,34 @@
             "value" : "प्रतिनिधित्व:"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rappresentando:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "所属:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "대표 국가:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Reprezentuje:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Representando:"
           }
         },
         "ru" : {
@@ -4047,6 +7071,18 @@
     },
     "Resume" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "استئناف"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "চালিয়ে যান"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4071,10 +7107,34 @@
             "value" : "फिर से शुरू करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Riprendi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "再開"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계속하기"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wznów"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Retomar"
           }
         },
         "ru" : {
@@ -4093,6 +7153,18 @@
     },
     "Settings" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الإعدادات"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সেটিংস"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4117,10 +7189,34 @@
             "value" : "सेटिंग्स"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impostazioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "設定"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "설정"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ustawienia"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ajustes"
           }
         },
         "ru" : {
@@ -4139,6 +7235,18 @@
     },
     "Share this Game ID with your opponent:" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "شارك معرف اللعبة هذا مع خصمك:"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "এই গেম আইডি আপনার প্রতিপক্ষের সাথে শেয়ার করুন:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4163,10 +7271,34 @@
             "value" : "इस गेम आईडी को अपने प्रतिद्वंद्वी के साथ साझा करें:"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Condividi questo ID Partita con il tuo avversario:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このゲームIDを対戦相手と共有:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상대방과 이 게임 ID를 공유하세요:"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Udostępnij ten ID gry swojemu przeciwnikowi:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Compartilhe este ID de Jogo com seu oponente:"
           }
         },
         "ru" : {
@@ -4185,6 +7317,18 @@
     },
     "Show Legal Moves" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض النقلات القانونية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বৈধ চাল দেখান"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4209,10 +7353,34 @@
             "value" : "कानूनी चालें दिखाएँ"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra Mosse Legali"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "合法手のハイライト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이동 가능 구역 표시"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokaż dozwolone ruchy"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar Movimentos Legais"
           }
         },
         "ru" : {
@@ -4231,6 +7399,18 @@
     },
     "Sign In" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الدخول"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সাইন ইন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4255,10 +7435,34 @@
             "value" : "साइन इन करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accedi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サインイン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그인"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaloguj się"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar"
           }
         },
         "ru" : {
@@ -4277,6 +7481,18 @@
     },
     "Sign in with Google" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الدخول عبر Google"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google দিয়ে সাইন ইন করুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4301,10 +7517,34 @@
             "value" : "Google से साइन इन करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Accedi con Google"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Googleでサインイン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Google로 로그인"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zaloguj się przez Google"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrar com Google"
           }
         },
         "ru" : {
@@ -4323,6 +7563,18 @@
     },
     "Sign Out" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تسجيل الخروج"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সাইন আউট"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4347,10 +7599,34 @@
             "value" : "साइन आउट करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esci"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サインアウト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "로그아웃"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wyloguj się"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sair"
           }
         },
         "ru" : {
@@ -4369,6 +7645,18 @@
     },
     "Single Player" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لاعب واحد"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সিঙ্গেল প্লেয়ার"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4393,10 +7681,34 @@
             "value" : "एकल खिलाड़ी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giocatore Singolo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "シングルプレイ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "싱글 플레이어"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jeden gracz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um Jogador"
           }
         },
         "ru" : {
@@ -4415,6 +7727,18 @@
     },
     "Sound Effects" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مؤثرات صوتية"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সাউন্ড এফেক্টস"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4439,10 +7763,34 @@
             "value" : "ध्वनि प्रभाव"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Effetti Sonori"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "効果音"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "음향 효과"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Efekty dźwiękowe"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Efeitos Sonoros"
           }
         },
         "ru" : {
@@ -4462,6 +7810,18 @@
     "Stalemate" : {
       "extractionState" : "stale",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعادل (جمود)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "স্টেলমেট"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4486,10 +7846,34 @@
             "value" : "गतिरोध"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stallo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ステイルメイト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "스테일메이트"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pat"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afogamento"
           }
         },
         "ru" : {
@@ -4508,6 +7892,18 @@
     },
     "Start Game →" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابدأ اللعبة ←"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "খেলা শুরু করুন →"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4532,10 +7928,34 @@
             "value" : "खेल शुरू करें →"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia Partita →"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲーム開始 →"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 시작 →"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rozpocznij grę →"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar Jogo →"
           }
         },
         "ru" : {
@@ -4555,6 +7975,18 @@
     "Start Game!" : {
       "comment" : "iMessage Start Button",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ابدأ اللعبة!"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "খেলা শুরু করুন!"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4579,10 +8011,34 @@
             "value" : "खेल शुरू करें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia Partita!"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ゲーム開始！"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "게임 시작!"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Rozpocznij grę!"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iniciar Jogo!"
           }
         },
         "ru" : {
@@ -4601,6 +8057,18 @@
     },
     "The Bishop" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الفيل"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গজ (The Bishop)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4625,10 +8093,34 @@
             "value" : "ऊंट"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'Alfiere"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ビショップ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "비숍 (Bishop)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Goniec"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Bispo"
           }
         },
         "ru" : {
@@ -4647,6 +8139,18 @@
     },
     "The King" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملك"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "রাজা (The King)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4671,10 +8175,34 @@
             "value" : "राजा"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il Re"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キング"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "킹 (King)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Król"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Rei"
           }
         },
         "ru" : {
@@ -4693,6 +8221,18 @@
     },
     "The Knight" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الحصان"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ঘোড়া (The Knight)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4717,10 +8257,34 @@
             "value" : "घोड़ा"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il Cavallo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ナイト"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나이트 (Knight)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skoczek"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Cavalo"
           }
         },
         "ru" : {
@@ -4739,6 +8303,18 @@
     },
     "The Pawn" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "البيدق"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বোড়ে (The Pawn)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4763,10 +8339,34 @@
             "value" : "प्यादा"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il Pedone"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ポーン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폰 (Pawn)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pion"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O Peão"
           }
         },
         "ru" : {
@@ -4785,6 +8385,18 @@
     },
     "The Queen" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "الملكة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "রানি (The Queen)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4809,10 +8421,34 @@
             "value" : "रानी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La Regina"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クイーン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "퀸 (Queen)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hetman"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Dama"
           }
         },
         "ru" : {
@@ -4831,6 +8467,18 @@
     },
     "The Rook" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "القلعة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "নৌকা (The Rook)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4855,10 +8503,34 @@
             "value" : "हाथी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La Torre"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ルーク"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "룩 (Rook)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wieża"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A Torre"
           }
         },
         "ru" : {
@@ -4879,6 +8551,18 @@
       "comment" : "A label displaying the total number of wins the user has achieved in the game.",
       "isCommentAutoGenerated" : true,
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "مجموع الانتصارات: %lld"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "মোট জয়: %lld"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4903,10 +8587,34 @@
             "value" : "कुल जीत: %lld"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vittorie Totali: %lld"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通算勝利数: %lld"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "총 승리: %lld"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Łączna liczba zwycięstw: %lld"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Total de Vitórias: %lld"
           }
         },
         "ru" : {
@@ -4925,6 +8633,18 @@
     },
     "Tutorial" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تعليمات"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "টিউটোরিয়াল"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4949,10 +8669,34 @@
             "value" : "ट्यूटोरियल"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutorial"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "チュートリアル"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "튜토리얼"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Samouczek"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutorial"
           }
         },
         "ru" : {
@@ -4971,6 +8715,18 @@
     },
     "Unknown Player" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "لاعب غير معروف"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "অজানা খেলোয়াড়"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4995,10 +8751,34 @@
             "value" : "अज्ञात खिलाड़ी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Giocatore Sconosciuto"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不明なプレイヤー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알 수 없는 플레이어"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nieznany gracz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jogador Desconhecido"
           }
         },
         "ru" : {
@@ -5017,6 +8797,18 @@
     },
     "View Board" : {
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "عرض اللوحة"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "বোর্ড দেখুন"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5041,10 +8833,34 @@
             "value" : "बोर्ड देखें"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedi Scacchiera"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "盤面を見る"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보드 보기"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokaż planszę"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver Tabuleiro"
           }
         },
         "ru" : {
@@ -5064,6 +8880,18 @@
     "Waiting for opponent" : {
       "comment" : "Waiting text in iMessage",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في انتظار الخصم"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রতিপক্ষের জন্য অপেক্ষা করা হচ্ছে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5088,10 +8916,34 @@
             "value" : "विरोधी का इंतज़ार"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In attesa dell'avversario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "対戦相手を待っています"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상대 기다리는 중"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oczekiwanie na przeciwnika"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguardando oponente"
           }
         },
         "ru" : {
@@ -5111,6 +8963,18 @@
     "Waiting for opponent..." : {
       "comment" : "iMessage caption",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "في انتظار الخصم..."
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "প্রতিপক্ষের জন্য অপেক্ষা করা হচ্ছে..."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5135,10 +8999,34 @@
             "value" : "विरोधी का इंतज़ार..."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In attesa dell'avversario..."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "対戦相手を待っています..."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "상대 기다리는 중..."
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Oczekiwanie na przeciwnika…"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aguardando oponente..."
           }
         },
         "ru" : {
@@ -5158,6 +9046,18 @@
     "white" : {
       "extractionState" : "stale",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "أبيض"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "সাদা"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "needs_review",
@@ -5188,10 +9088,34 @@
             "value" : "सफ़ेद"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bianco"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "白"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "백 (White)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "needs_review",
             "value" : "Biały"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brancas"
           }
         },
         "ru" : {
@@ -5211,6 +9135,18 @@
     "Your ELO rating changed from %d to %d (%@)" : {
       "comment" : "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference}).",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "تغير تصنيف ELO الخاص بك من %1$d إلى %2$d (%3$@)"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার ELO রেটিং %1$d থেকে %2$d (%3$@) এ পরিবর্তিত হয়েছে"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5241,10 +9177,34 @@
             "value" : "आपकी ELO रेटिंग %1$d से %2$d (%3$@) में बदल गई है।"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il tuo punteggio ELO è cambiato da %1$d a %2$d (%3$@)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ELOレーティングが%1$dから%2$dに変わりました (%3$@)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ELO 등급이 %1$d에서 %2$d(으)로 변경되었습니다 (%3$@)"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Twój ranking ELO zmienił się z %1$d na %2$d (%3$@)"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua pontuação ELO mudou de %1$d para %2$d (%3$@)"
           }
         },
         "ru" : {
@@ -5264,6 +9224,18 @@
     "Your turn" : {
       "extractionState" : "manual",
       "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "دورك"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "আপনার চাল"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5288,10 +9260,34 @@
             "value" : "आपकी बारी"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tocca a te"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "あなたの番です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "당신의 차례"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Twoja kolej"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua vez"
           }
         },
         "ru" : {

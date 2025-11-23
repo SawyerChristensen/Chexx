@@ -79,6 +79,7 @@ struct MainMenuView: View {
                             .font(.system(size: maxScreenDimension * 0.07, weight: .bold, design: .serif))
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             .padding(.top, -5)
+                            .multilineTextAlignment(.center)
                         
                         Spacer()
                         
