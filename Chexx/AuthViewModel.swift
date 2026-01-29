@@ -95,7 +95,7 @@ class AuthViewModel: ObservableObject {
                 print("Firestore ELO Score: \(self.eloScore)") */
 
             } else {
-                print("No Firestore document found for this user.")
+                //print("No Firestore document found for this user.")
                 //so make one!
                 self.saveUserDataToFirestore()
             }
@@ -152,7 +152,7 @@ class AuthViewModel: ObservableObject {
             if let error = error {
                 print("Error saving user data: \(error.localizedDescription)")
             } else {
-                print("User data successfully saved to Firestore.")
+                //print("User data successfully saved to Firestore.")
             }
         }
     }
@@ -176,7 +176,7 @@ class AuthViewModel: ObservableObject {
 
         // Check if the new name is different from the stored name
         if name.isEmpty {
-            print("Name is empty, not updating Firestore.")
+            //print("Name is empty, not updating Firestore.")
             return
         }
 
@@ -188,7 +188,7 @@ class AuthViewModel: ObservableObject {
                 if let error = error {
                     print("Error updating name in Firestore: \(error.localizedDescription)")
                 } else {
-                    print("User name successfully updated to \(name).")
+                    //print("User name successfully updated to \(name).")
                     
                     // Optionally update the local UserDefaults after successful update
                     UserDefaults.standard.set(name, forKey: "displayName")
@@ -203,12 +203,12 @@ class AuthViewModel: ObservableObject {
     
     func updateUserCountryInFirestore(country: String) {
         guard let userID = Auth.auth().currentUser?.uid else {
-            print("No user logged in to update country.")
+            //print("No user logged in to update country.")
             return
         }
         
         if country.isEmpty {
-            print("Country is empty, not updating Firestore.")
+            //print("Country is empty, not updating Firestore.")
             return
         }
 
@@ -221,7 +221,7 @@ class AuthViewModel: ObservableObject {
                 if let error = error {
                     print("Error updating country in Firestore: \(error.localizedDescription)")
                 } else {
-                    print("User country successfully updated to \(country).")
+                    //print("User country successfully updated to \(country).")
                     
                     // Update the local UserDefaults after successful update (although this isn't strictly necessary)
                     UserDefaults.standard.set(country, forKey: "country")
@@ -253,7 +253,7 @@ class AuthViewModel: ObservableObject {
                 if !firestoreCountry.isEmpty {
                     self.userCountry = firestoreCountry
                     UserDefaults.standard.set(firestoreCountry, forKey: "country")
-                    print("User country loaded from Firestore: \(firestoreCountry)")
+                    //print("User country loaded from Firestore: \(firestoreCountry)")
                     completion(firestoreCountry)
                 } else {
                     completion(nil) // if no country is found
@@ -497,7 +497,7 @@ class AuthViewModel: ObservableObject {
                 print("Error deleting user document: \(error.localizedDescription)")
                 return
             }
-            print("User Firestore document successfully deleted.")
+            //print("User Firestore document successfully deleted.")
                 
             // Now delete the user from Firebase Authentication
             Auth.auth().currentUser?.delete { error in
@@ -583,7 +583,7 @@ class AuthViewModel: ObservableObject {
           self.displayName = Auth.auth().currentUser?.displayName ?? ""
         }
         catch {
-          print("Unable to update the user's displayname: \(error.localizedDescription)")
+          //print("Unable to update the user's displayname: \(error.localizedDescription)")
           errorMessage = error.localizedDescription
         }
       }

@@ -26,8 +26,10 @@ var isGameOver: Bool = false //not used yet
 var latestHexPGN: [UInt8]? {
     didSet {
         guard latestHexPGN != oldValue else { return } //oldValue is a value provided by Swift
-        if let scene = currentGameScene, let hexPgn = latestHexPGN {
-            scene.applyHexPgn(hexPgn)
+        if let scene = currentGameScene, let hexPgn = latestHexPGN { //if scene already valid, animate the new move immediately
+            Task {
+                await scene.animateMove(hexPgn: hexPgn)
+            }
         }
     }
 }

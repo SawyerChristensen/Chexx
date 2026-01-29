@@ -70,7 +70,7 @@ class GameScene: SKScene {
             print("No game mode detected!")
         }
         
-        hexagonSize = min(self.size.width, self.size.height) * 0.05 // 5.5% of minimum screen dimension
+        hexagonSize = min(self.size.width, self.size.height) * 0.045 // 4.5% of minimum screen dimension
         
         generateHexTiles(radius: hexagonSize, scene: self)
         
@@ -316,7 +316,7 @@ class GameScene: SKScene {
         for node in nodesAtPoint {
             if let pieceNode = node as? SKSpriteNode,
                let pieceDetails = pieceNode.name?.split(separator: "_"),
-               pieceDetails.count > 1, // Ensure there is a color component
+               pieceDetails.count > 1, // Ensure there is a color component (is this needed???)
                let pieceColor = String(pieceDetails[1]) as String? {
 
                 if (pieceColor == gameState.currentPlayer &&
@@ -341,17 +341,22 @@ class GameScene: SKScene {
         guard let selectedPiece = selectedPiece else { return }
 
         if let parent = selectedPiece.parent, let nearestHexagon = findNearestHexagon(to: pos) {
-            if validMoves.contains(nearestHexagon.name!) { // Valid destination
+            if validMoves.contains(nearestHexagon.name!) { // Valid tile destination!
                 updateGameState(with: selectedPiece, at: nearestHexagon.name)
                 selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
-            } else if nearestHexagon.name != originalHexagonName { // Invalid destination
-                selectedPiece.position = originalPosition!
-            } else { // Original hexagon
+                HapticManager.playImpact(style: .medium)
+                
+            } else if nearestHexagon.name == originalHexagonName { // Destination is original tile (the user tapped on the piece, do not deselect)
                 selectedPiece.position = originalPosition!
                 return
+                
+            } else { // Tile is not a valid destination...
+                selectedPiece.position = originalPosition!
+                HapticManager.playNotification(type: .error)
             }
-        } else { // Off the board
+        } else { // Off the board completely
             selectedPiece.position = originalPosition!
+            HapticManager.playNotification(type: .error)
         }
 
         // Common actions for deselecting the piece

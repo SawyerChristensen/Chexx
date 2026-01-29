@@ -33,7 +33,7 @@ class GameCenterManager: NSObject {
             } else if self.localPlayer.isAuthenticated {
                 //print("Game Center: Player already authenticated.")
             } else {
-                print("Game Center: Player not authenticated and no login UI available.")
+                //print("Game Center: Player not authenticated and no login UI available.")
             }
         }
     }
@@ -44,7 +44,7 @@ class GameCenterManager: NSObject {
     ///   - percent: The percentage complete of the achievement (100.0 for “complete”). (set to 100 by default)
     func reportAchievement(identifier: String, percent: Double = 100.0) {
         guard localPlayer.isAuthenticated else {
-            print("Game Center: Local player is not authenticated, cannot report achievement.")
+            //print("Game Center: Local player is not authenticated, cannot report achievement.")
             return
         }
         
@@ -54,9 +54,9 @@ class GameCenterManager: NSObject {
         
         GKAchievement.report([achievement]) { error in
             if let error = error {
-                print("Error reporting achievement \(identifier): \(error.localizedDescription)")
+                //print("Error reporting achievement \(identifier): \(error.localizedDescription)")
             } else {
-                print("Successfully reported achievement \(identifier).")
+                //print("Successfully reported achievement \(identifier).")
             }
         }
     }
@@ -65,14 +65,14 @@ class GameCenterManager: NSObject {
     /// - Parameter completion: Called with the UIImage if successful, or nil on failure
     func loadGameCenterProfileImage(completion: @escaping (UIImage?) -> Void) {
         guard localPlayer.isAuthenticated else {
-            print("Game Center: Local player not authenticated — can't load profile image.")
+            //print("Game Center: Local player not authenticated — can't load profile image.")
             completion(nil)
             return
         }
         
         localPlayer.loadPhoto(for: .normal) { image, error in
             if let error = error {
-                print("Game Center: Failed to load profile image: \(error.localizedDescription)")
+                //print("Game Center: Failed to load profile image: \(error.localizedDescription)")
             }
             completion(image)
         }
@@ -82,7 +82,7 @@ class GameCenterManager: NSObject {
     /// - Parameter viewController: The UIViewController that presents the Game Center view.
     func showAchievements(from viewController: UIViewController) {
         guard localPlayer.isAuthenticated else {
-            print("Game Center: Local player is not authenticated, cannot show achievements.")
+            //print("Game Center: Local player is not authenticated, cannot show achievements.")
             return
         }
         

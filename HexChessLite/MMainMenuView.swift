@@ -56,12 +56,13 @@ struct MessagesMainMenuView: View {
                         Button(action: {
                             onStartGame()
                         }) {
-                            WaveText(text: NSLocalizedString("Start Game!", comment: "iMessage Start Button"), fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
-                            //.font(.system(size: screenWidth * 0.1, weight: .semibold, design: .serif))
+                            Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
+                                     //, fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
+                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11, weight: .semibold, design: .serif))
                                 .padding()
                                 .frame(
                                     //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
-                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.5 : screenWidth * 0.9,
+                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.52 : screenWidth * 0.9,
                                     maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
                                 .background(Color("AccentColor"))
                                 .foregroundColor(Color(uiColor: .systemBackground))

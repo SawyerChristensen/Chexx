@@ -362,7 +362,7 @@ struct GameState: Codable {
     
     mutating func HexPgnToGameState(pgn: [UInt8]) -> GameState { //this assumes its operating on an blank gameState/new board
         guard pgn.count >= 1 else {
-            print("Invalid HexPgn: Not enough data")
+            //print("Invalid HexPgn: Not enough data")
             return self
         }
         
@@ -605,7 +605,7 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
         if let saveData = try? decoder.decode(HexPgnSaveData.self, from: data) {
             var gameState = GameState() // Initialize empty GameState
             gameState = gameState.HexPgnToGameState(pgn: saveData.hexPgn) // Rebuild from HexPgn
-            print("Game state loaded from \(url.path)")
+            //print("Game state loaded from \(url.path)")
             return gameState
         }
     }

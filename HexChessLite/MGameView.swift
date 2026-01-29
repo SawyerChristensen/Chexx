@@ -45,7 +45,7 @@ struct MessagesGameView: View {
                         .foregroundColor(.white)
                         .padding()
                     
-                        .frame(width: geometry.size.width * 0.66)
+                        .frame(width: geometry.size.width * 0.7)
                         .background(
                             Color(white: 0.2)
                                 .cornerRadius(10).opacity(waitingForOpponentBackgroundOpacity))

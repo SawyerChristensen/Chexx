@@ -25,6 +25,8 @@
 		BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807EB2D3E8E7B00EC5973 /* check.mp3 */; };
 		BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */; };
 		BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64F0942D27333100F7B8C5 /* AchievementManager.swift */; };
+		BE75E1DA2F214A5F004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
+		BE75E1DB2F21505E004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
 		BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B52C2A2602009113B4 /* GameScene.swift */; };
 		BE76A9BB2C2A2602009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BA2C2A2602009113B4 /* Base */; };
@@ -33,7 +35,7 @@
 		BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */; };
 		BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
-		BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* to_do.txt */; };
+		BE76AA422C3E34C6009113B4 /* TO DO.txt in Resources */ = {isa = PBXBuildFile; fileRef = BE76AA412C3E34C6009113B4 /* TO DO.txt */; };
 		BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA472C3F07F1009113B4 /* MainMenuView.swift */; };
 		BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */; };
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
@@ -103,6 +105,7 @@
 		BE3807EB2D3E8E7B00EC5973 /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
 		BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_win.mp3; sourceTree = "<group>"; };
 		BE64F0942D27333100F7B8C5 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
+		BE75E1D92F214A4C004BD0BF /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE76A9B52C2A2602009113B4 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -112,7 +115,7 @@
 		BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "carmen-habanera.mp3"; sourceTree = "<group>"; };
 		BE76AA3D2C30DF82009113B4 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		BE76AA3F2C3720EE009113B4 /* PieceRules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceRules.swift; sourceTree = "<group>"; };
-		BE76AA412C3E34C6009113B4 /* to_do.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = to_do.txt; sourceTree = "<group>"; };
+		BE76AA412C3E34C6009113B4 /* TO DO.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = "TO DO.txt"; sourceTree = "<group>"; };
 		BE76AA472C3F07F1009113B4 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
@@ -181,7 +184,7 @@
 			isa = PBXGroup;
 			children = (
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
-				BE76AA412C3E34C6009113B4 /* to_do.txt */,
+				BE76AA412C3E34C6009113B4 /* TO DO.txt */,
 				BE76A9AE2C2A2602009113B4 /* Chexx */,
 				BE7D04B32E5A77D6000920FC /* HexChessLite */,
 				BE7D04B02E5A77D6000920FC /* Frameworks */,
@@ -209,6 +212,7 @@
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
 				BE9EA2512D977843006D9FAC /* GameCenterManager.swift */,
 				BE091A562CC2888100C1A3EC /* AuthViewModel.swift */,
+				BE75E1D92F214A4C004BD0BF /* HapticManager.swift */,
 				BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */,
 				BE7EB8C12C47787000D66EB0 /* User Interface */,
 				BE7EB8C02C47778100D66EB0 /* Game Logic */,
@@ -394,7 +398,7 @@
 				BEA218822EB0DB14006FDE0B /* InfoPlist.strings in Resources */,
 				BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */,
 				BE091A612CCBB62B00C1A3EC /* piece_move.mp3 in Resources */,
-				BE76AA422C3E34C6009113B4 /* to_do.txt in Resources */,
+				BE76AA422C3E34C6009113B4 /* TO DO.txt in Resources */,
 				BE76A9BB2C2A2602009113B4 /* Base in Resources */,
 				BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */,
 				BE091A4F2CC124C500C1A3EC /* GoogleService-Info.plist in Resources */,
@@ -437,6 +441,7 @@
 				BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */,
 				BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */,
 				BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */,
+				BE75E1DA2F214A5F004BD0BF /* HapticManager.swift in Sources */,
 				BE091A672CCBBFBF00C1A3EC /* GameCPU.swift in Sources */,
 				BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,
@@ -454,6 +459,7 @@
 				BECCB4A12E62853D00742EAF /* AudioManager.swift in Sources */,
 				BE7D04EF2E625E1C000920FC /* PieceRules.swift in Sources */,
 				BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */,
+				BE75E1DB2F21505E004BD0BF /* HapticManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -643,7 +649,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -659,7 +665,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -676,7 +682,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 8;
+				CURRENT_PROJECT_VERSION = 9;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -692,7 +698,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -706,7 +712,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -717,7 +723,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -732,7 +738,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -743,7 +749,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.2;
+				MARKETING_VERSION = 1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

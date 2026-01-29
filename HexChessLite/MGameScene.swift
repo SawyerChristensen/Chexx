@@ -72,12 +72,19 @@ class MessagesGameScene: SKScene {
 
         //if a global latest state already exists, apply it immediately
         if let latest = latestHexPGN {
-            applyHexPgn(latest)
-        }
-        
-        if localPlayerColor == .black {
-            rotateBoardImmediately()
-            rotateAllPiecesImmediately()
+            let needsAnimation = loadBoard(latest) //Sync the board state (Instant)
+            
+            if localPlayerColor == .black { //Rotate (Instant)
+                rotateBoardImmediately()
+                rotateAllPiecesImmediately()
+            }
+            
+            if needsAnimation { //Schedule the animation (Delayed)
+                Task {
+                    try? await Task.sleep(nanoseconds: 800_000_000) // 0.8 seconds
+                    await animateMove(hexPgn: latest)
+                }
+            }
         }
     }
     
@@ -304,14 +311,19 @@ class MessagesGameScene: SKScene {
             if validMoves.contains(nearestHexagon.name!) { // Valid destination
                 updateGameState(with: selectedPiece, at: nearestHexagon.name)
                 selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
-            } else if nearestHexagon.name != originalHexagonName { // Invalid destination
-                selectedPiece.position = originalPosition!
-            } else { // Original hexagon
+                HapticManager.playImpact(style: .medium)
+                
+            } else if nearestHexagon.name == originalHexagonName { // Destination is original tile (the user tapped on the piece, do not deselect)
                 selectedPiece.position = originalPosition!
                 return
+                
+            } else { // Tile is not a valid destination...
+                selectedPiece.position = originalPosition!
+                HapticManager.playNotification(type: .error)
             }
         } else { // Off the board
             selectedPiece.position = originalPosition!
+            HapticManager.playNotification(type: .error)
         }
 
         // Common actions for deselecting the piece
@@ -719,80 +731,73 @@ class MessagesGameScene: SKScene {
         updateGameStatusUI(gameStatus: gameStatus)
     }
     
-    func applyHexPgn(_ hexPgn: [UInt8]) {
+    func loadBoard(_ hexPgn: [UInt8]) -> Bool {
         // Exit early if hexPgn is unchanged or empty
         guard hexPgn != gameState.HexPgn, !hexPgn.isEmpty else {
             //print("Same hexPgn as stored, returning...")
-            let (_, gameStatus) = gameState.isGameOver() //replace _ with isGameOver
+            let (_, gameStatus) = gameState.isGameOver() //can replace _ with isGameOver
             updateGameStatusUI(gameStatus: gameStatus)
-            return
+            return false
         }
-        //print("gamestate hexpgn:", gameState.HexPgn)
-        //print("Applying hexPgn: \(hexPgn)")
 
-        // If we need to reconstruct the entire game for reentry
+        // Reconstruct the game when reentering
         if gameState.HexPgn.count == 1, hexPgn.count >= 2 {
             var shortened_hexPgn = hexPgn
             shortened_hexPgn.removeLast(2)
             gameState = gameState.HexPgnToGameState(pgn: shortened_hexPgn)
             removeAllPieces(scene: self)
             placePieces(scene: self, gameState: gameState)
+            return true
         }
+        
+        return false
+    }
+    
+    func animateMove(hexPgn: [UInt8]) async {
+        guard hexPgn.count >= 2 else { return }
 
         // Extract the last move's start and destination
         let startIndex = hexPgn[hexPgn.count - 2]
         let destinationIndex = hexPgn[hexPgn.count - 1]
 
-        // -- PROMOTION LOGIC SAME AS HexPgnToGameState --
+        // Resolve Promotion Logic
         var adjustedIndex: UInt8 = 0
         var promotionPiece: Piece? = nil
 
-        // If the destinationIndex is >= 91, we know it's a promotion
         if destinationIndex >= 91 {
             let totalMoves = (hexPgn.count - 1) / 2
             let isWhiteTurn = !(totalMoves % 2 == 0)
-
-            if isWhiteTurn {
-                promotionPiece = gameState.getPromotionPiece(for: destinationIndex + 1)
-            } else {
-                promotionPiece = gameState.getPromotionPiece(for: destinationIndex)
-            }
+            
+            promotionPiece = gameState.getPromotionPiece(for: isWhiteTurn ? (destinationIndex + 1) : destinationIndex)
             
             switch promotionPiece?.type {
-            case "queen":
-                adjustedIndex = 91
-            case "rook":
-                adjustedIndex = 92
-            case "bishop":
-                adjustedIndex = 93
-            case "knight":
-                adjustedIndex = 94
-            default:
-                adjustedIndex = 0
+                case "queen":  adjustedIndex = 91
+                case "rook":   adjustedIndex = 92
+                case "bishop": adjustedIndex = 93
+                case "knight": adjustedIndex = 94
+                default:       adjustedIndex = 0
             }
-            
         }
 
         let startPosition = gameState.positionIntToString(index: startIndex)
         let destinationPosition = gameState.positionIntToString(index: destinationIndex - adjustedIndex)
 
-        // Animate the move
-        if let pieceNode = findPieceNode(at: startPosition) {
-            if let destinationHexagon = self.childNode(withName: destinationPosition) {
-                if let parent = pieceNode.parent {
-                    let destinationPoint = parent.convert(destinationHexagon.position, from: self)
-                    let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
-                    pieceNode.run(slideAction)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
-                        guard let self = self else { return }
-                        self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece, applyingUpdate: true)
-                    }
-                }
-            } else {
-                print("Error: Destination hexagon not found for \(destinationPosition)")
+        await withCheckedContinuation { continuation in
+            guard let pieceNode = findPieceNode(at: startPosition),
+                  let destinationHexagon = self.childNode(withName: destinationPosition) else {
+                continuation.resume()
+                return
             }
-        } else {
-            print("Error: Piece node not found at \(startPosition)")
+
+            let destinationPoint = pieceNode.parent!.convert(destinationHexagon.position, from: self)
+            
+            let slideAction = SKAction.move(to: destinationPoint, duration: 0.3)
+            slideAction.timingMode = .easeInEaseOut // Makes the opponent move look more natural
+
+            pieceNode.run(slideAction) { [weak self] in
+                self?.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece, applyingUpdate: true)
+                continuation.resume()
+            }
         }
     }
 

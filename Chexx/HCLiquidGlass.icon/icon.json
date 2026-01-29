@@ -66,6 +66,10 @@
         {
           "appearance" : "dark",
           "value" : 0
+        },
+        {
+          "appearance" : "tinted",
+          "value" : 0
         }
       ],
       "shadow-specializations" : [
@@ -120,6 +124,10 @@
         },
         {
           "appearance" : "dark",
+          "value" : 1
+        },
+        {
+          "appearance" : "tinted",
           "value" : 1
         }
       ],

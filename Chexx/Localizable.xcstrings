@@ -1779,7 +1779,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hexchange Amical"
+            "value" : "Hexchange amical"
           }
         },
         "hi" : {
@@ -1927,7 +1927,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "آلة سداسية (Hex Machina)"
+            "value" : "ذكاء سداسي"
           }
         },
         "bn" : {
@@ -2105,7 +2105,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "سيف سداسي (Hexcalibur)"
+            "value" : "ذو الفقار"
           }
         },
         "bn" : {
@@ -2313,7 +2313,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Au-delà des Hexpectations"
+            "value" : "Hexpectatives hexcédées"
           }
         },
         "hi" : {
@@ -2491,7 +2491,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Victoire Hexceptionnelle"
+            "value" : "Victoire hexceptionnelle"
           }
         },
         "hi" : {
@@ -2936,7 +2936,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faites la promotion d’un pion pour la première fois"
+            "value" : "Promouvez un pion pour la première fois"
           }
         },
         "hi" : {
@@ -2995,7 +2995,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "قوة سداسية إضافية"
+            "value" : "قوة سداسية"
           }
         },
         "bn" : {
@@ -3025,7 +3025,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puissance Hextra"
+            "value" : "Puissance hextra"
           }
         },
         "hi" : {
@@ -3114,7 +3114,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faites échec et mat avec votre propre roi"
+            "value" : "Mettre l'adversaire échec et mat avec votre roi"
           }
         },
         "hi" : {
@@ -3203,7 +3203,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mesures Hextrêmes"
+            "value" : "Mesures hextrêmes"
           }
         },
         "hi" : {
@@ -4934,7 +4934,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hexa-Échecs"
+            "value" : "Échex"
           }
         },
         "hi" : {
@@ -5017,7 +5017,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hexa-Échecs - c'est au tour des noirs !"
+            "value" : "Échex - c'est au tour des noirs !"
           }
         },
         "hi" : {
@@ -5100,7 +5100,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hexa-Échecs - c'est au tour des blancs !"
+            "value" : "Échex - c'est au tour des blancs !"
           }
         },
         "hi" : {
@@ -5252,7 +5252,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie man hexagonales Schach spielt"
+            "value" : "Wie man\nHexschach spielt"
           }
         },
         "es" : {
@@ -5264,7 +5264,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comment jouer aux Hexa-Échecs"
+            "value" : "Comment jouer aux échecs hexagonaux"
           }
         },
         "hi" : {
@@ -5594,7 +5594,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jouons aux Hexa-Échecs !"
+            "value" : "Jouons aux échecs hexagonaux !"
           }
         },
         "hi" : {
@@ -7028,7 +7028,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rappresentando:"
+            "value" : "A nome di:"
           }
         },
         "ja" : {
@@ -8578,7 +8578,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Total des victoires : %lld"
+            "value" : "Victoires\ntotales : %lld"
           }
         },
         "hi" : {
