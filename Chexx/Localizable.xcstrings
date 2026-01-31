@@ -264,7 +264,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie im normalen Schach zieht der Turm entlang der Spalten. Man kann auch daran denken, dass er sich entlang der Kanten der Felder bewegt. Da ein Hexagon sechs Kanten statt vier hat, gibt es im Hex-Schach sechs mögliche Spalten."
+            "value" : "Wie im normalen Schach zieht der Turm entlang der Spalten. Man kann auch daran denken, dass er sich entlang der Kanten der Felder bewegt. Da ein Hexagon sechs Kanten statt vier hat, gibt es im Hexschach sechs mögliche Spalten."
           }
         },
         "es" : {
@@ -2521,7 +2521,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wyjątkowe Zwycięstwo"
+            "value" : "Pierwsze Zwycięstwo"
           }
         },
         "pt" : {
@@ -4278,7 +4278,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimer le compte"
+            "value" : "Supprimer mon compte"
           }
         },
         "hi" : {
@@ -4360,7 +4360,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nom d’affichage : %1$@"
+            "value" : "Pseudo : %1$@"
           }
         },
         "hi" : {
@@ -4372,7 +4372,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nome Visualizzato: %@"
+            "value" : "Nome visualizzato: %@"
           }
         },
         "ja" : {
@@ -4940,7 +4940,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज"
+            "value" : "हेक्स चेस"
           }
         },
         "it" : {
@@ -5023,7 +5023,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज – काले की बारी!"
+            "value" : "हेक्स चेस – काले की बारी!"
           }
         },
         "it" : {
@@ -5106,7 +5106,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज – सफ़ेद की बारी!"
+            "value" : "हेक्स चेस – सफ़ेद की बारी!"
           }
         },
         "it" : {
@@ -5158,7 +5158,7 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "تصنيف Elo للشطرنج السداسي:  %lld"
+            "value" : "تصنيف Elo:  %lld"
           }
         },
         "bn" : {
@@ -5170,37 +5170,37 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hexschach-Elo-Wertung: %1$lld"
+            "value" : "Hexschach Elo: %1$lld"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Puntuación Elo de ajedrez hexagonal: %1$lld"
+            "value" : "Puntos Elo: %1$lld"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cote Elo Échecs hexagonaux : %1$lld"
+            "value" : "Classement Elo : %1$lld"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज एलो रेटिंग: %1$lld"
+            "value" : "हेक्स चेस एलो रेटिंग: %1$lld"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Punteggio Elo Scacchi Esagonali: %lld"
+            "value" : "Punteggio Elo: %lld"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ヘックスチェスELOレート: %lld"
+            "value" : "ELOレート: %lld"
           }
         },
         "ko" : {
@@ -5212,25 +5212,25 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ranking Elo Szachów Heksagonalnych: %1$lld"
+            "value" : "Ranking Elo: %1$lld"
           }
         },
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pontuação Elo de Hexadrez: %lld"
+            "value" : "Pontuação Elo: %lld"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Рейтинг Эло в гексагональных шахматах: %1$lld"
+            "value" : "Рейтинг Эло: %1$lld"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "六角国际象棋 ELO 评分：%lld"
+            "value" : "ELO 评分：%lld"
           }
         }
       }
@@ -5353,7 +5353,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स शतरंज में जीत हुई!"
+            "value" : "हेक्स चेस में जीत हुई!"
           }
         },
         "it" : {
@@ -5600,7 +5600,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "चलो हेक्स शतरंज खेलें!"
+            "value" : "चलो हेक्स हेक्स चेस!"
           }
         },
         "it" : {
@@ -6250,13 +6250,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passer & jouer"
+            "value" : "Passe et joue"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "पास करें और खेलें"
+            "value" : "पास और प्ले"
           }
         },
         "it" : {
@@ -7010,25 +7010,25 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Representando a:"
+            "value" : "País:"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Représente :"
+            "value" : "Pays :"
           }
         },
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "प्रतिनिधित्व:"
+            "value" : "देश:"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A nome di:"
+            "value" : "Rappresenta:"
           }
         },
         "ja" : {
@@ -7058,7 +7058,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Представляет:"
+            "value" : "Страна:"
           }
         },
         "zh-Hans" : {
@@ -7426,7 +7426,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se connecter"
+            "value" : "Connexion"
           }
         },
         "hi" : {
@@ -7508,7 +7508,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se connecter avec Google"
+            "value" : "Continuer avec Google"
           }
         },
         "hi" : {
@@ -7590,7 +7590,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se déconnecter"
+            "value" : "Déconnexion"
           }
         },
         "hi" : {
@@ -7678,7 +7678,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "एकल खिलाड़ी"
+            "value" : "सिंगल प्लेयर"
           }
         },
         "it" : {
@@ -7919,7 +7919,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Commencer la partie →"
+            "value" : "Lancer la partie →"
           }
         },
         "hi" : {
@@ -7931,7 +7931,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inizia Partita →"
+            "value" : "Inizia partita →"
           }
         },
         "ja" : {
@@ -8002,7 +8002,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Commencer la partie !"
+            "value" : "Jouer!"
           }
         },
         "hi" : {
@@ -8014,7 +8014,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inizia Partita!"
+            "value" : "Inizia partita!"
           }
         },
         "ja" : {
@@ -8578,7 +8578,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Victoires\ntotales : %lld"
+            "value" : "Victoires : %lld"
           }
         },
         "hi" : {

@@ -52,7 +52,7 @@ struct MessagesMainMenuView: View {
                         .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
                     // MARK:  Start Game Button
-                    if locale.language.languageCode?.identifier != "fr" && locale.language.languageCode?.identifier != "es" {
+                    if locale.language.languageCode?.identifier != "es" {
                         Button(action: {
                             onStartGame()
                         }) {
@@ -71,7 +71,7 @@ struct MessagesMainMenuView: View {
                                     x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
                                     y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
                         }
-                    } else { //the alternative view for french and spanish:
+                    } else { //the alternative view for spanish:
                         Button(action: {
                             onStartGame()
                         }) {
