@@ -4284,7 +4284,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "खाता हटाएँ"
+            "value" : "अकाउंट डिलीट करें"
           }
         },
         "it" : {
@@ -4366,7 +4366,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "प्रदर्शन नाम: %1$@"
+            "value" : "नाम: %1$@"
           }
         },
         "it" : {
@@ -4612,7 +4612,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "नया प्रदर्शन नाम दर्ज करें"
+            "value" : "नया डिस्प्ले नाम डालें"
           }
         },
         "it" : {
@@ -4940,7 +4940,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स चेस"
+            "value" : "षट्कोणीय शतरंज"
           }
         },
         "it" : {
@@ -5023,7 +5023,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स चेस – काले की बारी!"
+            "value" : "षट्कोणीय शतरंज – काले की बारी!"
           }
         },
         "it" : {
@@ -5106,7 +5106,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स चेस – सफ़ेद की बारी!"
+            "value" : "षट्कोणीय शतरंज – सफ़ेद की बारी!"
           }
         },
         "it" : {
@@ -5188,7 +5188,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स चेस एलो रेटिंग: %1$lld"
+            "value" : "ELO रेटिंग: %1$lld"
           }
         },
         "it" : {
@@ -5353,7 +5353,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "हेक्स चेस में जीत हुई!"
+            "value" : "षट्कोणीय शतरंज में जीत हुई!"
           }
         },
         "it" : {
@@ -5600,7 +5600,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "चलो हेक्स हेक्स चेस!"
+            "value" : "चलो हेक्स षट्कोणीय शतरंज!"
           }
         },
         "it" : {
@@ -6256,7 +6256,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "पास और प्ले"
+            "value" : "पास एंड प्ले"
           }
         },
         "it" : {
@@ -7596,7 +7596,7 @@
         "hi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "साइन आउट करें"
+            "value" : "साइन आउट"
           }
         },
         "it" : {

@@ -1,4 +1,5 @@
 -make "waiting for opponent screen" in iMessage more similar to deckedout waiting screen (should be no problems with translations!)
+-review translated achievements?
 -Change text to be device-adjusted instead of hardcoded (fix iMessage Start Game button)
 -Make the buttons extend to include all text (mainly a problem with long translations) (see: French)
     -change imessage button from jouer to lancer la partie when the button can expand
