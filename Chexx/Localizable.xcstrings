@@ -6,31 +6,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      يتم تظليل جميع النقلات القانونية افتراضيًا عند اللعب في أي وضع. لتعطيل هذا، ما عليك سوى تبديل خيار \"تظليل النقلات القانونية\" في الإعدادات."
+            "value" : "يتم تظليل جميع النقلات القانونية افتراضيًا عند اللعب في أي وضع. لتعطيل هذا، ما عليك سوى تبديل خيار \"تظليل النقلات القانونية\" في الإعدادات."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      যেকোনো মোডে খেলার সময় সমস্ত বৈধ চালগুলি ডিফল্টরূপে হাইলাইট করা থাকে। এটি নিষ্ক্রিয় করতে, সেটিংসে কেবল \"বৈধ চাল হাইলাইট করুন\" বিকল্পটি টগল করুন।"
+            "value" : "যেকোনো মোডে খেলার সময় সমস্ত বৈধ চালগুলি ডিফল্টরূপে হাইলাইট করা থাকে। এটি নিষ্ক্রিয় করতে, সেটিংসে কেবল \"বৈধ চাল হাইলাইট করুন\" বিকল্পটি টগল করুন।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle legalen Züge werden standardmäßig in jedem Modus hervorgehoben. Um dies zu deaktivieren, deaktiviere einfach die Option „Legale Züge hervorheben“ in den Einstellungen."
+            "value" : "      Alle legalen Züge werden standardmäßig in jedem Modus hervorgehoben. Um dies zu deaktivieren, deaktiviere einfach die Option „Legale Züge hervorheben“ in den Einstellungen."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los movimientos legales se resaltan por defecto al jugar en cualquier modo. Para desactivar esto, simplemente desactiva la opción \"Resaltar movimientos legales\" en la configuración."
+            "value" : "      Todos los movimientos legales se resaltan por defecto al jugar en cualquier modo. Para desactivar esto, simplemente desactiva la opción \"Resaltar movimientos legales\" en la configuración."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tous les coups légaux sont mis en surbrillance par défaut dans tous les modes de jeu. Pour désactiver cette option, désactivez simplement « Mettre en surbrillance les coups légaux » dans les paramètres."
+            "value" : "      Tous les coups légaux sont mis en surbrillance par défaut dans tous les modes de jeu. Pour désactiver cette option, désactivez simplement « Mettre en surbrillance les coups légaux » dans les paramètres."
           }
         },
         "hi" : {
@@ -48,19 +48,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      どのモードでプレイする場合でも、合法手（ルール上可能な動き）はデフォルトでハイライト表示されます。これを無効にするには、設定の「合法手のハイライト」オプションを切り替えてください。"
+            "value" : "どのモードでプレイする場合でも、合法手（ルール上可能な動き）はデフォルトでハイライト表示されます。これを無効にするには、設定の「合法手のハイライト」オプションを切り替えてください。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      모든 모드에서 규칙상 가능한 수는 기본적으로 강조 표시됩니다. 이 기능을 끄려면 설정에서 \"이동 가능 구역 표시\" 옵션을 끄면 됩니다."
+            "value" : "모든 모드에서 규칙상 가능한 수는 기본적으로 강조 표시됩니다. 이 기능을 끄려면 설정에서 \"이동 가능 구역 표시\" 옵션을 끄면 됩니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wszystkie dozwolone ruchy są domyślnie podświetlane podczas gry w dowolnym trybie. Aby to wyłączyć, po prostu przełącz opcję „Podświetlaj dozwolone ruchy” w ustawieniach."
+            "value" : "      Wszystkie dozwolone ruchy są domyślnie podświetlane podczas gry w dowolnym trybie. Aby to wyłączyć, po prostu przełącz opcję „Podświetlaj dozwolone ruchy” w ustawieniach."
           }
         },
         "pt" : {
@@ -72,7 +72,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Все допустимые ходы подсвечиваются по умолчанию при игре в любом режиме. Чтобы отключить это, просто переключите опцию «Подсвечивать допустимые ходы» в настройках."
+            "value" : "      Все допустимые ходы подсвечиваются по умолчанию при игре в любом режиме. Чтобы отключить это, просто переключите опцию «Подсвечивать допустимые ходы» в настройках."
           }
         },
         "zh-Hans" : {
@@ -94,25 +94,25 @@
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      হাবানেরা (প্রধান মেনু থিম) জর্জেস বিজেট দ্বারা, ১৮৭৫, ইউটিউব অডিও লাইব্রেরির মাধ্যমে"
+            "value" : "হাবানেরা (প্রধান মেনু থিম) জর্জেস বিজেট দ্বারা, ১৮৭৫, ইউটিউব অডিও লাইব্রেরির মাধ্যমে"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habanera (Titelthema) von Georges Bizet, 1875, über die YouTube-Audiobibliothek"
+            "value" : "      Habanera (Titelthema) von Georges Bizet, 1875, über die YouTube-Audiobibliothek"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habanera (Tema del menú principal) de Georges Bizet, 1875, a través de la Biblioteca de audio de YouTube"
+            "value" : "      Habanera (Tema del menú principal) de Georges Bizet, 1875, a través de la Biblioteca de audio de YouTube"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habanera (Thème du menu principal) par Georges Bizet, 1875, via la bibliothèque audio YouTube"
+            "value" : "      Habanera (Thème du menu principal) par Georges Bizet, 1875, via la bibliothèque audio YouTube"
           }
         },
         "hi" : {
@@ -130,19 +130,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ハバネラ（メインメニューテーマ）作曲：ジョルジュ・ビゼー (1875年) - YouTube Audio Library提供"
+            "value" : "ハバネラ（メインメニューテーマ）作曲：ジョルジュ・ビゼー (1875年) - YouTube Audio Library提供"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      하바네라 (메인 메뉴 테마) - 조르주 비제, 1875, YouTube 오디오 라이브러리 제공"
+            "value" : "하바네라 (메인 메뉴 테마) - 조르주 비제, 1875, YouTube 오디오 라이브러리 제공"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habanera (Motyw Głównego Menu) autorstwa Georgesa Bizeta, 1875, za pośrednictwem Biblioteki Audio YouTube"
+            "value" : "      Habanera (Motyw Głównego Menu) autorstwa Georgesa Bizeta, 1875, za pośrednictwem Biblioteki Audio YouTube"
           }
         },
         "pt" : {
@@ -154,7 +154,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Хабанера (Тема главного меню) Жоржа Бизе, 1875, через Аудиотеку YouTube"
+            "value" : "      Хабанера (Тема главного меню) Жоржа Бизе, 1875, через Аудиотеку YouTube"
           }
         },
         "zh-Hans" : {
@@ -170,31 +170,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      تطبيق iOS بواسطة Sawyer Christensen"
+            "value" : "تطبيق iOS بواسطة Sawyer Christensen"
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      সয়ার ক্রিস্টেনসেন দ্বারা তৈরি iOS অ্যাপ"
+            "value" : "সয়ার ক্রিস্টেনসেন দ্বারা তৈরি iOS অ্যাপ"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "iOS-App von Sawyer Christensen"
+            "value" : "      iOS-App von Sawyer Christensen"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplicación iOS por Sawyer Christensen"
+            "value" : "      Aplicación iOS por Sawyer Christensen"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Application iOS par Sawyer Christensen"
+            "value" : "      Application iOS par Sawyer Christensen"
           }
         },
         "hi" : {
@@ -212,19 +212,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      iOS App by Sawyer Christensen"
+            "value" : "iOS App by Sawyer Christensen"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      iOS 앱 개발: Sawyer Christensen"
+            "value" : "iOS 앱 개발: Sawyer Christensen"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aplikacja iOS autorstwa Sawyera Christensena"
+            "value" : "      Aplikacja iOS autorstwa Sawyera Christensena"
           }
         },
         "pt" : {
@@ -236,7 +236,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Приложение для iOS от Сойера Кристенсена"
+            "value" : "      Приложение для iOS от Сойера Кристенсена"
           }
         },
         "zh-Hans" : {
@@ -252,31 +252,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      تمامًا كما في الشطرنج العادي، تتحرك القلعة (الرخ) عبر الأعمدة. طريقة أخرى للتفكير في الأمر هي أن القلعة تتحرك بمحاذاة حواف الخانات. ولأن الشكل السداسي له ستة حواف بدلاً من أربعة في المربع، فهناك ستة أعمدة ممكنة في الشطرنج السداسي."
+            "value" : "تمامًا كما في الشطرنج العادي، تتحرك القلعة (الرخ) عبر الأعمدة. طريقة أخرى للتفكير في الأمر هي أن القلعة تتحرك بمحاذاة حواف الخانات. ولأن الشكل السداسي له ستة حواف بدلاً من أربعة في المربع، فهناك ستة أعمدة ممكنة في الشطرنج السداسي."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      সাধারণ দাবার মতোই, নৌকা (Rook) কলাম বরাবর চলে। এটি ভাবার আরেকটি উপায় হলো নৌকা টাইলসের ধার বরাবর চলে। যেহেতু একটি ষড়ভুজের বর্গক্ষেত্রের চারটির পরিবর্তে ছয়টি ধার থাকে, তাই হেক্স দাবায় ছয়টি সম্ভাব্য কলাম রয়েছে।"
+            "value" : "সাধারণ দাবার মতোই, নৌকা (Rook) কলাম বরাবর চলে। এটি ভাবার আরেকটি উপায় হলো নৌকা টাইলসের ধার বরাবর চলে। যেহেতু একটি ষড়ভুজের বর্গক্ষেত্রের চারটির পরিবর্তে ছয়টি ধার থাকে, তাই হেক্স দাবায় ছয়টি সম্ভাব্য কলাম রয়েছে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wie im normalen Schach zieht der Turm entlang der Spalten. Man kann auch daran denken, dass er sich entlang der Kanten der Felder bewegt. Da ein Hexagon sechs Kanten statt vier hat, gibt es im Hexschach sechs mögliche Spalten."
+            "value" : "      Wie im normalen Schach zieht der Turm entlang der Spalten. Man kann auch daran denken, dass er sich entlang der Kanten der Felder bewegt. Da ein Hexagon sechs Kanten statt vier hat, gibt es im Hexschach sechs mögliche Spalten."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al igual que en el ajedrez normal, la torre se mueve a lo largo de las columnas. Otra forma de pensarlo es que la torre se mueve a lo largo de los bordes de las casillas. Debido a que un hexágono tiene seis bordes en lugar de los cuatro de un cuadrado, hay seis posibles columnas en el ajedrez hexagonal."
+            "value" : "      Al igual que en el ajedrez normal, la torre se mueve a lo largo de las columnas. Otra forma de pensarlo es que la torre se mueve a lo largo de los bordes de las casillas. Debido a que un hexágono tiene seis bordes en lugar de los cuatro de un cuadrado, hay seis posibles columnas en el ajedrez hexagonal."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comme aux échecs traditionnels, la tour se déplace le long des colonnes. On peut aussi considérer qu’elle se déplace le long des bords des tuiles. Comme un hexagone a six côtés au lieu de quatre, il y a six colonnes possibles aux échecs hexagonaux."
+            "value" : "      Comme aux échecs traditionnels, la tour se déplace le long des colonnes. On peut aussi considérer qu’elle se déplace le long des bords des tuiles. Comme un hexagone a six côtés au lieu de quatre, il y a six colonnes possibles aux échecs hexagonaux."
           }
         },
         "hi" : {
@@ -294,19 +294,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      通常のチェスと同様に、ルークは列（カラム）に沿って移動します。マスの辺に沿って動くと考えることもできます。正方形には4つの辺がありますが、六角形には6つの辺があるため、ヘックスチェスには6つの移動可能な列が存在します。"
+            "value" : "通常のチェスと同様に、ルークは列（カラム）に沿って移動します。マスの辺に沿って動くと考えることもできます。正方形には4つの辺がありますが、六角形には6つの辺があるため、ヘックスチェスには6つの移動可能な列が存在します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      일반 체스와 마찬가지로 룩은 열을 따라 이동합니다. 타일의 가장자리를 따라 이동한다고 생각하면 쉽습니다. 육각형은 사각형(4개)과 달리 모서리가 6개이므로 헥스 체스에는 6개의 열이 존재합니다."
+            "value" : "일반 체스와 마찬가지로 룩은 열을 따라 이동합니다. 타일의 가장자리를 따라 이동한다고 생각하면 쉽습니다. 육각형은 사각형(4개)과 달리 모서리가 6개이므로 헥스 체스에는 6개의 열이 존재합니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Podobnie jak w zwykłych szachach, wieża porusza się wzdłuż kolumn. Innym sposobem myślenia jest ruch wieży wzdłuż krawędzi pól. Ponieważ sześciokąt ma sześć krawędzi zamiast czterech kwadratu, w szachach heksagonalnych jest sześć możliwych kolumn."
+            "value" : "      Podobnie jak w zwykłych szachach, wieża porusza się wzdłuż kolumn. Innym sposobem myślenia jest ruch wieży wzdłuż krawędzi pól. Ponieważ sześciokąt ma sześć krawędzi zamiast czterech kwadratu, w szachach heksagonalnych jest sześć możliwych kolumn."
           }
         },
         "pt" : {
@@ -318,7 +318,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Как и в обычных шахматах, ладья движется вдоль столбцов (вертикалей). Другой способ представить это — ладья движется вдоль краев полей. Поскольку у шестиугольника шесть краев вместо четырех у квадрата, в гексагональных шахматах существует шесть возможных столбцов."
+            "value" : "      Как и в обычных шахматах, ладья движется вдоль столбцов (вертикалей). Другой способ представить это — ладья движется вдоль краев полей. Поскольку у шестиугольника шесть краев вместо четырех у квадрата, в гексагональных шахматах существует шесть возможных столбцов."
           }
         },
         "zh-Hans" : {
@@ -334,31 +334,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      القواعد الأصلية بواسطة فلاديسلاف جلينسكي (Władysław Gliński)"
+            "value" : "القواعد الأصلية بواسطة فلاديسلاف جلينسكي (Władysław Gliński)"
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      মূল নিয়মাবলী - ভ্লাদিস্লাভ গ্লিনস্কি দ্বারা"
+            "value" : "মূল নিয়মাবলী - ভ্লাদিস্লাভ গ্লিনস্কি দ্বারা"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Originalregeln von Władysław Gliński"
+            "value" : "      Originalregeln von Władysław Gliński"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reglas originales de Władysław Gliński"
+            "value" : "      Reglas originales de Władysław Gliński"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Règles originales de Władysław Gliński"
+            "value" : "      Règles originales de Władysław Gliński"
           }
         },
         "hi" : {
@@ -376,19 +376,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      オリジナルルール考案：ヴワディスワフ・グリンスキ (Władysław Gliński)"
+            "value" : "オリジナルルール考案：ヴワディスワフ・グリンスキ (Władysław Gliński)"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      오리지널 규칙 고안: Władysław Gliński"
+            "value" : "오리지널 규칙 고안: Władysław Gliński"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oryginalne zasady autorstwa Władysława Glińskiego"
+            "value" : "      Oryginalne zasady autorstwa Władysława Glińskiego"
           }
         },
         "pt" : {
@@ -400,7 +400,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Оригинальные правила Владислава Глинского"
+            "value" : "      Оригинальные правила Владислава Глинского"
           }
         },
         "zh-Hans" : {
@@ -416,31 +416,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      قطع الشطرنج بواسطة Cburnett، رخصة CC BY-SA 3.0، عبر ويكيميديا كومنز"
+            "value" : "قطع الشطرنج بواسطة Cburnett، رخصة CC BY-SA 3.0، عبر ويكيميديا كومنز"
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ঘুঁটিসমূহ - Cburnett দ্বারা, CC BY-SA 3.0, উইকিমিডিয়া কমন্স এর মাধ্যমে"
+            "value" : "ঘুঁটিসমূহ - Cburnett দ্বারা, CC BY-SA 3.0, উইকিমিডিয়া কমন্স এর মাধ্যমে"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Figuren von Cburnett, CC BY-SA 3.0, über Wikimedia Commons"
+            "value" : "      Figuren von Cburnett, CC BY-SA 3.0, über Wikimedia Commons"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Piezas por Cburnett, CC BY-SA 3.0, vía Wikimedia Commons"
+            "value" : "      Piezas por Cburnett, CC BY-SA 3.0, vía Wikimedia Commons"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pièces par Cburnett, CC BY-SA 3.0, via Wikimedia Commons"
+            "value" : "      Pièces par Cburnett, CC BY-SA 3.0, via Wikimedia Commons"
           }
         },
         "hi" : {
@@ -458,19 +458,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      駒デザイン：Cburnett (CC BY-SA 3.0, Wikimedia Commons経由)"
+            "value" : "駒デザイン：Cburnett (CC BY-SA 3.0, Wikimedia Commons経由)"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      기물 디자인: Cburnett, CC BY-SA 3.0, 위키미디어 공용 제공"
+            "value" : "기물 디자인: Cburnett, CC BY-SA 3.0, 위키미디어 공용 제공"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Figury autorstwa Cburnett, CC BY-SA 3.0, za pośrednictwem Wikimedia Commons"
+            "value" : "      Figury autorstwa Cburnett, CC BY-SA 3.0, za pośrednictwem Wikimedia Commons"
           }
         },
         "pt" : {
@@ -482,7 +482,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Фигуры от Cburnett, CC BY-SA 3.0, через Wikimedia Commons"
+            "value" : "      Фигуры от Cburnett, CC BY-SA 3.0, через Wikimedia Commons"
           }
         },
         "zh-Hans" : {
@@ -498,31 +498,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      لا يزال الفيل يتحرك عبر الأقطار (باتجاه زوايا الخانة بدلاً من حوافها) ويبقى دائمًا على لونه. ومثل القلعة، نظرًا لأن الشكل السداسي له ست نقاط، فهناك ستة اتجاهات قطرية ممكنة."
+            "value" : "لا يزال الفيل يتحرك عبر الأقطار (باتجاه زوايا الخانة بدلاً من حوافها) ويبقى دائمًا على لونه. ومثل القلعة، نظرًا لأن الشكل السداسي له ست نقاط، فهناك ستة اتجاهات قطرية ممكنة."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      গজ (Bishop) এখনও কোণাকুণি চলে (টাইলসের ধারের পরিবর্তে কোণার দিকে) এবং সর্বদা তার নিজের রঙে থাকে। নৌকার মতো, যেহেতু একটি ষড়ভুজের ছয়টি কোণ রয়েছে, তাই ছয়টি সম্ভাব্য কোণাকুণি দিক রয়েছে।"
+            "value" : "গজ (Bishop) এখনও কোণাকুণি চলে (টাইলসের ধারের পরিবর্তে কোণার দিকে) এবং সর্বদা তার নিজের রঙে থাকে। নৌকার মতো, যেহেতু একটি ষড়ভুজের ছয়টি কোণ রয়েছে, তাই ছয়টি সম্ভাব্য কোণাকুণি দিক রয়েছে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Läufer bewegt sich weiterhin auf den Diagonalen (zu den Ecken eines Feldes anstatt zu den Kanten) und bleibt stets auf seiner Farbe. Wie beim Turm gibt es, da ein Hexagon sechs Ecken hat, sechs mögliche Diagonalrichtungen."
+            "value" : "      Der Läufer bewegt sich weiterhin auf den Diagonalen (zu den Ecken eines Feldes anstatt zu den Kanten) und bleibt stets auf seiner Farbe. Wie beim Turm gibt es, da ein Hexagon sechs Ecken hat, sechs mögliche Diagonalrichtungen."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El alfil todavía se mueve a lo largo de las diagonales (hacia los vértices de una casilla en lugar de sus bordes) y siempre permanece en su color. Al igual que la torre, debido a que un hexágono tiene seis vértices, hay seis posibles direcciones diagonales."
+            "value" : "      El alfil todavía se mueve a lo largo de las diagonales (hacia los vértices de una casilla en lugar de sus bordes) y siempre permanece en su color. Al igual que la torre, debido a que un hexágono tiene seis vértices, hay seis posibles direcciones diagonales."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le fou se déplace toujours en diagonale (vers les pointes des tuiles au lieu de leurs bords) et reste toujours sur sa couleur. Comme la tour, l’hexagone ayant six pointes, il y a six directions diagonales possibles."
+            "value" : "      Le fou se déplace toujours en diagonale (vers les pointes des tuiles au lieu de leurs bords) et reste toujours sur sa couleur. Comme la tour, l’hexagone ayant six pointes, il y a six directions diagonales possibles."
           }
         },
         "hi" : {
@@ -540,19 +540,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ビショップは依然として斜め（マスの辺ではなく角に向かう方向）に移動し、常に同じ色のマスにとどまります。ルークと同様、六角形には6つの角があるため、6つの斜め方向に移動可能です。"
+            "value" : "ビショップは依然として斜め（マスの辺ではなく角に向かう方向）に移動し、常に同じ色のマスにとどまります。ルークと同様、六角形には6つの角があるため、6つの斜め方向に移動可能です。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      비숍은 여전히 대각선(타일의 가장자리가 아닌 꼭짓점 방향)을 따라 이동하며 항상 같은 색상의 타일에 머무릅니다. 룩과 마찬가지로 육각형에는 6개의 꼭짓점이 있으므로 6가지 대각선 방향이 있습니다."
+            "value" : "비숍은 여전히 대각선(타일의 가장자리가 아닌 꼭짓점 방향)을 따라 이동하며 항상 같은 색상의 타일에 머무릅니다. 룩과 마찬가지로 육각형에는 6개의 꼭짓점이 있으므로 6가지 대각선 방향이 있습니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Goniec nadal porusza się po przekątnych (w kierunku wierzchołków pola zamiast jego krawędzi) i zawsze pozostaje na swoim kolorze. Podobnie jak wieża, ponieważ sześciokąt ma sześć wierzchołków, istnieje sześć możliwych kierunków po przekątnej."
+            "value" : "      Goniec nadal porusza się po przekątnych (w kierunku wierzchołków pola zamiast jego krawędzi) i zawsze pozostaje na swoim kolorze. Podobnie jak wieża, ponieważ sześciokąt ma sześć wierzchołków, istnieje sześć możliwych kierunków po przekątnej."
           }
         },
         "pt" : {
@@ -564,7 +564,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Слон по-прежнему движется по диагоналям (к вершинам поля, а не к его краям) и всегда остается на своем цвете. Как и у ладьи, поскольку у шестиугольника шесть вершин, существует шесть возможных диагональных направлений."
+            "value" : "      Слон по-прежнему движется по диагоналям (к вершинам поля, а не к его краям) и всегда остается на своем цвете. Как и у ладьи, поскольку у шестиугольника шесть вершин, существует шесть возможных диагональных направлений."
           }
         },
         "zh-Hans" : {
@@ -580,31 +580,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      يمكن للملك التحرك عبر الأعمدة والأقطار، مع تقييد الحركة لخانة واحدة فقط في أي اتجاه. من أخطاء المبتدئين نسيان الحركة القطرية لخانة واحدة، والتي قد لا تبدو للوهلة الأولى متصلة بالخانة التي يقف عليها الملك."
+            "value" : "يمكن للملك التحرك عبر الأعمدة والأقطار، مع تقييد الحركة لخانة واحدة فقط في أي اتجاه. من أخطاء المبتدئين نسيان الحركة القطرية لخانة واحدة، والتي قد لا تبدو للوهلة الأولى متصلة بالخانة التي يقف عليها الملك."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      রাজা কলাম এবং কোণাকুণি বরাবর চলতে পারে, তবে যেকোনো দিকে কেবল একটি ঘরের সীমাবদ্ধতা থাকে। নতুনদের একটি সাধারণ ভুল হলো এক-ঘরের কোণাকুণি চালের কথা ভুলে যাওয়া, যা প্রথম দর্শনে রাজার মূল ঘরের সাথে সংযুক্ত বলে মনে হয় না।"
+            "value" : "রাজা কলাম এবং কোণাকুণি বরাবর চলতে পারে, তবে যেকোনো দিকে কেবল একটি ঘরের সীমাবদ্ধতা থাকে। নতুনদের একটি সাধারণ ভুল হলো এক-ঘরের কোণাকুণি চালের কথা ভুলে যাওয়া, যা প্রথম দর্শনে রাজার মূল ঘরের সাথে সংযুক্ত বলে মনে হয় না।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der König kann sich entlang von Spalten und Diagonalen bewegen, jedoch nur um genau ein Feld in jeder Richtung. Ein häufiger Anfängerfehler ist, die diagonale Ein-Feld-Bewegung zu übersehen, da sie auf den ersten Blick nicht mit seinem Startfeld verbunden scheint."
+            "value" : "      Der König kann sich entlang von Spalten und Diagonalen bewegen, jedoch nur um genau ein Feld in jeder Richtung. Ein häufiger Anfängerfehler ist, die diagonale Ein-Feld-Bewegung zu übersehen, da sie auf den ersten Blick nicht mit seinem Startfeld verbunden scheint."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El rey puede moverse a lo largo de columnas y diagonales, con la restricción de solo una casilla en cualquier dirección. Un error de principiante es olvidar el movimiento diagonal de una casilla, que a primera vista no está conectado a la casilla de origen del rey."
+            "value" : "      El rey puede moverse a lo largo de columnas y diagonales, con la restricción de solo una casilla en cualquier dirección. Un error de principiante es olvidar el movimiento diagonal de una casilla, que a primera vista no está conectado a la casilla de origen del rey."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le roi peut se déplacer le long des colonnes et des diagonales, mais seulement d’une case dans n’importe quelle direction. Une erreur fréquente des débutants est d’oublier le déplacement diagonal d’une seule case, qui semble au premier abord non connecté à la case d’origine du roi."
+            "value" : "      Le roi peut se déplacer le long des colonnes et des diagonales, mais seulement d’une case dans n’importe quelle direction. Une erreur fréquente des débutants est d’oublier le déplacement diagonal d’une seule case, qui semble au premier abord non connecté à la case d’origine du roi."
           }
         },
         "hi" : {
@@ -622,19 +622,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      キングは列および斜め方向に移動できますが、どの方向にも1マスしか進めません。初心者がよく犯す間違いは、一見キングのいるマスとつながっていないように見える斜め方向への1マス移動を忘れてしまうことです。"
+            "value" : "キングは列および斜め方向に移動できますが、どの方向にも1マスしか進めません。初心者がよく犯す間違いは、一見キングのいるマスとつながっていないように見える斜め方向への1マス移動を忘れてしまうことです。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      킹은 열과 대각선을 따라 모든 방향으로 한 칸씩 이동할 수 있습니다. 초보자들이 흔히 범하는 실수는 대각선 이동을 잊는 것인데, 언뜻 보기에는 킹의 현재 위치와 연결되어 있지 않은 것처럼 보이기 때문입니다."
+            "value" : "킹은 열과 대각선을 따라 모든 방향으로 한 칸씩 이동할 수 있습니다. 초보자들이 흔히 범하는 실수는 대각선 이동을 잊는 것인데, 언뜻 보기에는 킹의 현재 위치와 연결되어 있지 않은 것처럼 보이기 때문입니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Król może poruszać się wzdłuż kolumn i przekątnych, z ograniczeniem do jednego pola w dowolnym kierunku. Błędem początkujących jest zapominanie o ruchu po przekątnej o jedno pole, który na pierwszy rzut oka nie jest połączony z polem startowym króla."
+            "value" : "      Król może poruszać się wzdłuż kolumn i przekątnych, z ograniczeniem do jednego pola w dowolnym kierunku. Błędem początkujących jest zapominanie o ruchu po przekątnej o jedno pole, który na pierwszy rzut oka nie jest połączony z polem startowym króla."
           }
         },
         "pt" : {
@@ -646,7 +646,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Король может двигаться вдоль столбцов и диагоналей, с ограничением только на одно поле в любом направлении. Ошибка новичка — забыть о диагональном ходе на одно поле, который на первый взгляд не связан с исходным полем короля."
+            "value" : "      Король может двигаться вдоль столбцов и диагоналей, с ограничением только на одно поле в любом направлении. Ошибка новичка — забыть о диагональном ходе на одно поле, который на первый взгляд не связан с исходным полем короля."
           }
         },
         "zh-Hans" : {
@@ -662,31 +662,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      يتحرك الحصان خانتين عبر العمود، ثم خانة واحدة إلى اليسار أو اليمين."
+            "value" : "يتحرك الحصان خانتين عبر العمود، ثم خانة واحدة إلى اليسار أو اليمين."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ঘোড়া (Knight) একটি কলাম বরাবর দুটি ঘর যায়, এবং তারপর বাম বা ডানে একটি ঘর যায়।"
+            "value" : "ঘোড়া (Knight) একটি কলাম বরাবর দুটি ঘর যায়, এবং তারপর বাম বা ডানে একটি ঘর যায়।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Springer zieht zwei Felder entlang einer Spalte und dann ein Feld nach links oder rechts."
+            "value" : "      Der Springer zieht zwei Felder entlang einer Spalte und dann ein Feld nach links oder rechts."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El caballo se mueve dos casillas a lo largo de una columna y luego una casilla a la izquierda o a la derecha."
+            "value" : "      El caballo se mueve dos casillas a lo largo de una columna y luego una casilla a la izquierda o a la derecha."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le cavalier se déplace de deux cases le long d’une colonne, puis d’une case vers la gauche ou la droite."
+            "value" : "      Le cavalier se déplace de deux cases le long d’une colonne, puis d’une case vers la gauche ou la droite."
           }
         },
         "hi" : {
@@ -704,19 +704,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ナイトは列に沿って2マス進み、その後、左または右に1マス移動します。"
+            "value" : "ナイトは列に沿って2マス進み、その後、左または右に1マス移動します。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      나이트는 열을 따라 두 칸 이동한 후, 왼쪽이나 오른쪽으로 한 칸 이동합니다."
+            "value" : "나이트는 열을 따라 두 칸 이동한 후, 왼쪽이나 오른쪽으로 한 칸 이동합니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skoczek porusza się o dwa pola wzdłuż kolumny, a następnie o jedno pole w lewo lub w prawo."
+            "value" : "      Skoczek porusza się o dwa pola wzdłuż kolumny, a następnie o jedno pole w lewo lub w prawo."
           }
         },
         "pt" : {
@@ -728,7 +728,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Конь движется на два поля вдоль столбца, а затем на одно поле влево или вправо."
+            "value" : "      Конь движется на два поля вдоль столбца, а затем на одно поле влево или вправо."
           }
         },
         "zh-Hans" : {
@@ -744,31 +744,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      الشكل الأكثر شيوعًا للشطرنج السداسي ابتكره فلاديسلاف جلينسكي في عام 1936. خلال ذروة انتشاره في أوروبا الشرقية، كان هناك أكثر من نصف مليون لاعب لشطرنج جلينسكي السداسي. تم إنشاء المزيد من المتغيرات منذ ذلك الحين، على الرغم من أن نسخة جلينسكي تظل الأكثر شعبية. تُلعب بطريقة مشابهة للشطرنج العادي ولكن مع بعض الاختلافات الملحوظة."
+            "value" : "الشكل الأكثر شيوعًا للشطرنج السداسي ابتكره فلاديسلاف جلينسكي في عام 1936. خلال ذروة انتشاره في أوروبا الشرقية، كان هناك أكثر من نصف مليون لاعب لشطرنج جلينسكي السداسي. تم إنشاء المزيد من المتغيرات منذ ذلك الحين، على الرغم من أن نسخة جلينسكي تظل الأكثر شعبية. تُلعب بطريقة مشابهة للشطرنج العادي ولكن مع بعض الاختلافات الملحوظة."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      হেক্সাগোনাল দাবার সবচেয়ে জনপ্রিয় রূপটি ১৯৩৬ সালে ভ্লাদিস্লাভ গ্লিনস্কি তৈরি করেছিলেন। পূর্ব ইউরোপে এর জনপ্রিয়তার শীর্ষে থাকাকালীন গ্লিনস্কির হেক্স দাবার পাঁচ লাখেরও বেশি খেলোয়াড় ছিল। এরপর থেকে আরও অনেক সংস্করণ তৈরি হয়েছে, যদিও গ্লিনস্কির সংস্করণটিই সবচেয়ে জনপ্রিয়। এটি সাধারণ দাবার মতোই খেলা হয়, তবে কিছু উল্লেখযোগ্য পার্থক্য রয়েছে।"
+            "value" : "হেক্সাগোনাল দাবার সবচেয়ে জনপ্রিয় রূপটি ১৯৩৬ সালে ভ্লাদিস্লাভ গ্লিনস্কি তৈরি করেছিলেন। পূর্ব ইউরোপে এর জনপ্রিয়তার শীর্ষে থাকাকালীন গ্লিনস্কির হেক্স দাবার পাঁচ লাখেরও বেশি খেলোয়াড় ছিল। এরপর থেকে আরও অনেক সংস্করণ তৈরি হয়েছে, যদিও গ্লিনস্কির সংস্করণটিই সবচেয়ে জনপ্রিয়। এটি সাধারণ দাবার মতোই খেলা হয়, তবে কিছু উল্লেখযোগ্য পার্থক্য রয়েছে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die beliebteste Form des Hexagonales Schach wurde 1936 von Władysław Gliński entwickelt. Zu seiner Blütezeit in Osteuropa gab es mehr als eine halbe Million Spieler von Glińskis Hexagonales Schach. Seitdem wurden noch weitere Varianten entwickelt, doch Glińskis Version ist nach wie vor die beliebteste. Es wird ähnlich wie normales Schach gespielt, allerdings mit einigen bemerkenswerten Unterschieden."
+            "value" : "      Die beliebteste Form des Hexagonales Schach wurde 1936 von Władysław Gliński entwickelt. Zu seiner Blütezeit in Osteuropa gab es mehr als eine halbe Million Spieler von Glińskis Hexagonales Schach. Seitdem wurden noch weitere Varianten entwickelt, doch Glińskis Version ist nach wie vor die beliebteste. Es wird ähnlich wie normales Schach gespielt, allerdings mit einigen bemerkenswerten Unterschieden."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La forma más popular de ajedrez hexagonal fue creada por Władysław Gliński en 1936. Durante su apogeo en Europa del Este, hubo más de medio millón de jugadores de ajedrez hexagonal de Gliński. Desde entonces se han creado aún más variantes, aunque la de Gliński sigue siendo la más popular. Se juega de forma similar al ajedrez normal, aunque con algunas diferencias notables."
+            "value" : "      La forma más popular de ajedrez hexagonal fue creada por Władysław Gliński en 1936. Durante su apogeo en Europa del Este, hubo más de medio millón de jugadores de ajedrez hexagonal de Gliński. Desde entonces se han creado aún más variantes, aunque la de Gliński sigue siendo la más popular. Se juega de forma similar al ajedrez normal, aunque con algunas diferencias notables."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La forme la plus populaire des échecs hexagonaux a été créée par Władysław Gliński en 1936. À son apogée en Europe de l'Est, les échecs hexagonaux de Gliński comptaient plus d'un demi-million de joueurs. Depuis, d'autres variantes ont vu le jour, mais celle de Gliński reste la plus populaire. Elle se joue de manière similaire aux échecs classiques, à quelques différences notables près."
+            "value" : "      La forme la plus populaire des échecs hexagonaux a été créée par Władysław Gliński en 1936. À son apogée en Europe de l'Est, les échecs hexagonaux de Gliński comptaient plus d'un demi-million de joueurs. Depuis, d'autres variantes ont vu le jour, mais celle de Gliński reste la plus populaire. Elle se joue de manière similaire aux échecs classiques, à quelques différences notables près."
           }
         },
         "hi" : {
@@ -786,19 +786,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      最も人気のあるヘキサゴナルチェス（六角チェス）は、1936年にヴワディスワフ・グリンスキによって考案されました。東欧での最盛期には、50万人以上のプレイヤーがいました。その後さらに多くのバリエーションが生まれましたが、グリンスキ版が依然として最も人気があります。通常のチェスと似ていますが、いくつかの重要な違いがあります。"
+            "value" : "最も人気のあるヘキサゴナルチェス（六角チェス）は、1936年にヴワディスワフ・グリンスキによって考案されました。東欧での最盛期には、50万人以上のプレイヤーがいました。その後さらに多くのバリエーションが生まれましたが、グリンスキ版が依然として最も人気があります。通常のチェスと似ていますが、いくつかの重要な違いがあります。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      가장 대중적인 육각형 체스는 1936년 블라디슬라프 글린스키(Władysław Gliński)가 창안했습니다. 동유럽에서 인기가 절정일 때는 50만 명이 넘는 사람들이 글린스키의 헥스 체스를 즐겼습니다. 이후 더 많은 변형이 만들어졌지만, 글린스키의 방식이 여전히 가장 유명합니다. 일반 체스와 비슷하지만 몇 가지 눈에 띄는 차이점이 있습니다."
+            "value" : "가장 대중적인 육각형 체스는 1936년 블라디슬라프 글린스키(Władysław Gliński)가 창안했습니다. 동유럽에서 인기가 절정일 때는 50만 명이 넘는 사람들이 글린스키의 헥스 체스를 즐겼습니다. 이후 더 많은 변형이 만들어졌지만, 글린스키의 방식이 여전히 가장 유명합니다. 일반 체스와 비슷하지만 몇 가지 눈에 띄는 차이점이 있습니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Najpopularniejsza odmiana szachów sześciokątnych została stworzona przez Władysława Glińskiego w 1936 roku. W okresie największej popularności w Europie Wschodniej w szachy sześciokątne Glińskiego grało ponad pół miliona osób. Od tego czasu powstało jeszcze więcej odmian tej gry, jednak wersja Glińskiego pozostaje najpopularniejsza. Gra się w nią podobnie jak w tradycyjne szachy, choć istnieją pewne istotne różnice."
+            "value" : "      Najpopularniejsza odmiana szachów sześciokątnych została stworzona przez Władysława Glińskiego w 1936 roku. W okresie największej popularności w Europie Wschodniej w szachy sześciokątne Glińskiego grało ponad pół miliona osób. Od tego czasu powstało jeszcze więcej odmian tej gry, jednak wersja Glińskiego pozostaje najpopularniejsza. Gra się w nią podobnie jak w tradycyjne szachy, choć istnieją pewne istotne różnice."
           }
         },
         "pt" : {
@@ -810,7 +810,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Самая популярная форма шестиугольных шахмат была создана Владиславом Глинским в 1936 году. В период своего расцвета в Восточной Европе в шестиугольные шахматы Глинского играло более полумиллиона человек. С тех пор было создано еще больше вариантов, хотя шахматы Глинского остаются самыми популярными. Они играются аналогично обычным шахматам, хотя и имеют некоторые заметные отличия."
+            "value" : "      Самая популярная форма шестиугольных шахмат была создана Владиславом Глинским в 1936 году. В период своего расцвета в Восточной Европе в шестиугольные шахматы Глинского играло более полумиллиона человек. С тех пор было создано еще больше вариантов, хотя шахматы Глинского остаются самыми популярными. Они играются аналогично обычным шахматам, хотя и имеют некоторые заметные отличия."
           }
         },
         "zh-Hans" : {
@@ -826,31 +826,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      يتحرك البيدق عادة خانة واحدة للأمام، ولكن يمكنه أيضًا التحرك خانتين للأمام إذا لم يتحرك بعد. يلتقط البيدق القطع الموجودة مباشرة على يساره ويمينه ويمكن ترقيته لأي قطعة إذا وصل إلى الصف الأخير."
+            "value" : "يتحرك البيدق عادة خانة واحدة للأمام، ولكن يمكنه أيضًا التحرك خانتين للأمام إذا لم يتحرك بعد. يلتقط البيدق القطع الموجودة مباشرة على يساره ويمينه ويمكن ترقيته لأي قطعة إذا وصل إلى الصف الأخير."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      বোড়ে (Pawn) সাধারণত একবারে একটি ঘর সামনে চলে, তবে এটি এখনও চাল না দিলে দুটি ঘর সামনে যেতে পারে। এটি তার ঠিক বাম এবং ডান দিকের ঘুঁটিগুলিকে কাটতে পারে এবং শেষ সারিতে পৌঁছালে যেকোনো ঘুঁটিতে উন্নীত (promote) হতে পারে।"
+            "value" : "বোড়ে (Pawn) সাধারণত একবারে একটি ঘর সামনে চলে, তবে এটি এখনও চাল না দিলে দুটি ঘর সামনে যেতে পারে। এটি তার ঠিক বাম এবং ডান দিকের ঘুঁটিগুলিকে কাটতে পারে এবং শেষ সারিতে পৌঁছালে যেকোনো ঘুঁটিতে উন্নীত (promote) হতে পারে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Bauer zieht normalerweise ein Feld vorwärts, kann aber auch zwei Felder vorrücken, wenn er noch nicht bewegt wurde. Er schlägt Figuren unmittelbar links und rechts von sich und kann in jede beliebige Figur umgewandelt werden, wenn er die letzte Reihe erreicht."
+            "value" : "      Der Bauer zieht normalerweise ein Feld vorwärts, kann aber auch zwei Felder vorrücken, wenn er noch nicht bewegt wurde. Er schlägt Figuren unmittelbar links und rechts von sich und kann in jede beliebige Figur umgewandelt werden, wenn er die letzte Reihe erreicht."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El peón normalmente se mueve una casilla hacia adelante a la vez, pero también puede moverse dos casillas hacia adelante si aún no se ha movido. Captura piezas a su izquierda y derecha inmediatas y puede promocionarse a cualquier pieza si llega a la última fila."
+            "value" : "      El peón normalmente se mueve una casilla hacia adelante a la vez, pero también puede moverse dos casillas hacia adelante si aún no se ha movido. Captura piezas a su izquierda y derecha inmediatas y puede promocionarse a cualquier pieza si llega a la última fila."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le pion avance normalement d’une case à la fois, mais peut aussi avancer de deux cases lors de son premier déplacement. Il capture les pièces immédiatement à sa gauche et à sa droite et peut être promu à n’importe quelle pièce s’il atteint la dernière rangée."
+            "value" : "      Le pion avance normalement d’une case à la fois, mais peut aussi avancer de deux cases lors de son premier déplacement. Il capture les pièces immédiatement à sa gauche et à sa droite et peut être promu à n’importe quelle pièce s’il atteint la dernière rangée."
           }
         },
         "hi" : {
@@ -868,19 +868,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ポーンは通常、一度に1マス前進しますが、まだ動いていない場合は2マス進むこともできます。ポーンはすぐ左または右にある駒を捕獲（キャプチャ）し、最後の列に到達すると任意の駒に昇格（プロモーション）できます。"
+            "value" : "ポーンは通常、一度に1マス前進しますが、まだ動いていない場合は2マス進むこともできます。ポーンはすぐ左または右にある駒を捕獲（キャプチャ）し、最後の列に到達すると任意の駒に昇格（プロモーション）できます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      폰은 보통 앞으로 한 칸씩 이동하지만, 아직 움직이지 않은 상태라면 두 칸을 전진할 수도 있습니다. 폰은 바로 왼쪽과 오른쪽 앞의 기물을 잡을 수 있으며, 마지막 줄에 도달하면 원하는 기물로 승급할 수 있습니다."
+            "value" : "폰은 보통 앞으로 한 칸씩 이동하지만, 아직 움직이지 않은 상태라면 두 칸을 전진할 수도 있습니다. 폰은 바로 왼쪽과 오른쪽 앞의 기물을 잡을 수 있으며, 마지막 줄에 도달하면 원하는 기물로 승급할 수 있습니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pion normalnie porusza się o jedno pole do przodu, ale może również przesunąć się o dwa pola do przodu, jeśli jeszcze się nie ruszył. Bije figury bezpośrednio po lewej i prawej stronie i może zostać promowany na dowolną figurę, jeśli dotrze do ostatniego rzędu."
+            "value" : "      Pion normalnie porusza się o jedno pole do przodu, ale może również przesunąć się o dwa pola do przodu, jeśli jeszcze się nie ruszył. Bije figury bezpośrednio po lewej i prawej stronie i może zostać promowany na dowolną figurę, jeśli dotrze do ostatniego rzędu."
           }
         },
         "pt" : {
@@ -892,7 +892,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пешка обычно движется вперед на одно поле за раз, но также может двигаться на два поля вперед, если она еще не ходила. Она бьет фигуры слева и справа от себя и может быть превращена в любую фигуру, если достигнет последней горизонтали."
+            "value" : "      Пешка обычно движется вперед на одно поле за раз, но также может двигаться на два поля вперед, если она еще не ходила. Она бьет фигуры слева и справа от себя и может быть превращена в любую фигуру, если достигнет последней горизонтали."
           }
         },
         "zh-Hans" : {
@@ -908,31 +908,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      تجمع الملكة بين حركة القلعة والفيل. يمكنها التحرك عبر الأعمدة وكذلك عبر الأقطار."
+            "value" : "تجمع الملكة بين حركة القلعة والفيل. يمكنها التحرك عبر الأعمدة وكذلك عبر الأقطار."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      রানি (Queen) নৌকা এবং গজের চালের সমন্বয় করে। এটি কলামের পাশাপাশি কোণাকুণি বরাবরও চলতে পারে।"
+            "value" : "রানি (Queen) নৌকা এবং গজের চালের সমন্বয় করে। এটি কলামের পাশাপাশি কোণাকুণি বরাবরও চলতে পারে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Dame vereint die Zugmöglichkeiten von Turm und Läufer. Sie kann sich sowohl entlang der Spalten als auch auf den Diagonalen bewegen."
+            "value" : "      Die Dame vereint die Zugmöglichkeiten von Turm und Läufer. Sie kann sich sowohl entlang der Spalten als auch auf den Diagonalen bewegen."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La reina combina el movimiento de la torre y el alfil. Puede moverse a lo largo de las columnas así como a lo largo de las diagonales."
+            "value" : "      La reina combina el movimiento de la torre y el alfil. Puede moverse a lo largo de las columnas así como a lo largo de las diagonales."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La reine combine les déplacements de la tour et du fou. Elle peut se déplacer le long des colonnes ainsi que le long des diagonales."
+            "value" : "      La reine combine les déplacements de la tour et du fou. Elle peut se déplacer le long des colonnes ainsi que le long des diagonales."
           }
         },
         "hi" : {
@@ -950,19 +950,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      クイーンはルークとビショップの動きを兼ね備えています。列に沿っても、斜め方向にも移動できます。"
+            "value" : "クイーンはルークとビショップの動きを兼ね備えています。列に沿っても、斜め方向にも移動できます。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      퀸은 룩과 비숍의 움직임을 결합한 기물입니다. 열을 따라 이동할 수도 있고 대각선을 따라 이동할 수도 있습니다."
+            "value" : "퀸은 룩과 비숍의 움직임을 결합한 기물입니다. 열을 따라 이동할 수도 있고 대각선을 따라 이동할 수도 있습니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hetman łączy ruchy wieży i gońca. Może poruszać się wzdłuż kolumn, jak również wzdłuż przekątnych."
+            "value" : "      Hetman łączy ruchy wieży i gońca. Może poruszać się wzdłuż kolumn, jak również wzdłuż przekątnych."
           }
         },
         "pt" : {
@@ -974,7 +974,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ферзь сочетает в себе ходы ладьи и слона. Он может двигаться как вдоль столбцов, так и вдоль диагоналей."
+            "value" : "      Ферзь сочетает в себе ходы ладьи и слона. Он может двигаться как вдоль столбцов, так и вдоль диагоналей."
           }
         },
         "zh-Hans" : {
@@ -990,31 +990,31 @@
         "ar" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      لا يوجد \"تبييت\" (Castling) في الشطرنج السداسي. يوجد أيضًا تسعة بيادق بدلاً من ثمانية، بالإضافة إلى ثلاثة فيلة (واحد لكل لون) بدلاً من الاثنين المعتادين. لا يزال بالإمكان أسر البيادق عبر قاعدة \"الأخذ بالتجاوز\" (En Passant)."
+            "value" : "لا يوجد \"تبييت\" (Castling) في الشطرنج السداسي. يوجد أيضًا تسعة بيادق بدلاً من ثمانية، بالإضافة إلى ثلاثة فيلة (واحد لكل لون) بدلاً من الاثنين المعتادين. لا يزال بالإمكان أسر البيادق عبر قاعدة \"الأخذ بالتجاوز\" (En Passant)."
           }
         },
         "bn" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      হেক্সাগোনাল দাবায় কোনো ক্যাসলিং (Castling) নেই। এখানে আটের পরিবর্তে নয়টি বোড়ে থাকে, এবং সাধারণ দুটির পরিবর্তে তিনটি গজ থাকে (প্রতিটি রঙের জন্য একটি করে)। বোড়েকে এখনও এন পাসান্ট (en passant)-এর মাধ্যমে কাটা যেতে পারে।"
+            "value" : "হেক্সাগোনাল দাবায় কোনো ক্যাসলিং (Castling) নেই। এখানে আটের পরিবর্তে নয়টি বোড়ে থাকে, এবং সাধারণ দুটির পরিবর্তে তিনটি গজ থাকে (প্রতিটি রঙের জন্য একটি করে)। বোড়েকে এখনও এন পাসান্ট (en passant)-এর মাধ্যমে কাটা যেতে পারে।"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Im hexagonalen Schach gibt es keine Rochade. Außerdem gibt es neun Bauern statt acht und drei Läufer (je einer pro Farbe) statt der üblichen zwei. Bauern können weiterhin über en passant geschlagen werden."
+            "value" : "      Im hexagonalen Schach gibt es keine Rochade. Außerdem gibt es neun Bauern statt acht und drei Läufer (je einer pro Farbe) statt der üblichen zwei. Bauern können weiterhin über en passant geschlagen werden."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hay enroque en el ajedrez hexagonal. También hay nueve peones en lugar de ocho, así como tres alfiles (uno para cada color todavía) en lugar de los dos habituales. Los peones todavía pueden ser capturados al paso (en passant)."
+            "value" : "      No hay enroque en el ajedrez hexagonal. También hay nueve peones en lugar de ocho, así como tres alfiles (uno para cada color todavía) en lugar de los dos habituales. Los peones todavía pueden ser capturados al paso (en passant)."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il n’y a pas de roque aux échecs hexagonaux. Il y a également neuf pions au lieu de huit, ainsi que trois fous (un pour chaque couleur) au lieu des deux habituels. Les pions peuvent toujours être capturés par prise en passant."
+            "value" : "      Il n’y a pas de roque aux échecs hexagonaux. Il y a également neuf pions au lieu de huit, ainsi que trois fous (un pour chaque couleur) au lieu des deux habituels. Les pions peuvent toujours être capturés par prise en passant."
           }
         },
         "hi" : {
@@ -1032,19 +1032,19 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      ヘキサゴナルチェスにキャスリングはありません。また、ポーンは8個ではなく9個あり、ビショップは通常の2個ではなく3個（各色1個ずつ）あります。アンパッサンによるポーンの捕獲は可能です。"
+            "value" : "ヘキサゴナルチェスにキャスリングはありません。また、ポーンは8個ではなく9個あり、ビショップは通常の2個ではなく3個（各色1個ずつ）あります。アンパッサンによるポーンの捕獲は可能です。"
           }
         },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "      헥스 체스에는 캐슬링이 없습니다. 또한 폰은 8개가 아닌 9개이며, 비숍은 2개가 아닌 3개(각 색상 칸마다 하나씩)입니다. 폰은 여전히 앙파상(en passant)을 통해 잡을 수 있습니다."
+            "value" : "헥스 체스에는 캐슬링이 없습니다. 또한 폰은 8개가 아닌 9개이며, 비숍은 2개가 아닌 3개(각 색상 칸마다 하나씩)입니다. 폰은 여전히 앙파상(en passant)을 통해 잡을 수 있습니다."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "W szachach heksagonalnych nie ma roszady. Jest również dziewięć pionów zamiast ośmiu, a także trzy gońce (po jednym dla każdego koloru) zamiast zwykłych dwóch. Piony nadal mogą być bite w przelocie (en passant)."
+            "value" : "      W szachach heksagonalnych nie ma roszady. Jest również dziewięć pionów zamiast ośmiu, a także trzy gońce (po jednym dla każdego koloru) zamiast zwykłych dwóch. Piony nadal mogą być bite w przelocie (en passant)."
           }
         },
         "pt" : {
@@ -1056,95 +1056,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "В гексагональных шахматах нет рокировки. Также имеется девять пешек вместо восьми и три слона (по одному на каждый цвет) вместо обычных двух. Пешки по-прежнему можно брать на проходе (en passant)."
+            "value" : "      В гексагональных шахматах нет рокировки. Также имеется девять пешек вместо восьми и три слона (по одному на каждый цвет) вместо обычных двух. Пешки по-прежнему можно брать на проходе (en passant)."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "在六角象棋中没有王车易位。此外，兵的数量从传统的八个增加到九个，并且象的数量从原本的两个增加到三个（每种颜色各一个）。兵仍然可以通过 “吃过路兵” 被吃掉。"
-          }
-        }
-      }
-    },
-    "(Glińkski's Variant)" : {
-      "localizations" : {
-        "ar" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(نسخة جلينسكي)"
-          }
-        },
-        "bn" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(গ্লিনস্কির সংস্করণ)"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Glińskis Variante)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Variante de Gliński)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Variante de Gliński"
-          }
-        },
-        "hi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(ग्लिंस्की का संस्करण)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Variante di Gliński)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(グリンスキ・バリアント)"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(글린스키 변형 규칙)"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Wariant Glińskiego)"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Variante de Gliński)"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "(Вариант Глинского)"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "（Gliński 的变体)"
           }
         }
       }
@@ -4905,6 +4823,88 @@
         }
       }
     },
+    "Glińkski's Variant" : {
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "نسخة جلينسكي"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "গ্লিনস্কির সংস্করণ"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Glińskis Variante"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante de Gliński"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante de Gliński"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ग्लिंस्की का संस्करण"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante di Gliński"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グリンスキ・バリアント"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "글린스키 변형 규칙"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wariant Glińskiego"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Variante de Gliński"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вариант Глинского"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gliński 的变体"
+          }
+        }
+      }
+    },
     "Hex Chess" : {
       "localizations" : {
         "ar" : {
@@ -8108,7 +8108,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "비숍 (Bishop)"
+            "value" : "비숍"
           }
         },
         "pl" : {
@@ -8190,7 +8190,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "킹 (King)"
+            "value" : "킹"
           }
         },
         "pl" : {
@@ -8272,7 +8272,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "나이트 (Knight)"
+            "value" : "나이트"
           }
         },
         "pl" : {
@@ -8354,7 +8354,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "폰 (Pawn)"
+            "value" : "폰"
           }
         },
         "pl" : {
@@ -8436,7 +8436,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "퀸 (Queen)"
+            "value" : "퀸"
           }
         },
         "pl" : {
@@ -8518,7 +8518,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "룩 (Rook)"
+            "value" : "룩"
           }
         },
         "pl" : {
@@ -8543,6 +8543,89 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "车"
+          }
+        }
+      }
+    },
+    "Thinking" : {
+      "comment" : "CPU thinking text",
+      "localizations" : {
+        "ar" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "يفكر"
+          }
+        },
+        "bn" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ভাবছে"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überlegt"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pensando"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Réflexion"
+          }
+        },
+        "hi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "सोच"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pensa"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "思考中"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "생각 중"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Myśli"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pensando"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Думает"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "思考中"
           }
         }
       }

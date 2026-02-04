@@ -115,14 +115,12 @@ struct MessagesGameView: View {
     
     private func startWaitingTextAnimation() {
         let baseText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
-        let dots = ["..", "...", "."]
-        var currentIndex = 0
-        
-        waitingTimer?.invalidate() // stop any previous timer
+        var dotCount = 0
+        waitingTimer?.invalidate() // stop any previous timer (shouldnt trigger, but just in case...
         
         waitingTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
-            waitingForOpponentText = baseText + dots[currentIndex]
-            currentIndex = (currentIndex + 1) % dots.count
+            waitingForOpponentText = baseText + String(repeating: ".", count: dotCount)
+            dotCount = (dotCount + 1) % 4
         }
     }
 

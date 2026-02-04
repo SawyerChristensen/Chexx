@@ -983,12 +983,12 @@ class GameScene: SKScene {
         updateGameStatusUI(gameStatus: gameStatus)
         
         if isVsCPU && gameState.currentPlayer == "black" {
-            self.whiteStatusTextUpdater?("Thinking.")
-            let statusText = ["Thinking..", "Thinking...", "Thinking."]
-            var currentIndex = 0
+            var dotCount = 0
             let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-                self.whiteStatusTextUpdater?(statusText[currentIndex])
-                currentIndex = (currentIndex + 1) % statusText.count
+                let base = NSLocalizedString("Thinking", comment: "CPU thinking text")
+                let animatedThinkingText = base + String(repeating: ".", count: dotCount)
+                self.whiteStatusTextUpdater?(animatedThinkingText)
+                dotCount = (dotCount + 1) % 4
             }
             
             let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1 //delay isnt really needed

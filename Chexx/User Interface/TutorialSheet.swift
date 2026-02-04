@@ -17,10 +17,10 @@ struct TutorialSheet: View {
                     .padding(.top, 20)
                     .multilineTextAlignment(.center)
                 
-                Text("(Glińkski's Variant)")
+                Text("Glińkski's Variant")
                     .font(.title3)
                     .fontWeight(.semibold)
-                    //.padding(.bottom, 20)
+                    .italic()
                 
                 Divider()
                     .padding(10)

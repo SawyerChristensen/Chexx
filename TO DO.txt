@@ -1,13 +1,18 @@
--make "waiting for opponent screen" in iMessage more similar to deckedout waiting screen (should be no problems with translations!)
--review translated achievements?
+Add Armenian, Dutch, Hebrew, Icelandic, Indonesian, Norwegian, Persian, Tamil, Turkish & Uzbek
 -Change text to be device-adjusted instead of hardcoded (fix iMessage Start Game button)
--Make the buttons extend to include all text (mainly a problem with long translations) (see: French)
-    -change imessage button from jouer to lancer la partie when the button can expand
--pulsating element on main menu?
+
+-update the mail achievement icon, first win icon
+
 -refine UI for iPad (country picker, font, achievement stars)
 -add mirror matches option for local play? (only for iPad?)
 -better App Store pictures for iPad (1/3 of all users!!)
 -better iMessage listing?
+
+-prompt user to review hex chess after a multiplayer win (and after a cpu win when it is sufficiently advanced) (figure out all bugs)
+
+-listing canvas gaps should be shorter
+-modify russian listing photo text?
+-modify the chinese lisiting photo text?
 
 *----------* UPDATE 1.4 *----------* (iPad UI Update)
 
@@ -17,12 +22,13 @@
 -change profile icon to gamecenter access point? (apple only!!)
 
 -Add Notifications! (for main app obviously)
+    -Add live activies for games?
 
 -waiting for opponent... should be animated like in iMessage
 
 -see if how we determine winner color is redundant
 
--make "thinking..." animation 0-3 dots instead of 1-3 (in main)
+-pulsating element on main menu?
 
 -changing google icon breaks google icon retrieval in app
 
@@ -53,6 +59,7 @@
 
 *----------* UPDATE 1.5 *----------* (Multiplayer v2 Update)
 
+-make "waiting for opponent screen" in iMessage more similar to how it is done in deckedout waiting screen where "Waiting for opponent..." space is reseerved, made invisible, and then the animated text is added over it
 
 -turn into AI? (Tensorflow, PyTorch) (AlphaZero loop on GPU?)
 
@@ -164,6 +171,7 @@ General:
 -favorite opening in profile view?
 
 enable variants, DIFFERENT PAWN RULES FOR MATHEWSONS & MCCOOEYS (as well as starting positions being different)
+-McQuay's
 
 -enable a "show row/columns A-L 1-11" option in settings
 

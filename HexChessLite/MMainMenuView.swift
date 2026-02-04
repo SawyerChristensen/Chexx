@@ -108,7 +108,7 @@ struct MessagesMainMenuView: View {
             .onAppear {
                 self.winCount = WinTracker.shared.getWinCount() }
         }
-        //.background(colorScheme == .dark ? (.systemGray6) : Color.white)
+        .background(Color(uiColor: .systemBackground))
     }
 }
 
