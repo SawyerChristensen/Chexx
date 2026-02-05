@@ -1,7 +1,14 @@
-Add Armenian, Dutch, Hebrew, Icelandic, Indonesian, Norwegian, Persian, Tamil, Turkish & Uzbek
--Change text to be device-adjusted instead of hardcoded (fix iMessage Start Game button)
+-put in "Find a translation error? Email me here" link to the bottom of the how to page
+
+-review all translations 1 by 1 (note: can export them individually!)
+
+Add Armenian (no App Store Listing), Danish, Finnish, Hebrew, Icelandic (no ASL), Indonesian, Norwegian, Swedish & Turkish
+
+-fix accesibility settings for button style?
 
 -update the mail achievement icon, first win icon
+
+*----------* UPDATE 1.4 *----------*
 
 -refine UI for iPad (country picker, font, achievement stars)
 -add mirror matches option for local play? (only for iPad?)
@@ -14,7 +21,7 @@ Add Armenian, Dutch, Hebrew, Icelandic, Indonesian, Norwegian, Persian, Tamil, T
 -modify russian listing photo text?
 -modify the chinese lisiting photo text?
 
-*----------* UPDATE 1.4 *----------* (iPad UI Update)
+*----------* UPDATE 1.5 *----------* (iPad UI Update)
 
 -Start on Android Version?
 
@@ -57,7 +64,7 @@ Add Armenian, Dutch, Hebrew, Icelandic, Indonesian, Norwegian, Persian, Tamil, T
 -elo is checked every profile view, can maybe use a local toggle to see if its been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 -store user picture on device and only load when it changes? having it load is a little jarring (low priority)
 
-*----------* UPDATE 1.5 *----------* (Multiplayer v2 Update)
+*----------* UPDATE 1.6 *----------* (Multiplayer v2 Update)
 
 -make "waiting for opponent screen" in iMessage more similar to how it is done in deckedout waiting screen where "Waiting for opponent..." space is reseerved, made invisible, and then the animated text is added over it
 
@@ -105,7 +112,7 @@ Null Move Pruning 10-20% speedup
 
 Might be able to get to depth 4 with all of these improvements
 
-*----------* UPDATE 1.6 *----------* (CPU Update)
+*----------* UPDATE 1.7 *----------* (CPU Update)
 
 
 
@@ -135,7 +142,7 @@ Achievements:
 
     Un-Hexciting Finish - Deliver a Stalemate
     
-*----------* UPDATE 1.7 *----------* (Achievements Update)
+*----------* UPDATE 1.8 *----------* (Achievements Update)
 
 
 

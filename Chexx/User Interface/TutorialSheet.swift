@@ -30,7 +30,7 @@ struct TutorialSheet: View {
                     .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Text("      The most popular form of Hexagonal Chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there was once more than half a million players of Glińkski's Hex Chess. There have since been even more variants created, although Glińkski's remains the most popular. It's played similarly to regular chess albeit with some notable differences.")
+                Text("      The most popular form of hexagonal chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there were once more than half a million players of Gliński's game. While many variants have since been created, Gliński's remains the most popular. It is played similarly to regular chess, albeit with some notable differences.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.bottom, 10)
@@ -45,7 +45,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      Just like in normal chess, the rook moves along the columns. Another way to think about it is the rook moving along the edges of the tiles. Because a hexagon has six edges instead of a square's four, there are six possible columns in hex chess.")
+                Text("      The rook moves orthogonally in straight lines. This means the rook moves across the edges of each tile. Because a hexagon has six edges instead of a square's four, there are six possible directions the rook can move in hexagonal chess.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -61,7 +61,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The bishop still moves along the diagonals (towards the points of a tile instead of its edges) and always stays on its color. Like the rook, because a hexagon has six points, there are six possible diagonal directions.")
+                Text("      The bishop moves along the diagonals (towards the corners of its tile rather than its edges) and always stays on its color. Since a hexagon has six corners, there are six possible diagonal directions. Note that in hexagonal chess, the corners of hexagons diagonal to each other do not touch.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -77,7 +77,7 @@ struct TutorialSheet: View {
                      .font(.title2)
                      .italic()
                  
-                 Text("      The queen combines the movement of the rook and bishop. It can move along the columns as well as along the diagonals.")
+                 Text("      The queen combines the orthogonal movement of the rook with the diagonal movement of the bishop, granting her a total of 12 possible directions. As in standard chess, the queen remains the most dangerous and valuable piece on the board.")
                      .font(.body)
                      .frame(maxWidth: .infinity, alignment: .leading)
                  
@@ -93,7 +93,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The king can move along columns and diagonals, with the restriction of only one tile in any direction. A beginner's mistake is forgetting about the one-tile diagonal movement, which on first glance is not connected to the home tile of the king.")
+                Text("      The king moves similarly to the queen, but can only move one tile in any direction. A beginner's mistake is forgetting about the one-tile diagonal movement, as those tiles do not share an edge with the king's tile.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -109,7 +109,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The knight moves two tiles along a column, and then one tile to the left or right.")
+                Text("      The knight moves in a slightly obtuse L-shape. It travels two tiles orthogonally (across edges) and then one tile to the left or right. The knight is the only piece that can jump over other pieces to reach its destination.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -125,7 +125,7 @@ struct TutorialSheet: View {
                     .font(.title2)
                     .italic()
                 
-                Text("      The pawn normally moves forward one tile at a time, but can also move two tiles forward if it hasn't moved yet. It captures pieces to its immediate left and right and can get promoted to any piece if it reaches the last row.")
+                Text("      The pawn advances one tile at a time along the columns, with the option to advance two tiles on its first move. It can still be captured en passant. It captures pieces to its immediate left and right (not \"diagonally\" in the hexagonal sense) and can be promoted to any other piece upon reaching the last row.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -143,7 +143,7 @@ struct TutorialSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
                 
-                Text("      There is no castling in Hexagonal Chess. There are also nine pawns instead of eight, as well as three bishops (one for each color still) instead of the usual two. Pawns can still be captured through en passant.")
+                Text("      There is no castling in hexagonal chess. There are also nine pawns instead of eight, as well as three bishops (one for each color) instead of the usual two.")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
@@ -152,8 +152,8 @@ struct TutorialSheet: View {
                     .scaledToFit()
                     .padding(10)
                 
-                Text("      All legal moves are highlighted by default when playing in any mode. To disable this, simply toggle the \"Highlight Legal Moves\" option in settings.")
-                    .font(.body)
+                Text("      All legal moves are highlighted by default when playing in any mode. To disable this, simply toggle the \"Show Legal Moves\" option in settings. When playing in the \"Pass & Play\" mode, the board rotates after each player's turn. To make this rotation instant, enable the \"Low Motion\" option in settings.")
+                    .font(.footnote)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Divider()
@@ -180,7 +180,7 @@ struct TutorialSheet: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic()
                 
-                Text("      Habanera (Main Menu Theme) by Georges Bizet, 1875, via the YouTube Audio Library")
+                Text("      Main Menu Theme - Habanera by Georges Bizet, via the YouTube Audio Library")
                     .font(.body)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .italic()

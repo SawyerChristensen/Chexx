@@ -136,6 +136,7 @@
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		BEB501AD2D396C7000143193 /* GameOverWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverWindow.swift; sourceTree = "<group>"; };
+		BEC9DABE2F345EE2002A4178 /* nl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nl; path = nl.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheet.swift; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -370,6 +371,7 @@
 				ko,
 				ar,
 				bn,
+				nl,
 			);
 			mainGroup = BE76A9A32C2A2602009113B4;
 			packageReferences = (
@@ -507,6 +509,7 @@
 				BE2B42702ED33AD9000E5B05 /* ko */,
 				BE2B42722ED33D35000E5B05 /* ar */,
 				BE2B42742ED3401C000E5B05 /* bn */,
+				BEC9DABE2F345EE2002A4178 /* nl */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
