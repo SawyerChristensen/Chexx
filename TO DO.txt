@@ -1,12 +1,11 @@
--put in "Find a translation error? Email me here" link to the bottom of the how to page
+-Update the mail achievement icon, first win icon
+-Game Center achievements for Dutch
+-App Store pictures for Dutch
 
+-put in "Find a translation error? Email me here" link to the bottom of the how to page?
 -review all translations 1 by 1 (note: can export them individually!)
 
-Add Armenian (no App Store Listing), Danish, Finnish, Hebrew, Icelandic (no ASL), Indonesian, Norwegian, Swedish & Turkish
-
--fix accesibility settings for button style?
-
--update the mail achievement icon, first win icon
+-Add Armenian (no App Store photos), Chinese Trad, Danish, Finnish, Hebrew, Icelandic (no AS photos), Indonesian, Norwegian, Swedish & Turkish
 
 *----------* UPDATE 1.4 *----------*
 

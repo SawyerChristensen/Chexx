@@ -9,6 +9,7 @@ import SwiftUI
 import SpriteKit
 
 struct GameView: View {
+    @Environment(\.dismiss) private var dismiss
     @State private var redStatusText: String = ""
     @State private var whiteStatusText: String = ""
     @State private var whiteStatusTextMini: String = ""
@@ -117,6 +118,15 @@ struct GameView: View {
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     .padding(.bottom, geometry.size.height)
+                }
+            }
+        }
+        .navigationBarBackButtonHidden(true) //this
+        .toolbar { //and this is to disable the ability to swipe out of the view, only allowing (by recreating) the back button to exit view
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button(action: { dismiss() }) {
+                    Image(systemName: "chevron.backward")
+                        .foregroundColor(.white)
                 }
             }
         }

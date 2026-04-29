@@ -208,9 +208,9 @@ class MessagesViewController: MSMessagesAppViewController {
 }
 
 extension MessagesViewController: GameSceneDelegate {
-    func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8],currentTurn: String) {
+    func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8],currentTurn: String, moveSummary: String) {
         //print("autoSend move")
-        let message = encodeMoves(hexPgn: hexPgn, currentTurn: currentTurn)
+        let message = encodeMoves(hexPgn: hexPgn, currentTurn: currentTurn, moveSummary: moveSummary)
 
         activeConversation?.send(message, completionHandler: { error in
             if let error = error {
@@ -219,7 +219,7 @@ extension MessagesViewController: GameSceneDelegate {
         })
     }
     
-    private func encodeMoves(hexPgn: [UInt8], currentTurn: String) -> MSMessage {//we could also make it so that currentTurn does not have to be passed in, and we instead read who the current player is by their IDs, but this works as well
+    private func encodeMoves(hexPgn: [UInt8], currentTurn: String, moveSummary: String) -> MSMessage {//we could also make it so that currentTurn does not have to be passed in, and we instead read who the current player is by their IDs, but this works as well
         let session = activeConversation?.selectedMessage?.session ?? MSSession()
         let message = MSMessage(session: session)
         let layout = MSMessageTemplateLayout()
@@ -232,8 +232,6 @@ extension MessagesViewController: GameSceneDelegate {
                 layout.image = UIImage(named: "blackToMove")
                 layout.caption = NSLocalizedString("Hex Chess – black's turn!", comment: "iMessage caption")
             }
-            
-            
         } else { //game over! somebody won!
             if currentTurn == "white" { //because black won last turn
                 layout.image = UIImage(named: "blackWon")
@@ -244,7 +242,7 @@ extension MessagesViewController: GameSceneDelegate {
         }
         
         message.layout = layout
-        message.summaryText = NSLocalizedString("Hex Chess", comment: "")
+        message.summaryText = moveSummary
         
         //encoding HexPGN...
         let hexPgnData = Data(hexPgn)

@@ -10,13 +10,7 @@ import SwiftUI
 struct PromotionWindow: View {
     var completion: (String) -> Void
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
-    let promotionOptions: [String: String] = [
-        "queen": NSLocalizedString("promotion_queen", comment: "Promotion option"),
-        "rook": NSLocalizedString("promotion_rook", comment: "Promotion option"),
-        "bishop": NSLocalizedString("promotion_bishop", comment: "Promotion option"),
-        "knight": NSLocalizedString("promotion_knight", comment: "Promotion option")
-    ]
-
+    let promotionOptions = ["queen", "rook", "bishop", "knight"]
 
     var body: some View {
         VStack {
@@ -29,12 +23,12 @@ struct PromotionWindow: View {
                 //.padding()
             
             VStack {
-                ForEach(["queen", "rook", "bishop", "knight"], id: \.self) { option in
+                ForEach(promotionOptions, id: \.self) { option in
                     Button(action: {
                         self.completion(option)
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text(promotionOptions[option] ?? option.capitalized)
+                        Text(PieceNames.localized(option))
                             .font(.system(size: 24, weight: .bold, design: .serif))
                             .padding()
                             .frame(minWidth: 160, maxHeight: 40)
@@ -56,28 +50,41 @@ struct PromotionWindow: View {
 struct WaveText: View {
     let text: String
     let fontSize: CGFloat
-    
-    // A single state variable to drive the animation.
+
     @State private var time: Double = 0.0
-    
+
+    private var amplitude: CGFloat { fontSize * 0.1 }
+
+    private var naturalTextWidth: CGFloat {
+        let baseDescriptor = UIFont.systemFont(ofSize: fontSize, weight: .bold).fontDescriptor
+        let descriptor = baseDescriptor.withDesign(.serif) ?? baseDescriptor
+        let font = UIFont(descriptor: descriptor, size: fontSize)
+        return (text as NSString).size(withAttributes: [.font: font]).width
+    }
+
     var body: some View {
-        HStack(spacing: 0) {
-            ForEach(0..<text.count, id: \.self) { index in
-                Text(String(Array(text)[index]))
-                    .font(.system(size: fontSize, weight: .bold, design: .serif))
-                    // Apply the GeometryEffect instead of .offset()
-                    .modifier(WaveEffect(
-                        time: self.time,
-                        index: index,
-                        // Make amplitude proportional to the font size for consistency.
-                        amplitude: fontSize * 0.1
-                    ))
+        GeometryReader { geo in
+            let scale = min(1.0, geo.size.width / max(naturalTextWidth, 1))
+
+            HStack(spacing: 0) {
+                ForEach(0..<text.count, id: \.self) { index in
+                    Text(String(Array(text)[index]))
+                        .font(.system(size: fontSize, weight: .bold, design: .serif))
+                        .modifier(WaveEffect(
+                            time: self.time,
+                            index: index,
+                            amplitude: amplitude
+                        ))
+                }
             }
+            .fixedSize()
+            .scaleEffect(scale)
+            .position(x: geo.size.width / 2, y: geo.size.height / 2)
         }
+        .frame(height: fontSize + amplitude * 2)
         .onAppear {
-            // Start a single, repeating animation when the view appears.
             withAnimation(.linear(duration: 30).repeatForever(autoreverses: false)) {
-                self.time = 360 // A large value to ensure continuous animation.
+                self.time = 360
             }
         }
     }

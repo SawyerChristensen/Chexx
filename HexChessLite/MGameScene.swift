@@ -10,7 +10,7 @@ import UIKit //this and extensionUIColor could maybe be put in another file late
 import SwiftUI
 
 protocol GameSceneDelegate: AnyObject {
-    func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8], currentTurn: String)
+    func autoSend(_ scene: MessagesGameScene, updatedHexPGN hexPgn: [UInt8], currentTurn: String, moveSummary: String)
     func requestRematch()
 }
 
@@ -725,7 +725,9 @@ class MessagesGameScene: SKScene {
         
         if !applyingUpdate { //game not over, and you dont want to bounce the update back!
             //print("Sending game state hexpgn:", gameState.HexPgn)
-            gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer)
+            let pieceName = PieceNames.localized(type)
+            let summary = String(format: NSLocalizedString("%@ to %@", comment: "Move summary: {Piece name} to {board position}"), pieceName, hexagonName)
+            gameDelegate?.autoSend(self, updatedHexPGN: gameState.HexPgn, currentTurn: gameState.currentPlayer, moveSummary: summary)
         }
         
         updateGameStatusUI(gameStatus: gameStatus)
