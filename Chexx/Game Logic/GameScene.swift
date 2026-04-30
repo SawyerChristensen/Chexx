@@ -609,21 +609,21 @@ class GameScene: SKScene {
             }
             //fiftyMoveRule = 0
         }
-            //Capturing logic for En Passant
-            if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
-                if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
-                    capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex - 1] = nil 
-                    //fiftyMoveRule = 0
-                }
+        //Capturing logic for En Passant
+        if color == "white" && type == "pawn" && rowIndex > 0 && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
+            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
+                capturedPieceNode.removeFromParent()
+                gameState.board[colIndex][rowIndex - 1] = nil
+                //fiftyMoveRule = 0
             }
-            if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
-                if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
-                    capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex + 1] = nil
-                    //fiftyMoveRule = 0
-                }
+        }
+        if color == "black" && type == "pawn" && rowIndex + 1 < gameState.board[colIndex].count && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
+            if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
+                capturedPieceNode.removeFromParent()
+                gameState.board[colIndex][rowIndex + 1] = nil
+                //fiftyMoveRule = 0
             }
+        }
         
         // ********** PROMOTION LOGIC **********
         // If promotionPiece was passed in (i.e., from applyHexPgn), skip user/CPU selection:

@@ -21,6 +21,9 @@ struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
     let toRowIndex: Int
     let movingPiece: Piece?
     let capturedPiece: Piece?
+    let enPassantCapturedPiece: Piece?
+    let enPassantCapturedCol: Int?
+    let enPassantCapturedRow: Int?
 }
 
 struct GameState: Codable {
@@ -249,12 +252,37 @@ struct GameState: Codable {
         board[toColIndex][toRowIndex] = movingPiece
         board[fromColIndex][fromRowIndex] = nil
         
+        var enPassantCapturedPiece: Piece? = nil
+        var enPassantCapturedCol: Int? = nil
+        var enPassantCapturedRow: Int? = nil
+
         if movingPiece?.type == "pawn" {
             board[toColIndex][toRowIndex]?.hasMoved = true
-            if abs(fromRowIndex - toColIndex) == 2 {
-                board[toColIndex][toRowIndex]?.isEnPassantTarget = true
+            if abs(fromRowIndex - toRowIndex) == 2 { //the pawn skipped a tile on its first turn
+                board[toColIndex][toRowIndex]?.isEnPassantTarget = true //make it a target of en-passant
             }
-            
+
+            // En passant capture: pawn moves diagonally to an empty square
+            if capturedPiece == nil && fromColIndex != toColIndex {
+                if movingPiece?.color == "white" {
+                    let epRow = toRowIndex - 1
+                    if epRow >= 0 && board[toColIndex][epRow]?.isEnPassantTarget == true {
+                        enPassantCapturedPiece = board[toColIndex][epRow]
+                        enPassantCapturedCol = toColIndex
+                        enPassantCapturedRow = epRow
+                        board[toColIndex][epRow] = nil
+                    }
+                } else {
+                    let epRow = toRowIndex + 1
+                    if epRow < board[toColIndex].count && board[toColIndex][epRow]?.isEnPassantTarget == true {
+                        enPassantCapturedPiece = board[toColIndex][epRow]
+                        enPassantCapturedCol = toColIndex
+                        enPassantCapturedRow = epRow
+                        board[toColIndex][epRow] = nil
+                    }
+                }
+            }
+
             if movingPiece?.color == "white" {
                 if (toRowIndex == board[toColIndex].count - 1) { //it will be promoted!
                     board[toColIndex][toRowIndex]?.type = "queen"} //assuming queen over knight
@@ -280,7 +308,10 @@ struct GameState: Codable {
             toColIndex: toColIndex,
             toRowIndex: toRowIndex,
             movingPiece: movingPiece,
-            capturedPiece: capturedPiece
+            capturedPiece: capturedPiece,
+            enPassantCapturedPiece: enPassantCapturedPiece,
+            enPassantCapturedCol: enPassantCapturedCol,
+            enPassantCapturedRow: enPassantCapturedRow
         )
 
         return undoInfo
@@ -290,6 +321,13 @@ struct GameState: Codable {
         // Restore the board
         board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece
         board[undoInfo.toColIndex][undoInfo.toRowIndex] = undoInfo.capturedPiece
+
+        // Restore en passant captured piece
+        if let epPiece = undoInfo.enPassantCapturedPiece,
+           let epCol = undoInfo.enPassantCapturedCol,
+           let epRow = undoInfo.enPassantCapturedRow {
+            board[epCol][epRow] = epPiece
+        }
 
         // Restore the king's position if necessary
         if let movingPiece = undoInfo.movingPiece, movingPiece.type == "king" {

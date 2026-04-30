@@ -43,9 +43,9 @@ struct MessagesGameView: View {
                     Text(waitingForOpponentText)
                         .font(.system(size: geometry.size.width / 20, weight: .semibold, design: .serif))
                         .foregroundColor(.white)
+                        .lineLimit(1)
+                        .fixedSize(horizontal: true, vertical: false)
                         .padding()
-                    
-                        .frame(width: geometry.size.width * 0.7)
                         .background(
                             Color(white: 0.2)
                                 .cornerRadius(10).opacity(waitingForOpponentBackgroundOpacity))

@@ -364,7 +364,7 @@ struct ProfileView: View {
                     } else {
                         HStack {
                             Text("Display Name:  \(authViewModel.displayName)")
-                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                                .font(.system(size: minDimension / 20, weight: .semibold, design: .serif))
                                 .lineLimit(1)
                                 .multilineTextAlignment(.leading)
                             
@@ -390,9 +390,10 @@ struct ProfileView: View {
                 // MARK: Country Selection
                 HStack {
                     Text("Representing:")
-                        //.font(.title)
-                        .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
-                    
+                        .font(.system(size: minDimension / 20, weight: .semibold, design: .serif))
+                        .lineLimit(1)
+                        .layoutPriority(1)
+
                     Picker("Country", selection: $selectedCountry) {
                         ForEach(
                             countries.sorted(by: { $0.localizedName < $1.localizedName }),
@@ -417,7 +418,7 @@ struct ProfileView: View {
                 
                 // MARK: ELO Rating
                 Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)") //could be modified to use a local toggle that shows if its been updated, preventing the server call EVERY profile view, but we can implement that later
-                    .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                    .font(.system(size: minDimension / 20, weight: .semibold, design: .serif))
                     .onAppear {
                         // when the view appears, fetch elo (we already have a function for this in multiplayerManager)
                         MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
@@ -429,7 +430,7 @@ struct ProfileView: View {
                 HStack(spacing: 20) {
                     Button(action: authViewModel.signOut) { //maybe make this smaller?
                         Text("Sign Out")
-                            .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
+                            .font(.system(size: minDimension / 24, weight: .semibold, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
@@ -437,7 +438,7 @@ struct ProfileView: View {
                     
                     Button(action: {showDeleteConfirmation = true}) {
                         Text("Delete Account")
-                            .font(.system(size: minDimension / 24, weight: .bold, design: .serif))
+                            .font(.system(size: minDimension / 24, weight: .semibold, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
@@ -463,11 +464,11 @@ struct ProfileView: View {
                         // MARK: - Achievements section
                         HStack {
                             Image(systemName: "trophy.fill")
-                                .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                                .font(.system(size: screenHeight / 30, weight: .semibold, design: .serif))
                                 .foregroundColor(Color.accentColor)
                             
                             Text("Achievements")
-                                .font(.system(size: minDimension / 18, weight: .bold, design: .serif))
+                                .font(.system(size: minDimension / 18, weight: .semibold, design: .serif))
                         }
                         
                         ScrollView {
@@ -476,7 +477,7 @@ struct ProfileView: View {
                                     HStack {
                                         VStack(alignment: .leading) {
                                             Text(achievement.title)
-                                                .font(.system(size: minDimension / 20, weight: .bold, design: .serif))
+                                                .font(.system(size: minDimension / 20, weight: .semibold, design: .serif))
                                             
                                             Text(achievement.description)
                                                 .font(.body)
@@ -519,7 +520,7 @@ struct ProfileView: View {
 
                 Text("Login")
                     .font(.largeTitle)
-                    .fontWeight(.bold)
+                    .fontWeight(.semibold)
                     .frame(maxWidth: .infinity, alignment: .center)
                     .padding(.bottom, 10)
                 
@@ -530,7 +531,7 @@ struct ProfileView: View {
                         .disableAutocorrection(true)
                         .padding()
                         .background(Color(.systemGray5))
-                        .cornerRadius(8)
+                        .cornerRadius(12)
                         .focused($focus, equals: .email)
                         .submitLabel(.next) //show "next" on the keyboard
                         .onSubmit {
@@ -548,7 +549,7 @@ struct ProfileView: View {
                         .disableAutocorrection(true)
                         .padding()
                         .background(Color(.systemGray5))
-                        .cornerRadius(8)
+                        .cornerRadius(12)
                         .focused($focus, equals: .password)
                         .submitLabel(.go) // Show "Go" on the keyboard
                         .onSubmit {
@@ -576,7 +577,7 @@ struct ProfileView: View {
                             .padding()
                             .background(Color(.systemGray4))
                             .foregroundColor(.white)
-                            .cornerRadius(8)
+                            .cornerRadius(12)
                     }
                     .padding()
                     
@@ -585,7 +586,7 @@ struct ProfileView: View {
                             .padding()
                             .background(Color(.systemGray4))
                             .foregroundColor(.white)
-                            .cornerRadius(8)
+                            .cornerRadius(12)
                     }
                     .padding()
                 }
@@ -604,6 +605,7 @@ struct ProfileView: View {
                     }
                 }) {
                     Text("Sign in with Google")
+                        .fontWeight(.semibold)
                         .foregroundColor(colorScheme == .dark ? .white : .black)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 8)
@@ -614,7 +616,7 @@ struct ProfileView: View {
                         }
                 }
                 .padding(.vertical, 10)
-                .buttonStyle(.bordered)
+                .buttonStyle(.bordered) //gives rounded edges
                 
                 // MARK: Sign in with Apple
                 SignInWithAppleButton { request in
@@ -625,7 +627,7 @@ struct ProfileView: View {
                 .signInWithAppleButtonStyle(colorScheme == .dark ? .white : .black)
                 .id(colorScheme) //this forces swiftui to switch the button color scheme when the user changes the scheme
                 .frame(height: 50)
-                .cornerRadius(8)
+                .clipShape(Capsule()) //also gives rounded edges
             }
         }
         .onAppear {

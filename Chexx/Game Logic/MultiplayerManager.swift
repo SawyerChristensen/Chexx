@@ -173,6 +173,11 @@ class MultiplayerManager: ObservableObject {
     
     // Join an existing game
     func joinGame(gameId: String, completion: @escaping (Bool) -> Void) {
+        guard !gameId.isEmpty else {
+            completion(false)
+            return
+        }
+        
         let gameRef = db.collection("games").document(gameId)
         
         fetchElo(forUserId: self.currentUserId) { elo in

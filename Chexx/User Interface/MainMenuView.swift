@@ -503,7 +503,7 @@ struct MainMenuView: View {
                         Button(action: {
                             isTutorialPresented = true
                         }) {
-                            Image(systemName: "book.closed")
+                            Image(systemName: "text.book.closed") //originally just book.closed
                                 .resizable()
                                 .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
                                 .padding(.top, maxScreenDimension / 30)
