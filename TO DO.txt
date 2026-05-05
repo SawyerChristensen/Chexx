@@ -1,5 +1,8 @@
 -prompt user to review hex chess after a multiplayer win (and after a cpu win when it is sufficiently advanced) (figure out all bugs)
 
+
+-make CPU better at end games by increasing depth searches if opponent has limited pieces
+
 -Update the mail achievement icon, first win icon
 -Game Center achievements for Dutch
 -App Store pictures for Dutch

@@ -1202,13 +1202,20 @@ class GameScene: SKScene {
     
     func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
-            let gameOverViewController = UIHostingController(
-                rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: isOnlineMultiplayer, eloText: eloText, completion: completion)
-            )
-            
-            gameOverViewController.modalPresentationStyle = .overCurrentContext
-            gameOverViewController.view.backgroundColor = .clear // Transparent background
-            viewController.present(gameOverViewController, animated: true, completion: nil)
+            let presentBlock = {
+                let gameOverViewController = UIHostingController(
+                    rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
+                )
+                gameOverViewController.modalPresentationStyle = .overCurrentContext
+                gameOverViewController.view.backgroundColor = .clear
+                viewController.present(gameOverViewController, animated: true, completion: nil)
+            }
+
+            if viewController.presentedViewController != nil {
+                viewController.dismiss(animated: true, completion: presentBlock)
+            } else {
+                presentBlock()
+            }
         }
     }
 
