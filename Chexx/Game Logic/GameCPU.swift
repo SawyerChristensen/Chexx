@@ -72,9 +72,10 @@ class GameCPU {
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
-    
+
         let startTime = Date() //for testing
         let deadline = startTime.addingTimeInterval(3.0)
+        gameState.recomputeMaterial()
         
         let maximizingPlayerColor = gameState.currentPlayer
         let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline) //can .move extraction here instead of in the return satement, rn its not for print testing
@@ -92,8 +93,13 @@ class GameCPU {
         
         //print("Entering minimax at depth:", depth)
         
-        if depth == 0 || gameState.isGameOver().0 {
+        if gameState.isGameOver().0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
+            return (value, "")
+        }
+
+        if depth == 0 {
+            let value = quiescence(gameState: &gameState, alpha: alpha, beta: beta, maximizingPlayer: maximizingPlayer, originalPlayerColor: originalPlayerColor, deadline: deadline)
             return (value, "")
         }
 
@@ -161,6 +167,84 @@ class GameCPU {
         return (bestValue, bestMove)
     }
 
+    private func generateCaptureMoves(for color: String, in gameState: inout GameState) -> [String] {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        var captureMoves: [String] = []
+
+        for (colIndex, column) in gameState.board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece, piece.color == color {
+                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
+
+                    for destination in validMoves {
+                        if gameState.pieceAt(destination) != nil {
+                            captureMoves.append("\(currentPosition)-\(destination)")
+                        }
+                    }
+                }
+            }
+        }
+
+        return captureMoves
+    }
+
+    private func quiescence(gameState: inout GameState, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> Int {
+        let standPat = evaluateGameState(gameState, for: originalPlayerColor)
+
+        if Date() >= deadline {
+            return standPat
+        }
+
+        if maximizingPlayer {
+            if standPat >= beta { return beta }
+            var alpha = max(alpha, standPat)
+
+            let captureMoves = generateCaptureMoves(for: gameState.currentPlayer, in: &gameState)
+            let orderedCaptures = orderMoves(captureMoves, gameState: gameState)
+
+            for move in orderedCaptures {
+                if Date() >= deadline { break }
+                if let parsedMove = parseMove(move) {
+                    let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
+                    gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+                    let score = quiescence(gameState: &gameState, alpha: alpha, beta: beta, maximizingPlayer: false, originalPlayerColor: originalPlayerColor, deadline: deadline)
+
+                    gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
+                    gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+                    alpha = max(alpha, score)
+                    if alpha >= beta { break }
+                }
+            }
+            return alpha
+        } else {
+            if standPat <= alpha { return alpha }
+            var beta = min(beta, standPat)
+
+            let captureMoves = generateCaptureMoves(for: gameState.currentPlayer, in: &gameState)
+            let orderedCaptures = orderMoves(captureMoves, gameState: gameState)
+
+            for move in orderedCaptures {
+                if Date() >= deadline { break }
+                if let parsedMove = parseMove(move) {
+                    let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
+                    gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+                    let score = quiescence(gameState: &gameState, alpha: alpha, beta: beta, maximizingPlayer: true, originalPlayerColor: originalPlayerColor, deadline: deadline)
+
+                    gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
+                    gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+                    beta = min(beta, score)
+                    if alpha >= beta { break }
+                }
+            }
+            return beta
+        }
+    }
+
     // Parse move string into start and destination positions
     private func parseMove(_ move: String) -> (start: String, destination: String)? {
         // Split the move string using the delimiter
@@ -174,26 +258,12 @@ class GameCPU {
         return (start, destination)
     }
 
-    // Evaluate the game state to assign a score
-    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int { //this is o^2, can maybe just store a variable that gets updated instead of all of this extra math
-        var playerScore = 0
-        var opponentScore = 0
-
-        // Iterate over the board to collect pieces
-        for column in gameState.board {
-            for piece in column {
-                if let piece = piece {
-                    if piece.color == player {
-                        playerScore += pieceValue(piece.type)
-                    } else {
-                        opponentScore += pieceValue(piece.type)
-                    }
-                }
-            }
+    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int {
+        if player == "white" {
+            return gameState.whiteMaterial - gameState.blackMaterial
+        } else {
+            return gameState.blackMaterial - gameState.whiteMaterial
         }
-
-        // Return the material difference
-        return playerScore - opponentScore
     }
     
     // Order moves to improve alpha-beta pruning efficiency
@@ -218,15 +288,7 @@ class GameCPU {
         }
     }
     
-    // Assign values to pieces for evaluation
-    private func pieceValue(_ type: String) -> Int { //could maybe be updated for hexchess specific values
-        switch type {
-        case "king":                return 1000
-        case "queen":               return 9
-        case "rook":                return 5
-        case "bishop", "knight":    return 3
-        case "pawn":                return 1
-        default: return 0
-        }
+    private func pieceValue(_ type: String) -> Int {
+        return GameState.pieceValue(type)
     }
 }

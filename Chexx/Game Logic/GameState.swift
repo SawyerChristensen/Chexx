@@ -24,18 +24,27 @@ struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
     let enPassantCapturedPiece: Piece?
     let enPassantCapturedCol: Int?
     let enPassantCapturedRow: Int?
+    let previousWhiteMaterial: Int
+    let previousBlackMaterial: Int
 }
 
 struct GameState: Codable {
     var currentPlayer: String // "white" or "black"
     var gameStatus: String // "ongoing" or "ended" //can probably change this into a bool "isOngoing" later
     var board: [[Piece?]] // 2D array of optional pieces
-    
+
     var whiteKingPosition: String
     var blackKingPosition: String
-    
+
     var variant: String = "Glinski's"
     var HexPgn: [UInt8] = []
+
+    var whiteMaterial: Int = 0
+    var blackMaterial: Int = 0
+
+    private enum CodingKeys: String, CodingKey {
+        case currentPlayer, gameStatus, board, whiteKingPosition, blackKingPosition, variant, HexPgn
+    }
     
     init() {
         // Initialize the board with nils (empty positions)
@@ -70,6 +79,136 @@ struct GameState: Codable {
         
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
+        recomputeMaterial()
+    }
+
+    static func pieceValue(_ type: String) -> Int {
+        switch type {
+        case "king":                return 100_000
+        case "queen":               return 900
+        case "rook":                return 500
+        case "bishop", "knight":    return 300
+        case "pawn":                return 100
+        default: return 0
+        }
+    }
+
+    static let columnSizesStatic = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
+
+    static let pieceTileTables: [String: [[Int]]] = {
+        let sizes = columnSizesStatic
+        var tables: [String: [[Int]]] = [:]
+
+        // Pawn: small bonus for advancement + center control (white perspective, row 0 = home)
+        var pawnTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let maxRow = max(size - 1, 1)
+            let centerDist = abs(col - 5)
+            let centerBonus = max(0, 5 - centerDist)
+            for row in 0..<size {
+                let advancement = (row * 15) / maxRow
+                column.append(advancement + centerBonus)
+            }
+            pawnTable.append(column)
+        }
+        tables["pawn"] = pawnTable
+
+        // Knight: strong in center, weak on edges
+        var knightTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let colDist = Double(abs(col - 5)) / 5.0
+            for row in 0..<size {
+                let rowCenter = Double(size - 1) / 2.0
+                let rowDist = abs(Double(row) - rowCenter) / rowCenter
+                let dist = (colDist + rowDist) / 2.0
+                column.append(Int((1.0 - dist) * 10.0) - 2)
+            }
+            knightTable.append(column)
+        }
+        tables["knight"] = knightTable
+
+        // Bishop: mild center preference
+        var bishopTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let colDist = Double(abs(col - 5)) / 5.0
+            for row in 0..<size {
+                let rowCenter = Double(size - 1) / 2.0
+                let rowDist = abs(Double(row) - rowCenter) / rowCenter
+                let dist = (colDist + rowDist) / 2.0
+                column.append(Int((1.0 - dist) * 8.0))
+            }
+            bishopTable.append(column)
+        }
+        tables["bishop"] = bishopTable
+
+        // Rook: slight preference for central files
+        var rookTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let colDist = Double(abs(col - 5)) / 5.0
+            let fileBonus = Int((1.0 - colDist) * 5.0)
+            for _ in 0..<size {
+                column.append(fileBonus)
+            }
+            rookTable.append(column)
+        }
+        tables["rook"] = rookTable
+
+        // Queen: very mild center preference
+        var queenTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let colDist = Double(abs(col - 5)) / 5.0
+            for row in 0..<size {
+                let rowCenter = Double(size - 1) / 2.0
+                let rowDist = abs(Double(row) - rowCenter) / rowCenter
+                let dist = (colDist + rowDist) / 2.0
+                column.append(Int((1.0 - dist) * 3.0))
+            }
+            queenTable.append(column)
+        }
+        tables["queen"] = queenTable
+
+        // King: prefer staying near back rank (white perspective, row 0 = safe)
+        var kingTable: [[Int]] = []
+        for (col, size) in sizes.enumerated() {
+            var column: [Int] = []
+            let maxRow = max(size - 1, 1)
+            for row in 0..<size {
+                let advancement = Double(row) / Double(maxRow)
+                column.append(Int((1.0 - advancement) * 15.0) - 5)
+            }
+            kingTable.append(column)
+        }
+        tables["king"] = kingTable
+
+        return tables
+    }()
+
+    static func tileValue(piece: String, color: String, col: Int, row: Int) -> Int {
+        guard let table = pieceTileTables[piece] else { return 0 }
+        let r = (color == "white") ? row : (columnSizesStatic[col] - 1 - row)
+        return table[col][r]
+    }
+
+    mutating func recomputeMaterial() {
+        whiteMaterial = 0
+        blackMaterial = 0
+        for (col, column) in board.enumerated() {
+            for (row, piece) in column.enumerated() {
+                if let piece = piece {
+                    let val = GameState.pieceValue(piece.type) + GameState.tileValue(piece: piece.type, color: piece.color, col: col, row: row)
+                    if piece.color == "white" {
+                        whiteMaterial += val
+                    } else {
+                        blackMaterial += val
+                    }
+                }
+            }
+        }
     }
 
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
@@ -245,13 +384,30 @@ struct GameState: Codable {
             fatalError("Invalid move coordinates")
         }
 
+        let prevWhiteMaterial = whiteMaterial
+        let prevBlackMaterial = blackMaterial
+
         let movingPiece = board[fromColIndex][fromRowIndex]
         let capturedPiece = board[toColIndex][toRowIndex]
+
+        // Update score for standard capture (material + PST of captured piece)
+        if let captured = capturedPiece {
+            let val = GameState.pieceValue(captured.type) + GameState.tileValue(piece: captured.type, color: captured.color, col: toColIndex, row: toRowIndex)
+            if captured.color == "white" { whiteMaterial -= val } else { blackMaterial -= val }
+        }
+
+        // Update PST delta for the moving piece (leaving old tile, arriving at new tile)
+        if let piece = movingPiece {
+            let oldPST = GameState.tileValue(piece: piece.type, color: piece.color, col: fromColIndex, row: fromRowIndex)
+            let newPST = GameState.tileValue(piece: piece.type, color: piece.color, col: toColIndex, row: toRowIndex)
+            let delta = newPST - oldPST
+            if piece.color == "white" { whiteMaterial += delta } else { blackMaterial += delta }
+        }
 
         // Update the board
         board[toColIndex][toRowIndex] = movingPiece
         board[fromColIndex][fromRowIndex] = nil
-        
+
         var enPassantCapturedPiece: Piece? = nil
         var enPassantCapturedCol: Int? = nil
         var enPassantCapturedRow: Int? = nil
@@ -262,7 +418,7 @@ struct GameState: Codable {
                 board[toColIndex][toRowIndex]?.isEnPassantTarget = true //make it a target of en-passant
             }
 
-            // En passant capture: pawn moves diagonally to an empty square
+            // En passant capture: pawn moves diagonally to an empty tile
             if capturedPiece == nil && fromColIndex != toColIndex {
                 if movingPiece?.color == "white" {
                     let epRow = toRowIndex - 1
@@ -270,6 +426,8 @@ struct GameState: Codable {
                         enPassantCapturedPiece = board[toColIndex][epRow]
                         enPassantCapturedCol = toColIndex
                         enPassantCapturedRow = epRow
+                        let epVal = GameState.pieceValue("pawn") + GameState.tileValue(piece: "pawn", color: "black", col: toColIndex, row: epRow)
+                        blackMaterial -= epVal
                         board[toColIndex][epRow] = nil
                     }
                 } else {
@@ -278,6 +436,8 @@ struct GameState: Codable {
                         enPassantCapturedPiece = board[toColIndex][epRow]
                         enPassantCapturedCol = toColIndex
                         enPassantCapturedRow = epRow
+                        let epVal = GameState.pieceValue("pawn") + GameState.tileValue(piece: "pawn", color: "white", col: toColIndex, row: epRow)
+                        whiteMaterial -= epVal
                         board[toColIndex][epRow] = nil
                     }
                 }
@@ -285,10 +445,18 @@ struct GameState: Codable {
 
             if movingPiece?.color == "white" {
                 if (toRowIndex == board[toColIndex].count - 1) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = "queen"} //assuming queen over knight
+                    board[toColIndex][toRowIndex]?.type = "queen"
+                    let pawnScore = GameState.pieceValue("pawn") + GameState.tileValue(piece: "pawn", color: "white", col: toColIndex, row: toRowIndex)
+                    let queenScore = GameState.pieceValue("queen") + GameState.tileValue(piece: "queen", color: "white", col: toColIndex, row: toRowIndex)
+                    whiteMaterial += queenScore - pawnScore
+                }
             } else { //...its black
                 if (toRowIndex == 0) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = "queen"} //cpu will not be able to see knight's moves
+                    board[toColIndex][toRowIndex]?.type = "queen"
+                    let pawnScore = GameState.pieceValue("pawn") + GameState.tileValue(piece: "pawn", color: "black", col: toColIndex, row: toRowIndex)
+                    let queenScore = GameState.pieceValue("queen") + GameState.tileValue(piece: "queen", color: "black", col: toColIndex, row: toRowIndex)
+                    blackMaterial += queenScore - pawnScore
+                }
             }
         }
 
@@ -311,7 +479,9 @@ struct GameState: Codable {
             capturedPiece: capturedPiece,
             enPassantCapturedPiece: enPassantCapturedPiece,
             enPassantCapturedCol: enPassantCapturedCol,
-            enPassantCapturedRow: enPassantCapturedRow
+            enPassantCapturedRow: enPassantCapturedRow,
+            previousWhiteMaterial: prevWhiteMaterial,
+            previousBlackMaterial: prevBlackMaterial
         )
 
         return undoInfo
@@ -338,6 +508,10 @@ struct GameState: Codable {
                 blackKingPosition = "\(columns[undoInfo.fromColIndex])\(undoInfo.fromRowIndex + 1)"
             }
         }
+
+        // Restore material scores
+        whiteMaterial = undoInfo.previousWhiteMaterial
+        blackMaterial = undoInfo.previousBlackMaterial
     }
     
     mutating func addMoveToHexPgn(from: String, to: String, promotionOffset: UInt8) {
@@ -450,8 +624,10 @@ struct GameState: Codable {
         let moveCount = (pgn.count - 1) / 2
         currentPlayer = (moveCount % 2 == 0) ? "white" : "black"
 
+        recomputeMaterial()
+
         //printGameState()
-        
+
         return self
     }
     

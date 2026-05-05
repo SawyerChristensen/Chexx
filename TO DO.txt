@@ -3,6 +3,8 @@
 
 -make CPU better at end games by increasing depth searches if opponent has limited pieces
 
+-does CPU reset en passant flag after one move? it might think it can en passant 2 moves into the future
+
 -Update the mail achievement icon, first win icon
 -Game Center achievements for Dutch
 -App Store pictures for Dutch
