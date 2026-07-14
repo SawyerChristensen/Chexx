@@ -992,8 +992,13 @@ class GameScene: SKScene {
             }
             
             let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1 //delay isnt really needed
+            // Snapshot the live gameState on the main thread. The CPU search runs on this
+            // value-type copy so the background thread never mutates the scene's gameState.board
+            // concurrently with the main thread — that data race corrupted the array buffer and
+            // trapped in unmakeMove (_ArrayBuffer._checkValidSubscriptMutating).
+            let cpuSearchState: GameState = gameState
             DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
-                self.cpuMakeMove()
+                self.cpuMakeMove(searchState: cpuSearchState)
                 
                 // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
                 DispatchQueue.main.async {
@@ -1009,9 +1014,25 @@ class GameScene: SKScene {
         
     }
     
-    func cpuMakeMove() { //for single player, also moves the piece
-        if let move = gameCPU.findMove(gameState: &gameState) {
-            if let cpuPieceNode = findPieceNode(at: move.start) {
+    func cpuMakeMove(searchState: GameState) { //for single player, also moves the piece
+        // Search on a private mutable copy so the minimax makeMove/unmakeMove churn stays off
+        // the scene's live gameState (which the main thread may read concurrently). The real
+        // gameState is only mutated on the main thread via updateGameState below.
+        var searchState = searchState
+        let move = gameCPU.findMove(gameState: &searchState)
+
+        // Node manipulation and gameState mutation must run on the main thread (SpriteKit is
+        // not thread-safe). findMove ran on the background thread above; hop back to main here.
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            guard let move = move else {
+                // Handle no valid moves (e.g., checkmate or stalemate)
+                print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
+                //redStatusTextUpdater?("CPU has no valid moves. Game over.")
+                self.gameState.gameStatus = "ended"
+                return
+            }
+            if let cpuPieceNode = self.findPieceNode(at: move.start) {
                 if let destinationHexagon = self.childNode(withName: move.destination) {
                     if let parent = cpuPieceNode.parent {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
@@ -1029,11 +1050,6 @@ class GameScene: SKScene {
             } else {
                 print("Error: CPU's piece node not found at \(move.start)")
             }
-        } else {
-            // Handle no valid moves (e.g., checkmate or stalemate)
-            print("CPU has no valid moves. Game over.") //change this!!!!!!!!!!!!!!!!! (checkmate detection before this might make it to that this never executes) (test)
-            //redStatusTextUpdater?("CPU has no valid moves. Game over.")
-            gameState.gameStatus = "ended"
         }
     }
     
