@@ -51,7 +51,7 @@
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces
 - [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Turn into AI? (TensorFlow, PyTorch) (AlphaZero loop on GPU?)
-- [ ] gameCPU will not see knight's moves upon promotion, only queen
+- [x] gameCPU will not see knight's moves upon promotion, only queen
 - [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
   - [ ] Display first name, country emoji, Elo?
 - [ ] End game screen displaying username instead of color?

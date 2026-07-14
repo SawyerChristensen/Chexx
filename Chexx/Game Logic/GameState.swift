@@ -231,7 +231,7 @@ struct GameState: Codable {
         }
     }
     
-    mutating func makeMove(_ from: String, to: String) -> MoveUndoInfo { //able to undo this with the output info, not with movePiece()
+    mutating func makeMove(_ from: String, to: String, promotionType: String = "queen") -> MoveUndoInfo { //able to undo this with the output info, not with movePiece()
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let fromColLetter = String(from.prefix(1))
         let fromRowString = String(from.dropFirst())
@@ -285,10 +285,10 @@ struct GameState: Codable {
 
             if movingPiece?.color == "white" {
                 if (toRowIndex == board[toColIndex].count - 1) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = "queen"} //assuming queen over knight
+                    board[toColIndex][toRowIndex]?.type = promotionType}
             } else { //...its black
                 if (toRowIndex == 0) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = "queen"} //cpu will not be able to see knight's moves
+                    board[toColIndex][toRowIndex]?.type = promotionType}
             }
         }
 

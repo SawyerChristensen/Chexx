@@ -1041,7 +1041,8 @@ class GameScene: SKScene {
                         cpuPieceNode.run(slideAction)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //pretty sure this improves the frame rate
                             guard let self = self else { return }
-                            self.updateGameState(with: cpuPieceNode, at: move.destination)
+                            let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
+                            self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
                         }
                     }
                 } else {

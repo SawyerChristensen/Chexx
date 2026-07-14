@@ -33,8 +33,13 @@ class GameCPU {
 
                     // For each valid destination, create a move string that includes the start and destination
                     for destination in validMoves {
-                        let moveString = "\(currentPosition)-\(destination)"
-                        allMoves.append(moveString)
+                        if piece.type == "pawn", isPromotionDestination(destination, color: piece.color, in: gameState) {
+                            for promotionType in ["queen", "rook", "bishop", "knight"] {
+                                allMoves.append("\(currentPosition)-\(destination)=\(promotionType)")
+                            }
+                        } else {
+                            allMoves.append("\(currentPosition)-\(destination)")
+                        }
                     }
                 }
             }
@@ -43,8 +48,19 @@ class GameCPU {
         return allMoves
     }
 
+    // Whether a pawn moving to this destination would be promoting
+    private func isPromotionDestination(_ destination: String, color: String, in gameState: GameState) -> Bool {
+        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        guard let colLetter = destination.first,
+              let colIndex = columns.firstIndex(of: String(colLetter)),
+              let rowIndex = Int(destination.dropFirst()).map({ $0 - 1 }) else {
+            return false
+        }
+        return color == "white" ? rowIndex == gameState.board[colIndex].count - 1 : rowIndex == 0
+    }
+
     // Main function to decide and make a move
-    func findMove(gameState: inout GameState) -> (start: String, destination: String)? { //this being conditional can maybe be changed, idk
+    func findMove(gameState: inout GameState) -> (start: String, destination: String, promotion: String?)? { //this being conditional can maybe be changed, idk
         // Use the existing function to get all possible moves
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
 
@@ -65,13 +81,13 @@ class GameCPU {
     }
 
     // Randomly select a move
-    private func selectRandomMove(from moves: [String]) -> (start: String, destination: String)? {
+    private func selectRandomMove(from moves: [String]) -> (start: String, destination: String, promotion: String?)? {
         guard let move = moves.randomElement() else { return nil }
         //print(move)
         return parseMove(move)
     }
 
-    private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String)? {
+    private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String, promotion: String?)? {
     
         let startTime = Date() //for testing
         let deadline = startTime.addingTimeInterval(3.0)
@@ -111,7 +127,7 @@ class GameCPU {
                 return (bestValue, bestMoves.randomElement() ?? "")}
 
             if let parsedMove = parseMove(move) {
-                let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination)
+                let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination, promotionType: parsedMove.promotion ?? "queen")
                 gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
                 let result = minimax(
@@ -161,17 +177,21 @@ class GameCPU {
         return (bestValue, bestMove)
     }
 
-    // Parse move string into start and destination positions
-    private func parseMove(_ move: String) -> (start: String, destination: String)? {
+    // Parse move string into start, destination, and optional promotion piece (e.g. "g8-g9=knight")
+    private func parseMove(_ move: String) -> (start: String, destination: String, promotion: String?)? {
+        let promotionComponents = move.split(separator: "=")
+        let corePart = String(promotionComponents[0])
+        let promotion = promotionComponents.count > 1 ? String(promotionComponents[1]) : nil
+
         // Split the move string using the delimiter
-        let components = move.split(separator: "-")
+        let components = corePart.split(separator: "-")
         guard components.count == 2 else {
             print("Invalid move format: \(move)")
             return nil
         }
         let start = String(components[0])
         let destination = String(components[1])
-        return (start, destination)
+        return (start, destination, promotion)
     }
 
     // Evaluate the game state to assign a score
