@@ -775,15 +775,16 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
+                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
 
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
-                        
+
                         let diff = newLocalElo - oldLocalElo
                         let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
-                       
+
                         let eloText = String(
                             format: NSLocalizedString(
                                 "Your ELO rating changed from %d to %d (%@)",
@@ -793,7 +794,7 @@ class GameScene: SKScene {
                             newLocalElo,
                             sign
                         )
-                        
+
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: eloText
                         ) { action in
@@ -865,6 +866,9 @@ class GameScene: SKScene {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
+                        if gameCPU.difficulty == .hard { //only prompt for review once the CPU is sufficiently advanced
+                            ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
+                        }
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -902,10 +906,11 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
+                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
-                    
+
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
                         let diff = newLocalElo - oldLocalElo
@@ -944,6 +949,9 @@ class GameScene: SKScene {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                             GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
+                            if gameCPU.difficulty == .hard { //only prompt for review once the CPU is sufficiently advanced
+                                ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
+                            }
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
