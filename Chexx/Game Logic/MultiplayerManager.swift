@@ -287,10 +287,10 @@ class MultiplayerManager: ObservableObject {
             }
             guard let data = snapshot?.data() else { return }
             
-            if let player2Id = data["player2Id"] as? String {
+            if let player2Id = data["player2Id"] as? String, self.opponentId != player2Id {
                 self.opponentId = player2Id
                 self.fetchOpponentInfo(userId: player2Id)
-                
+
                 AchievementManager.shared.unlockAchievement(withID: "friendly_hexchange")
                 GameCenterManager.shared.reportAchievement(identifier: "FriendlyHexchange")
             }

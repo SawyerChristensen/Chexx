@@ -28,7 +28,7 @@
   - [x] UI: `ProfileView` re-sorts the ~200-element `countries` array on every body re-render instead of once
   - [x] UI: `GameScene.findNearestHexagon` and other `childNode(withName:)` lookups linearly scan the node graph — build a `[String: HexagonNode]` dictionary once
   - [x] The `columns` array literal is redefined in ~23 functions across GameState/PieceRules/GameCPU/GameScene — hoist to one shared constant
-  - [ ] `MultiplayerManager.listenForOpponentJoined` re-fetches opponent profile info on every snapshot update, not just when the opponent first joins
+  - [x] `MultiplayerManager.listenForOpponentJoined` re-fetches opponent profile info on every snapshot update, not just when the opponent first joins
   - [ ] `hasLegalMovesForCurrentPlayer` builds full move lists per piece instead of short-circuiting on the first legal move found
   - [ ] En-passant target is found by scanning the whole board (`resetEnPassant`) instead of tracking a single field on GameState
   - [ ] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
