@@ -310,10 +310,12 @@ class AuthViewModel: ObservableObject {
             self.isLoggedIn = true
             self.email = firebaseUser.email ?? "Unknown Email"
             self.displayName = firstName
-            self.profileImageURL = URL(string: (user.profile?.imageURL(withDimension: 200)!.absoluteString)!)
-            
+            self.profileImageURL = user.profile?.imageURL(withDimension: 200)
+
             if let imageURL = self.profileImageURL?.absoluteString {
                 UserDefaults.standard.set(imageURL, forKey: "profileImageURL")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "profileImageURL")
             }
             
             self.fetchUserDataFromFirestore(completion: {}) //empty completion handler

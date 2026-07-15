@@ -55,7 +55,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
 - [ ] Pulsating element on main menu?
-- [ ] Changing Google icon breaks Google icon retrieval in app
+- [x] Changing Google icon breaks Google icon retrieval in app
 - [ ] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [ ] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
 - [ ] Game Center icon only loads the second time looking at the profile
