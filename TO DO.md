@@ -4,10 +4,16 @@
 ## Update 1.4 — More Localizations  🌐
 - [x] Transition TO DO to a markdown file
 - [x] Prompt user to review Hex Chess after a multiplayer win (and after a CPU win when it is sufficiently advanced)
-- [ ] Add Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish
+- [ ] Add Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish to project & ASC
+  - [x] In project settings
+  - [x] Reorder the info plist files to be alphabetical
+  - [ ] Translate the bundle display names
+  - [ ] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [ ] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
-  - [ ] Modify the script to work with Hex Chess, not DeckedOut
-  - [ ] Push to ASC
+  - [ ] Modify the script to work with Chexx (Hex Chess), not DeckedOut
+  - [ ] Look at the titles and subtitles we have for other languages in ASC. Create new titles and subtitles for the languages we've added and push them to ASC
+  - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well
+  - [ ] Archive, upload the build, & add app for review in ASC
 
 ---
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		79CF2D07EE8B41EBFFED7529 /* ReviewRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */; };
 		BE091A452CC11FF800C1A3EC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A442CC11FF800C1A3EC /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		BE091A472CC11FF800C1A3EC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A462CC11FF800C1A3EC /* FirebaseAuth */; };
 		BE091A492CC11FF800C1A3EC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A482CC11FF800C1A3EC /* FirebaseCrashlytics */; };
@@ -27,7 +28,6 @@
 		BE3807EC2D3E8E7B00EC5973 /* check.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807EB2D3E8E7B00EC5973 /* check.mp3 */; };
 		BE3807EE2D3E8E8000EC5973 /* game_win.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */; };
 		BE64F0952D27333900F7B8C5 /* AchievementManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE64F0942D27333100F7B8C5 /* AchievementManager.swift */; };
-		79CF2D07EE8B41EBFFED7529 /* ReviewRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */; };
 		BE75E1DA2F214A5F004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
 		BE75E1DB2F21505E004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
@@ -92,6 +92,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestManager.swift; sourceTree = "<group>"; };
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		BE091A602CCBB62B00C1A3EC /* piece_move.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = piece_move.mp3; sourceTree = "<group>"; };
@@ -110,7 +111,6 @@
 		BE3807EB2D3E8E7B00EC5973 /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
 		BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_win.mp3; sourceTree = "<group>"; };
 		BE64F0942D27333100F7B8C5 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
-		B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestManager.swift; sourceTree = "<group>"; };
 		BE75E1D92F214A4C004BD0BF /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -127,6 +127,16 @@
 		BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HexChessLite.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7D04B12E5A77D6000920FC /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		BE8B84BC3006D41C00A55F49 /* TO DO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TO DO.md"; sourceTree = "<group>"; };
+		BE8B86733006F65C00A55F49 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		BE8B86753006F67600A55F49 /* hy */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = hy; path = hy.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B86773006F68300A55F49 /* da */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = da; path = da.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B86793006F69100A55F49 /* fi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fi; path = fi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B867B3006F69F00A55F49 /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B867D3006F6C200A55F49 /* is */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = is; path = is.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B867F3006F6CF00A55F49 /* id */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = id; path = id.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B86813006F6D800A55F49 /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B86833006F6E000A55F49 /* sv */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = sv; path = sv.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		BE8B86853006F6E700A55F49 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chexx.entitlements; sourceTree = "<group>"; };
 		BE9522602D2324B400836D0F /* TutorialSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSheet.swift; sourceTree = "<group>"; };
 		BE9EA2512D977843006D9FAC /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
@@ -380,6 +390,16 @@
 				ar,
 				bn,
 				nl,
+				"zh-Hant",
+				hy,
+				da,
+				fi,
+				he,
+				is,
+				id,
+				nb,
+				sv,
+				tr,
 			);
 			mainGroup = BE76A9A32C2A2602009113B4;
 			packageReferences = (
@@ -507,21 +527,31 @@
 		BEA218812EB0DB14006FDE0B /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				BEA218802EB0DB14006FDE0B /* en */,
-				BEA218832EB0DB1C006FDE0B /* zh-Hans */,
-				BEA218842EB0DB33006FDE0B /* fr */,
-				BEA218852EB0DB36006FDE0B /* de */,
-				BEA218862EB0DB38006FDE0B /* hi */,
-				BEA218872EB0DB39006FDE0B /* pl */,
-				BEA218882EB0DB39006FDE0B /* ru */,
-				BEA218892EB0DB3A006FDE0B /* es */,
-				BE2B426A2ED2EA5B000E5B05 /* it */,
-				BE2B426C2ED32E7C000E5B05 /* pt */,
-				BE2B426E2ED33105000E5B05 /* ja */,
-				BE2B42702ED33AD9000E5B05 /* ko */,
 				BE2B42722ED33D35000E5B05 /* ar */,
 				BE2B42742ED3401C000E5B05 /* bn */,
+				BE8B86773006F68300A55F49 /* da */,
+				BEA218852EB0DB36006FDE0B /* de */,
+				BEA218802EB0DB14006FDE0B /* en */,
+				BEA218892EB0DB3A006FDE0B /* es */,
+				BE8B86793006F69100A55F49 /* fi */,
+				BEA218842EB0DB33006FDE0B /* fr */,
+				BE8B867B3006F69F00A55F49 /* he */,
+				BEA218862EB0DB38006FDE0B /* hi */,
+				BE8B86753006F67600A55F49 /* hy */,
+				BE8B867F3006F6CF00A55F49 /* id */,
+				BE8B867D3006F6C200A55F49 /* is */,
+				BE2B426A2ED2EA5B000E5B05 /* it */,
+				BE2B426E2ED33105000E5B05 /* ja */,
+				BE2B42702ED33AD9000E5B05 /* ko */,
+				BE8B86813006F6D800A55F49 /* nb */,
 				BEC9DABE2F345EE2002A4178 /* nl */,
+				BEA218872EB0DB39006FDE0B /* pl */,
+				BE2B426C2ED32E7C000E5B05 /* pt */,
+				BEA218882EB0DB39006FDE0B /* ru */,
+				BE8B86833006F6E000A55F49 /* sv */,
+				BE8B86853006F6E700A55F49 /* tr */,
+				BEA218832EB0DB1C006FDE0B /* zh-Hans */,
+				BE8B86733006F65C00A55F49 /* zh-Hant */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
