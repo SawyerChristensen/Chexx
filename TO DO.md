@@ -53,7 +53,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Add Notifications! (for main app obviously)
   - [ ] Add live activities for games?
 - [x] "Waiting for opponent..." should be animated like in iMessage
-- [ ] See if how we determine winner color is redundant
+- [x] See if how we determine winner color is redundant
 - [ ] Pulsating element on main menu?
 - [ ] Changing Google icon breaks Google icon retrieval in app
 - [ ] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)

@@ -761,13 +761,15 @@ class GameScene: SKScene {
         let (isGameOver, gameStatus) = gameState.isGameOver()
         
         if isGameOver {
-            
+
+            // currentPlayer was already flipped to the loser's color above, before isGameOver() was evaluated
+            let loserColor  = gameState.currentPlayer
+            let winnerColor = (loserColor == "white") ? "black" : "white"
+
             switch gameStatus {
-    
+
             case "checkmate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white" //opposite of current
-                let loserColor  = (winnerColor == "white") ? "black" : "white" //for achievements
-                
+
                 // If online, do Elo updates + sound effects
                 if isOnlineMultiplayer {
                     let localUserId    = MultiplayerManager.shared.currentUserId
@@ -897,8 +899,6 @@ class GameScene: SKScene {
                 return
                 
             case "stalemate":
-                let winnerColor = gameState.currentPlayer == "white" ? "black" : "white"
-                
                 // If online, do Elo updates
                 if isOnlineMultiplayer {
                     let localUserId    = MultiplayerManager.shared.currentUserId
