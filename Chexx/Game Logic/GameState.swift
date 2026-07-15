@@ -53,6 +53,11 @@ struct GameState: Codable {
     var whiteMaterial: Int = 0
     var blackMaterial: Int = 0
 
+    // Running counts of sliding pieces (rook/bishop/queen), kept in sync by makeMove/unmakeMove so
+    // check detection can cheaply skip ray scans for piece types an opponent no longer has
+    var whiteSliderCount: Int = 0
+    var blackSliderCount: Int = 0
+
     init() {
         // Initialize the board with nils (empty positions)
         //let columns = hexColumns
@@ -88,6 +93,7 @@ struct GameState: Codable {
         setInitialPiecePositions() //could maybe be incorporated into the if else
 
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
+        (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -107,6 +113,7 @@ struct GameState: Codable {
         // Recompute from the decoded board rather than trusting persisted totals, so saves from
         // before material tracking was added (or any drift) always resolve to a correct value
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
+        (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
     }
 
     private static func computeMaterial(for board: [[Piece?]]) -> (white: Int, black: Int) {
@@ -124,12 +131,43 @@ struct GameState: Codable {
         return (white, black)
     }
 
+    private static func isSlider(_ type: String) -> Bool {
+        return type == "rook" || type == "bishop" || type == "queen"
+    }
+
+    private static func computeSliderCounts(for board: [[Piece?]]) -> (white: Int, black: Int) {
+        var white = 0
+        var black = 0
+        for column in board {
+            for case let piece? in column where isSlider(piece.type) {
+                if piece.color == "white" {
+                    white += 1
+                } else {
+                    black += 1
+                }
+            }
+        }
+        return (white, black)
+    }
+
     private mutating func adjustMaterial(for color: String, by delta: Int) {
         if color == "white" {
             whiteMaterial += delta
         } else {
             blackMaterial += delta
         }
+    }
+
+    private mutating func adjustSliderCount(for color: String, by delta: Int) {
+        if color == "white" {
+            whiteSliderCount += delta
+        } else {
+            blackSliderCount += delta
+        }
+    }
+
+    func sliderCount(for color: String) -> Int {
+        return color == "white" ? whiteSliderCount : blackSliderCount
     }
 
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
@@ -364,13 +402,20 @@ struct GameState: Codable {
         // Keep running material totals in sync with the board
         if let captured = capturedPiece {
             adjustMaterial(for: captured.color, by: -pieceValue(captured.type))
+            if GameState.isSlider(captured.type) {
+                adjustSliderCount(for: captured.color, by: -1)
+            }
         }
         if let epCaptured = enPassantCapturedPiece {
             adjustMaterial(for: epCaptured.color, by: -pieceValue(epCaptured.type))
+            // en passant always captures a pawn, never a slider
         }
         if let moving = movingPiece, moving.type == "pawn",
            let promotedType = board[toColIndex][toRowIndex]?.type, promotedType != "pawn" {
             adjustMaterial(for: moving.color, by: pieceValue(promotedType) - pieceValue("pawn"))
+            if GameState.isSlider(promotedType) {
+                adjustSliderCount(for: moving.color, by: 1)
+            }
         }
 
         // Store undo information
@@ -390,13 +435,19 @@ struct GameState: Codable {
     }
 
     mutating func unmakeMove(_ from: String, to: String, undoInfo: MoveUndoInfo) {
-        // Reverse material changes first, while the board still reflects any promotion that happened
+        // Reverse material/slider-count changes first, while the board still reflects any promotion that happened
         if let moving = undoInfo.movingPiece, moving.type == "pawn",
            let promotedType = board[undoInfo.toColIndex][undoInfo.toRowIndex]?.type, promotedType != "pawn" {
             adjustMaterial(for: moving.color, by: pieceValue("pawn") - pieceValue(promotedType))
+            if GameState.isSlider(promotedType) {
+                adjustSliderCount(for: moving.color, by: -1)
+            }
         }
         if let captured = undoInfo.capturedPiece {
             adjustMaterial(for: captured.color, by: pieceValue(captured.type))
+            if GameState.isSlider(captured.type) {
+                adjustSliderCount(for: captured.color, by: 1)
+            }
         }
         if let epCaptured = undoInfo.enPassantCapturedPiece {
             adjustMaterial(for: epCaptured.color, by: pieceValue(epCaptured.type))

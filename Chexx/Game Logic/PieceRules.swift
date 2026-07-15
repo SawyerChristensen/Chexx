@@ -959,6 +959,20 @@ func validMovesForKnight(_ color: String, at position: String, in gameState: Gam
 
 private func filterMovesThatExposeKing(_ moves: [String], for color: String, at position: String, in gameState: inout GameState) -> [String] {
     //print("moves", moves, "for", color, "position", position)
+    guard !moves.isEmpty else { return moves }
+
+    // A move by a piece other than the king can only expose its own king to check if the king is
+    // already in check (so it needs blocking/capturing) or the piece was pinned, blocking a sliding
+    // attacker (rook/bishop/queen). If the opponent has no sliding pieces left, neither is possible,
+    // so every pseudo-legal move is legal and we can skip the make/unmake simulation entirely.
+    let opponentColor = color == "white" ? "black" : "white"
+    if gameState.pieceAt(position)?.type != "king" && gameState.sliderCount(for: opponentColor) == 0 {
+        let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
+        if !kingAlreadyInCheck {
+            return moves
+        }
+    }
+
     return moves.filter { move in
 
         let undoInfo = gameState.makeMove(position, to: move)
@@ -966,7 +980,7 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
         let kingInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState) //can swap out this function for the commented out one, the commented out one fs works but is slow
 
         gameState.unmakeMove(position, to: move, undoInfo: undoInfo)
-        
+
         return !kingInCheck.0
     }
 }
@@ -981,23 +995,27 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
 
     let opponentColor = color == "white" ? "black" : "white"
 
-    // Rook and Queen threats (straight-line moves)
-    let rookMoves = validMovesForRook(color, at: kingPosition, in: currentGameState)
-    for position in rookMoves {
-        if let piece = currentGameState.pieceAt(position),
-           piece.color == opponentColor,
-           (piece.type == "rook" || piece.type == "queen") {
-            return (true, ("\(position) \(piece.color) \(piece.type)"))
+    // Rook/bishop/queen threats can only exist if the opponent still has a sliding piece on the
+    // board, so the ray scans below are skipped entirely once that count hits zero
+    if currentGameState.sliderCount(for: opponentColor) > 0 {
+        // Rook and Queen threats (straight-line moves)
+        let rookMoves = validMovesForRook(color, at: kingPosition, in: currentGameState)
+        for position in rookMoves {
+            if let piece = currentGameState.pieceAt(position),
+               piece.color == opponentColor,
+               (piece.type == "rook" || piece.type == "queen") {
+                return (true, ("\(position) \(piece.color) \(piece.type)"))
+            }
         }
-    }
 
-    // Bishop and Queen threats (diagonal moves)
-    let bishopMoves = validMovesForBishop(color, at: kingPosition, in: currentGameState)
-    for position in bishopMoves {
-        if let piece = currentGameState.pieceAt(position),
-           piece.color == opponentColor,
-           (piece.type == "bishop" || piece.type == "queen") {
-            return (true, ("\(position) \(piece.color) \(piece.type)"))
+        // Bishop and Queen threats (diagonal moves)
+        let bishopMoves = validMovesForBishop(color, at: kingPosition, in: currentGameState)
+        for position in bishopMoves {
+            if let piece = currentGameState.pieceAt(position),
+               piece.color == opponentColor,
+               (piece.type == "bishop" || piece.type == "queen") {
+                return (true, ("\(position) \(piece.color) \(piece.type)"))
+            }
         }
     }
 
