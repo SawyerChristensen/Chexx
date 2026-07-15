@@ -105,28 +105,29 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func fetchUserDataByUserId(_ userId: String, completion: @escaping (String?, String?) -> Void) {
+    func fetchUserDataByUserId(_ userId: String, completion: @escaping (String?, String?, String?) -> Void) {
         db.collection("users").document(userId).getDocument { document, error in
             if let error = error {
                 print("Error fetching user data: \(error)")
-                completion(nil, nil)
+                completion(nil, nil, nil)
                 return
             }
-            
+
             guard let data = document?.data() else {
                 print("No Firestore document found for userId: \(userId)")
-                completion(nil, nil)
+                completion(nil, nil, nil)
                 return
             }
-            
+
             //print("Fetched user data: \(data)") // Debugging
-            
+
             let displayName = data["displayName"] as? String
             let profileImageURL = data["profileImageURL"] as? String
-            
+            let country = data["country"] as? String
+
             //print("Fetched displayName: \(displayName ?? "None"), profileImageURL: \(profileImageURL ?? "None")") // Debugging
-            
-            completion(displayName, profileImageURL)
+
+            completion(displayName, profileImageURL, country)
         }
     }
 

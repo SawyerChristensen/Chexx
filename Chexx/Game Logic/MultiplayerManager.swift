@@ -24,6 +24,7 @@ class MultiplayerManager: ObservableObject {
     
     @Published var opponentName: String = ""
     @Published var opponentProfileImageURL: URL?
+    @Published var opponentCountry: String = ""
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -299,7 +300,7 @@ class MultiplayerManager: ObservableObject {
     
     // Fetch opponent's information
     private func fetchOpponentInfo(userId: String) {
-        AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL in
+        AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL, country in
             DispatchQueue.main.async {
                 self?.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
                 if let profileURL = profileURL {
@@ -307,6 +308,7 @@ class MultiplayerManager: ObservableObject {
                 } else {
                     self?.opponentProfileImageURL = nil
                 }
+                self?.opponentCountry = country ?? ""
             }
         }
     }

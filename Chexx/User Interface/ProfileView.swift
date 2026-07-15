@@ -25,6 +25,18 @@ struct Country: Hashable {
     var localizedName: String {
         Locale.current.localizedString(forRegionCode: code) ?? code
     }
+
+    // Converts an ISO region code (e.g. "US") into its flag emoji without needing the full `countries` list.
+    static func flagEmoji(forCode code: String) -> String {
+        let base: UInt32 = 127397
+        var emoji = ""
+        for scalar in code.uppercased().unicodeScalars {
+            if let flagScalar = Unicode.Scalar(base + scalar.value) {
+                emoji.unicodeScalars.append(flagScalar)
+            }
+        }
+        return emoji
+    }
 }
 
 struct ProfileView: View {

@@ -102,7 +102,9 @@ struct GameView: View {
                                 }
                                 
                                 // Opponent's Name
-                                Text(MultiplayerManager.shared.opponentName)
+                                Text(MultiplayerManager.shared.opponentCountry.isEmpty
+                                     ? MultiplayerManager.shared.opponentName
+                                     : "\(Country.flagEmoji(forCode: MultiplayerManager.shared.opponentCountry)) \(MultiplayerManager.shared.opponentName)")
                                     .font(.system(size: geometry.size.height / 32, weight: .bold, design: .serif))
                                     .foregroundColor(.white)
                             }
