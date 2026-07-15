@@ -1,9 +1,3 @@
-//
-//  InfoPlist.strings
-//  Chexx
-//
-//  Created by Sawyer Christensen on 10/28/25.
-//
-
+// Bundle display name
 "CFBundleDisplayName" = "Hexsjakk";
 //this might not be needed, but we're just making sure it works in english (which is default anyway)

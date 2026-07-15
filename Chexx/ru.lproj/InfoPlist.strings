@@ -1,9 +1,3 @@
-//
-//  InfoPlist.strings
-//  Chexx
-//
-//  Created by Sawyer Christensen on 10/28/25.
-//
-
+// Bundle display name
 "CFBundleName" = "Гекс-шахматы";
 "CFBundleDisplayName" = "Гекс-шахматы";

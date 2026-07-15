@@ -8,7 +8,7 @@
   - [x] In project settings
   - [x] Reorder the info plist files to be alphabetical
   - [x] Translate the bundle display names
-  - [ ] Make all info plist bundle display name files have the same header "// Bundle display name"
+  - [x] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [ ] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
   - [ ] Modify the script to work with Chexx (Hex Chess), not DeckedOut
   - [ ] Look at the titles and subtitles we have for other languages in ASC. Create new titles and subtitles for the languages we've added and push them to ASC
