@@ -14,6 +14,18 @@ struct Piece: Codable {
     var isEnPassantTarget: Bool = false //if pawns have moved two, it opens them up for temporary en passant capture!!
 }
 
+// Assign values to pieces for material scoring (used by GameState's incremental tracking and GameCPU's evaluation)
+func pieceValue(_ type: String) -> Int {
+    switch type {
+    case "king":                return 1000
+    case "queen":               return 9
+    case "rook":                return 5
+    case "bishop", "knight":    return 3
+    case "pawn":                return 1
+    default: return 0
+    }
+}
+
 struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
     let fromColIndex: Int
     let fromRowIndex: Int
@@ -36,7 +48,11 @@ struct GameState: Codable {
     
     var variant: String = "Glinski's"
     var HexPgn: [UInt8] = []
-    
+
+    // Running material totals, kept in sync by makeMove/unmakeMove so evaluation doesn't need to rescan the board
+    var whiteMaterial: Int = 0
+    var blackMaterial: Int = 0
+
     init() {
         // Initialize the board with nils (empty positions)
         //let columns = hexColumns
@@ -70,6 +86,50 @@ struct GameState: Codable {
         
         // Set initial pieces on the board
         setInitialPiecePositions() //could maybe be incorporated into the if else
+
+        (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
+    }
+
+    private enum CodingKeys: String, CodingKey {
+        case currentPlayer, gameStatus, board, whiteKingPosition, blackKingPosition, variant, HexPgn, whiteMaterial, blackMaterial
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        currentPlayer = try container.decode(String.self, forKey: .currentPlayer)
+        gameStatus = try container.decode(String.self, forKey: .gameStatus)
+        board = try container.decode([[Piece?]].self, forKey: .board)
+        whiteKingPosition = try container.decode(String.self, forKey: .whiteKingPosition)
+        blackKingPosition = try container.decode(String.self, forKey: .blackKingPosition)
+        variant = try container.decodeIfPresent(String.self, forKey: .variant) ?? "Glinski's"
+        HexPgn = try container.decodeIfPresent([UInt8].self, forKey: .HexPgn) ?? []
+
+        // Recompute from the decoded board rather than trusting persisted totals, so saves from
+        // before material tracking was added (or any drift) always resolve to a correct value
+        (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
+    }
+
+    private static func computeMaterial(for board: [[Piece?]]) -> (white: Int, black: Int) {
+        var white = 0
+        var black = 0
+        for column in board {
+            for case let piece? in column {
+                if piece.color == "white" {
+                    white += pieceValue(piece.type)
+                } else {
+                    black += pieceValue(piece.type)
+                }
+            }
+        }
+        return (white, black)
+    }
+
+    private mutating func adjustMaterial(for color: String, by delta: Int) {
+        if color == "white" {
+            whiteMaterial += delta
+        } else {
+            blackMaterial += delta
+        }
     }
 
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
@@ -301,6 +361,18 @@ struct GameState: Codable {
             }
         }
 
+        // Keep running material totals in sync with the board
+        if let captured = capturedPiece {
+            adjustMaterial(for: captured.color, by: -pieceValue(captured.type))
+        }
+        if let epCaptured = enPassantCapturedPiece {
+            adjustMaterial(for: epCaptured.color, by: -pieceValue(epCaptured.type))
+        }
+        if let moving = movingPiece, moving.type == "pawn",
+           let promotedType = board[toColIndex][toRowIndex]?.type, promotedType != "pawn" {
+            adjustMaterial(for: moving.color, by: pieceValue(promotedType) - pieceValue("pawn"))
+        }
+
         // Store undo information
         let undoInfo = MoveUndoInfo(
             fromColIndex: fromColIndex,
@@ -318,6 +390,18 @@ struct GameState: Codable {
     }
 
     mutating func unmakeMove(_ from: String, to: String, undoInfo: MoveUndoInfo) {
+        // Reverse material changes first, while the board still reflects any promotion that happened
+        if let moving = undoInfo.movingPiece, moving.type == "pawn",
+           let promotedType = board[undoInfo.toColIndex][undoInfo.toRowIndex]?.type, promotedType != "pawn" {
+            adjustMaterial(for: moving.color, by: pieceValue("pawn") - pieceValue(promotedType))
+        }
+        if let captured = undoInfo.capturedPiece {
+            adjustMaterial(for: captured.color, by: pieceValue(captured.type))
+        }
+        if let epCaptured = undoInfo.enPassantCapturedPiece {
+            adjustMaterial(for: epCaptured.color, by: pieceValue(epCaptured.type))
+        }
+
         // Restore the board
         board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece
         board[undoInfo.toColIndex][undoInfo.toRowIndex] = undoInfo.capturedPiece

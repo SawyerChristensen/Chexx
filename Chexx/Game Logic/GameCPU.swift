@@ -194,23 +194,10 @@ class GameCPU {
         return (start, destination, promotion)
     }
 
-    // Evaluate the game state to assign a score
-    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int { //this is o^2, can maybe just store a variable that gets updated instead of all of this extra math
-        var playerScore = 0
-        var opponentScore = 0
-
-        // Iterate over the board to collect pieces
-        for column in gameState.board {
-            for piece in column {
-                if let piece = piece {
-                    if piece.color == player {
-                        playerScore += pieceValue(piece.type)
-                    } else {
-                        opponentScore += pieceValue(piece.type)
-                    }
-                }
-            }
-        }
+    // Evaluate the game state to assign a score, using GameState's incrementally-tracked material totals
+    private func evaluateGameState(_ gameState: GameState, for player: String) -> Int {
+        let playerScore = player == "white" ? gameState.whiteMaterial : gameState.blackMaterial
+        let opponentScore = player == "white" ? gameState.blackMaterial : gameState.whiteMaterial
 
         // Return the material difference
         return playerScore - opponentScore
@@ -235,18 +222,6 @@ class GameCPU {
         } else {
             // Non-capture move
             return 0
-        }
-    }
-    
-    // Assign values to pieces for evaluation
-    private func pieceValue(_ type: String) -> Int { //could maybe be updated for hexchess specific values
-        switch type {
-        case "king":                return 1000
-        case "queen":               return 9
-        case "rook":                return 5
-        case "bishop", "knight":    return 3
-        case "pawn":                return 1
-        default: return 0
         }
     }
 }
