@@ -79,7 +79,9 @@ class MultiplayerManager: ObservableObject {
                         completion(nil)
                     } else if let document = document, document.exists {
                         // Game ID already exists, try again
-                        tryCreateGame(attemptsLeft: attemptsLeft - 1)
+                        DispatchQueue.main.async {
+                            tryCreateGame(attemptsLeft: attemptsLeft - 1)
+                        }
                     } else {
                         // Game ID is unique, create the game
                         gameRef.setData(gameData) { error in
@@ -148,13 +150,15 @@ class MultiplayerManager: ObservableObject {
             if readyToDelete {
                 // If `readyToDelete` is already true, this must be the second
                 // finalize call, so actually delete the document
-                self.deleteGame { success in
-                    if success {
-                        self.gameId = nil
-                        self.opponentId = nil
-                        //print("Successfully deleted the game doc on second finalize call.")
-                    } else {
-                        print("Failed to delete the game doc.")
+                DispatchQueue.main.async {
+                    self.deleteGame { success in
+                        if success {
+                            self.gameId = nil
+                            self.opponentId = nil
+                            //print("Successfully deleted the game doc on second finalize call.")
+                        } else {
+                            print("Failed to delete the game doc.")
+                        }
                     }
                 }
             } else {
@@ -196,26 +200,30 @@ class MultiplayerManager: ObservableObject {
                     return
                 }
                 
-                self.currentPlayerColor = "white" // Joiner of the game is white by default
-                
-                gameRef.updateData([
-                    "player2Id": self.currentUserId,
-                    "player2Color": self.currentPlayerColor,
-                    "player2Elo":   playerTwoElo,
-                    "status": "in-progress",
-                    "lastUpdated": FieldValue.serverTimestamp()
-                ]) { error in
-                    if let error = error {
-                        print("Error updating game: \(error)")
-                        completion(false)
-                    } else {
-                        self.gameId = gameId //stores the gameID in memory, maybe not necessary
-                        UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
-                        if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
-                            self.opponentId = player1Id
-                            self.fetchOpponentInfo(userId: player1Id)
+                DispatchQueue.main.async {
+                    self.currentPlayerColor = "white" // Joiner of the game is white by default
+
+                    gameRef.updateData([
+                        "player2Id": self.currentUserId,
+                        "player2Color": self.currentPlayerColor,
+                        "player2Elo":   playerTwoElo,
+                        "status": "in-progress",
+                        "lastUpdated": FieldValue.serverTimestamp()
+                    ]) { error in
+                        if let error = error {
+                            print("Error updating game: \(error)")
+                            completion(false)
+                        } else {
+                            DispatchQueue.main.async {
+                                self.gameId = gameId //stores the gameID in memory, maybe not necessary
+                                UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
+                                if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
+                                    self.opponentId = player1Id
+                                    self.fetchOpponentInfo(userId: player1Id)
+                                }
+                                completion(true)
+                            }
                         }
-                        completion(true)
                     }
                 }
             }
@@ -247,31 +255,33 @@ class MultiplayerManager: ObservableObject {
             let player1Color = data["player1Color"] as? String ?? "black"
             let player2Color = data["player2Color"] as? String ?? "white"
             
-            // Determine if current user is player1 or player2
-            if player1Id == self.currentUserId {
-                // Current user is player1
-                self.currentPlayerColor = player1Color
-                self.opponentId = player2Id
-                if let opponentId = player2Id {
-                    self.fetchOpponentInfo(userId: opponentId)
+            DispatchQueue.main.async {
+                // Determine if current user is player1 or player2
+                if player1Id == self.currentUserId {
+                    // Current user is player1
+                    self.currentPlayerColor = player1Color
+                    self.opponentId = player2Id
+                    if let opponentId = player2Id {
+                        self.fetchOpponentInfo(userId: opponentId)
+                    }
+                } else if player2Id == self.currentUserId {
+                    // Current user is player2
+                    self.currentPlayerColor = player2Color
+                    self.opponentId = player1Id
+                    if let opponentId = player1Id {
+                        self.fetchOpponentInfo(userId: opponentId)
+                    }
+                } else {
+                    print("Current user is not in the saved game.")
+                    completion(false)
+                    return
                 }
-            } else if player2Id == self.currentUserId {
-                // Current user is player2
-                self.currentPlayerColor = player2Color
-                self.opponentId = player1Id
-                if let opponentId = player1Id {
-                    self.fetchOpponentInfo(userId: opponentId)
-                }
-            } else {
-                print("Current user is not in the saved game.")
-                completion(false)
-                return
+
+                // Successfully resumed
+                self.gameId = savedGameId
+                print("Resumed game with ID: \(savedGameId). Current color: \(self.currentPlayerColor)")
+                completion(true)
             }
-            
-            // Successfully resumed
-            self.gameId = savedGameId
-            print("Resumed game with ID: \(savedGameId). Current color: \(self.currentPlayerColor)")
-            completion(true)
         }
     }
     
@@ -452,18 +462,20 @@ class MultiplayerManager: ObservableObject {
                 oppStartElo   = p1StartElo
             }
             
-            // calculate new rating using the start-of-game Elo values
-            let (localNewElo, _) = self.calculateEloChange( //opponent's elo new elo should be _, but the local user doenst have permission to update the opponents user document, only the opponent does where they are the local user
-                playerOneELO: localStartElo,
-                playerTwoELO: oppStartElo,
-                actualScoreForPlayerOne: localUserScore
-            )
-            
-            let newLocalElo = localNewElo
-            
-            // update local users elo in firebase
-            self.updateElo(forUserId: localUserId, newElo: newLocalElo) {
-                completion(localStartElo, newLocalElo)
+            DispatchQueue.main.async {
+                // calculate new rating using the start-of-game Elo values
+                let (localNewElo, _) = self.calculateEloChange( //opponent's elo new elo should be _, but the local user doenst have permission to update the opponents user document, only the opponent does where they are the local user
+                    playerOneELO: localStartElo,
+                    playerTwoELO: oppStartElo,
+                    actualScoreForPlayerOne: localUserScore
+                )
+
+                let newLocalElo = localNewElo
+
+                // update local users elo in firebase
+                self.updateElo(forUserId: localUserId, newElo: newLocalElo) {
+                    completion(localStartElo, newLocalElo)
+                }
             }
         }
     }

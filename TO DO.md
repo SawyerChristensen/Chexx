@@ -35,7 +35,7 @@
   - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [x] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
     - [x] ^ This maybe breaks it. Now my google icon doesnt appear at all
-- [ ] Fix all project warnings
+- [x] Fix all project warnings (fixed all Swift actor-isolation warnings in MultiplayerManager.swift/AuthViewModel.swift, unused-variable warnings in GameScene.swift/GameCenterManager.swift, and the deprecated `UIApplication.windows`/`OAuthProvider.credential(withProviderID:)` calls. Left one deprecation warning in MainMenuView.swift:199 — `NavigationLink(destination:isActive:label:)` — since fixing it properly requires migrating the whole screen from `NavigationView` to `NavigationStack`, a risky architecture change better done deliberately, not as a warning cleanup)
 - [ ] Make the apps text one less font thickness level
 - [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.
 - [ ] Do we really need the storyboard files? I only use the launch screen one. How do we modify the project settings to remove the storyboard files but still have the launch image that we have set? Thats the only thing we use with the storyboarsd. if I could have my launch image in assets or some other place and then just call that as the launch image the same way the storyboard does, that would be great

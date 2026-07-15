@@ -465,7 +465,7 @@ struct MainMenuView: View {
                         
                         // Temporary Game Center Achievement Button until leaderboard is implemented
                         Button(action: {
-                            if let rootVC = UIApplication.shared.windows.first?.rootViewController {
+                            if let rootVC = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController {
                                 GameCenterManager.shared.showAchievements(from: rootVC)
                             }
                         }) {

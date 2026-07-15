@@ -83,25 +83,31 @@ class AuthViewModel: ObservableObject {
                 //print("User document found: \(document.documentID)")
                 let data = document.data()
                 //print(data!)
-                
-                self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
-                self.displayName = data?["displayName"] as? String ?? "none found on server"
-                self.userCountry = data?["country"] as? String ?? "none found on server"
-                self.eloScore = data?["eloScore"] as? Int ?? 1000 //does NOT set the Elo to 1000, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
-                
-                /* print("Firestore Email: \(self.email)")
-                print("Firestore Display Name: \(self.displayName)")
-                print("Firestore Country: \(self.userCountry)")
-                print("Firestore ELO Score: \(self.eloScore)") */
 
+                DispatchQueue.main.async {
+                    self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
+                    self.displayName = data?["displayName"] as? String ?? "none found on server"
+                    self.userCountry = data?["country"] as? String ?? "none found on server"
+                    self.eloScore = data?["eloScore"] as? Int ?? 1000 //does NOT set the Elo to 1000, ?? should never be called. the alternative is force unwrapping it with ! but this gets the point across of what SHOULD happen elsewhere in the code (down below)
+
+                    /* print("Firestore Email: \(self.email)")
+                    print("Firestore Display Name: \(self.displayName)")
+                    print("Firestore Country: \(self.userCountry)")
+                    print("Firestore ELO Score: \(self.eloScore)") */
+
+                    //this is so the other local code waits to execute until after this funciton is finished
+                    completion()
+                }
             } else {
                 //print("No Firestore document found for this user.")
                 //so make one!
-                self.saveUserDataToFirestore()
+                DispatchQueue.main.async {
+                    self.saveUserDataToFirestore()
+
+                    //this is so the other local code waits to execute until after this funciton is finished
+                    completion()
+                }
             }
-            
-            //this is so the other local code waits to execute until after this funciton is finished
-            completion()
         }
     }
     
@@ -252,10 +258,12 @@ class AuthViewModel: ObservableObject {
                 let firestoreCountry = data?["country"] as? String ?? ""
                 
                 if !firestoreCountry.isEmpty {
-                    self.userCountry = firestoreCountry
                     UserDefaults.standard.set(firestoreCountry, forKey: "country")
                     //print("User country loaded from Firestore: \(firestoreCountry)")
-                    completion(firestoreCountry)
+                    DispatchQueue.main.async {
+                        self.userCountry = firestoreCountry
+                        completion(firestoreCountry)
+                    }
                 } else {
                     completion(nil) // if no country is found
                     print("No country found in Firestore.")
@@ -355,7 +363,7 @@ class AuthViewModel: ObservableObject {
                     return
                 }
                 
-                let credential = OAuthProvider.credential(withProviderID: "apple.com", idToken: idTokenString, rawNonce: nonce)
+                let credential = OAuthProvider.credential(providerID: .apple, idToken: idTokenString, rawNonce: nonce)
                 
                 Task {
                     do {

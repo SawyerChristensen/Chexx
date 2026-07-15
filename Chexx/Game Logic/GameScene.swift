@@ -601,7 +601,7 @@ class GameScene: SKScene {
         }
 */
         //********** CAPTURING ********** //
-        if let capturedPiece = gameState[colIndex, rowIndex] {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
+        if gameState[colIndex, rowIndex] != nil {//of type Piece (can get rid of this outer if statement/varaible declaration if were not printing the below statement
             //print("Captured piece at \(hexagonName): \(capturedPiece.color) \(capturedPiece.type)")
             
             //remove the piecenode at the designation hexagon, note this is different than updating the board state, but we take care of that later

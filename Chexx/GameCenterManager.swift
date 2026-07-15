@@ -53,7 +53,7 @@ class GameCenterManager: NSObject {
         achievement.showsCompletionBanner = true
         
         GKAchievement.report([achievement]) { error in
-            if let error = error {
+            if error != nil {
                 //print("Error reporting achievement \(identifier): \(error.localizedDescription)")
             } else {
                 //print("Successfully reported achievement \(identifier).")
@@ -71,7 +71,7 @@ class GameCenterManager: NSObject {
         }
         
         localPlayer.loadPhoto(for: .normal) { image, error in
-            if let error = error {
+            if error != nil {
                 //print("Game Center: Failed to load profile image: \(error.localizedDescription)")
             }
             completion(image)
