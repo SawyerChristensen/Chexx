@@ -13,6 +13,9 @@
   - [x] Modify the script to work with Chexx (Hex Chess), not DeckedOut
   - [x] Review if we have the most update to date framework for cf bundle display names. do we need all the different infoplist files or is a string catalog more modern? is what we have outdated? only transition if there is a more modern approach (Xcode 15+ supports `InfoPlist.xcstrings` String Catalogs for Info.plist keys — replaced the per-locale `InfoPlist.strings` files in both targets with `Chexx/InfoPlist.xcstrings` and `HexChessLite/InfoPlist.xcstrings`)
   - [ ] Pull the other App Store listing titles we have for other languages in ASC through the App Store API. Put them in the Metadata json file. Create new titles and subtitles in the metadata json file for each new language we've added and push them to ASC.
+  - [x] Finish all translating all string localizations in Localizable
+  - [ ] Do we need two separate string catalogs per target? One for the in game strings and one for the cfbundledisplayname? if there is no reason to keep them separate, combine them, if there is a reason, keep that as is
+  - [ ] Also, if the cfbundle display names are the same for every target, what if we just made one file a member of both targets and delete the other? Do we really need the empty copyright entry in the HexChessLite InfoPlist.xcstrings ?
   - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well using the new upload metadata python script
   - [ ] Archive, upload the build, & add app for review in ASC
 - [x] Have Claude review the entire project and identify areas for efficiency improvements
@@ -31,6 +34,9 @@
   - [x] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
   - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [x] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
+    - [ ] ^ This maybe breaks it. Now my google icon doesnt appear at all
+- [ ] Fix all project warnings
+- [ ] Make the apps text one less font thickness level
 - [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.
 - [ ] Do we really need the storyboard files? I only use the launch screen one. How do we modify the project settings to remove the storyboard files but still have the launch image that we have set? Thats the only thing we use with the storyboarsd. if I could have my launch image in assets or some other place and then just call that as the launch image the same way the storyboard does, that would be great
 
@@ -49,6 +55,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## Update 1.6 — Multiplayer v2  􀉬
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Change profile icon to Game Center access point? (Apple only!!)
 - [ ] Add Notifications! (for main app obviously)
   - [ ] Add live activities for games?
@@ -74,6 +81,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## Update 1.7 — CPU  🤖
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces
 - [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Turn into AI? (TensorFlow, PyTorch) (AlphaZero loop on GPU?)
@@ -118,6 +126,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## Update 1.8 — Achievements
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Automate all Game Center translation changes, similar to how DeckedOut does it
 - [ ] Update the mail achievement icon and first win icon
 - [ ] Game Center achievements for Dutch
@@ -154,7 +163,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## ⚙️ Other Changes
-
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ### iMessage
 - [ ] Figure out memory problem with resizing the window??
 - [ ] Make `applyUpdate` more elegant — wait until the view is completely on screen before showing what the last user did. Right now it applies the move AS the view is scrolling up and being presented, jumping the gun a little. Currently we call `applyUpdate` by setting `latestHexPGN` whenever the view is activated or selected
