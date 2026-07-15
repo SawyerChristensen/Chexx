@@ -22,7 +22,7 @@ class GameCPU {
     }
     
     func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [String] {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         var allMoves: [String] = []
 
         for (colIndex, column) in gameState.board.enumerated() {
@@ -50,7 +50,7 @@ class GameCPU {
 
     // Whether a pawn moving to this destination would be promoting
     private func isPromotionDestination(_ destination: String, color: String, in gameState: GameState) -> Bool {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         guard let colLetter = destination.first,
               let colIndex = columns.firstIndex(of: String(colLetter)),
               let rowIndex = Int(destination.dropFirst()).map({ $0 - 1 }) else {

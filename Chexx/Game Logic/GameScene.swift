@@ -278,7 +278,7 @@ class GameScene: SKScene {
     }
     
     func placePieces(scene: SKScene, gameState: GameState? = nil) { //o^2 time, can maybe be incorporated into an earlier function like generateHexTiles
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let state = gameState ?? GameState()
 
         for (colIndex, column) in state.board.enumerated() {
@@ -553,7 +553,7 @@ class GameScene: SKScene {
             return
         }
         
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let columnLetter = hexagonName.prefix(1)
         let rowIndexString = hexagonName.dropFirst()
         
@@ -695,7 +695,7 @@ class GameScene: SKScene {
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
     func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ originalPosition: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int, promotionOffsetInt: UInt8) {
         
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"] //jesus christ columns is defined in like every single function
+        let columns = hexColumns
         
         //MARK: - Move the piece
         //maybe use gamestate.movepiece function? rn this works
@@ -1284,7 +1284,7 @@ class GameScene: SKScene {
   
     func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {

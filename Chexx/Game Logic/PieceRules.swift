@@ -8,6 +8,8 @@
 import Foundation
 import SpriteKit
 
+let hexColumns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+
 func isValidPosition(columnToCheck: Int, rowToCheck: Int, in gameState: GameState) -> Bool {
     return columnToCheck >= 0 &&
     columnToCheck <= 10 &&
@@ -16,7 +18,7 @@ func isValidPosition(columnToCheck: Int, rowToCheck: Int, in gameState: GameStat
 }
 
 func boardToHex(_ positions: [(Int, Int)]) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var algebraicPositions: [String] = []
     
     for (colIndex, rowIndex) in positions {
@@ -63,7 +65,7 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
 }
 
 func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2, //this is a tad silly, could maybe remove this but I guess more error checking doesnt hurt
@@ -250,7 +252,7 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForRook(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
@@ -416,7 +418,7 @@ func validMovesForRook(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
     
     guard position.count >= 2,
@@ -647,7 +649,7 @@ func validMovesForBishop(_ color: String, at position: String, in gameState: Gam
 }
 
 func validMovesForKing(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
@@ -797,7 +799,7 @@ func validMovesForKing(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
@@ -1033,7 +1035,7 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
 }
 
 func pawnPureCaptures(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
@@ -1144,7 +1146,7 @@ func isKingInCheck(for color: String, in currentGameState: inout GameState) -> B
 }
 
 func generateAllMoves(for color: String, in gameState: inout GameState) -> [String] {
-    let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+    let columns = hexColumns
     var allMoves: [String] = []
 
     for (colIndex, column) in gameState.board.enumerated() {

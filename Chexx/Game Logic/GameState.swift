@@ -39,7 +39,7 @@ struct GameState: Codable {
     
     init() {
         // Initialize the board with nils (empty positions)
-        //let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        //let columns = hexColumns
         let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
         board = []
         
@@ -180,7 +180,7 @@ struct GameState: Codable {
     }*/
 
     mutating func movePiece(from: String, to: String, promotionPiece: Piece?) {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         
         // Convert from and to positions to board indices
         guard let fromColumn = columns.firstIndex(of: String(from.first!)),
@@ -232,7 +232,7 @@ struct GameState: Codable {
     }
     
     mutating func makeMove(_ from: String, to: String, promotionType: String = "queen") -> MoveUndoInfo { //able to undo this with the output info, not with movePiece()
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let fromColLetter = String(from.prefix(1))
         let fromRowString = String(from.dropFirst())
         let toColLetter = String(to.prefix(1))
@@ -331,7 +331,7 @@ struct GameState: Codable {
 
         // Restore the king's position if necessary
         if let movingPiece = undoInfo.movingPiece, movingPiece.type == "king" {
-            let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+            let columns = hexColumns
             if movingPiece.color == "white" {
                 whiteKingPosition = "\(columns[undoInfo.fromColIndex])\(undoInfo.fromRowIndex + 1)"
             } else if movingPiece.color == "black" {
@@ -357,7 +357,7 @@ struct GameState: Codable {
     }
     
     func positionStringToInt(position: String) -> UInt8 {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let columnOffsets = [0, 6, 13, 21, 30, 40, 51, 61, 70, 78, 85] // Precomputed offsets
 
         // Convert from and to positions to board indices
@@ -375,7 +375,7 @@ struct GameState: Codable {
     }
     
     func positionIntToString(index: UInt8) -> String {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
         
         var remainingIndex = index
@@ -475,7 +475,7 @@ struct GameState: Codable {
 
     
     func pieceAt(_ position: String) -> Piece? {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         let colLetter = String(position.prefix(1))
         let rowString = String(position.dropFirst())
 
@@ -564,7 +564,7 @@ struct GameState: Codable {
     }
 
     mutating func hasLegalMovesForCurrentPlayer() -> Bool {
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         for (colIndex, column) in board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece, piece.color == currentPlayer {
@@ -604,7 +604,7 @@ struct GameState: Codable {
     
     func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
-        let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
+        let columns = hexColumns
         
         for (colIndex, column) in board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
