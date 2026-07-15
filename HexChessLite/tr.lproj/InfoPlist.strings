@@ -5,5 +5,5 @@
 //  Created by Sawyer Christensen on 10/28/25.
 //
 
-"CFBundleDisplayName" = "Hex Chess";
+"CFBundleDisplayName" = "Hex Satranç";
 //this might not be needed, but we're just making sure it works in english (which is default anyway)

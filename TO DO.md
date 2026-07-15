@@ -7,7 +7,7 @@
 - [ ] Add Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish to project & ASC
   - [x] In project settings
   - [x] Reorder the info plist files to be alphabetical
-  - [ ] Translate the bundle display names
+  - [x] Translate the bundle display names
   - [ ] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [ ] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
   - [ ] Modify the script to work with Chexx (Hex Chess), not DeckedOut
