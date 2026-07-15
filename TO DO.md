@@ -18,7 +18,22 @@
 ---
 
 ## Update 1.5 — iPad UI & Mac Port  💻
-- [ ] Have Claude review the entire project and identify areas for efficiency improvements
+- [x] Have Claude review the entire project and identify areas for efficiency improvements
+  - [ ] CPU: `filterMovesThatExposeKing`/`isKingInCheckUsingKingSight` (PieceRules.swift) re-simulate the whole board for every candidate move at every minimax node — likely the single biggest cost driver of CPU move time
+  - [ ] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
+  - [ ] CPU: `evaluateGameState` (GameCPU.swift) rescans the whole board at every leaf node instead of tracking material incrementally
+  - [ ] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
+  - [ ] CPU: no transposition table or iterative deepening in `minimaxMove` — deadline cutoffs can return a weaker move than already found; add Zobrist hashing + a TT
+  - [ ] CPU: flatten `board` from `[[Piece?]]` to a single `[Piece?]` (91 tiles) for cheaper copies/hashing
+  - [ ] UI: `ProfileView` re-sorts the ~200-element `countries` array on every body re-render instead of once
+  - [ ] UI: `GameScene.findNearestHexagon` and other `childNode(withName:)` lookups linearly scan the node graph — build a `[String: HexagonNode]` dictionary once
+  - [ ] The `columns` array literal is redefined in ~23 functions across GameState/PieceRules/GameCPU/GameScene — hoist to one shared constant
+  - [ ] `MultiplayerManager.listenForOpponentJoined` re-fetches opponent profile info on every snapshot update, not just when the opponent first joins
+  - [ ] `hasLegalMovesForCurrentPlayer` builds full move lists per piece instead of short-circuiting on the first legal move found
+  - [ ] En-passant target is found by scanning the whole board (`resetEnPassant`) instead of tracking a single field on GameState
+  - [ ] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
+  - [ ] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
+  - [ ] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
 - [ ] Refine UI for iPad (country picker, font, achievement stars)
 - [ ] Add mirror matches option for local play? (only for iPad?)
 - [ ] Better App Store pictures for iPad (1/3 of all users!!)
