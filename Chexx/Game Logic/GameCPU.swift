@@ -59,21 +59,20 @@ class GameCPU {
         let columns = hexColumns
         var allMoves: [SearchMove] = []
 
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == color {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
+        for colIndex in 0..<GameState.columnSizes.count {
+            for rowIndex in 0..<GameState.columnSizes[colIndex] {
+                guard let piece = gameState[colIndex, rowIndex], piece.color == color else { continue }
+                let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
 
-                    // For each valid destination, create a move that includes the start and destination
-                    for destination in validMoves {
-                        if piece.type == "pawn", isPromotionDestination(destination, color: piece.color, in: gameState) {
-                            for promotionType in ["queen", "rook", "bishop", "knight"] {
-                                allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)=\(promotionType)", start: currentPosition, destination: destination, promotion: promotionType))
-                            }
-                        } else {
-                            allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)", start: currentPosition, destination: destination, promotion: nil))
+                // For each valid destination, create a move that includes the start and destination
+                for destination in validMoves {
+                    if piece.type == "pawn", isPromotionDestination(destination, color: piece.color, in: gameState) {
+                        for promotionType in ["queen", "rook", "bishop", "knight"] {
+                            allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)=\(promotionType)", start: currentPosition, destination: destination, promotion: promotionType))
                         }
+                    } else {
+                        allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)", start: currentPosition, destination: destination, promotion: nil))
                     }
                 }
             }
@@ -90,7 +89,7 @@ class GameCPU {
               let rowIndex = Int(destination.dropFirst()).map({ $0 - 1 }) else {
             return false
         }
-        return color == "white" ? rowIndex == gameState.board[colIndex].count - 1 : rowIndex == 0
+        return color == "white" ? rowIndex == gameState.rowCount(forCol: colIndex) - 1 : rowIndex == 0
     }
 
     // Main function to decide and make a move

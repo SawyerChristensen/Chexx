@@ -11,20 +11,17 @@
   - [x] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [x] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
   - [x] Modify the script to work with Chexx (Hex Chess), not DeckedOut
-  - [ ] Pull the other App Store listing titles we have for other languages in ASC. Create new titles and subtitles in the metadata json file for each language we've added and push them to ASC
+  - [ ] Review if we have the most update to date framework for cf bundle display names. do we need all the different infoplist files or is a string catalog more modern? is what we have outdated? only transition if there is a more modern approach
+  - [ ] Pull the other App Store listing titles we have for other languages in ASC through the App Store API. Put them in the Metadata json file. Create new titles and subtitles in the metadata json file for each new language we've added and push them to ASC.
   - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well using the new upload metadata python script
   - [ ] Archive, upload the build, & add app for review in ASC
-
----
-
-## Update 1.5 — iPad UI & Mac Port  💻
 - [x] Have Claude review the entire project and identify areas for efficiency improvements
   - [x] CPU: `filterMovesThatExposeKing`/`isKingInCheckUsingKingSight` (PieceRules.swift) re-simulate the whole board for every candidate move at every minimax node — likely the single biggest cost driver of CPU move time
   - [x] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
   - [x] CPU: `evaluateGameState` (GameCPU.swift) rescans the whole board at every leaf node instead of tracking material incrementally
   - [x] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
   - [x] CPU: no transposition table or iterative deepening in `minimaxMove` — deadline cutoffs can return a weaker move than already found; add Zobrist hashing + a TT
-  - [ ] CPU: flatten `board` from `[[Piece?]]` to a single `[Piece?]` (91 tiles) for cheaper copies/hashing
+  - [x] CPU: flatten `board` from `[[Piece?]]` to a single `[Piece?]` (91 tiles) for cheaper copies/hashing
   - [x] UI: `ProfileView` re-sorts the ~200-element `countries` array on every body re-render instead of once
   - [x] UI: `GameScene.findNearestHexagon` and other `childNode(withName:)` lookups linearly scan the node graph — build a `[String: HexagonNode]` dictionary once
   - [x] The `columns` array literal is redefined in ~23 functions across GameState/PieceRules/GameCPU/GameScene — hoist to one shared constant
@@ -34,12 +31,20 @@
   - [ ] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
   - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [ ] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
+- [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.
+- [ ] Do we really need the storyboard files? I only use the launch screen one. How do we modify the project settings to remove the storyboard files but still have the launch image that we have set? Thats the only thing we use with the storyboarsd. if I could have my launch image in assets or some other place and then just call that as the launch image the same way the storyboard does, that would be great
+
+---
+
+## Update 1.5 — iPad UI & Mac Port  💻
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Refine UI for iPad (country picker, font, achievement stars)
-- [ ] Add mirror matches option for local play? (only for iPad?)
-- [ ] Better App Store pictures for iPad (1/3 of all users!!)
-- [ ] Listing canvas gaps should be shorter?
-- [ ] Modify Russian listing photo text?
-- [ ] Modify the Chinese listing photo text?
+- [ ] Add an official Mac Port of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
+- [ ] App Store Connect/photoshop work:
+  - [ ] Better App Store pictures for iPad (1/3 of all users!!)
+  - [ ] Listing canvas gaps should be shorter?
+  - [ ] Modify Russian listing photo text?
+  - [ ] Modify the Chinese listing photo text?
 
 ---
 
@@ -170,6 +175,7 @@
   - Beige — Light tile: `#ffce9e`, "Grey" tile: `#e8ab6f`, Dark tile: `#d18b47`
   - [ ] Put color schemes in profile view?
 - [ ] Check if any flags have been added in new Unicode versions
+- [ ] Add mirror matches option for local play? (only for iPad?)
 - [ ] Favorite opening in profile view?
 - [ ] Enable variants — different pawn rules for Mathewson's & McCooey's (as well as different starting positions)
   - [ ] McQuay's

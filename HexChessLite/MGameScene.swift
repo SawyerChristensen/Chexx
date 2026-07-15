@@ -250,9 +250,9 @@ class MessagesGameScene: SKScene {
         let columns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
         let state = gameState ?? GameState()
 
-        for (colIndex, column) in state.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece {
+        for colIndex in 0..<GameState.columnSizes.count {
+            for rowIndex in 0..<GameState.columnSizes[colIndex] {
+                if let piece = state[colIndex, rowIndex] {
                     let position = "\(columns[colIndex])\(rowIndex + 1)"
                     let identifier = "\(position)_\(piece.color)_\(piece.type)"
                     if let hexagon = scene.childNode(withName: position) as? HexagonNode {
@@ -562,7 +562,7 @@ class MessagesGameScene: SKScene {
         }
 */
         //********** CAPTURING ********** //
-        if gameState.board[colIndex][rowIndex] != nil {
+        if gameState[colIndex, rowIndex] != nil {
             
             //remove the piecenode at the designation hexagon, note this is different than updating the board state, but we take care of that later
             if let capturedPieceNode = findPieceNode(at: hexagonName) { //of type SKSpriteNode
@@ -571,17 +571,17 @@ class MessagesGameScene: SKScene {
             //fiftyMoveRule = 0
         }
             //Capturing logic for En Passant
-            if color == "white" && type == "pawn" && gameState.board[colIndex][rowIndex - 1]?.isEnPassantTarget == true {
+            if color == "white" && type == "pawn" && gameState[colIndex, rowIndex - 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex - 1] = nil
+                    gameState[colIndex, rowIndex - 1] = nil
                     //fiftyMoveRule = 0
                 }
             }
-            if color == "black" && type == "pawn" && gameState.board[colIndex][rowIndex + 1]?.isEnPassantTarget == true {
+            if color == "black" && type == "pawn" && gameState[colIndex, rowIndex + 1]?.isEnPassantTarget == true {
                 if let capturedPieceNode = findPieceNode(at: "\(columnLetter)\(rowIndex + 2)") { //un-zero index it for addressing hexagons
                     capturedPieceNode.removeFromParent()
-                    gameState.board[colIndex][rowIndex + 1] = nil
+                    gameState[colIndex, rowIndex + 1] = nil
                     //fiftyMoveRule = 0
                 }
             }
@@ -610,7 +610,7 @@ class MessagesGameScene: SKScene {
         }
         else {
             // ********** EXISTING PROMOTION LOGIC (HUMAN/CPU) **********
-            if (color == "white" && type == "pawn" && rowIndex == gameState.board[colIndex].count - 1)
+            if (color == "white" && type == "pawn" && rowIndex == gameState.rowCount(forCol: colIndex) - 1)
                 || (color == "black" && type == "pawn" && rowIndex == 0) {
                 // Show user promotion options
                 presentPromotionOptions { newType in
@@ -644,8 +644,8 @@ class MessagesGameScene: SKScene {
         
         //MARK: - Move the piece
         //maybe use gamestate.movepiece function? rn this works
-        gameState.board[originalColIndex][originalRowIndex] = nil
-        gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
+        gameState[originalColIndex, originalRowIndex] = nil
+        gameState[colIndex, rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
         //print("updated hexpgn:", gameState.HexPgn)
@@ -661,7 +661,7 @@ class MessagesGameScene: SKScene {
         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")}
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
-            gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
+            gameState[colIndex, rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
             gameState.enPassantCol = colIndex
             gameState.enPassantRow = rowIndex
         }
@@ -905,8 +905,8 @@ class MessagesGameScene: SKScene {
 
     func resetEnPassant(for color: String) {
         guard let col = gameState.enPassantCol, let row = gameState.enPassantRow,
-              gameState.board[col][row]?.color == color else { return }
-        gameState.board[col][row]?.isEnPassantTarget = false
+              gameState[col, row]?.color == color else { return }
+        gameState[col, row]?.isEnPassantTarget = false
         gameState.enPassantCol = nil
         gameState.enPassantRow = nil
     }

@@ -42,8 +42,38 @@ struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
 struct GameState: Codable {
     var currentPlayer: String // "white" or "black"
     var gameStatus: String // "ongoing" or "ended" //can probably change this into a bool "isOngoing" later
-    var board: [[Piece?]] // 2D array of optional pieces
-    
+    var board: [Piece?] // flat array of 91 hex tiles (column-major), indexed via boardIndex(col:row:)
+
+    // Number of rows in each of the 11 columns (a hex board isn't a uniform grid)
+    static let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
+
+    // Cumulative offset of each column's first row within the flat `board` array
+    static let columnOffsets: [Int] = {
+        var offsets: [Int] = []
+        var running = 0
+        for size in columnSizes {
+            offsets.append(running)
+            running += size
+        }
+        return offsets
+    }()
+
+    // Total number of hex tiles on the board (91 for Glinski's hexchess)
+    static let tileCount = columnSizes.reduce(0, +)
+
+    static func boardIndex(col: Int, row: Int) -> Int {
+        columnOffsets[col] + row
+    }
+
+    func rowCount(forCol col: Int) -> Int {
+        GameState.columnSizes[col]
+    }
+
+    subscript(col: Int, row: Int) -> Piece? {
+        get { board[GameState.boardIndex(col: col, row: row)] }
+        set { board[GameState.boardIndex(col: col, row: row)] = newValue }
+    }
+
     var whiteKingPosition: String
     var blackKingPosition: String
     
@@ -70,18 +100,8 @@ struct GameState: Codable {
 
     init() {
         // Initialize the board with nils (empty positions)
-        //let columns = hexColumns
-        let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
-        board = []
-        
-        for size in columnSizes {
-            var column: [Piece?] = []
-            for _ in 0..<size {
-                column.append(nil) //nil signifies an empty hextile
-            }
-            board.append(column)
-        }
-        
+        board = Array(repeating: nil, count: GameState.tileCount)
+
         // Set initial game metadata
         currentPlayer = "white"
         gameStatus = "ongoing"
@@ -116,7 +136,7 @@ struct GameState: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         currentPlayer = try container.decode(String.self, forKey: .currentPlayer)
         gameStatus = try container.decode(String.self, forKey: .gameStatus)
-        board = try container.decode([[Piece?]].self, forKey: .board)
+        board = try container.decode([Piece?].self, forKey: .board)
         whiteKingPosition = try container.decode(String.self, forKey: .whiteKingPosition)
         blackKingPosition = try container.decode(String.self, forKey: .blackKingPosition)
         variant = try container.decodeIfPresent(String.self, forKey: .variant) ?? "Glinski's"
@@ -133,27 +153,25 @@ struct GameState: Codable {
     // A saved game can only ever have at most one pawn flagged as an en passant target at a time
     // (the flag is cleared after the opponent's single response turn), so recomputing it on load
     // is a one-time scan rather than an ongoing cost
-    private static func computeEnPassantTarget(for board: [[Piece?]]) -> (col: Int?, row: Int?) {
-        for (colIndex, column) in board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if piece?.isEnPassantTarget == true {
-                    return (colIndex, rowIndex)
+    private static func computeEnPassantTarget(for board: [Piece?]) -> (col: Int?, row: Int?) {
+        for col in 0..<columnSizes.count {
+            for row in 0..<columnSizes[col] {
+                if board[boardIndex(col: col, row: row)]?.isEnPassantTarget == true {
+                    return (col, row)
                 }
             }
         }
         return (nil, nil)
     }
 
-    private static func computeMaterial(for board: [[Piece?]]) -> (white: Int, black: Int) {
+    private static func computeMaterial(for board: [Piece?]) -> (white: Int, black: Int) {
         var white = 0
         var black = 0
-        for column in board {
-            for case let piece? in column {
-                if piece.color == "white" {
-                    white += pieceValue(piece.type)
-                } else {
-                    black += pieceValue(piece.type)
-                }
+        for case let piece? in board {
+            if piece.color == "white" {
+                white += pieceValue(piece.type)
+            } else {
+                black += pieceValue(piece.type)
             }
         }
         return (white, black)
@@ -198,28 +216,26 @@ struct GameState: Codable {
         return zobristTable[colIndex][rowIndex][zobristPieceIndex(piece)]
     }
 
-    private static func computeZobristHash(for board: [[Piece?]]) -> UInt64 {
+    private static func computeZobristHash(for board: [Piece?]) -> UInt64 {
         var hash: UInt64 = 0
-        for (colIndex, column) in board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece {
-                    hash ^= zobristValue(colIndex: colIndex, rowIndex: rowIndex, piece: piece)
+        for col in 0..<columnSizes.count {
+            for row in 0..<columnSizes[col] {
+                if let piece = board[boardIndex(col: col, row: row)] {
+                    hash ^= zobristValue(colIndex: col, rowIndex: row, piece: piece)
                 }
             }
         }
         return hash
     }
 
-    private static func computeSliderCounts(for board: [[Piece?]]) -> (white: Int, black: Int) {
+    private static func computeSliderCounts(for board: [Piece?]) -> (white: Int, black: Int) {
         var white = 0
         var black = 0
-        for column in board {
-            for case let piece? in column where isSlider(piece.type) {
-                if piece.color == "white" {
-                    white += 1
-                } else {
-                    black += 1
-                }
+        for case let piece? in board where isSlider(piece.type) {
+            if piece.color == "white" {
+                white += 1
+            } else {
+                black += 1
             }
         }
         return (white, black)
@@ -286,7 +302,7 @@ struct GameState: Codable {
         ]
         
         for ((col, row), piece) in initialPositions {
-            board[col][row] = piece
+            self[col, row] = piece
         }
     }
 /*
@@ -310,7 +326,7 @@ struct GameState: Codable {
         ]
         
         for ((col, row), piece) in initialPositions {
-            board[col][row] = piece
+            self[col, row] = piece
         }
     }*/
 /*
@@ -348,7 +364,7 @@ struct GameState: Codable {
         ]
         
         for ((col, row), piece) in initialPositions {
-            board[col][row] = piece
+            self[col, row] = piece
         }
     }*/
 
@@ -367,7 +383,7 @@ struct GameState: Codable {
         let fromColumnRow = (fromColumn, fromRow - 1)
         let toColumnRow = (toColumn, toRow - 1)
         
-        var pieceToMove = board[fromColumnRow.0][fromColumnRow.1]
+        var pieceToMove = self[fromColumnRow.0, fromColumnRow.1]
 
         if promotionPiece != nil {
             pieceToMove = promotionPiece
@@ -378,19 +394,19 @@ struct GameState: Codable {
             
             //dont forget to remove enpassant!
             if abs(fromColumnRow.0 - toColumnRow.0) == 1 { //if the pawn is moving to another row
-                if board[toColumnRow.0][toColumnRow.1] == nil { //and the destination is empty, then it must be capturing en passant
+                if self[toColumnRow.0, toColumnRow.1] == nil { //and the destination is empty, then it must be capturing en passant
                     if pieceToMove?.color == "white" {
-                        board[toColumnRow.0][toColumnRow.1 - 1] = nil //remove the en passanted pawn
+                        self[toColumnRow.0, toColumnRow.1 - 1] = nil //remove the en passanted pawn
                     }
                     if pieceToMove?.color == "black" {
-                        board[toColumnRow.0][toColumnRow.1 + 1] = nil //remove the en passanted pawn
+                        self[toColumnRow.0, toColumnRow.1 + 1] = nil //remove the en passanted pawn
                     }
                 }
             }
         }
         
-        board[fromColumnRow.0][fromColumnRow.1] = nil //[fromcolumn][fromrow] tbh we dont really need to redefine these
-        board[toColumnRow.0][toColumnRow.1] = pieceToMove
+        self[fromColumnRow.0, fromColumnRow.1] = nil //[fromcolumn][fromrow] tbh we dont really need to redefine these
+        self[toColumnRow.0, toColumnRow.1] = pieceToMove
 
         
         // Update king position if necessary
@@ -418,51 +434,51 @@ struct GameState: Codable {
             fatalError("Invalid move coordinates")
         }
 
-        let movingPiece = board[fromColIndex][fromRowIndex]
-        let capturedPiece = board[toColIndex][toRowIndex]
+        let movingPiece = self[fromColIndex, fromRowIndex]
+        let capturedPiece = self[toColIndex, toRowIndex]
         let previousZobristHash = zobristHash
 
         // Update the board
-        board[toColIndex][toRowIndex] = movingPiece
-        board[fromColIndex][fromRowIndex] = nil
+        self[toColIndex, toRowIndex] = movingPiece
+        self[fromColIndex, fromRowIndex] = nil
         
         var enPassantCapturedPiece: Piece? = nil
         var enPassantCapturedCol: Int? = nil
         var enPassantCapturedRow: Int? = nil
 
         if movingPiece?.type == "pawn" {
-            board[toColIndex][toRowIndex]?.hasMoved = true
+            self[toColIndex, toRowIndex]?.hasMoved = true
             if abs(fromRowIndex - toRowIndex) == 2 { //the pawn skipped a tile on its first turn
-                board[toColIndex][toRowIndex]?.isEnPassantTarget = true //make it a target of en-passant
+                self[toColIndex, toRowIndex]?.isEnPassantTarget = true //make it a target of en-passant
             }
 
             // En passant capture: pawn moves diagonally to an empty square
             if capturedPiece == nil && fromColIndex != toColIndex {
                 if movingPiece?.color == "white" {
                     let epRow = toRowIndex - 1
-                    if epRow >= 0 && board[toColIndex][epRow]?.isEnPassantTarget == true {
-                        enPassantCapturedPiece = board[toColIndex][epRow]
+                    if epRow >= 0 && self[toColIndex, epRow]?.isEnPassantTarget == true {
+                        enPassantCapturedPiece = self[toColIndex, epRow]
                         enPassantCapturedCol = toColIndex
                         enPassantCapturedRow = epRow
-                        board[toColIndex][epRow] = nil
+                        self[toColIndex, epRow] = nil
                     }
                 } else {
                     let epRow = toRowIndex + 1
-                    if epRow < board[toColIndex].count && board[toColIndex][epRow]?.isEnPassantTarget == true {
-                        enPassantCapturedPiece = board[toColIndex][epRow]
+                    if epRow < rowCount(forCol: toColIndex) && self[toColIndex, epRow]?.isEnPassantTarget == true {
+                        enPassantCapturedPiece = self[toColIndex, epRow]
                         enPassantCapturedCol = toColIndex
                         enPassantCapturedRow = epRow
-                        board[toColIndex][epRow] = nil
+                        self[toColIndex, epRow] = nil
                     }
                 }
             }
 
             if movingPiece?.color == "white" {
-                if (toRowIndex == board[toColIndex].count - 1) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = promotionType}
+                if (toRowIndex == rowCount(forCol: toColIndex) - 1) { //it will be promoted!
+                    self[toColIndex, toRowIndex]?.type = promotionType}
             } else { //...its black
                 if (toRowIndex == 0) { //it will be promoted!
-                    board[toColIndex][toRowIndex]?.type = promotionType}
+                    self[toColIndex, toRowIndex]?.type = promotionType}
             }
         }
 
@@ -487,7 +503,7 @@ struct GameState: Codable {
             // en passant always captures a pawn, never a slider
         }
         if let moving = movingPiece, moving.type == "pawn",
-           let promotedType = board[toColIndex][toRowIndex]?.type, promotedType != "pawn" {
+           let promotedType = self[toColIndex, toRowIndex]?.type, promotedType != "pawn" {
             adjustMaterial(for: moving.color, by: pieceValue(promotedType) - pieceValue("pawn"))
             if GameState.isSlider(promotedType) {
                 adjustSliderCount(for: moving.color, by: 1)
@@ -506,7 +522,7 @@ struct GameState: Codable {
         if let epCaptured = enPassantCapturedPiece, let epCol = enPassantCapturedCol, let epRow = enPassantCapturedRow {
             zobristHash ^= GameState.zobristValue(colIndex: epCol, rowIndex: epRow, piece: epCaptured)
         }
-        if let finalPiece = board[toColIndex][toRowIndex] {
+        if let finalPiece = self[toColIndex, toRowIndex] {
             zobristHash ^= GameState.zobristValue(colIndex: toColIndex, rowIndex: toRowIndex, piece: finalPiece)
         }
 
@@ -530,7 +546,7 @@ struct GameState: Codable {
     mutating func unmakeMove(_ from: String, to: String, undoInfo: MoveUndoInfo) {
         // Reverse material/slider-count changes first, while the board still reflects any promotion that happened
         if let moving = undoInfo.movingPiece, moving.type == "pawn",
-           let promotedType = board[undoInfo.toColIndex][undoInfo.toRowIndex]?.type, promotedType != "pawn" {
+           let promotedType = self[undoInfo.toColIndex, undoInfo.toRowIndex]?.type, promotedType != "pawn" {
             adjustMaterial(for: moving.color, by: pieceValue("pawn") - pieceValue(promotedType))
             if GameState.isSlider(promotedType) {
                 adjustSliderCount(for: moving.color, by: -1)
@@ -549,14 +565,14 @@ struct GameState: Codable {
         zobristHash = undoInfo.previousZobristHash
 
         // Restore the board
-        board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece
-        board[undoInfo.toColIndex][undoInfo.toRowIndex] = undoInfo.capturedPiece
+        self[undoInfo.fromColIndex, undoInfo.fromRowIndex] = undoInfo.movingPiece
+        self[undoInfo.toColIndex, undoInfo.toRowIndex] = undoInfo.capturedPiece
 
         // Restore en passant captured piece
         if let epPiece = undoInfo.enPassantCapturedPiece,
            let epCol = undoInfo.enPassantCapturedCol,
            let epRow = undoInfo.enPassantCapturedRow {
-            board[epCol][epRow] = epPiece
+            self[epCol, epRow] = epPiece
         }
 
         // Restore the king's position if necessary
@@ -588,7 +604,6 @@ struct GameState: Codable {
     
     func positionStringToInt(position: String) -> UInt8 {
         let columns = hexColumns
-        let columnOffsets = [0, 6, 13, 21, 30, 40, 51, 61, 70, 78, 85] // Precomputed offsets
 
         // Convert from and to positions to board indices
         guard let columnPos = columns.firstIndex(of: String(position.first!)),
@@ -599,20 +614,19 @@ struct GameState: Codable {
         rowPos -= 1 // Input String is not 0-indexed
 
         // Use the columnPos to fetch the corresponding offset
-        let columnOffset = columnOffsets[columnPos]
+        let columnOffset = GameState.columnOffsets[columnPos]
 
         return UInt8(columnOffset + rowPos)
     }
-    
+
     func positionIntToString(index: UInt8) -> String {
         let columns = hexColumns
-        let columnSizes = [6, 7, 8, 9, 10, 11, 10, 9, 8, 7, 6]
-        
+
         var remainingIndex = index
         var columnPos = 0
-        
+
         // Find the correct column based on the index range
-        for (i, size) in columnSizes.enumerated() {
+        for (i, size) in GameState.columnSizes.enumerated() {
             if remainingIndex < size {
                 columnPos = i
                 break
@@ -714,19 +728,14 @@ struct GameState: Codable {
             return nil
         }
 
-        return board[colIndex][rowIndex]
+        return self[colIndex, rowIndex]
     }
     
     func getPieces(for color: String) -> [Piece] {
         var pieces = [Piece]()
 
-        for colIndex in 0..<board.count {
-            for rowIndex in 0..<board[colIndex].count {
-                if let piece = board[colIndex][rowIndex],
-                   piece.color == color {
-                    pieces.append(piece)
-                }
-            }
+        for case let piece? in board where piece.color == color {
+            pieces.append(piece)
         }
 
         return pieces
@@ -795,20 +804,19 @@ struct GameState: Codable {
 
     mutating func hasLegalMovesForCurrentPlayer() -> Bool {
         let columns = hexColumns
-        for (colIndex, column) in board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece, piece.color == currentPlayer {
-                    let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    // Generate pseudo-legal moves first, then test each one for a legal move,
-                    // stopping as soon as we find one instead of filtering the whole list up front.
-                    let pseudoMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &self, skipKingCheck: true)
-                    for move in pseudoMoves {
-                        let undoInfo = makeMove(currentPosition, to: move)
-                        let kingInCheck = isKingInCheckUsingKingSight(for: piece.color, in: &self)
-                        unmakeMove(currentPosition, to: move, undoInfo: undoInfo)
-                        if !kingInCheck.0 {
-                            return true
-                        }
+        for colIndex in 0..<GameState.columnSizes.count {
+            for rowIndex in 0..<GameState.columnSizes[colIndex] {
+                guard let piece = self[colIndex, rowIndex], piece.color == currentPlayer else { continue }
+                let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
+                // Generate pseudo-legal moves first, then test each one for a legal move,
+                // stopping as soon as we find one instead of filtering the whole list up front.
+                let pseudoMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &self, skipKingCheck: true)
+                for move in pseudoMoves {
+                    let undoInfo = makeMove(currentPosition, to: move)
+                    let kingInCheck = isKingInCheckUsingKingSight(for: piece.color, in: &self)
+                    unmakeMove(currentPosition, to: move, undoInfo: undoInfo)
+                    if !kingInCheck.0 {
+                        return true
                     }
                 }
             }
@@ -842,10 +850,10 @@ struct GameState: Codable {
     func printGameState() { //just for debugging
         print("********** CURRENT GAME STATE: **********")
         let columns = hexColumns
-        
-        for (colIndex, column) in board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if let piece = piece {
+
+        for colIndex in 0..<GameState.columnSizes.count {
+            for rowIndex in 0..<GameState.columnSizes[colIndex] {
+                if let piece = self[colIndex, rowIndex] {
                     print("Piece at \(columns[colIndex])\(rowIndex + 1): \(piece.color) \(piece.type)")
                 } else {
                     print("No piece at \(columns[colIndex])\(rowIndex + 1)")
