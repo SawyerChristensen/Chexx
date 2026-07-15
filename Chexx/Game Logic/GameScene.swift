@@ -35,6 +35,7 @@ class GameScene: SKScene {
     var originalPosition: CGPoint?
     var originalHexagonName: String?
     var validMoves: [String] = []
+    var hexagonsByName: [String: HexagonNode] = [:] // populated once in generateHexTiles, avoids scanning the node graph on every lookup
     //var fiftyMoveRule = 0 // Still need to implement
     
     var redStatusTextUpdater: ((String) -> Void)?
@@ -269,6 +270,7 @@ class GameScene: SKScene {
             hexagon.name = key
             hexagons.append(hexagon)
             scene.addChild(hexagon)
+            hexagonsByName[key] = hexagon
         }
         
         // Add all hexagons to the scene
@@ -286,7 +288,7 @@ class GameScene: SKScene {
                 if let piece = piece {
                     let position = "\(columns[colIndex])\(rowIndex + 1)"
                     let identifier = "\(position)_\(piece.color)_\(piece.type)"
-                    if let hexagon = scene.childNode(withName: position) as? HexagonNode {
+                    if let hexagon = hexagonsByName[position] {
                         let pieceImage = "\(piece.color)_\(piece.type)"
                         hexagon.addPieceImage(named: pieceImage, identifier: identifier, isBoardRotated: boardIsRotated)
                     }
@@ -461,7 +463,7 @@ class GameScene: SKScene {
         guard highlightEnabled else { return }
         
         for hexTiles in validMoves {
-            if let hexagon = childNode(withName: hexTiles) as? HexagonNode {
+            if let hexagon = hexagonsByName[hexTiles] {
                 let glowOverlay = SKShapeNode(path: hexagon.path!)
                 glowOverlay.fillColor = UIColor.yellow.withAlphaComponent(0.3)
                 glowOverlay.strokeColor = UIColor.yellow
@@ -487,7 +489,7 @@ class GameScene: SKScene {
     }
     
     func highlightCheckingPiece(at position: String) { //sdfsf
-        if let hexagon = childNode(withName: position) as? HexagonNode {
+        if let hexagon = hexagonsByName[position] {
             let glowOverlay = SKShapeNode(path: hexagon.path!)
             glowOverlay.fillColor = UIColor.red.withAlphaComponent(0.3)
             glowOverlay.strokeColor = UIColor.red
@@ -524,16 +526,14 @@ class GameScene: SKScene {
         redStatusTextUpdater?("")
     }
 
-    func findNearestHexagon(to position: CGPoint) -> HexagonNode? { //o(n) time, calcualtes distance between EVERY hexagon on the board EVERY tap. can probably use a hash map to speed this up
+    func findNearestHexagon(to position: CGPoint) -> HexagonNode? {
         var closestHexagon: HexagonNode?
         var minDistance = CGFloat.greatestFiniteMagnitude
-        for node in children {
-            if let hexagon = node as? HexagonNode {
-                let distance = hypot(hexagon.position.x - position.x, hexagon.position.y - position.y)
-                if distance < minDistance {
-                    minDistance = distance
-                    closestHexagon = hexagon
-                }
+        for hexagon in hexagonsByName.values {
+            let distance = hypot(hexagon.position.x - position.x, hexagon.position.y - position.y)
+            if distance < minDistance {
+                minDistance = distance
+                closestHexagon = hexagon
             }
         }
         // Check if the closest hexagon is within the size of a hexagon
@@ -733,7 +733,7 @@ class GameScene: SKScene {
         pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"//do we really need this??
         pieceNode.removeFromParent()
         
-        let newHexagonParent = childNode(withName: hexagonName) as? HexagonNode
+        let newHexagonParent = hexagonsByName[hexagonName]
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
         
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
@@ -1041,7 +1041,7 @@ class GameScene: SKScene {
                 return
             }
             if let cpuPieceNode = self.findPieceNode(at: move.start) {
-                if let destinationHexagon = self.childNode(withName: move.destination) {
+                if let destinationHexagon = self.hexagonsByName[move.destination] {
                     if let parent = cpuPieceNode.parent {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
                         let slideAction = SKAction.move(to: destinationPosition, duration: 0.25)
@@ -1117,7 +1117,7 @@ class GameScene: SKScene {
 
         // Animate the move
         if let pieceNode = findPieceNode(at: startPosition) {
-            if let destinationHexagon = self.childNode(withName: destinationPosition) {
+            if let destinationHexagon = self.hexagonsByName[destinationPosition] {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
@@ -1246,7 +1246,7 @@ class GameScene: SKScene {
 
     
     func findPieceNode(at hexagonName: String) -> SKSpriteNode? { //helper function for removing captured pieces in updateGameState
-        if let hexagon = childNode(withName: hexagonName) as? HexagonNode,
+        if let hexagon = hexagonsByName[hexagonName],
            let pieceNode = hexagon.children.first as? SKSpriteNode {
             return pieceNode
         }
@@ -1265,7 +1265,7 @@ class GameScene: SKScene {
         }
         
         // Add the piece to the new hexagon
-        if let destinationHexagon = childNode(withName: destination) as? HexagonNode {
+        if let destinationHexagon = hexagonsByName[destination] {
             destinationHexagon.addChild(pieceNode)
             pieceNode.position = CGPoint.zero // Reset position relative to the parent hexagon
         }
