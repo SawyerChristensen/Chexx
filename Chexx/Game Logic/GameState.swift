@@ -760,18 +760,22 @@ struct GameState: Codable {
     }
 }
 
+// hexPgn is a [UInt8] value copy, so encoding/writing it off the main thread is safe —
+// no shared state with the live GameState is touched.
 func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {
-    let saveData = HexPgnSaveData(date: Date(), hexPgn: hexPgn)
-    let encoder = JSONEncoder()
-    encoder.dateEncodingStrategy = .iso8601 // Standard format for date
+    DispatchQueue.global(qos: .utility).async {
+        let saveData = HexPgnSaveData(date: Date(), hexPgn: hexPgn)
+        let encoder = JSONEncoder()
+        encoder.dateEncodingStrategy = .iso8601 // Standard format for date
 
-    if let encoded = try? encoder.encode(saveData) {
-        let url = getDocumentsDirectory().appendingPathComponent(filename)
-        do {
-            try encoded.write(to: url)
-            //print("HexPgn saved to \(url.path)")
-        } catch {
-            print("Failed to save HexPgn: \(error.localizedDescription)")
+        if let encoded = try? encoder.encode(saveData) {
+            let url = getDocumentsDirectory().appendingPathComponent(filename)
+            do {
+                try encoded.write(to: url)
+                //print("HexPgn saved to \(url.path)")
+            } catch {
+                print("Failed to save HexPgn: \(error.localizedDescription)")
+            }
         }
     }
 }

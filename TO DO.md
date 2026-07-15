@@ -32,7 +32,7 @@
   - [x] `hasLegalMovesForCurrentPlayer` builds full move lists per piece instead of short-circuiting on the first legal move found
   - [ ] En-passant target is found by scanning the whole board (`resetEnPassant`) instead of tracking a single field on GameState
   - [ ] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
-  - [ ] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
+  - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [ ] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
 - [ ] Refine UI for iPad (country picker, font, achievement stars)
 - [ ] Add mirror matches option for local play? (only for iPad?)
