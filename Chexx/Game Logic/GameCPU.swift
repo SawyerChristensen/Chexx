@@ -29,6 +29,15 @@ private enum TranspositionFlag {
     case upperBound // real value is <= `value` (this node failed low against alpha)
 }
 
+// A move with its start/destination/promotion already split out, computed once at generation
+// time so the search hot path never re-parses a "A1-B2=queen"-style string.
+private struct SearchMove {
+    let notation: String
+    let start: String
+    let destination: String
+    let promotion: String?
+}
+
 class GameCPU {
     var difficulty: CPUDifficulty // Enum specifying CPU difficulty level
 
@@ -46,9 +55,9 @@ class GameCPU {
         gameState.currentPlayer == "black" ? gameState.zobristHash ^ GameState.zobristBlackToMove : gameState.zobristHash
     }
 
-    func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [String] {
+    private func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [SearchMove] {
         let columns = hexColumns
-        var allMoves: [String] = []
+        var allMoves: [SearchMove] = []
 
         for (colIndex, column) in gameState.board.enumerated() {
             for (rowIndex, piece) in column.enumerated() {
@@ -56,14 +65,14 @@ class GameCPU {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
                     let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
 
-                    // For each valid destination, create a move string that includes the start and destination
+                    // For each valid destination, create a move that includes the start and destination
                     for destination in validMoves {
                         if piece.type == "pawn", isPromotionDestination(destination, color: piece.color, in: gameState) {
                             for promotionType in ["queen", "rook", "bishop", "knight"] {
-                                allMoves.append("\(currentPosition)-\(destination)=\(promotionType)")
+                                allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)=\(promotionType)", start: currentPosition, destination: destination, promotion: promotionType))
                             }
                         } else {
-                            allMoves.append("\(currentPosition)-\(destination)")
+                            allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)", start: currentPosition, destination: destination, promotion: nil))
                         }
                     }
                 }
@@ -106,10 +115,9 @@ class GameCPU {
     }
 
     // Randomly select a move
-    private func selectRandomMove(from moves: [String]) -> (start: String, destination: String, promotion: String?)? {
+    private func selectRandomMove(from moves: [SearchMove]) -> (start: String, destination: String, promotion: String?)? {
         guard let move = moves.randomElement() else { return nil }
-        //print(move)
-        return parseMove(move)
+        return (move.start, move.destination, move.promotion)
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String, promotion: String?)? {
@@ -117,55 +125,45 @@ class GameCPU {
         // no longer exists once real moves have been played, so there's nothing to gain by keeping them
         transpositionTable.removeAll()
 
-        let startTime = Date() //for testing
-        let deadline = startTime.addingTimeInterval(3.0)
-        
         let maximizingPlayerColor = gameState.currentPlayer
-        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline) //can .move extraction here instead of in the return satement, rn its not for print testing
-        
-        //print(bestMove)
-        
-        //let endTime = Date() //for testing
-        //let timeInterval = endTime.timeIntervalSince(startTime) //for testing
-        //print("Time taken for minimaxMove: \(timeInterval) seconds")
-        
-        return parseMove(bestMove.move)
+        let deadline = Date().addingTimeInterval(3.0)
+        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
+
+        guard let move = bestMove.move else { return nil }
+        return (move.start, move.destination, move.promotion)
     }
 
-    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: String) {
-        
-        //print("Entering minimax at depth:", depth)
-        
+    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: SearchMove?) {
         if depth == 0 || gameState.isGameOver().0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
-            return (value, "")
+            return (value, nil)
         }
 
         let alphaAtEntry = alpha
         let betaAtEntry = beta
 
         let ttKey = transpositionKey(for: gameState)
-        var ttBestMove: String? = nil
+        var ttBestMoveNotation: String? = nil
         if let entry = transpositionTable[ttKey], entry.depth >= depth {
             switch entry.flag {
             case .exact:
-                return (entry.value, entry.bestMove)
+                return (entry.value, nil)
             case .lowerBound:
                 if entry.value >= beta {
-                    return (entry.value, entry.bestMove)
+                    return (entry.value, nil)
                 }
             case .upperBound:
                 if entry.value <= alpha {
-                    return (entry.value, entry.bestMove)
+                    return (entry.value, nil)
                 }
             }
-            ttBestMove = entry.bestMove
+            ttBestMoveNotation = entry.bestMove
         }
 
         var alpha = alpha
         var beta = beta
         var bestValue = maximizingPlayer ? Int.min : Int.max
-        var bestMoves: [String] = [] // List of moves with the best score
+        var bestMoves: [SearchMove] = [] // List of moves with the best score
 
         // Generate and order moves for better alpha/beta pruning
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
@@ -173,62 +171,59 @@ class GameCPU {
 
         // Try the transposition table's previously-best move first; it's the move most likely to
         // cause a cutoff, since it was already good enough at this position at an earlier search
-        if let ttBestMove = ttBestMove, let ttMoveIndex = orderedMoves.firstIndex(of: ttBestMove) {
-            orderedMoves.remove(at: ttMoveIndex)
-            orderedMoves.insert(ttBestMove, at: 0)
+        if let ttBestMoveNotation = ttBestMoveNotation, let ttMoveIndex = orderedMoves.firstIndex(where: { $0.notation == ttBestMoveNotation }) {
+            let ttMove = orderedMoves.remove(at: ttMoveIndex)
+            orderedMoves.insert(ttMove, at: 0)
         }
 
         for move in orderedMoves {
             if Date() >= deadline { //mayyyy not need this
-                return (bestValue, bestMoves.randomElement() ?? "")}
+                return (bestValue, bestMoves.randomElement())}
 
-            if let parsedMove = parseMove(move) {
-                let undoInfo = gameState.makeMove(parsedMove.start, to: parsedMove.destination, promotionType: parsedMove.promotion ?? "queen")
-                gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+            let undoInfo = gameState.makeMove(move.start, to: move.destination, promotionType: move.promotion ?? "queen")
+            gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
-                let result = minimax(
-                    gameState: &gameState,
-                    depth: depth - 1,
-                    alpha: alpha,
-                    beta: beta,
-                    maximizingPlayer: !maximizingPlayer,
-                    originalPlayerColor: originalPlayerColor,
-                    deadline: deadline)
-                
-                //print(result, !maximizingPlayer, gameState.currentPlayer)
-                gameState.unmakeMove(parsedMove.start, to: parsedMove.destination, undoInfo: undoInfo)
-                gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+            let result = minimax(
+                gameState: &gameState,
+                depth: depth - 1,
+                alpha: alpha,
+                beta: beta,
+                maximizingPlayer: !maximizingPlayer,
+                originalPlayerColor: originalPlayerColor,
+                deadline: deadline)
 
-                // Update best value and moves based on maximizing/minimizing
-                if maximizingPlayer {
-                    if result.value > bestValue {
-                        bestValue = result.value
-                        bestMoves = [move]
-                        
-                    } else if result.value == bestValue {
-                        bestMoves.append(move)
-                    }
-                    alpha = max(alpha, bestValue)
-                    if beta <= alpha {
-                        break // Beta cutoff
-                    }
-                } else {
-                    if result.value < bestValue {
-                        bestValue = result.value
-                        bestMoves = [move]
-                    } else if result.value == bestValue {
-                        bestMoves.append(move)
-                    }
-                    beta = min(beta, bestValue)
-                    if beta <= alpha {
-                        break // Alpha cutoff
-                    }
+            gameState.unmakeMove(move.start, to: move.destination, undoInfo: undoInfo)
+            gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
+
+            // Update best value and moves based on maximizing/minimizing
+            if maximizingPlayer {
+                if result.value > bestValue {
+                    bestValue = result.value
+                    bestMoves = [move]
+
+                } else if result.value == bestValue {
+                    bestMoves.append(move)
+                }
+                alpha = max(alpha, bestValue)
+                if beta <= alpha {
+                    break // Beta cutoff
+                }
+            } else {
+                if result.value < bestValue {
+                    bestValue = result.value
+                    bestMoves = [move]
+                } else if result.value == bestValue {
+                    bestMoves.append(move)
+                }
+                beta = min(beta, bestValue)
+                if beta <= alpha {
+                    break // Alpha cutoff
                 }
             }
         }
 
         // Randomly select one of the best moves
-        let bestMove = bestMoves.randomElement() ?? ""
+        let bestMove = bestMoves.randomElement()
 
         // Cache this node's result. Whether it's exact or just a bound depends on how bestValue
         // relates to the original alpha/beta window this node was searched with.
@@ -240,26 +235,9 @@ class GameCPU {
         } else {
             flag = .exact
         }
-        transpositionTable[ttKey] = TranspositionEntry(depth: depth, value: bestValue, flag: flag, bestMove: bestMove)
+        transpositionTable[ttKey] = TranspositionEntry(depth: depth, value: bestValue, flag: flag, bestMove: bestMove?.notation ?? "")
 
         return (bestValue, bestMove)
-    }
-
-    // Parse move string into start, destination, and optional promotion piece (e.g. "g8-g9=knight")
-    private func parseMove(_ move: String) -> (start: String, destination: String, promotion: String?)? {
-        let promotionComponents = move.split(separator: "=")
-        let corePart = String(promotionComponents[0])
-        let promotion = promotionComponents.count > 1 ? String(promotionComponents[1]) : nil
-
-        // Split the move string using the delimiter
-        let components = corePart.split(separator: "-")
-        guard components.count == 2 else {
-            print("Invalid move format: \(move)")
-            return nil
-        }
-        let start = String(components[0])
-        let destination = String(components[1])
-        return (start, destination, promotion)
     }
 
     // Evaluate the game state to assign a score, using GameState's incrementally-tracked material totals
@@ -272,7 +250,7 @@ class GameCPU {
     }
     
     // Order moves to improve alpha-beta pruning efficiency
-    private func orderMoves(_ moves: [String], gameState: GameState) -> [String] {
+    private func orderMoves(_ moves: [SearchMove], gameState: GameState) -> [SearchMove] {
         // Compute each move's score once up front instead of re-deriving it on every
         // comparison the sort performs (sorted's comparator is called O(n log n) times)
         let scoredMoves = moves.map { (move: $0, score: evaluateMove($0, in: gameState)) }
@@ -280,10 +258,9 @@ class GameCPU {
     }
 
     // Simple heuristic to prioritize moves
-    private func evaluateMove(_ move: String, in gameState: GameState) -> Int {
-        if let parsedMove = parseMove(move),
-           let fromPiece = gameState.pieceAt(parsedMove.start),
-           let toPiece = gameState.pieceAt(parsedMove.destination) {
+    private func evaluateMove(_ move: SearchMove, in gameState: GameState) -> Int {
+        if let fromPiece = gameState.pieceAt(move.start),
+           let toPiece = gameState.pieceAt(move.destination) {
             // Capture move
             return pieceValue(toPiece.type) - pieceValue(fromPiece.type)
         } else {

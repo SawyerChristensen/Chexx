@@ -20,7 +20,7 @@
 ## Update 1.5 — iPad UI & Mac Port  💻
 - [x] Have Claude review the entire project and identify areas for efficiency improvements
   - [x] CPU: `filterMovesThatExposeKing`/`isKingInCheckUsingKingSight` (PieceRules.swift) re-simulate the whole board for every candidate move at every minimax node — likely the single biggest cost driver of CPU move time
-  - [ ] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
+  - [x] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
   - [x] CPU: `evaluateGameState` (GameCPU.swift) rescans the whole board at every leaf node instead of tracking material incrementally
   - [x] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
   - [x] CPU: no transposition table or iterative deepening in `minimaxMove` — deadline cutoffs can return a weaker move than already found; add Zobrist hashing + a TT
