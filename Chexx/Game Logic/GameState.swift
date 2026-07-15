@@ -372,9 +372,11 @@ struct GameState: Codable {
         let columns = hexColumns
         
         // Convert from and to positions to board indices
-        guard let fromColumn = columns.firstIndex(of: String(from.first!)),
+        guard let fromChar = from.first,
+              let fromColumn = columns.firstIndex(of: String(fromChar)),
               let fromRow = Int(from.dropFirst()),
-              let toColumn = columns.firstIndex(of: String(to.first!)),
+              let toChar = to.first,
+              let toColumn = columns.firstIndex(of: String(toChar)),
               let toRow = Int(to.dropFirst()) else {
             return
         }
@@ -606,7 +608,8 @@ struct GameState: Codable {
         let columns = hexColumns
 
         // Convert from and to positions to board indices
-        guard let columnPos = columns.firstIndex(of: String(position.first!)),
+        guard let firstChar = position.first,
+              let columnPos = columns.firstIndex(of: String(firstChar)),
               var rowPos = Int(position.dropFirst()) else {
             return 0
         }

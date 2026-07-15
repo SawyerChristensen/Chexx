@@ -84,7 +84,7 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
             validBoardMoves.append((colIndex, rowIndex + 1))
 
             // If it hasn't moved at all, bonus move!
-            if !gameState[colIndex, rowIndex]!.hasMoved,
+            if gameState[colIndex, rowIndex]?.hasMoved == false,
                gameState[colIndex, rowIndex + 2] == nil {
                 validBoardMoves.append((colIndex, rowIndex + 2)) // opening bonus 2 tiles!
             }
@@ -169,7 +169,7 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
             validBoardMoves.append((colIndex, rowIndex - 1))
 
             // If it hasn't moved at all, bonus move!
-            if !gameState[colIndex, rowIndex]!.hasMoved,
+            if gameState[colIndex, rowIndex]?.hasMoved == false,
                gameState[colIndex, rowIndex - 2] == nil {
                 validBoardMoves.append((colIndex, rowIndex - 2)) // opening bonus 2 tiles!
             }

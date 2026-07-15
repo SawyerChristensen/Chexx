@@ -28,7 +28,7 @@
   - [x] `MultiplayerManager.listenForOpponentJoined` re-fetches opponent profile info on every snapshot update, not just when the opponent first joins
   - [x] `hasLegalMovesForCurrentPlayer` builds full move lists per piece instead of short-circuiting on the first legal move found
   - [x] En-passant target is found by scanning the whole board (`resetEnPassant`) instead of tracking a single field on GameState
-  - [ ] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
+  - [x] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
   - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [ ] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
 - [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.

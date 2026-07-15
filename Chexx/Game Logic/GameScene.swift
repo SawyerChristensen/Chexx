@@ -343,21 +343,21 @@ class GameScene: SKScene {
         guard let selectedPiece = selectedPiece else { return }
 
         if let parent = selectedPiece.parent, let nearestHexagon = findNearestHexagon(to: pos) {
-            if validMoves.contains(nearestHexagon.name!) { // Valid tile destination!
+            if validMoves.contains(nearestHexagon.name ?? "") { // Valid tile destination!
                 updateGameState(with: selectedPiece, at: nearestHexagon.name)
                 selectedPiece.position = parent.convert(nearestHexagon.position, from: self)
                 HapticManager.playImpact(style: .medium)
-                
+
             } else if nearestHexagon.name == originalHexagonName { // Destination is original tile (the user tapped on the piece, do not deselect)
-                selectedPiece.position = originalPosition!
+                selectedPiece.position = originalPosition ?? selectedPiece.position
                 return
-                
+
             } else { // Tile is not a valid destination...
-                selectedPiece.position = originalPosition!
+                selectedPiece.position = originalPosition ?? selectedPiece.position
                 HapticManager.playNotification(type: .error)
             }
         } else { // Off the board completely
-            selectedPiece.position = originalPosition!
+            selectedPiece.position = originalPosition ?? selectedPiece.position
             HapticManager.playNotification(type: .error)
         }
 
@@ -451,7 +451,7 @@ class GameScene: SKScene {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let selectedPiece = selectedPiece {
-            selectedPiece.position = originalPosition!
+            selectedPiece.position = originalPosition ?? selectedPiece.position
             selectedPiece.setScale(1.0)
             self.selectedPiece = nil
             originalHexagonName = nil
@@ -569,7 +569,8 @@ class GameScene: SKScene {
         }
         
         let originalPosition = String(pieceDetails[0])
-        guard let originalColIndex = columns.firstIndex(of: String(originalPosition.first!)),
+        guard let originalFirstChar = originalPosition.first,
+              let originalColIndex = columns.firstIndex(of: String(originalFirstChar)),
               var originalRowIndex = Int(String(originalPosition.dropFirst())) else {
             print("Invalid original position")
             return
