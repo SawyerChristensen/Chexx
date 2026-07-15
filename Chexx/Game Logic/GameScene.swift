@@ -1151,7 +1151,7 @@ class GameScene: SKScene {
                 whiteStatusTextMiniUpdater?(NSLocalizedString("Your turn", comment: ""))
                 
             } else {
-                whiteStatusTextMiniUpdater?(NSLocalizedString("Waiting for opponent...", comment: ""))
+                whiteStatusTextMiniUpdater?(NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage"))
             }
         }
         

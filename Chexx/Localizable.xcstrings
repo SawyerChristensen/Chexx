@@ -10542,6 +10542,7 @@
     },
     "Waiting for opponent..." : {
       "comment" : "iMessage caption",
+      "extractionState" : "stale",
       "localizations" : {
         "ar" : {
           "stringUnit" : {

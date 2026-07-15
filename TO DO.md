@@ -52,7 +52,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Change profile icon to Game Center access point? (Apple only!!)
 - [ ] Add Notifications! (for main app obviously)
   - [ ] Add live activities for games?
-- [ ] "Waiting for opponent..." should be animated like in iMessage
+- [x] "Waiting for opponent..." should be animated like in iMessage
 - [ ] See if how we determine winner color is redundant
 - [ ] Pulsating element on main menu?
 - [ ] Changing Google icon breaks Google icon retrieval in app

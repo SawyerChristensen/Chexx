@@ -13,6 +13,8 @@ struct GameView: View {
     @State private var redStatusText: String = ""
     @State private var whiteStatusText: String = ""
     @State private var whiteStatusTextMini: String = ""
+    @State private var whiteStatusTextMiniDisplay: String = ""
+    @State private var waitingForOpponentTimer: Timer?
     @State var isVsCPU: Bool = false
     @State var isPassAndPlay: Bool = false
     @State var isOnlineMultiplayer: Bool = false
@@ -49,6 +51,9 @@ struct GameView: View {
                 } else {
                     scene?.scaleMode = .resizeFill
                 }
+            }
+            .onChange(of: whiteStatusTextMini) { _, newValue in
+                updateWaitingForOpponentAnimation(for: newValue)
             }
             
             //game text in portrait mode
@@ -110,7 +115,7 @@ struct GameView: View {
                                 .shadow(color: .red, radius: 5, x: 0, y: 0)
                         } else {
                             //whose turn is it, anyway?
-                            Text(whiteStatusTextMini)
+                            Text(whiteStatusTextMiniDisplay)
                                 .font(.system(size: geometry.size.height / 36, design: .serif))
                                 .foregroundColor(.white)
                                 //.shadow(color: .white, radius: 5, x: 0, y: 0)
@@ -129,6 +134,30 @@ struct GameView: View {
                         .foregroundColor(.white)
                 }
             }
+        }
+        .onDisappear {
+            waitingForOpponentTimer?.invalidate()
+            waitingForOpponentTimer = nil
+        }
+    }
+
+    private func updateWaitingForOpponentAnimation(for text: String) {
+        let waitingBaseText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
+        if text == waitingBaseText {
+            startWaitingForOpponentAnimation(baseText: waitingBaseText)
+        } else {
+            waitingForOpponentTimer?.invalidate()
+            waitingForOpponentTimer = nil
+            whiteStatusTextMiniDisplay = text
+        }
+    }
+
+    private func startWaitingForOpponentAnimation(baseText: String) {
+        var dotCount = 0
+        waitingForOpponentTimer?.invalidate() // stop any previous timer, just in case
+        waitingForOpponentTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { _ in
+            whiteStatusTextMiniDisplay = baseText + String(repeating: ".", count: dotCount)
+            dotCount = (dotCount + 1) % 4
         }
     }
 
