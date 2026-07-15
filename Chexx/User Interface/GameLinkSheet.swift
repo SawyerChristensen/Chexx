@@ -26,7 +26,7 @@ struct GameLinkSheet: View {
                     .padding()
             } else {
                 Text(gameLink)
-                    .font(.system(size: 30, weight: .bold, design: .monospaced))
+                    .font(.system(size: 30, weight: .semibold, design: .monospaced))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     .tracking(3) //spacing in btween letters for better visibility
                     .padding()
@@ -46,7 +46,7 @@ struct GameLinkSheet: View {
                 navigateToGameView = true
             }) {
                 Text("Start Game →")
-                    .font(.system(size: 30, weight: .bold, design: .serif))
+                    .font(.system(size: 30, weight: .semibold, design: .serif))
                     .padding()
                     .frame(minWidth: 240, maxHeight: 60)
                     .background(Color.accentColor)

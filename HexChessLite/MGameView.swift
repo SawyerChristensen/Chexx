@@ -30,7 +30,7 @@ struct MessagesGameView: View {
                 }
                 
                 Text(redStatusText)
-                    .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                    .font(.system(size: geometry.size.height / 20, weight: .semibold, design: .serif))
                     .foregroundColor(.red)
                     .shadow(color: .red, radius: 5, x: 0, y: 0)
                     .padding(.bottom, geometry.size.height * 0.8) //5% away from the top
@@ -41,7 +41,7 @@ struct MessagesGameView: View {
                         //.transition(.opacity)
                     
                     Text(waitingForOpponentText)
-                        .font(.system(size: geometry.size.width / 20, weight: .semibold, design: .serif))
+                        .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
                         .foregroundColor(.white)
                         .lineLimit(1)
                         .fixedSize(horizontal: true, vertical: false)

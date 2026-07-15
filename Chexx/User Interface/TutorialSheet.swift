@@ -13,13 +13,13 @@ struct TutorialSheet: View {
             VStack(alignment: .center, spacing: 10) {
                 Text("How to Play Hexagonal Chess")
                     .font(.largeTitle)
-                    .bold()
+                    .fontWeight(.semibold)
                     .padding(.top, 20)
                     .multilineTextAlignment(.center)
                 
                 Text("Glińkski's Variant")
                     .font(.title3)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .italic()
                 
                 Divider()
@@ -27,7 +27,7 @@ struct TutorialSheet: View {
                 
                 Text("1. Introduction")
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text("      The most popular form of hexagonal chess was created by Władysław Gliński in 1936. During its peak in Eastern Europe there were once more than half a million players of Gliński's game. While many variants have since been created, Gliński's remains the most popular. It is played similarly to regular chess, albeit with some notable differences.")
@@ -37,7 +37,7 @@ struct TutorialSheet: View {
                 
                 Text("2. Piece Movement")
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(5)
                 
@@ -139,7 +139,7 @@ struct TutorialSheet: View {
                 
                 Text("3. Other Differences")
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
                 
@@ -161,7 +161,7 @@ struct TutorialSheet: View {
                 
                 Text("4. Acknowledgements")
                     .font(.title2)
-                    .fontWeight(.semibold)
+                    .fontWeight(.medium)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(10)
                 

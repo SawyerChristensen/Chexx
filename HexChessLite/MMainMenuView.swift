@@ -31,7 +31,7 @@ struct MessagesMainMenuView: View {
                         .padding(.trailing, 5)
                     
                     Text("Hex Chess")
-                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.1, weight: .semibold, design: .serif))
+                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.1, weight: .medium, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }
                 .frame(maxWidth: .infinity)
@@ -58,7 +58,7 @@ struct MessagesMainMenuView: View {
                         }) {
                             Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
                                      //, fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
-                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11, weight: .semibold, design: .serif))
+                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11, weight: .medium, design: .serif))
                                 .padding()
                                 .frame(
                                     //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
@@ -76,7 +76,7 @@ struct MessagesMainMenuView: View {
                             onStartGame()
                         }) {
                             Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
-                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.06 : screenWidth * 0.1, weight: .semibold, design: .serif))
+                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.06 : screenWidth * 0.1, weight: .medium, design: .serif))
                                 .minimumScaleFactor(0.6)
                                 .padding()
                                 .frame(
@@ -94,7 +94,7 @@ struct MessagesMainMenuView: View {
                     
                     //if winCount > 0 { // hides the count if the user has no wins
                     Text("Total Wins: \(winCount)")
-                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .regular, design: .serif))
+                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .light, design: .serif))
                         .foregroundColor(colorScheme == .dark ? Color(white: 0.8) : Color(white: 0.3))
                         .frame(maxWidth: screenWidth * 0.5)
                         .lineLimit(nil)

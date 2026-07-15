@@ -19,7 +19,7 @@ struct PromotionWindow: View {
                 .padding(8)
             
             Text("Choose a piece to promote to:")
-                .font(.system(size: 18, weight: .regular, design: .serif))
+                .font(.system(size: 18, weight: .light, design: .serif))
                 //.padding()
             
             VStack {
@@ -29,7 +29,7 @@ struct PromotionWindow: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
                         Text(PieceNames.localized(option))
-                            .font(.system(size: 24, weight: .bold, design: .serif))
+                            .font(.system(size: 24, weight: .semibold, design: .serif))
                             .padding()
                             .frame(minWidth: 160, maxHeight: 40)
                             .background(Color(red: 232/255, green: 171/255, blue: 111/255)) //the accent color in rgb because imessage doesnt want to recognize the accent color in assets (only here though?)
@@ -56,7 +56,7 @@ struct WaveText: View {
     private var amplitude: CGFloat { fontSize * 0.1 }
 
     private var naturalTextWidth: CGFloat {
-        let baseDescriptor = UIFont.systemFont(ofSize: fontSize, weight: .bold).fontDescriptor
+        let baseDescriptor = UIFont.systemFont(ofSize: fontSize, weight: .semibold).fontDescriptor
         let descriptor = baseDescriptor.withDesign(.serif) ?? baseDescriptor
         let font = UIFont(descriptor: descriptor, size: fontSize)
         return (text as NSString).size(withAttributes: [.font: font]).width
@@ -69,7 +69,7 @@ struct WaveText: View {
             HStack(spacing: 0) {
                 ForEach(0..<text.count, id: \.self) { index in
                     Text(String(Array(text)[index]))
-                        .font(.system(size: fontSize, weight: .bold, design: .serif))
+                        .font(.system(size: fontSize, weight: .semibold, design: .serif))
                         .modifier(WaveEffect(
                             time: self.time,
                             index: index,

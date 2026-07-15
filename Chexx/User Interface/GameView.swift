@@ -63,12 +63,12 @@ struct GameView: View {
                     ZStack {
                         if !redStatusText.isEmpty {
                             Text(redStatusText)
-                                .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                                .font(.system(size: geometry.size.height / 20, weight: .semibold, design: .serif))
                                 .foregroundColor(.red)
                                 .shadow(color: .red, radius: 5, x: 0, y: 0)
                         } else {
                             Text(whiteStatusText)
-                                .font(.system(size: geometry.size.height / 20, weight: .bold, design: .serif))
+                                .font(.system(size: geometry.size.height / 20, weight: .semibold, design: .serif))
                                 .foregroundColor(.white)
                                 .shadow(color: .white, radius: 5, x: 0, y: 0)
                         }
@@ -105,14 +105,14 @@ struct GameView: View {
                                 Text(MultiplayerManager.shared.opponentCountry.isEmpty
                                      ? MultiplayerManager.shared.opponentName
                                      : "\(Country.flagEmoji(forCode: MultiplayerManager.shared.opponentCountry)) \(MultiplayerManager.shared.opponentName)")
-                                    .font(.system(size: geometry.size.height / 32, weight: .bold, design: .serif))
+                                    .font(.system(size: geometry.size.height / 32, weight: .semibold, design: .serif))
                                     .foregroundColor(.white)
                             }
                         }
                         
                         if !redStatusText.isEmpty {
                             Text(redStatusText)
-                                .font(.system(size: geometry.size.height / 28, weight: .bold, design: .serif))
+                                .font(.system(size: geometry.size.height / 28, weight: .semibold, design: .serif))
                                 .foregroundColor(.red)
                                 .shadow(color: .red, radius: 5, x: 0, y: 0)
                         } else {

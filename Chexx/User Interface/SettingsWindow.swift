@@ -29,41 +29,41 @@ struct SettingsWindow: View {
             VStack {
                 //WaveText(text: "Settings", fontSize: screenHeight / 24)
                 Text("Settings")
-                    .font(.system(size: screenHeight / 22, weight: .bold, design: .serif))
+                    .font(.system(size: screenHeight / 22, weight: .semibold, design: .serif))
                     .padding()
                     
                 Toggle("Show Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
                 Toggle("Background Music", isOn: $backgroundMusicEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
                 
                 Toggle("Sound Effects", isOn: $soundEffectsEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                 
                 Toggle("Low Motion", isOn: $lowMotionEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                 /*
                 Toggle("Player Turn Notification", isOn: $playerTurnNotifEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .semibold, design: .serif))
+                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                 */
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Close")
-                        .font(.system(size: screenHeight / 30, weight: .bold, design: .serif))
+                        .font(.system(size: screenHeight / 30, weight: .semibold, design: .serif))
                         .padding()
                         .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 18)
                         .background(Color.accentColor)
