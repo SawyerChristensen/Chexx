@@ -389,35 +389,35 @@ class MultiplayerManager: ObservableObject {
     
     /// Elo formula: returns (newRatingA, newRatingB).
     ///    ratingA is 'A's current rating, ratingB is 'B's current rating,
-    ///    aWin = true if A is the winner, else false if B is the winner.
-    private func calculateEloChange(playerOneELO: Int, playerTwoELO: Int, didPlayerOneWin: Bool) -> (Int, Int) {
+    ///    actualScoreForPlayerOne is A's game score: 1.0 for a win, 0.5 for a draw,
+    ///    0.75/0.25 for delivering/receiving stalemate, or 0.0 for a loss.
+    private func calculateEloChange(playerOneELO: Int, playerTwoELO: Int, actualScoreForPlayerOne: Double) -> (Int, Int) {
         let kFactor = 32.0
-        
+
         let rA = Double(playerOneELO)
         let rB = Double(playerTwoELO)
-        
+
         // Expected scores
         let expectedA = 1.0 / (1.0 + pow(10.0, (rB - rA) / 400.0))
         let expectedB = 1.0 / (1.0 + pow(10.0, (rA - rB) / 400.0))
-        
+
         // Actual results
-        let actualA = didPlayerOneWin ? 1.0 : 0.0
-        let actualB = didPlayerOneWin ? 0.0 : 1.0
-        
+        let actualA = actualScoreForPlayerOne
+        let actualB = 1.0 - actualScoreForPlayerOne
+
         // New ratings
         let newRatingA = rA + kFactor * (actualA - expectedA)
         let newRatingB = rB + kFactor * (actualB - expectedB)
-        
+
         return (Int(newRatingA.rounded()), Int(newRatingB.rounded()))
     }
-    
+
     /**
      End-of-game Elo updater:
-     - `winnerUserId`: the UID of whoever won
-     - `loserUserId`:  the UID of whoever lost
+     - `localUserScore`: the local user's game score (1.0 win, 0.75/0.25 stalemate delivered/received, 0.0 loss)
      - This fetches both ELOs, calculates new ELO, and updates them in Firestore
      */
-    func adjustElo(localUserId: String, localUserIsWinner: Bool, opponentUserId: String, completion: @escaping (Int, Int) -> Void
+    func adjustElo(localUserId: String, localUserScore: Double, opponentUserId: String, completion: @escaping (Int, Int) -> Void
     ) {
         guard let gameId = self.gameId else {
             print("No gameId found in MultiplayerManager.")
@@ -454,7 +454,7 @@ class MultiplayerManager: ObservableObject {
             let (localNewElo, _) = self.calculateEloChange( //opponent's elo new elo should be _, but the local user doenst have permission to update the opponents user document, only the opponent does where they are the local user
                 playerOneELO: localStartElo,
                 playerTwoELO: oppStartElo,
-                didPlayerOneWin: localUserIsWinner
+                actualScoreForPlayerOne: localUserScore
             )
             
             let newLocalElo = localNewElo

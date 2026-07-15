@@ -785,7 +785,7 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
 
-                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
+                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 1.0 : 0.0, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
                         let diff = newLocalElo - oldLocalElo
                         let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
@@ -914,11 +914,12 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
 
-                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserIsWinner: localUserIsWinner, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
+                    // Stalemate is not a draw: the player delivering stalemate scores 0.75, the stalemated player scores 0.25
+                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 0.75 : 0.25, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
                         let diff = newLocalElo - oldLocalElo
                         let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
-                       
+
                         let eloText = String(
                             format: NSLocalizedString(
                                 "Your ELO rating changed from %d to %d (%@)",
@@ -928,7 +929,7 @@ class GameScene: SKScene {
                             newLocalElo,
                             sign
                         )
-                        
+
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: eloText
                         ) { action in
