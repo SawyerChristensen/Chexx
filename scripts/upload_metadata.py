@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Upload App Store Connect and Game Center localizations for DeckedOut.
+"""Upload App Store Connect and Game Center localizations for Chexx (Hex Chess).
 
 Reads scripts/metadata.json and pushes every filled locale to App Store Connect.
 Locales set to null are skipped — fill them in first (ask Claude Code, or pass
@@ -64,43 +64,54 @@ def load_config() -> None:
                 os.environ[key] = value
 
 # Xcode locale → App Store Connect locale. Game Center uses the same codes.
+# Chexx also ships Bengali (bn), Armenian (hy), and Icelandic (is) in-app, but
+# App Store Connect doesn't support those as metadata/Game Center locales, so
+# they're intentionally left out of this map and out of metadata.json.
 LOCALE_MAP: dict[str, str] = {
     "en": "en-US",
+    "ar": "ar-SA",
     "da": "da",
     "de": "de-DE",
     "es": "es-ES",
+    "fi": "fi",
     "fr": "fr-FR",
+    "he": "he",
     "hi": "hi",
+    "id": "id",
     "it": "it",
     "ja": "ja",
     "ko": "ko",
     "nb": "no",
     "nl": "nl-NL",
-    "pt-BR": "pt-BR",
+    "pl": "pl",
+    "pt": "pt-PT",
     "ru": "ru",
     "sv": "sv",
     "tr": "tr",
-    "vi": "vi",
     "zh-Hans": "zh-Hans",
     "zh-Hant": "zh-Hant",
 }
 
 LANGUAGE_NAMES: dict[str, str] = {
+    "ar": "Arabic",
     "da": "Danish",
     "de": "German",
     "es": "Spanish (Spain)",
+    "fi": "Finnish",
     "fr": "French (France)",
+    "he": "Hebrew",
     "hi": "Hindi",
+    "id": "Indonesian",
     "it": "Italian",
     "ja": "Japanese",
     "ko": "Korean",
     "nb": "Norwegian Bokmål",
     "nl": "Dutch",
-    "pt-BR": "Brazilian Portuguese",
+    "pl": "Polish",
+    "pt": "Portuguese (Portugal)",
     "ru": "Russian",
     "sv": "Swedish",
     "tr": "Turkish",
-    "vi": "Vietnamese",
     "zh-Hans": "Simplified Chinese",
     "zh-Hant": "Traditional Chinese",
 }
@@ -164,8 +175,9 @@ def translate_field(client, english: str, tone: str, max_chars: int,
         f"- Match the source tone, register, and formatting (line breaks, bullet "
         f"points, punctuation).\n"
         f"- Tone guidance: {tone}\n"
-        "- Preserve game names ('Gin Rummy', 'Crazy 8s', 'Golf') unless the locale "
-        "has a culturally established translation.\n"
+        "- Preserve the app name ('Chexx') unless the locale has a culturally "
+        "established translation, and use standard chess terminology (checkmate, "
+        "promotion, en passant, etc.) for the target language.\n"
         "- For keywords (comma-separated), translate each term and keep it comma-"
         "separated with no spaces after commas.\n"
         "- Do not add explanatory text. Return only the translation."
