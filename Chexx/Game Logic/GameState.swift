@@ -653,9 +653,16 @@ struct GameState: Codable {
             for (rowIndex, piece) in column.enumerated() {
                 if let piece = piece, piece.color == currentPlayer {
                     let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                    let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &self)
-                    if !validMoves.isEmpty {
-                        return true
+                    // Generate pseudo-legal moves first, then test each one for a legal move,
+                    // stopping as soon as we find one instead of filtering the whole list up front.
+                    let pseudoMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &self, skipKingCheck: true)
+                    for move in pseudoMoves {
+                        let undoInfo = makeMove(currentPosition, to: move)
+                        let kingInCheck = isKingInCheckUsingKingSight(for: piece.color, in: &self)
+                        unmakeMove(currentPosition, to: move, undoInfo: undoInfo)
+                        if !kingInCheck.0 {
+                            return true
+                        }
                     }
                 }
             }
