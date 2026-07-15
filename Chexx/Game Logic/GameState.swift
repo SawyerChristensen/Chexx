@@ -63,6 +63,11 @@ struct GameState: Codable {
     // can key a transposition table without rehashing the whole board at every search node
     var zobristHash: UInt64 = 0
 
+    // Column/row of the single pawn currently flagged as an en passant target (if any), kept in
+    // sync by finalizeMove/resetEnPassant so clearing the flag doesn't require scanning the whole board
+    var enPassantCol: Int? = nil
+    var enPassantRow: Int? = nil
+
     init() {
         // Initialize the board with nils (empty positions)
         //let columns = hexColumns
@@ -100,6 +105,7 @@ struct GameState: Codable {
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
         (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
         zobristHash = GameState.computeZobristHash(for: board)
+        (enPassantCol, enPassantRow) = (nil, nil)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -121,6 +127,21 @@ struct GameState: Codable {
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
         (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
         zobristHash = GameState.computeZobristHash(for: board)
+        (enPassantCol, enPassantRow) = GameState.computeEnPassantTarget(for: board)
+    }
+
+    // A saved game can only ever have at most one pawn flagged as an en passant target at a time
+    // (the flag is cleared after the opponent's single response turn), so recomputing it on load
+    // is a one-time scan rather than an ongoing cost
+    private static func computeEnPassantTarget(for board: [[Piece?]]) -> (col: Int?, row: Int?) {
+        for (colIndex, column) in board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if piece?.isEnPassantTarget == true {
+                    return (colIndex, rowIndex)
+                }
+            }
+        }
+        return (nil, nil)
     }
 
     private static func computeMaterial(for board: [[Piece?]]) -> (white: Int, black: Int) {

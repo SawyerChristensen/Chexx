@@ -728,6 +728,8 @@ class GameScene: SKScene {
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
             gameState.board[colIndex][rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
+            gameState.enPassantCol = colIndex
+            gameState.enPassantRow = rowIndex
         }
         
         pieceNode.name = "\(hexagonName)_\(gameState.currentPlayer)_\(type)"//do we really need this??
@@ -1272,14 +1274,11 @@ class GameScene: SKScene {
     }
 
     func resetEnPassant(for color: String) {
-        for (colIndex, column) in gameState.board.enumerated() {
-            for (rowIndex, piece) in column.enumerated() {
-                if var piece = piece, piece.color == color {
-                    piece.isEnPassantTarget = false
-                    gameState.board[colIndex][rowIndex] = piece
-                }
-            }
-        }
+        guard let col = gameState.enPassantCol, let row = gameState.enPassantRow,
+              gameState.board[col][row]?.color == color else { return }
+        gameState.board[col][row]?.isEnPassantTarget = false
+        gameState.enPassantCol = nil
+        gameState.enPassantRow = nil
     }
   
     func printGameState() { //just for debugging
