@@ -43,7 +43,7 @@ struct ProfileView: View {
     @State private var password = ""
     
     @State private var selectedCountry: Country? = nil
-    @State private var countries: [Country] = [
+    private static let countries: [Country] = [
         // A
         Country(code: "AF", emoji: "🇦🇫"),
         Country(code: "AL", emoji: "🇦🇱"),
@@ -313,7 +313,8 @@ struct ProfileView: View {
         Country(code: "ZM", emoji: "🇿🇲"),
         Country(code: "ZW", emoji: "🇿🇼")
     ]
-    
+    private static let sortedCountries: [Country] = countries.sorted(by: { $0.localizedName < $1.localizedName })
+
     var body: some View {
         let minDimension = min(self.screenHeight, self.screenWidth)
         VStack(spacing: 10) {
@@ -396,7 +397,7 @@ struct ProfileView: View {
 
                     Picker("Country", selection: $selectedCountry) {
                         ForEach(
-                            countries.sorted(by: { $0.localizedName < $1.localizedName }),
+                            Self.sortedCountries,
                             id: \.self
                         ) { country in
                             Text("\(country.emoji) \(country.localizedName)")
@@ -643,7 +644,7 @@ struct ProfileView: View {
     func loadSelectedCountry() {
         // try loading the ISO code from UserDefaults
         if let savedCountryCode = UserDefaults.standard.string(forKey: "country"),
-           let matchingCountry = countries.first(where: { $0.code == savedCountryCode }) {
+           let matchingCountry = Self.countries.first(where: { $0.code == savedCountryCode }) {
             // found a valid country in local storage, assign it
             self.selectedCountry = matchingCountry
         }
@@ -652,7 +653,7 @@ struct ProfileView: View {
         authViewModel.loadUserCountryFromFirestore { loadedCode in
             // if Firestore returns a valid code that we have in our array, update
             if let loadedCode = loadedCode,
-               let matchingCountry = self.countries.first(where: { $0.code == loadedCode }) {
+               let matchingCountry = Self.countries.first(where: { $0.code == loadedCode }) {
                 self.selectedCountry = matchingCountry
             }
         }
