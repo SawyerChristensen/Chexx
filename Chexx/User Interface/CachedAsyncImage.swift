@@ -48,11 +48,21 @@ struct CachedAsyncImage<Content: View, Placeholder: View>: View {
             uiImage = cached
             return
         }
-        guard let (data, _) = try? await URLSession.shared.data(from: url),
-              let downloaded = UIImage(data: data) else {
-            return
+        // Bypass URLCache: a transient failure (e.g. no network yet at cold
+        // launch) can otherwise get cached as the "response" for this URL,
+        // permanently blanking the image on every future load.
+        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
+        do {
+            let (data, response) = try await URLSession.shared.data(for: request)
+            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
+                  let downloaded = UIImage(data: data) else {
+                print("CachedAsyncImage: failed to decode image from \(url)")
+                return
+            }
+            ImageCache.shared.insert(downloaded, for: url)
+            uiImage = downloaded
+        } catch {
+            print("CachedAsyncImage: failed to load \(url): \(error.localizedDescription)")
         }
-        ImageCache.shared.insert(downloaded, for: url)
-        uiImage = downloaded
     }
 }

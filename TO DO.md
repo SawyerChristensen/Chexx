@@ -34,7 +34,7 @@
   - [x] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
   - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
   - [x] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
-    - [ ] ^ This maybe breaks it. Now my google icon doesnt appear at all
+    - [x] ^ This maybe breaks it. Now my google icon doesnt appear at all
 - [ ] Fix all project warnings
 - [ ] Make the apps text one less font thickness level
 - [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.
