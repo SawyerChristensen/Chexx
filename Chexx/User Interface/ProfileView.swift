@@ -323,7 +323,7 @@ struct ProfileView: View {
                 
                 // MARK: Profile Pic
                 if let theProfileImageURL = authViewModel.profileImageURL {
-                    AsyncImage(url: theProfileImageURL) { image in
+                    CachedAsyncImage(url: theProfileImageURL) { image in
                         image
                             .resizable()
                             .scaledToFit()

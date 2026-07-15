@@ -84,7 +84,7 @@ struct GameView: View {
                                 
                                 // Opponent's Profile Image
                                 if let url = MultiplayerManager.shared.opponentProfileImageURL {
-                                    AsyncImage(url: url) { image in
+                                    CachedAsyncImage(url: url) { image in
                                         image.resizable()
                                             .aspectRatio(contentMode: .fill)
                                             .frame(width: 40, height: 40)
