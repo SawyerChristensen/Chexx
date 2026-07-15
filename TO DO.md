@@ -11,7 +11,7 @@
   - [x] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [x] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
   - [x] Modify the script to work with Chexx (Hex Chess), not DeckedOut
-  - [ ] Review if we have the most update to date framework for cf bundle display names. do we need all the different infoplist files or is a string catalog more modern? is what we have outdated? only transition if there is a more modern approach
+  - [x] Review if we have the most update to date framework for cf bundle display names. do we need all the different infoplist files or is a string catalog more modern? is what we have outdated? only transition if there is a more modern approach (Xcode 15+ supports `InfoPlist.xcstrings` String Catalogs for Info.plist keys — replaced the per-locale `InfoPlist.strings` files in both targets with `Chexx/InfoPlist.xcstrings` and `HexChessLite/InfoPlist.xcstrings`)
   - [ ] Pull the other App Store listing titles we have for other languages in ASC through the App Store API. Put them in the Metadata json file. Create new titles and subtitles in the metadata json file for each new language we've added and push them to ASC.
   - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well using the new upload metadata python script
   - [ ] Archive, upload the build, & add app for review in ASC
