@@ -205,11 +205,10 @@ class GameCPU {
     
     // Order moves to improve alpha-beta pruning efficiency
     private func orderMoves(_ moves: [String], gameState: GameState) -> [String] {
-        return moves.sorted { move1, move2 in
-            let score1 = evaluateMove(move1, in: gameState)
-            let score2 = evaluateMove(move2, in: gameState)
-            return score1 > score2
-        }
+        // Compute each move's score once up front instead of re-deriving it on every
+        // comparison the sort performs (sorted's comparator is called O(n log n) times)
+        let scoredMoves = moves.map { (move: $0, score: evaluateMove($0, in: gameState)) }
+        return scoredMoves.sorted { $0.score > $1.score }.map { $0.move }
     }
 
     // Simple heuristic to prioritize moves

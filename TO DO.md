@@ -11,8 +11,8 @@
   - [x] Make all info plist bundle display name files have the same header "// Bundle display name"
   - [x] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
   - [x] Modify the script to work with Chexx (Hex Chess), not DeckedOut
-  - [ ] Look at the titles and subtitles we have for other languages in ASC. Create new titles and subtitles for the languages we've added and push them to ASC
-  - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well
+  - [ ] Pull the other App Store listing titles we have for other languages in ASC. Create new titles and subtitles in the metadata json file for each language we've added and push them to ASC
+  - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well using the new upload metadata python script
   - [ ] Archive, upload the build, & add app for review in ASC
 
 ---
@@ -22,7 +22,7 @@
   - [ ] CPU: `filterMovesThatExposeKing`/`isKingInCheckUsingKingSight` (PieceRules.swift) re-simulate the whole board for every candidate move at every minimax node — likely the single biggest cost driver of CPU move time
   - [ ] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
   - [x] CPU: `evaluateGameState` (GameCPU.swift) rescans the whole board at every leaf node instead of tracking material incrementally
-  - [ ] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
+  - [x] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
   - [ ] CPU: no transposition table or iterative deepening in `minimaxMove` — deadline cutoffs can return a weaker move than already found; add Zobrist hashing + a TT
   - [ ] CPU: flatten `board` from `[[Piece?]]` to a single `[Piece?]` (91 tiles) for cheaper copies/hashing
   - [x] UI: `ProfileView` re-sorts the ~200-element `countries` array on every body re-render instead of once
