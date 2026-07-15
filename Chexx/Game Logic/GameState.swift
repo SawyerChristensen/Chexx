@@ -36,6 +36,7 @@ struct MoveUndoInfo { //for simulating moves in advance with makeMove/unmakeMove
     let enPassantCapturedPiece: Piece?
     let enPassantCapturedCol: Int?
     let enPassantCapturedRow: Int?
+    let previousZobristHash: UInt64
 }
 
 struct GameState: Codable {
@@ -57,6 +58,10 @@ struct GameState: Codable {
     // check detection can cheaply skip ray scans for piece types an opponent no longer has
     var whiteSliderCount: Int = 0
     var blackSliderCount: Int = 0
+
+    // Zobrist hash of the current piece placement, kept in sync by makeMove/unmakeMove so GameCPU
+    // can key a transposition table without rehashing the whole board at every search node
+    var zobristHash: UInt64 = 0
 
     init() {
         // Initialize the board with nils (empty positions)
@@ -94,6 +99,7 @@ struct GameState: Codable {
 
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
         (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
+        zobristHash = GameState.computeZobristHash(for: board)
     }
 
     private enum CodingKeys: String, CodingKey {
@@ -114,6 +120,7 @@ struct GameState: Codable {
         // before material tracking was added (or any drift) always resolve to a correct value
         (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
         (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
+        zobristHash = GameState.computeZobristHash(for: board)
     }
 
     private static func computeMaterial(for board: [[Piece?]]) -> (white: Int, black: Int) {
@@ -133,6 +140,53 @@ struct GameState: Codable {
 
     private static func isSlider(_ type: String) -> Bool {
         return type == "rook" || type == "bishop" || type == "queen"
+    }
+
+    // One random bitstring per (column, row, color, piece type) combination, generated once per
+    // process launch. Board positions hash by XORing together the entries for their occupied
+    // squares, so makeMove/unmakeMove can update the hash incrementally instead of rehashing everything.
+    private static let zobristPieceTypeCount = 6
+    private static let zobristTable: [[[UInt64]]] = {
+        let columnCount = hexColumns.count
+        let maxRowCount = 11
+        return (0..<columnCount).map { _ in
+            (0..<maxRowCount).map { _ in
+                (0..<(zobristPieceTypeCount * 2)).map { _ in UInt64.random(in: UInt64.min...UInt64.max) }
+            }
+        }
+    }()
+
+    // XORed into a position's hash when it's black's turn to move, so the CPU's transposition
+    // table can distinguish the same board with white vs. black to move
+    static let zobristBlackToMove: UInt64 = UInt64.random(in: UInt64.min...UInt64.max)
+
+    private static func zobristPieceIndex(_ piece: Piece) -> Int {
+        let typeOffset: Int
+        switch piece.type {
+        case "pawn": typeOffset = 0
+        case "knight": typeOffset = 1
+        case "bishop": typeOffset = 2
+        case "rook": typeOffset = 3
+        case "queen": typeOffset = 4
+        default: typeOffset = 5 // king
+        }
+        return (piece.color == "white" ? 0 : zobristPieceTypeCount) + typeOffset
+    }
+
+    private static func zobristValue(colIndex: Int, rowIndex: Int, piece: Piece) -> UInt64 {
+        return zobristTable[colIndex][rowIndex][zobristPieceIndex(piece)]
+    }
+
+    private static func computeZobristHash(for board: [[Piece?]]) -> UInt64 {
+        var hash: UInt64 = 0
+        for (colIndex, column) in board.enumerated() {
+            for (rowIndex, piece) in column.enumerated() {
+                if let piece = piece {
+                    hash ^= zobristValue(colIndex: colIndex, rowIndex: rowIndex, piece: piece)
+                }
+            }
+        }
+        return hash
     }
 
     private static func computeSliderCounts(for board: [[Piece?]]) -> (white: Int, black: Int) {
@@ -345,6 +399,7 @@ struct GameState: Codable {
 
         let movingPiece = board[fromColIndex][fromRowIndex]
         let capturedPiece = board[toColIndex][toRowIndex]
+        let previousZobristHash = zobristHash
 
         // Update the board
         board[toColIndex][toRowIndex] = movingPiece
@@ -418,6 +473,22 @@ struct GameState: Codable {
             }
         }
 
+        // Update the Zobrist hash for the squares that changed: the moving piece leaves its
+        // origin, any captured piece (regular or en passant) leaves the board, and the moving
+        // piece (possibly promoted) arrives at its destination
+        if let moving = movingPiece {
+            zobristHash ^= GameState.zobristValue(colIndex: fromColIndex, rowIndex: fromRowIndex, piece: moving)
+        }
+        if let captured = capturedPiece {
+            zobristHash ^= GameState.zobristValue(colIndex: toColIndex, rowIndex: toRowIndex, piece: captured)
+        }
+        if let epCaptured = enPassantCapturedPiece, let epCol = enPassantCapturedCol, let epRow = enPassantCapturedRow {
+            zobristHash ^= GameState.zobristValue(colIndex: epCol, rowIndex: epRow, piece: epCaptured)
+        }
+        if let finalPiece = board[toColIndex][toRowIndex] {
+            zobristHash ^= GameState.zobristValue(colIndex: toColIndex, rowIndex: toRowIndex, piece: finalPiece)
+        }
+
         // Store undo information
         let undoInfo = MoveUndoInfo(
             fromColIndex: fromColIndex,
@@ -428,7 +499,8 @@ struct GameState: Codable {
             capturedPiece: capturedPiece,
             enPassantCapturedPiece: enPassantCapturedPiece,
             enPassantCapturedCol: enPassantCapturedCol,
-            enPassantCapturedRow: enPassantCapturedRow
+            enPassantCapturedRow: enPassantCapturedRow,
+            previousZobristHash: previousZobristHash
         )
 
         return undoInfo
@@ -452,6 +524,8 @@ struct GameState: Codable {
         if let epCaptured = undoInfo.enPassantCapturedPiece {
             adjustMaterial(for: epCaptured.color, by: pieceValue(epCaptured.type))
         }
+
+        zobristHash = undoInfo.previousZobristHash
 
         // Restore the board
         board[undoInfo.fromColIndex][undoInfo.fromRowIndex] = undoInfo.movingPiece

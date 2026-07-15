@@ -14,13 +14,38 @@ enum CPUDifficulty {
     case hard
 }
 
+// A cached minimax result for a position, keyed by its Zobrist hash. `depth` records how deep the
+// search below this entry went, so shallower cached results aren't mistaken for deeper ones.
+private struct TranspositionEntry {
+    let depth: Int
+    let value: Int
+    let flag: TranspositionFlag
+    let bestMove: String
+}
+
+private enum TranspositionFlag {
+    case exact
+    case lowerBound // real value is >= `value` (this node caused a beta cutoff)
+    case upperBound // real value is <= `value` (this node failed low against alpha)
+}
+
 class GameCPU {
     var difficulty: CPUDifficulty // Enum specifying CPU difficulty level
+
+    // Cleared at the start of every top-level move search (see minimaxMove) so entries never
+    // outlive the position they were computed for
+    private var transpositionTable: [UInt64: TranspositionEntry] = [:]
 
     init(difficulty: CPUDifficulty) {
         self.difficulty = difficulty
     }
-    
+
+    // The transposition table key also folds in whose turn it is, since the same piece placement
+    // is a different position depending on who's to move
+    private func transpositionKey(for gameState: GameState) -> UInt64 {
+        gameState.currentPlayer == "black" ? gameState.zobristHash ^ GameState.zobristBlackToMove : gameState.zobristHash
+    }
+
     func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [String] {
         let columns = hexColumns
         var allMoves: [String] = []
@@ -88,7 +113,10 @@ class GameCPU {
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String, promotion: String?)? {
-    
+        // Fresh table per move decision: entries from a prior search are keyed off a board that
+        // no longer exists once real moves have been played, so there's nothing to gain by keeping them
+        transpositionTable.removeAll()
+
         let startTime = Date() //for testing
         let deadline = startTime.addingTimeInterval(3.0)
         
@@ -113,6 +141,27 @@ class GameCPU {
             return (value, "")
         }
 
+        let alphaAtEntry = alpha
+        let betaAtEntry = beta
+
+        let ttKey = transpositionKey(for: gameState)
+        var ttBestMove: String? = nil
+        if let entry = transpositionTable[ttKey], entry.depth >= depth {
+            switch entry.flag {
+            case .exact:
+                return (entry.value, entry.bestMove)
+            case .lowerBound:
+                if entry.value >= beta {
+                    return (entry.value, entry.bestMove)
+                }
+            case .upperBound:
+                if entry.value <= alpha {
+                    return (entry.value, entry.bestMove)
+                }
+            }
+            ttBestMove = entry.bestMove
+        }
+
         var alpha = alpha
         var beta = beta
         var bestValue = maximizingPlayer ? Int.min : Int.max
@@ -120,7 +169,14 @@ class GameCPU {
 
         // Generate and order moves for better alpha/beta pruning
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
-        let orderedMoves = orderMoves(possibleMoves, gameState: gameState)
+        var orderedMoves = orderMoves(possibleMoves, gameState: gameState)
+
+        // Try the transposition table's previously-best move first; it's the move most likely to
+        // cause a cutoff, since it was already good enough at this position at an earlier search
+        if let ttBestMove = ttBestMove, let ttMoveIndex = orderedMoves.firstIndex(of: ttBestMove) {
+            orderedMoves.remove(at: ttMoveIndex)
+            orderedMoves.insert(ttBestMove, at: 0)
+        }
 
         for move in orderedMoves {
             if Date() >= deadline { //mayyyy not need this
@@ -173,6 +229,18 @@ class GameCPU {
 
         // Randomly select one of the best moves
         let bestMove = bestMoves.randomElement() ?? ""
+
+        // Cache this node's result. Whether it's exact or just a bound depends on how bestValue
+        // relates to the original alpha/beta window this node was searched with.
+        let flag: TranspositionFlag
+        if bestValue <= alphaAtEntry {
+            flag = .upperBound
+        } else if bestValue >= betaAtEntry {
+            flag = .lowerBound
+        } else {
+            flag = .exact
+        }
+        transpositionTable[ttKey] = TranspositionEntry(depth: depth, value: bestValue, flag: flag, bestMove: bestMove)
 
         return (bestValue, bestMove)
     }
