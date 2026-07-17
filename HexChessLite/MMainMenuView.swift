@@ -141,11 +141,12 @@ extension View {
 struct ColorInvertIfDarkModeModifier: ViewModifier {
     let colorScheme: ColorScheme
 
+    @ViewBuilder
     func body(content: Content) -> some View {
         if colorScheme == .dark {
-            return AnyView(content.colorInvert())
+            content.colorInvert()
         } else {
-            return AnyView(content)
+            content
         }
     }
 }
