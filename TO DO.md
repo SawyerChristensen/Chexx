@@ -26,7 +26,11 @@
   - [x] Audit GameScene.swift/HexagonNode for repeated per-call work in generateHexTiles/placePieces (e.g. re-parsing UIColor(hex:) constants) that could be hoisted out of hot paths
   - [x] Audit remaining SwiftUI screens (GameOverWindow, GameLinkSheet, TutorialSheet, PromotionWindow) for AnyView usage, GeometryReader misuse, or other unnecessary view-identity churn
   - [x] Audit HexChessLite (iMessage extension) views for the same view-inefficiency patterns
-- [ ] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
+- [~] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
+  - [x] Enable ProMotion 120Hz rendering capability (CADisableMinimumFrameDurationOnPhone in Info.plist) and raise SpriteView's preferredFramesPerSecond ceiling to 120 in GameView (main app)
+  - [ ] Add a shared animation-activity tracker in GameScene that increments/decrements while piece-move slides and repeating highlight/glow/wobble actions are running
+  - [ ] Wire that tracker into GameView's SpriteView preferredFramesPerSecond so it drops to 10 fps when idle and jumps to 120 fps while any tracked animation is active
+  - [ ] Apply the same dynamic framerate wiring to the iMessage extension (HexChessLite MGameView/MGameScene)
 - [ ] Remove the "Thinking" CPU animation glow and make it much smaller
 - [ ] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
 - [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed

@@ -29,7 +29,7 @@ struct GameView: View {
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
                 if let scene = scene { //the actual board
-                    SpriteView(scene: scene)
+                    SpriteView(scene: scene, preferredFramesPerSecond: 120)
                         .ignoresSafeArea()
                 }
             }
