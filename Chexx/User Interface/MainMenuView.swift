@@ -465,7 +465,7 @@ struct MainMenuView: View {
                         
                         // Temporary Game Center Achievement Button until leaderboard is implemented
                         Button(action: {
-                            if let rootVC = (UIApplication.shared.connectedScenes.first as? UIWindowScene)?.windows.first?.rootViewController {
+                            if let rootVC = UIApplication.shared.activeRootViewController {
                                 GameCenterManager.shared.showAchievements(from: rootVC)
                             }
                         }) {
@@ -483,9 +483,7 @@ struct MainMenuView: View {
                     VStack {
                         // Settings icon
                         Button(action: {
-                            if let windowScene = UIApplication.shared.connectedScenes
-                                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene,
-                               let rootViewController = windowScene.windows.first?.rootViewController {
+                            if let rootViewController = UIApplication.shared.activeRootViewController {
                                 let settingsViewController = UIHostingController(rootView: SettingsWindow(screenHeight: maxScreenDimension))
                                 settingsViewController.modalPresentationStyle = .overCurrentContext
                                 settingsViewController.view.backgroundColor = .clear // Transparent background
@@ -539,8 +537,7 @@ struct MainMenuView: View {
     }
     
     func authenticateGameCenter() {
-        if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-           let root = scene.windows.first?.rootViewController {
+        if let root = UIApplication.shared.activeRootViewController {
             GameCenterManager.shared.authenticateLocalPlayer(presentingViewController: root)
         }
     }

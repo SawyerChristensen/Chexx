@@ -285,9 +285,7 @@ class AuthViewModel: ObservableObject {
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
-        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-              let window = windowScene.windows.first,
-              let rootViewController = window.rootViewController else {
+        guard let rootViewController = UIApplication.shared.activeRootViewController else {
             print("There is no root view controller")
             return false
         }

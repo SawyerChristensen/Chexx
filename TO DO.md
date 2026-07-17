@@ -5,7 +5,7 @@
 - [x] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
 - [~] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
   - [x] Enable Mac Catalyst support on the Chexx app target (SUPPORTS_MACCATALYST) and exclude the iMessage extension (HexChessLite) from the Catalyst build via platform filters, so the app builds and runs on Mac
-  - [ ] Fix any Mac Catalyst runtime/UI issues (launch, sign-in flow, layout) so the app is fully usable on Mac, not just compiling
+  - [x] Fix any Mac Catalyst runtime/UI issues (launch, sign-in flow, layout) so the app is fully usable on Mac, not just compiling
   - [ ] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
   - [ ] Audit ScrollViews and other iOS-specific UI (nav patterns, controls) and adjust to Mac-recommended equivalents (e.g. proper scroll indicators, hover states, sidebar/toolbar patterns where appropriate)
 - [ ] Add Notifications! (for main app obviously)
