@@ -11,7 +11,8 @@ import SpriteKit
 struct MessagesGameView: View {
     @State var scene: SKScene?
     weak var delegate: GameSceneDelegate?
-    
+
+    @State private var preferredFramesPerSecond: Int = 10
     @State private var redStatusText: String = ""
     @State private var isLocalPlayersTurn = true
     @State private var waitingForOpponentText: String = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
@@ -25,7 +26,7 @@ struct MessagesGameView: View {
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
                 if let scene = scene { //the actual board
-                    SpriteView(scene: scene)
+                    SpriteView(scene: scene, preferredFramesPerSecond: preferredFramesPerSecond)
                         //.ignoresSafeArea()
                 }
                 
@@ -109,7 +110,11 @@ struct MessagesGameView: View {
         newScene.turnStateUpdater = { isTurn in
             self.isLocalPlayersTurn = isTurn
         }
-        
+
+        newScene.animationActivityUpdater = { activeCount in
+            self.preferredFramesPerSecond = activeCount > 0 ? 120 : 10
+        }
+
         return newScene
     }
     

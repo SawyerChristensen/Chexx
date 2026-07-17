@@ -38,7 +38,25 @@ class MessagesGameScene: SKScene {
     
     var redStatusTextUpdater: ((String) -> Void)?
     var turnStateUpdater: ((_ isLocalPlayersTurn: Bool) -> Void)? //what notifies GameView of the turn changing
-    
+
+    // Number of currently-running piece slides / wobble / highlight-pulse animations.
+    // MessagesGameView observes this (via animationActivityUpdater) to raise SpriteView's frame rate
+    // only while something is actually animating, and drop back down when idle.
+    private(set) var animationActivityCount: Int = 0 {
+        didSet { animationActivityUpdater?(animationActivityCount) }
+    }
+    var animationActivityUpdater: ((Int) -> Void)?
+    private var areValidMoveHighlightsActive = false
+    private var areCheckHighlightsActive = false
+
+    private func beginAnimationActivity() {
+        animationActivityCount += 1
+    }
+
+    private func endAnimationActivity() {
+        animationActivityCount = max(0, animationActivityCount - 1)
+    }
+
     override init(size: CGSize) {
         super.init(size: size)
     }
@@ -380,6 +398,9 @@ class MessagesGameScene: SKScene {
     private func resetPiece(_ pieceNode: SKSpriteNode) {
         let initialRotation = pieceNode.userData?["initialRotation"] as? CGFloat ?? 0.0
         pieceNode.setScale(1.0)
+        if pieceNode.action(forKey: "wobbleEffect") != nil {
+            endAnimationActivity()
+        }
         pieceNode.removeAction(forKey: "wobbleEffect")
         pieceNode.zRotation = initialRotation
     }
@@ -390,6 +411,7 @@ class MessagesGameScene: SKScene {
         let wobble = SKAction.sequence([wobbleLeft, wobbleRight, wobbleRight, wobbleLeft])
         let wobbleRepeat = SKAction.repeatForever(wobble)
         pieceNode.run(wobbleRepeat, withKey: "wobbleEffect")
+        beginAnimationActivity()
     }
     
     // Touch Moved
@@ -431,7 +453,12 @@ class MessagesGameScene: SKScene {
     
     func highlightValidMoves(_ validMoves: [String]) {
         guard highlightEnabled else { return }
-        
+
+        if !validMoves.isEmpty && !areValidMoveHighlightsActive {
+            areValidMoveHighlightsActive = true
+            beginAnimationActivity()
+        }
+
         for hexTiles in validMoves {
             if let hexagon = childNode(withName: hexTiles) as? HexagonNode {
                 let glowOverlay = SKShapeNode(path: hexagon.path!)
@@ -453,6 +480,11 @@ class MessagesGameScene: SKScene {
     }
     
     func highlightCheckStatus(for positions: [String]) {
+        if !positions.isEmpty && !areCheckHighlightsActive {
+            areCheckHighlightsActive = true
+            beginAnimationActivity()
+        }
+
         for position in positions {
             highlightCheckingPiece(at: position)
         }
@@ -485,8 +517,12 @@ class MessagesGameScene: SKScene {
                 hexagon.childNode(withName: "validMovesOverlay")?.removeFromParent()
             }
         }
+        if areValidMoveHighlightsActive {
+            areValidMoveHighlightsActive = false
+            endAnimationActivity()
+        }
     }
-    
+
     func clearCheckHighlights() {
         for node in children {
             if let hexagon = node as? HexagonNode {
@@ -494,6 +530,10 @@ class MessagesGameScene: SKScene {
             }
         }
         redStatusTextUpdater?("")
+        if areCheckHighlightsActive {
+            areCheckHighlightsActive = false
+            endAnimationActivity()
+        }
     }
 
     func findNearestHexagon(to position: CGPoint) -> HexagonNode? { //o(n) time, calcualtes distance between EVERY hexagon on the board EVERY tap. can probably use a hash map to speed this up
@@ -803,8 +843,10 @@ class MessagesGameScene: SKScene {
             let slideAction = SKAction.move(to: destinationPoint, duration: 0.3)
             slideAction.timingMode = .easeInEaseOut // Makes the opponent move look more natural
 
+            beginAnimationActivity()
             pieceNode.run(slideAction) { [weak self] in
                 self?.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece, applyingUpdate: true)
+                self?.endAnimationActivity()
                 continuation.resume()
             }
         }
