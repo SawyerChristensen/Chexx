@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */; };
+		29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7017F2C885574833D4FBA47 /* SwiftUI.framework */; };
+		308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		68038A4466C44B85898CF764 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */; };
 		794DCD94DC3AA22C66DE659C /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716F809085AE1230B7C914ED /* LiveActivityManager.swift */; };
 		79CF2D07EE8B41EBFFED7529 /* ReviewRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */; };
@@ -69,7 +72,9 @@
 		BECCB4E52E6A072000742EAF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */; };
 		BEF00A022F5B01A100000001 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
+		C5DA40C901162FCC43497E9A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CFEADDBCC440480DE9DC570 /* WidgetKit.framework */; };
 		D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */; };
+		D619B801D7F938EB0D3CF838 /* ActivityKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83FD982D63F19C77EB8F3F87 /* ActivityKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +84,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = BE7D04AE2E5A77D6000920FC;
 			remoteInfo = HexChessLite;
+		};
+		EBE3AB62BC4C25092C657D27 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE76A9A42C2A2602009113B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F49DA73CF7F3AA7239DD8C63;
+			remoteInfo = ChexxWidgets;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -90,6 +102,7 @@
 			dstSubfolderSpec = 13;
 			files = (
 				BE7D04BE2E5A77D7000920FC /* HexChessLite.appex in Embed Foundation Extensions */,
+				308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -97,8 +110,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1BAD7814AF114864DBE58241 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		5CFEADDBCC440480DE9DC570 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		716F809085AE1230B7C914ED /* LiveActivityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
 		7A5F9A5AEC59560EE65D2353 /* UIApplication+ActiveScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ActiveScene.swift"; sourceTree = "<group>"; };
+		83FD982D63F19C77EB8F3F87 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
 		B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestManager.swift; sourceTree = "<group>"; };
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -139,10 +155,19 @@
 		BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 		C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLiveActivityAttributes.swift; sourceTree = "<group>"; };
+		C7017F2C885574833D4FBA47 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
+		FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChexxWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		3FA44FEA36C9F4F7C1533B3F /* Exceptions for "ChexxWidgets" folder in "ChexxWidgets" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */;
+		};
 		BE7D04C22E5A77D7000920FC /* Exceptions for "HexChessLite" folder in "HexChessLite" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -153,6 +178,14 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FA44FEA36C9F4F7C1533B3F /* Exceptions for "ChexxWidgets" folder in "ChexxWidgets" target */,
+			);
+			path = ChexxWidgets;
+			sourceTree = "<group>";
+		};
 		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -168,6 +201,16 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		5127B0EC64DB6165A8725C65 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				C5DA40C901162FCC43497E9A /* WidgetKit.framework in Frameworks */,
+				29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */,
+				D619B801D7F938EB0D3CF838 /* ActivityKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE76A9A92C2A2602009113B4 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -194,6 +237,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		824311AC8ED7317862906AFB /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				1BAD7814AF114864DBE58241 /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
 		BE76A9A32C2A2602009113B4 = {
 			isa = PBXGroup;
 			children = (
@@ -203,6 +254,7 @@
 				BE7D04B32E5A77D6000920FC /* HexChessLite */,
 				BE7D04B02E5A77D6000920FC /* Frameworks */,
 				BE76A9AD2C2A2602009113B4 /* Products */,
+				6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,6 +263,7 @@
 			children = (
 				BE76A9AC2C2A2602009113B4 /* Chexx.app */,
 				BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */,
+				FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -253,6 +306,10 @@
 			isa = PBXGroup;
 			children = (
 				BE7D04B12E5A77D6000920FC /* Messages.framework */,
+				824311AC8ED7317862906AFB /* iOS */,
+				5CFEADDBCC440480DE9DC570 /* WidgetKit.framework */,
+				C7017F2C885574833D4FBA47 /* SwiftUI.framework */,
+				83FD982D63F19C77EB8F3F87 /* ActivityKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -324,6 +381,7 @@
 			);
 			dependencies = (
 				BE7D04BD2E5A77D7000920FC /* PBXTargetDependency */,
+				2B36F163E861FA5934E00453 /* PBXTargetDependency */,
 			);
 			name = Chexx;
 			productName = Chexx;
@@ -350,6 +408,26 @@
 			productReference = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */;
 			productType = "com.apple.product-type.app-extension.messages";
 		};
+		F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4AEEBC44647C09DA47667539 /* Build configuration list for PBXNativeTarget "ChexxWidgets" */;
+			buildPhases = (
+				1F8E3DE8A322B8315762580A /* Sources */,
+				5127B0EC64DB6165A8725C65 /* Frameworks */,
+				3B72D6A60A75CDACFD719AC2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */,
+			);
+			name = ChexxWidgets;
+			productName = ChexxWidgets;
+			productReference = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -364,6 +442,9 @@
 						CreatedOnToolsVersion = 15.4;
 					};
 					BE7D04AE2E5A77D6000920FC = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					F49DA73CF7F3AA7239DD8C63 = {
 						CreatedOnToolsVersion = 16.4;
 					};
 				};
@@ -411,11 +492,19 @@
 			targets = (
 				BE76A9AB2C2A2602009113B4 /* Chexx */,
 				BE7D04AE2E5A77D6000920FC /* HexChessLite */,
+				F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3B72D6A60A75CDACFD719AC2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE76A9AA2C2A2602009113B4 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -455,6 +544,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		1F8E3DE8A322B8315762580A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		BE76A9A82C2A2602009113B4 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -503,6 +600,12 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2B36F163E861FA5934E00453 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = ChexxWidgets;
+			target = F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */;
+			targetProxy = EBE3AB62BC4C25092C657D27 /* PBXContainerItemProxy */;
+		};
 		BE7D04BD2E5A77D7000920FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BE7D04AE2E5A77D6000920FC /* HexChessLite */;
@@ -530,6 +633,28 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		AF5D583D073793C15AF94392 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChexxWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChexxWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.4.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.ChexxWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
 		BE76A9C12C2A2603009113B4 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -775,9 +900,41 @@
 			};
 			name = Release;
 		};
+		C33E8D8F458A8FE9A11DEF18 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 2;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = ChexxWidgets/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = ChexxWidgets;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.4.0;
+				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.ChexxWidgets;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		4AEEBC44647C09DA47667539 /* Build configuration list for PBXNativeTarget "ChexxWidgets" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C33E8D8F458A8FE9A11DEF18 /* Release */,
+				AF5D583D073793C15AF94392 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		BE76A9A72C2A2602009113B4 /* Build configuration list for PBXProject "Chexx" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

@@ -15,7 +15,7 @@
     - [ ] Deploy the Cloud Function and verify push notifications work end-to-end (requires Firebase CLI login/credentials — human step)
   - [~] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
     - [x] Add ActivityKit groundwork: NSSupportsLiveActivities in Info.plist, shared GameLiveActivityAttributes/ContentState model, and a LiveActivityManager to start/update/end activities (main app target only)
-    - [ ] Add a Widget Extension target (e.g. ChexxWidgets) with ActivityKit support for the Live Activity UI (lock screen + Dynamic Island), showing a small board preview
+    - [x] Add a Widget Extension target (e.g. ChexxWidgets) with ActivityKit support for the Live Activity UI (lock screen + Dynamic Island), showing a small board preview
     - [ ] Wire LiveActivityManager into the move-handling/push-notification flow so the opponent's move updates the Live Activity with a board preview and "[opponent] [moved to/captured] [tile/piece]" text
 - [x] Review the turkish translation and make sure we use the new terminology "Altıgen Satranç"
 - [x] Review the korean translation and make sure we use the new terminology "육각형 체스"
