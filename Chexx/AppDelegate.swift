@@ -10,12 +10,16 @@ import FirebaseCore
 import GoogleSignIn
 import UserNotifications
 
-// Local notification permission/authorization handling. Remote/push notifications
-// (e.g. opponent-move alerts while the app is closed) are a separate, later step.
+// Local notification permission/authorization handling, plus remote (push)
+// notification registration. The resulting APNs device token is stored per-user
+// in Firestore so a Cloud Function can later push opponent-move alerts.
 struct NotificationManager {
     static func requestAuthorization(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             DispatchQueue.main.async {
+                if granted {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
                 completion(granted)
             }
         }
@@ -33,12 +37,30 @@ struct NotificationManager {
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+
+        // if the user already granted notification permission in a previous session,
+        // re-register for a device token (APNs tokens can change, e.g. after reinstall)
+        NotificationManager.authorizationStatus { status in
+            if status == .authorized {
+                UIApplication.shared.registerForRemoteNotifications()
+            }
+        }
+
         return true
     }
-    
+
     // handle Google Sign-In callback
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
         return GIDSignIn.sharedInstance.handle(url)
+    }
+
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        AuthViewModel.shared.updateDeviceTokenInFirestore(token: token)
+    }
+
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error.localizedDescription)")
     }
     
     func applicationWillResignActive(_ application: UIApplication) {

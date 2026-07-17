@@ -238,6 +238,27 @@ class AuthViewModel: ObservableObject {
             print("Country is the same as the stored value, no update needed.")
         }
     }
+
+    func updateDeviceTokenInFirestore(token: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            //print("No user logged in to update device token.")
+            return
+        }
+
+        let currentStoredToken = UserDefaults.standard.string(forKey: "deviceToken") ?? ""
+
+        if currentStoredToken != token {
+            db.collection("users").document(userID).updateData([
+                "deviceToken": token
+            ]) { error in
+                if let error = error {
+                    print("Error updating device token in Firestore: \(error.localizedDescription)")
+                } else {
+                    UserDefaults.standard.set(token, forKey: "deviceToken")
+                }
+            }
+        }
+    }
     
     func loadUserCountryFromFirestore(completion: @escaping (String?) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {

@@ -8,7 +8,7 @@
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
 - [~] Add Notifications! (for main app obviously)
   - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it
-  - [ ] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
+  - [x] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
   - [ ] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
   - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
 - [ ] Review app for view inefficiencies so that the app runs as smoothly as possible
