@@ -151,11 +151,16 @@ class GameScene: SKScene {
     }
 
     func generateHexTiles(radius: CGFloat, scene: SKScene) {
-        // Define hexagon colors
-        let grey = UIColor(hex: "#e8ab6f")
-        let light = UIColor(hex: "#ffce9e")
-        let dark = UIColor(hex: "#d18b47")
-        
+        // Reuse the colors already parsed once at init instead of re-parsing the
+        // same hex strings for every call to this function.
+        let grey = self.grey
+        let light = self.light
+        let dark = self.dark
+
+        // Every tile shares the same radius, so the hexagon path (6 trig calls)
+        // only needs to be computed once instead of once per tile (91 tiles).
+        let sharedPath = HexagonNode.createHexagonPath(size: radius)
+
         // Define a list of directions to generate hexagons around the center
         let directions: [(String, Direction, UIColor)] = [ //every hexagons name is SEPERATE from the gamestate data structure. every hexagons string address should remain a string
             ("f6", .none, grey),
@@ -265,7 +270,7 @@ class GameScene: SKScene {
             currentX = newCenter.x
             currentY = newCenter.y
             
-            let hexagon = HexagonNode(size: radius, color: color)
+            let hexagon = HexagonNode(sharedPath: sharedPath, color: color)
             hexagon.position = CGPoint(x: currentX, y: currentY)
             hexagon.name = key
             hexagons.append(hexagon)
@@ -279,7 +284,7 @@ class GameScene: SKScene {
         //}
     }
     
-    func placePieces(scene: SKScene, gameState: GameState? = nil) { //o^2 time, can maybe be incorporated into an earlier function like generateHexTiles
+    func placePieces(scene: SKScene, gameState: GameState? = nil) { // O(1) per tile: GameState's subscript is a flat array lookup, so this loop is O(tileCount)
         let columns = hexColumns
         let state = gameState ?? GameState()
 
@@ -1398,6 +1403,16 @@ class HexagonNode: SKShapeNode {
     init(size: CGFloat, color: UIColor) {
         super.init()
         self.path = HexagonNode.createHexagonPath(size: size)
+        self.fillColor = color
+        self.strokeColor = color
+        self.lineWidth = 0
+    }
+
+    // Reuses a path computed once by the caller instead of recomputing the same
+    // hexagon geometry (cos/sin per vertex) for every tile on the board.
+    init(sharedPath: CGPath, color: UIColor) {
+        super.init()
+        self.path = sharedPath
         self.fillColor = color
         self.strokeColor = color
         self.lineWidth = 0

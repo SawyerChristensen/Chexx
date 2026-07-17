@@ -23,7 +23,7 @@
 - [~] Review app for view inefficiencies so that the app runs as smoothly as possible
   - [x] Fix MainMenuView.swift: remove the `.id(refreshID)`/UUID trick that forced SwiftUI to destroy and rebuild the entire main-menu subtree on every appear, and replace the `AnyView`-erasing `ColorInvertIfDarkModeModifier` with a `@ViewBuilder` implementation
   - [x] Audit ProfileView.swift and SettingsWindow.swift for redundant Firestore/network calls or recomputation triggered from the view body
-  - [ ] Audit GameScene.swift/HexagonNode for repeated per-call work in generateHexTiles/placePieces (e.g. re-parsing UIColor(hex:) constants) that could be hoisted out of hot paths
+  - [x] Audit GameScene.swift/HexagonNode for repeated per-call work in generateHexTiles/placePieces (e.g. re-parsing UIColor(hex:) constants) that could be hoisted out of hot paths
   - [ ] Audit remaining SwiftUI screens (GameOverWindow, GameLinkSheet, TutorialSheet, PromotionWindow) for AnyView usage, GeometryReader misuse, or other unnecessary view-identity churn
   - [ ] Audit HexChessLite (iMessage extension) views for the same view-inefficiency patterns
 - [ ] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
