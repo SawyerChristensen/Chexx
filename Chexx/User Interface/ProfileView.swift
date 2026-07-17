@@ -676,18 +676,16 @@ struct ProfileView: View {
     
     private func resetPasswordTextAppend() -> AttributedString {
         var attributedString = AttributedString(authViewModel.errorMessage)
-        
+
         if authViewModel.errorMessage == "The email address is already in use by another account." {
             attributedString += AttributedString(" Reset Password?")
-            
+
             // Apply underline to "Reset Password?"
             if let range = attributedString.range(of: "Reset Password?") {
                 attributedString[range].underlineStyle = .single
             }
-        } else {
-            authViewModel.errorMessage = ""
         }
-        
+
         return attributedString
     }
 }
