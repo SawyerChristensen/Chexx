@@ -785,6 +785,8 @@ class GameScene: SKScene {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
 
+                    LiveActivityManager.end()
+
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 1.0 : 0.0, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
                         let diff = newLocalElo - oldLocalElo
@@ -913,6 +915,8 @@ class GameScene: SKScene {
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
+
+                    LiveActivityManager.end()
 
                     // Stalemate is not a draw: the player delivering stalemate scores 0.75, the stalemated player scores 0.25
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 0.75 : 0.25, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
@@ -1119,6 +1123,14 @@ class GameScene: SKScene {
         let startPosition = gameState.positionIntToString(index: startIndex)
         let destinationPosition = gameState.positionIntToString(index: destinationIndex - adjustedIndex)
 
+        // gameState.currentPlayer still reflects whoever's turn it was to make this
+        // incoming move (updateGameState hasn't flipped it yet), so comparing it to
+        // our own color tells us whether this update is the opponent's move or just
+        // Firestore echoing back a move we sent ourselves.
+        if isOnlineMultiplayer, gameState.currentPlayer != MultiplayerManager.shared.currentPlayerColor {
+            updateLiveActivity(destinationPosition: destinationPosition)
+        }
+
         // Animate the move
         if let pieceNode = findPieceNode(at: startPosition) {
             if let destinationHexagon = self.hexagonsByName[destinationPosition] {
@@ -1143,7 +1155,37 @@ class GameScene: SKScene {
         updateGameStatusUI(gameStatus: gameStatus)
     }
 
-    
+    // Builds the "[opponent] moved to/captured [tile/piece at tile]" text for the
+    // Live Activity, using board state as it was just before this move is applied.
+    private func updateLiveActivity(destinationPosition: String) {
+        let columns = hexColumns
+        let destColumnLetter = destinationPosition.prefix(1)
+        let destRowIndexString = destinationPosition.dropFirst()
+
+        var capturedPieceType: String? = nil
+        if let destColIndex = columns.firstIndex(of: String(destColumnLetter)),
+           let destRowIndex = Int(destRowIndexString) {
+            capturedPieceType = gameState[destColIndex, destRowIndex - 1]?.type
+        }
+
+        let opponentName = MultiplayerManager.shared.opponentName
+        let moveDescription: String
+        if let capturedPieceType {
+            moveDescription = String(
+                format: NSLocalizedString("%@ captured %@ at %@", comment: "Live Activity move text: {opponent} captured {piece} at {tile}"),
+                opponentName, PieceNames.localized(capturedPieceType), destinationPosition
+            )
+        } else {
+            moveDescription = String(
+                format: NSLocalizedString("%@ moved to %@", comment: "Live Activity move text: {opponent} moved to {tile}"),
+                opponentName, destinationPosition
+            )
+        }
+
+        LiveActivityManager.update(moveDescription: moveDescription)
+    }
+
+
     func updateGameStatusUI(gameStatus: String) { //should maybe seperate update game status with end of game achievement status
         
         //MARK: display whose turn it is
@@ -1302,6 +1344,7 @@ class GameScene: SKScene {
         if isOnlineMultiplayer {
             Task { @MainActor in
                 MultiplayerManager.shared.stopListening()
+                LiveActivityManager.end()
             }
         }
     }

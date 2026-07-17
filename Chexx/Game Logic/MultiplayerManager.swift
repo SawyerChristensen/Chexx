@@ -312,13 +312,20 @@ class MultiplayerManager: ObservableObject {
     private func fetchOpponentInfo(userId: String) {
         AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL, country in
             DispatchQueue.main.async {
-                self?.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
+                guard let self = self else { return }
+                self.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
                 if let profileURL = profileURL {
-                    self?.opponentProfileImageURL = URL(string: profileURL)
+                    self.opponentProfileImageURL = URL(string: profileURL)
                 } else {
-                    self?.opponentProfileImageURL = nil
+                    self.opponentProfileImageURL = nil
                 }
-                self?.opponentCountry = country ?? ""
+                self.opponentCountry = country ?? ""
+
+                // Now that we know who the opponent is, (re)start the Live Activity
+                // for this game so its content can be kept up to date as moves arrive.
+                if let gameId = self.gameId {
+                    LiveActivityManager.start(gameId: gameId, opponentName: self.opponentName)
+                }
             }
         }
     }

@@ -18168,6 +18168,28 @@
           }
         }
       }
+    },
+    "%@ moved to %@" : {
+      "comment" : "Live Activity move text: {opponent} moved to {tile}",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ moved to %2$@"
+          }
+        }
+      }
+    },
+    "%@ captured %@ at %@" : {
+      "comment" : "Live Activity move text: {opponent} captured {piece} at {tile}",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ captured %2$@ at %3$@"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
