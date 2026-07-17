@@ -62,13 +62,16 @@ struct WaveText: View {
         return (text as NSString).size(withAttributes: [.font: font]).width
     }
 
+    private var characters: [Character] { Array(text) }
+
     var body: some View {
         GeometryReader { geo in
             let scale = min(1.0, geo.size.width / max(naturalTextWidth, 1))
+            let characters = self.characters
 
             HStack(spacing: 0) {
-                ForEach(0..<text.count, id: \.self) { index in
-                    Text(String(Array(text)[index]))
+                ForEach(0..<characters.count, id: \.self) { index in
+                    Text(String(characters[index]))
                         .font(.system(size: fontSize, weight: .semibold, design: .serif))
                         .modifier(WaveEffect(
                             time: self.time,
