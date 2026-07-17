@@ -7,14 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		68038A4466C44B85898CF764 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */; };
+		794DCD94DC3AA22C66DE659C /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716F809085AE1230B7C914ED /* LiveActivityManager.swift */; };
 		79CF2D07EE8B41EBFFED7529 /* ReviewRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */; };
+		81100593DDC8F4D0949C2F5C /* GameLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */; };
 		A3C68ED76CD6528BAEF5884B /* UIApplication+ActiveScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7A5F9A5AEC59560EE65D2353 /* UIApplication+ActiveScene.swift */; };
 		BE091A452CC11FF800C1A3EC /* FirebaseAnalyticsWithoutAdIdSupport in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A442CC11FF800C1A3EC /* FirebaseAnalyticsWithoutAdIdSupport */; };
 		BE091A472CC11FF800C1A3EC /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A462CC11FF800C1A3EC /* FirebaseAuth */; };
 		BE091A492CC11FF800C1A3EC /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A482CC11FF800C1A3EC /* FirebaseCrashlytics */; };
 		BE091A4B2CC11FF800C1A3EC /* FirebaseDynamicLinks in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A4A2CC11FF800C1A3EC /* FirebaseDynamicLinks */; };
 		BE091A4D2CC11FF800C1A3EC /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A4C2CC11FF800C1A3EC /* FirebaseFirestore */; };
-		68038A4466C44B85898CF764 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */; };
 		BE091A4F2CC124C500C1A3EC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */; };
 		BE091A522CC12A1800C1A3EC /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A512CC12A1800C1A3EC /* GoogleSignIn */; };
 		BE091A542CC12A1800C1A3EC /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BE091A532CC12A1800C1A3EC /* GoogleSignInSwift */; };
@@ -95,6 +97,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		716F809085AE1230B7C914ED /* LiveActivityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
+		7A5F9A5AEC59560EE65D2353 /* UIApplication+ActiveScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ActiveScene.swift"; sourceTree = "<group>"; };
 		B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestManager.swift; sourceTree = "<group>"; };
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -110,7 +114,6 @@
 		BE64F0942D27333100F7B8C5 /* AchievementManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AchievementManager.swift; sourceTree = "<group>"; };
 		BE75E1D92F214A4C004BD0BF /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		7A5F9A5AEC59560EE65D2353 /* UIApplication+ActiveScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ActiveScene.swift"; sourceTree = "<group>"; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE76A9B52C2A2602009113B4 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		BE76A9BA2C2A2602009113B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -135,11 +138,12 @@
 		BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheet.swift; sourceTree = "<group>"; };
 		BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
+		C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLiveActivityAttributes.swift; sourceTree = "<group>"; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		BE7D04C22E5A77D7000920FC /* Exceptions for "HexChessLite" folder in "HexChessLite" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -149,7 +153,18 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
+		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BE7D04C22E5A77D7000920FC /* Exceptions for "HexChessLite" folder in "HexChessLite" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = HexChessLite;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -218,6 +233,8 @@
 				BE7EB8C02C47778100D66EB0 /* Game Logic */,
 				BE76A9E32C2A3EDA009113B4 /* Audio */,
 				BE2B42972ED35256000E5B05 /* HCLiquidGlass.icon */,
+				C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */,
+				716F809085AE1230B7C914ED /* LiveActivityManager.swift */,
 			);
 			path = Chexx;
 			sourceTree = "<group>";
@@ -329,8 +346,6 @@
 				BE7D04B32E5A77D6000920FC /* HexChessLite */,
 			);
 			name = HexChessLite;
-			packageProductDependencies = (
-			);
 			productName = HexChessLite;
 			productReference = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */;
 			productType = "com.apple.product-type.app-extension.messages";
@@ -467,6 +482,8 @@
 				BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */,
 				D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */,
 				A3C68ED76CD6528BAEF5884B /* UIApplication+ActiveScene.swift in Sources */,
+				81100593DDC8F4D0949C2F5C /* GameLiveActivityAttributes.swift in Sources */,
+				794DCD94DC3AA22C66DE659C /* LiveActivityManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -810,6 +827,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BE091A432CC11FF800C1A3EC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
 		BE091A442CC11FF800C1A3EC /* FirebaseAnalyticsWithoutAdIdSupport */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = BE091A432CC11FF800C1A3EC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
@@ -834,11 +856,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = BE091A432CC11FF800C1A3EC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseFirestore;
-		};
-		1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = BE091A432CC11FF800C1A3EC /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
-			productName = FirebaseMessaging;
 		};
 		BE091A512CC12A1800C1A3EC /* GoogleSignIn */ = {
 			isa = XCSwiftPackageProductDependency;
