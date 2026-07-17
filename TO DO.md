@@ -1,53 +1,39 @@
 # Hex Chess — To Do
 ---
 
-## Update 1.4 — More Localizations  🌐
-- [x] Transition TO DO to a markdown file
-- [x] Prompt user to review Hex Chess after a multiplayer win (and after a CPU win when it is sufficiently advanced)
-- [ ] Add Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish to project & ASC
-  - [x] In project settings
-  - [x] Reorder the info plist files to be alphabetical
-  - [x] Translate the bundle display names
-  - [x] Make all info plist bundle display name files have the same header "// Bundle display name"
-  - [x] Copy upload metadata.json file from DeckedOut project as well as the upload metadata python script
-  - [x] Modify the script to work with Chexx (Hex Chess), not DeckedOut
-  - [x] Review if we have the most update to date framework for cf bundle display names. do we need all the different infoplist files or is a string catalog more modern? is what we have outdated? only transition if there is a more modern approach (Xcode 15+ supports `InfoPlist.xcstrings` String Catalogs for Info.plist keys — replaced the per-locale `InfoPlist.strings` files in both targets with `Chexx/InfoPlist.xcstrings` and `HexChessLite/InfoPlist.xcstrings`)
-  - [ ] Pull the other App Store listing titles we have for other languages in ASC through the App Store API. Put them in the Metadata json file. Create new titles and subtitles in the metadata json file for each new language we've added and push them to ASC.
-  - [x] Finish all translating all string localizations in Localizable
-  - [x] Do we need two separate string catalogs per target? One for the in game strings and one for the cfbundledisplayname? if there is no reason to keep them separate, combine them, if there is a reason, keep that as is (Yes, keep separate — Xcode only auto-generates localized Info.plist values from a String Catalog literally named `InfoPlist.xcstrings`; merging those keys into `Localizable.xcstrings` would silently break Info.plist localization since that mechanism is tied to the reserved filename, not just the key names)
-  - [x] Also, if the cfbundle display names are the same for every target, what if we just made one file a member of both targets and delete the other? Do we really need the empty copyright entry in the HexChessLite InfoPlist.xcstrings ? (No — `CFBundleName` differs per target, "Hex Chess" vs "HexChessLite", so a single shared file would break that. Removed the unused empty `NSHumanReadableCopyright` entry and its matching no-op `INFOPLIST_KEY_NSHumanReadableCopyright = ""` build setting from HexChessLite, since Chexx's target has no equivalent)
-  - [ ] Create a new update notice "New localizations! [The local app name] now supports Armenian, Chinese Traditional, Danish, Finnish, Hebrew, Icelandic, Indonesian, Norwegian, Swedish & Turkish" and push it to ASC as well using the new upload metadata python script
-  - [ ] Archive, upload the build, & add app for review in ASC
-- [x] Have Claude review the entire project and identify areas for efficiency improvements
-  - [x] CPU: `filterMovesThatExposeKing`/`isKingInCheckUsingKingSight` (PieceRules.swift) re-simulate the whole board for every candidate move at every minimax node — likely the single biggest cost driver of CPU move time
-  - [x] CPU: move representation is string-based (`parseMove`/`boardToHex`) and gets parsed/formatted constantly in the search hot path — switch to lightweight index structs
-  - [x] CPU: `evaluateGameState` (GameCPU.swift) rescans the whole board at every leaf node instead of tracking material incrementally
-  - [x] CPU: `orderMoves` re-derives its sort key via string parsing at every node — compute the ordering score once at move-generation time
-  - [x] CPU: no transposition table or iterative deepening in `minimaxMove` — deadline cutoffs can return a weaker move than already found; add Zobrist hashing + a TT
-  - [x] CPU: flatten `board` from `[[Piece?]]` to a single `[Piece?]` (91 tiles) for cheaper copies/hashing
-  - [x] UI: `ProfileView` re-sorts the ~200-element `countries` array on every body re-render instead of once
-  - [x] UI: `GameScene.findNearestHexagon` and other `childNode(withName:)` lookups linearly scan the node graph — build a `[String: HexagonNode]` dictionary once
-  - [x] The `columns` array literal is redefined in ~23 functions across GameState/PieceRules/GameCPU/GameScene — hoist to one shared constant
-  - [x] `MultiplayerManager.listenForOpponentJoined` re-fetches opponent profile info on every snapshot update, not just when the opponent first joins
-  - [x] `hasLegalMovesForCurrentPlayer` builds full move lists per piece instead of short-circuiting on the first legal move found
-  - [x] En-passant target is found by scanning the whole board (`resetEnPassant`) instead of tracking a single field on GameState
-  - [x] Force-unwraps in board/move hot paths (PieceRules.swift, GameScene.swift, GameState.swift) risk crashing mid-search instead of failing gracefully
-  - [x] Game state is saved to disk synchronously on the main thread after every single move — move off-thread or debounce
-  - [x] `AsyncImage` for profile/opponent pictures has no caching, so images re-download on every view appearance
-    - [x] ^ This maybe breaks it. Now my google icon doesnt appear at all
-- [x] Fix all project warnings (fixed all Swift actor-isolation warnings in MultiplayerManager.swift/AuthViewModel.swift, unused-variable warnings in GameScene.swift/GameCenterManager.swift, and the deprecated `UIApplication.windows`/`OAuthProvider.credential(withProviderID:)` calls. Left one deprecation warning in MainMenuView.swift:199 — `NavigationLink(destination:isActive:label:)` — since fixing it properly requires migrating the whole screen from `NavigationView` to `NavigationStack`, a risky architecture change better done deliberately, not as a warning cleanup)
-- [x] Make the apps text one less font thickness level
-- [ ] Review if transitioning our grey xcode folder project structure to blue folders is a good idea. This is a high risk transition since we are modifying project wide data. Make sure there is a git push before this so that if something goes wrong we can roll back onto it.
-- [ ] Do we really need the storyboard files? I only use the launch screen one. How do we modify the project settings to remove the storyboard files but still have the launch image that we have set? Thats the only thing we use with the storyboarsd. if I could have my launch image in assets or some other place and then just call that as the launch image the same way the storyboard does, that would be great
+## Update 1.5 — Mac Port  💻
+- [ ] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
+- [ ] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
+- [ ] Add Notifications! (for main app obviously)
+  - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
+- [ ] Review app for view inefficiencies so that the app runs as smoothly as possible
+- [ ] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
+- [ ] Remove the "Thinking" CPU animation glow and make it much smaller
+- [ ] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
+- [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
+The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.
 
----
+Upload Symbols Failed
+The archive did not include a dSYM for the FirebaseFirestoreInternal.framework with the UUIDs [8ED328E4-50A6-3597-806D-B1B83CC9E391]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseFirestoreInternal.framework with the expected UUIDs.
 
-## Update 1.5 — iPad UI & Mac Port  💻
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
-- [ ] Refine UI for iPad (country picker, font, achievement stars)
-- [ ] Add an official Mac Port of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
+Upload Symbols Failed
+The archive did not include a dSYM for the GoogleAppMeasurement.framework with the UUIDs [C76BAB2B-80E5-3C3E-BB4F-5B56155FD24A]. Ensure that the archive's dSYM folder includes a DWARF file for GoogleAppMeasurement.framework with the expected UUIDs.
+
+Upload Symbols Failed
+The archive did not include a dSYM for the absl.framework with the UUIDs [50755F1C-66E6-3B25-B216-C07F2BDD4244]. Ensure that the archive's dSYM folder includes a DWARF file for absl.framework with the expected UUIDs.
+
+Upload Symbols Failed
+The archive did not include a dSYM for the grpc.framework with the UUIDs [B6F6C9E2-1EEC-38D1-B756-603410A0708A]. Ensure that the archive's dSYM folder includes a DWARF file for grpc.framework with the expected UUIDs.
+
+Upload Symbols Failed
+The archive did not include a dSYM for the grpcpp.framework with the UUIDs [62CB9CC2-5216-3561-8663-DB920B3DEEA3]. Ensure that the archive's dSYM folder includes a DWARF file for grpcpp.framework with the expected UUIDs.
+
+Upload Symbols Failed
+The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs [0A8C77A3-2823-3285-843A-62B5BB169964]. Ensure that the archive's dSYM folder includes a DWARF file for openssl_grpc.framework with the expected UUIDs." If you can include those dSYM files somehow so that these warnings don't appear anymore that would be great
+
+
 - [ ] App Store Connect/photoshop work:
-  - [ ] Better App Store pictures for iPad (1/3 of all users!!)
+  - [ ] Better App Store pictures for iPad (1/3 of all users!!) Is this what mac uses
   - [ ] Listing canvas gaps should be shorter?
   - [ ] Modify Russian listing photo text?
   - [ ] Modify the Chinese listing photo text?
@@ -55,25 +41,18 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## Update 1.6 — Multiplayer v2  􀉬
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
-- [ ] Change profile icon to Game Center access point? (Apple only!!)
-- [ ] Add Notifications! (for main app obviously)
-  - [ ] Add live activities for games?
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
-- [ ] Pulsating element on main menu?
+- [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
 - [x] Changing Google icon breaks Google icon retrieval in app
 - [x] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
-- [ ] Game Center icon only loads the second time looking at the profile
+- [ ] Home Screen quick actions?
 - [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty
 - [ ] Login does not check if your email is actually real
-- [ ] Look into Apple Games app multiplayer invites?
-- [ ] Home Screen quick actions?
-- [ ] Facebook sign in? (nah)
 - [ ] In multiplayer, show opponent's Game Center icon if they don't have a Google icon
-- [ ] If user is anonymous, do not update Elo
-  - [ ] Is this still needed?
+- [ ] If user is anonymous, do not update Elo. Is this still needed?
 - [ ] User country loads from Firestore every time profile is opened; local storage should update from Firestore once the app is opened, then pull from local every profile view
 - [ ] Elo is checked every profile view — can maybe use a local toggle to see if it's been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
 - [ ] Store user picture on device and only load when it changes? Having it load is a little jarring (low priority)
@@ -81,7 +60,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 ---
 
 ## Update 1.7 — CPU  🤖
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces
 - [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Turn into AI? (TensorFlow, PyTorch) (AlphaZero loop on GPU?)
@@ -164,6 +143,10 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 
 ## ⚙️ Other Changes
 NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
+
+### Bugs
+- [ ] Game Center icon only loads the second time looking at the profile? (check if still true)
+
 ### iMessage
 - [ ] Figure out memory problem with resizing the window??
 - [ ] Make `applyUpdate` more elegant — wait until the view is completely on screen before showing what the last user did. Right now it applies the move AS the view is scrolling up and being presented, jumping the gun a little. Currently we call `applyUpdate` by setting `latestHexPGN` whenever the view is activated or selected
@@ -173,6 +156,10 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 
 ### General
 - [ ] Android version?
+- [ ] Facebook sign in?
+- [ ] Look into Apple Games app multiplayer invites?
+- [ ] Change profile icon to Game Center access point? (Apple only!!)
+- [ ] Refine UI for iPad (country picker, font, achievement stars). 
 - [ ] 50-move no-capture rule for draw
 - [ ] Threefold repetition rule for draw
   - [ ] Zobrist hashing for more efficient computation of threefold-rule detection — not needed at launch, could be an important update
@@ -198,3 +185,6 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [Ways to update chess AI / increase computational efficiency](https://web.archive.org/web/20071026090003/http://www.brucemo.com/compchess/programming/index.htm)
 - [General Chess Programming Info](https://www.chessprogramming.org/Main_Page)
 - [Glinski's Hexchess (Hexagonal chess)](https://en.wikipedia.org/wiki/Hexagonal_chess)
+
+
+

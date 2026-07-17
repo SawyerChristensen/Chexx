@@ -49,12 +49,10 @@
 		BE8B84BE3006D41C00A55F49 /* TO DO.md in Resources */ = {isa = PBXBuildFile; fileRef = BE8B84BC3006D41C00A55F49 /* TO DO.md */; };
 		BE9522612D2324BD00836D0F /* TutorialSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9522602D2324B400836D0F /* TutorialSheet.swift */; };
 		BE9EA2522D977848006D9FAC /* GameCenterManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE9EA2512D977843006D9FAC /* GameCenterManager.swift */; };
-		BEF00A022F5B01A100000001 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */; };
 		BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
 		BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD832C6599BB008BCB26 /* GameView.swift */; };
 		BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
 		BEB501AE2D396C7500143193 /* GameOverWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB501AD2D396C7000143193 /* GameOverWindow.swift */; };
-		D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */; };
 		BECA2C092D01ED32002B14BE /* GameLinkSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */; };
 		BECCB4A12E62853D00742EAF /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD852C66C08E008BCB26 /* AudioManager.swift */; };
 		BECCB4A62E628CC100742EAF /* PromotionWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEB2FD7F2C653BF4008BCB26 /* PromotionWindow.swift */; };
@@ -65,7 +63,9 @@
 		BECCB4C22E62C9CA00742EAF /* piece_move_light.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE091A622CCBB84C00C1A3EC /* piece_move_light.mp3 */; };
 		BECCB4E42E6A05FA00742EAF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BC2C2A2603009113B4 /* Assets.xcassets */; };
 		BECCB4E52E6A072000742EAF /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */; };
+		BEF00A022F5B01A100000001 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
+		D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -102,7 +102,6 @@
 		BE091A662CCBBFB900C1A3EC /* GameCPU.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCPU.swift; sourceTree = "<group>"; };
 		BE192FBB2FA2756E008806D7 /* PieceNames.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PieceNames.swift; sourceTree = "<group>"; };
 		BE2896A52D9D01FB003F96F3 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
-		BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BE2B42972ED35256000E5B05 /* HCLiquidGlass.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = HCLiquidGlass.icon; sourceTree = "<group>"; };
 		BE3807EB2D3E8E7B00EC5973 /* check.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = check.mp3; sourceTree = "<group>"; };
 		BE3807ED2D3E8E8000EC5973 /* game_win.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = game_win.mp3; sourceTree = "<group>"; };
@@ -130,9 +129,10 @@
 		BEB2FD832C6599BB008BCB26 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		BEB2FD852C66C08E008BCB26 /* AudioManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		BEB501AD2D396C7000143193 /* GameOverWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverWindow.swift; sourceTree = "<group>"; };
-		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameLinkSheet.swift; sourceTree = "<group>"; };
+		BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
+		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -642,7 +642,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -658,7 +658,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -675,7 +675,7 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = NO;
 				CODE_SIGN_ENTITLEMENTS = Chexx/Chexx.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Chexx/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -691,7 +691,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -705,7 +705,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -715,7 +715,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -730,7 +730,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 2;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HexChessLite/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Hex Chess";
@@ -740,7 +740,7 @@
 					"@executable_path/Frameworks",
 					"@executable_path/../../Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.HexChessLite;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
