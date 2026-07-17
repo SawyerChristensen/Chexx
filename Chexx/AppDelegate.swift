@@ -7,6 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
+import FirebaseMessaging
 import GoogleSignIn
 import UserNotifications
 
@@ -34,9 +35,10 @@ struct NotificationManager {
     }
 }
 
-class AppDelegate: NSObject, UIApplicationDelegate {
+class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
+        Messaging.messaging().delegate = self
 
         // if the user already granted notification permission in a previous session,
         // re-register for a device token (APNs tokens can change, e.g. after reinstall)
@@ -57,6 +59,14 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
         AuthViewModel.shared.updateDeviceTokenInFirestore(token: token)
+        Messaging.messaging().apnsToken = deviceToken
+    }
+
+    // called whenever FCM (re)generates the registration token used to target this device
+    // from a Cloud Function via the Firebase Admin SDK
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken else { return }
+        AuthViewModel.shared.updateFCMTokenInFirestore(token: fcmToken)
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {

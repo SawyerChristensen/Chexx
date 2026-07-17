@@ -97,7 +97,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "헥스 체스"
+            "value" : "육각형 체스"
           }
         },
         "nb" : {
@@ -139,7 +139,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç"
+            "value" : "Altıgen Satranç"
           }
         },
         "zh-Hans" : {
@@ -252,7 +252,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "헥스 체스"
+            "value" : "육각형 체스"
           }
         },
         "nb" : {
@@ -294,7 +294,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç"
+            "value" : "Altıgen Satranç"
           }
         },
         "zh-Hans" : {

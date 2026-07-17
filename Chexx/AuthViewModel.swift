@@ -259,6 +259,28 @@ class AuthViewModel: ObservableObject {
             }
         }
     }
+
+    // FCM registration token, stored alongside the raw APNs device token so a Cloud Function
+    // can later send opponent-move push notifications via the Firebase Admin SDK
+    func updateFCMTokenInFirestore(token: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+
+        let currentStoredToken = UserDefaults.standard.string(forKey: "fcmToken") ?? ""
+
+        if currentStoredToken != token {
+            db.collection("users").document(userID).updateData([
+                "fcmToken": token
+            ]) { error in
+                if let error = error {
+                    print("Error updating FCM token in Firestore: \(error.localizedDescription)")
+                } else {
+                    UserDefaults.standard.set(token, forKey: "fcmToken")
+                }
+            }
+        }
+    }
     
     func loadUserCountryFromFirestore(completion: @escaping (String?) -> Void) {
         guard let userID = Auth.auth().currentUser?.uid else {

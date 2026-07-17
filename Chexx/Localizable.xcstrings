@@ -9169,7 +9169,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç"
+            "value" : "Altıgen Satranç"
           }
         },
         "zh-Hans" : {
@@ -9318,7 +9318,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç – sıra siyahta!"
+            "value" : "Altıgen Satranç – sıra siyahta!"
           }
         },
         "zh-Hans" : {
@@ -9467,7 +9467,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç – sıra beyazda!"
+            "value" : "Altıgen Satranç – sıra beyazda!"
           }
         },
         "zh-Hans" : {
@@ -9615,7 +9615,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç Elo Puanı:  %lld"
+            "value" : "Altıgen Satranç Elo Puanı:  %lld"
           }
         },
         "zh-Hans" : {
@@ -9912,7 +9912,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hex Satranç'ta kazandım!"
+            "value" : "Altıgen Satranç'ta kazandım!"
           }
         },
         "zh-Hans" : {
@@ -10357,7 +10357,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hadi Hex Satranç Oynayalım!"
+            "value" : "Hadi Altıgen Satranç Oynayalım!"
           }
         },
         "zh-Hans" : {

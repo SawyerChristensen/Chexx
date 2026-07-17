@@ -6,11 +6,17 @@
 - [x] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
-- [~] Add Notifications! (for main app obviously)
+- [~] Add Notifications!
   - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it
   - [x] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
-  - [ ] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
+  - [~] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
+    - [x] Register for an FCM token (FirebaseMessaging) alongside the existing raw APNs device token and store it per-user in Firestore, so a Cloud Function can target devices via the Firebase Admin SDK
+    - [ ] Scaffold a Firebase Cloud Functions project (functions/ dir) with a Firestore onUpdate trigger that detects a new move and sends a push notification to the opponent's stored FCM token
+    - [ ] Deploy the Cloud Function and verify push notifications work end-to-end (requires Firebase CLI login/credentials — human step)
   - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
+- [x] Review the turkish translation and make sure we use the new terminology "Altıgen Satranç"
+- [x] Review the korean translation and make sure we use the new terminology "육각형 체스"
+- [ ] Add the fact we dont have any encryption in the app to the apps plist so that we dont have to check the button every time in App Store Connect
 - [ ] Review app for view inefficiencies so that the app runs as smoothly as possible
 - [ ] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
 - [ ] Remove the "Thinking" CPU animation glow and make it much smaller
