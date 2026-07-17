@@ -11,7 +11,7 @@
   - [x] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
   - [~] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
     - [x] Register for an FCM token (FirebaseMessaging) alongside the existing raw APNs device token and store it per-user in Firestore, so a Cloud Function can target devices via the Firebase Admin SDK
-    - [ ] Scaffold a Firebase Cloud Functions project (functions/ dir) with a Firestore onUpdate trigger that detects a new move and sends a push notification to the opponent's stored FCM token
+    - [x] Scaffold a Firebase Cloud Functions project (functions/ dir) with a Firestore onUpdate trigger that detects a new move and sends a push notification to the opponent's stored FCM token
     - [ ] Deploy the Cloud Function and verify push notifications work end-to-end (requires Firebase CLI login/credentials — human step)
   - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
 - [x] Review the turkish translation and make sure we use the new terminology "Altıgen Satranç"
