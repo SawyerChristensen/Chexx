@@ -36,8 +36,6 @@ struct MainMenuView: View {
     @State private var hasSavedOnlineGame: Bool = false
     @State private var hasSavedSinglePlayerGame: Bool = false
     @State private var hasSavedPassAndPlayGame: Bool = false
-    
-    @State private var refreshID = UUID()
 
     var body: some View {
         NavigationView {
@@ -382,14 +380,10 @@ struct MainMenuView: View {
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
                 }
-                .id(refreshID)  //attach a (rendering?) ID
-                .onAppear {
-                    refreshID = UUID() // force a re-init of the view whenever the main menu appears...
-                    DispatchQueue.main.async { // ...to determine if resume game buttons are applicable
-                        checkForSavedOnlineGame()
-                        checkForSavedSinglePlayerGame()
-                        checkForSavedPassAndPlayGame()
-                    }
+                .onAppear { // determine if resume game buttons are applicable
+                    checkForSavedOnlineGame()
+                    checkForSavedSinglePlayerGame()
+                    checkForSavedPassAndPlayGame()
                 }
                 
                 // MARK: - Top Screen Icons
@@ -639,11 +633,12 @@ extension View {
 struct ColorInvertIfDarkModeModifier: ViewModifier {
     let colorScheme: ColorScheme
 
+    @ViewBuilder
     func body(content: Content) -> some View {
         if colorScheme == .dark {
-            return AnyView(content.colorInvert())
+            content.colorInvert()
         } else {
-            return AnyView(content)
+            content
         }
     }
 }
