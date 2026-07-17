@@ -403,7 +403,9 @@ struct MainMenuView: View {
                         }) {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .contentShape(Rectangle())
                                 .padding(.top, maxScreenDimension / 30)
                                 .padding(.leading, maxScreenDimension / 30)
                         }
@@ -471,7 +473,9 @@ struct MainMenuView: View {
                         }) {
                             Image(systemName: "trophy")
                                 .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .contentShape(Rectangle())
                                 .padding(.top, maxScreenDimension / 30)
                                 .padding(.leading, maxScreenDimension / 30)
                         }
@@ -492,7 +496,9 @@ struct MainMenuView: View {
                         }) {
                             Image(systemName: "gearshape.fill")
                                 .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .contentShape(Rectangle())
                                 .padding(.top, maxScreenDimension / 30)
                                 .padding(.trailing, maxScreenDimension / 30)
                         }
@@ -503,7 +509,9 @@ struct MainMenuView: View {
                         }) {
                             Image(systemName: "text.book.closed") //originally just book.closed
                                 .resizable()
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .contentShape(Rectangle())
                                 .padding(.top, maxScreenDimension / 30)
                                 .padding(.trailing, maxScreenDimension / 30)
                         }
