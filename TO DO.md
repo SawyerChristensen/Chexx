@@ -31,7 +31,7 @@
   - [x] Add a shared animation-activity tracker in GameScene that increments/decrements while piece-move slides and repeating highlight/glow/wobble actions are running
   - [x] Wire that tracker into GameView's SpriteView preferredFramesPerSecond so it drops to 10 fps when idle and jumps to 120 fps while any tracked animation is active
   - [x] Apply the same dynamic framerate wiring to the iMessage extension (HexChessLite MGameView/MGameScene)
-- [ ] Remove the "Thinking" CPU animation glow and make it much smaller
+- [x] Remove the "Thinking" CPU animation glow and make it much smaller
 - [ ] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
 - [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
 The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.

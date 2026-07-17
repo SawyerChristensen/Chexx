@@ -69,9 +69,8 @@ struct GameView: View {
                                 .shadow(color: .red, radius: 5, x: 0, y: 0)
                         } else {
                             Text(whiteStatusText)
-                                .font(.system(size: geometry.size.height / 20, weight: .semibold, design: .serif))
+                                .font(.system(size: geometry.size.height / 40, weight: .semibold, design: .serif))
                                 .foregroundColor(.white)
-                                .shadow(color: .white, radius: 5, x: 0, y: 0)
                         }
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
