@@ -454,9 +454,10 @@ class AuthViewModel: ObservableObject {
     func signOut() {
        do {
            try Auth.auth().signOut()
+           GIDSignIn.sharedInstance.signOut()
            self.isLoggedIn = false
            self.email = ""
-           self.profileImageURL = URL(filePath: "")
+           self.profileImageURL = nil
            self.displayName = ""
            self.userCountry = ""
            self.eloScore = 0
@@ -521,13 +522,14 @@ class AuthViewModel: ObservableObject {
         }
         
         //sign out and reset local data as well!
+        GIDSignIn.sharedInstance.signOut()
         self.isLoggedIn = false
         self.email = ""
-        self.profileImageURL = URL(filePath: "")
+        self.profileImageURL = nil
         self.displayName = ""
         self.userCountry = ""
         self.eloScore = 0
-        
+
         UserDefaults.standard.removeObject(forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "email")
         UserDefaults.standard.removeObject(forKey: "displayName")

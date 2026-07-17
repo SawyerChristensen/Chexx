@@ -48,21 +48,32 @@ struct CachedAsyncImage<Content: View, Placeholder: View>: View {
             uiImage = cached
             return
         }
-        // Bypass URLCache: a transient failure (e.g. no network yet at cold
-        // launch) can otherwise get cached as the "response" for this URL,
-        // permanently blanking the image on every future load.
-        let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
-        do {
-            let (data, response) = try await URLSession.shared.data(for: request)
-            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
-                  let downloaded = UIImage(data: data) else {
-                print("CachedAsyncImage: failed to decode image from \(url)")
-                return
+        // A transient failure (bad network at the moment this view appeared)
+        // shouldn't blank the image for good, since the URL is often stable
+        // across app sessions (e.g. Google's avatar URL is the same every
+        // sign-in) and nothing else would ever trigger another attempt.
+        // Retry a couple of times with a short backoff before giving up.
+        for attempt in 0..<3 {
+            if attempt > 0 {
+                try? await Task.sleep(nanoseconds: 500_000_000 * UInt64(attempt))
             }
-            ImageCache.shared.insert(downloaded, for: url)
-            uiImage = downloaded
-        } catch {
-            print("CachedAsyncImage: failed to load \(url): \(error.localizedDescription)")
+            // Bypass URLCache: a transient failure can otherwise get cached
+            // as the "response" for this URL, permanently blanking the
+            // image on every future load.
+            let request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
+            do {
+                let (data, response) = try await URLSession.shared.data(for: request)
+                guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
+                      let downloaded = UIImage(data: data) else {
+                    print("CachedAsyncImage: failed to decode image from \(url) (attempt \(attempt + 1))")
+                    continue
+                }
+                ImageCache.shared.insert(downloaded, for: url)
+                uiImage = downloaded
+                return
+            } catch {
+                print("CachedAsyncImage: failed to load \(url) (attempt \(attempt + 1)): \(error.localizedDescription)")
+            }
         }
     }
 }

@@ -343,7 +343,10 @@ struct ProfileView: View {
                             .frame(width: 100, height: 100)
                             .padding(.bottom)
                     } placeholder: {
-                        //ProgressView() // loading spinner while the image loads
+                        Circle()
+                            .fill(Color.gray)
+                            .frame(width: 100, height: 100)
+                            .padding(.bottom)
                     }
                     
                 } else if let gcImage = gameCenterImage {

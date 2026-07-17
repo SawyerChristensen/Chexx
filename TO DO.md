@@ -2,7 +2,7 @@
 ---
 
 ## Update 1.5 — Mac Port  💻
-- [ ] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
+- [x] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
 - [ ] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
 - [ ] Add Notifications! (for main app obviously)
   - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
