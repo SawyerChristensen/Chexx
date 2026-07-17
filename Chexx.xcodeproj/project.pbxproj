@@ -42,7 +42,7 @@
 		BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */; };
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
 		BE7D04B22E5A77D6000920FC /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7D04B12E5A77D6000920FC /* Messages.framework */; };
-		BE7D04BE2E5A77D7000920FC /* HexChessLite.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		BE7D04BE2E5A77D7000920FC /* HexChessLite.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 		BE7D04EF2E625E1C000920FC /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
 		BE8B84BD3006D41C00A55F49 /* TO DO.md in Resources */ = {isa = PBXBuildFile; fileRef = BE8B84BC3006D41C00A55F49 /* TO DO.md */; };
@@ -661,6 +661,7 @@
 				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -694,6 +695,7 @@
 				MARKETING_VERSION = 1.4.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
