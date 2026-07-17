@@ -45,5 +45,8 @@ struct ChexxApp: App {
         WindowGroup {
             MainMenuView()
         }
+        #if targetEnvironment(macCatalyst)
+        .defaultSize(width: 550, height: 550)
+        #endif
     }
 }

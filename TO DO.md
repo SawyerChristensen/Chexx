@@ -3,11 +3,9 @@
 
 ## Update 1.5 — Mac Port  💻
 - [x] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
-- [~] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
-  - [x] Enable Mac Catalyst support on the Chexx app target (SUPPORTS_MACCATALYST) and exclude the iMessage extension (HexChessLite) from the Catalyst build via platform filters, so the app builds and runs on Mac
-  - [x] Fix any Mac Catalyst runtime/UI issues (launch, sign-in flow, layout) so the app is fully usable on Mac, not just compiling
-  - [ ] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
-  - [ ] Audit ScrollViews and other iOS-specific UI (nav patterns, controls) and adjust to Mac-recommended equivalents (e.g. proper scroll indicators, hover states, sidebar/toolbar patterns where appropriate)
+- [x] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
+  - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
+- [ ] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
 - [ ] Add Notifications! (for main app obviously)
   - [ ] Add "live activities" notifications for games? Have a little preview of the board on the right of the notification, and then text that says "[opponent username] [moved to/captured] [tile/piece at tile]" similar to what we do with imessage
 - [ ] Review app for view inefficiencies so that the app runs as smoothly as possible
