@@ -19,6 +19,7 @@ struct GameView: View {
     @State var isPassAndPlay: Bool = false
     @State var isOnlineMultiplayer: Bool = false
     @State private var scene: SKScene?
+    @State private var preferredFramesPerSecond: Int = 10
     var startNewGame: Bool = false
     //@State var variant: String
 
@@ -29,7 +30,7 @@ struct GameView: View {
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
                 if let scene = scene { //the actual board
-                    SpriteView(scene: scene, preferredFramesPerSecond: 120)
+                    SpriteView(scene: scene, preferredFramesPerSecond: preferredFramesPerSecond)
                         .ignoresSafeArea()
                 }
             }
@@ -176,7 +177,10 @@ struct GameView: View {
         newScene.whiteStatusTextMiniUpdater = { text in
             self.whiteStatusTextMini = text // Update the mini white status text from the GameScene
         }
-        
+        newScene.animationActivityUpdater = { activeCount in
+            self.preferredFramesPerSecond = activeCount > 0 ? 120 : 10
+        }
+
         return newScene
     }
 }
