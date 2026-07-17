@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UserNotifications
 
 struct SettingsWindow: View {
     let screenHeight: CGFloat //built off of 720 for initial iphone 15 pro test
@@ -14,7 +15,7 @@ struct SettingsWindow: View {
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
-    //@AppStorage("playerTurnNotifEnabled") private var playerTurnNotifEnabled = false
+    @AppStorage("playerTurnNotifEnabled") private var playerTurnNotifEnabled = false
     
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
@@ -53,12 +54,19 @@ struct SettingsWindow: View {
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                /*
+
                 Toggle("Player Turn Notification", isOn: $playerTurnNotifEnabled)
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                */
+                    .onChange(of: playerTurnNotifEnabled) { _, newValue in
+                        guard newValue else { return }
+                        NotificationManager.requestAuthorization { granted in
+                            if !granted {
+                                playerTurnNotifEnabled = false
+                            }
+                        }
+                    }
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
@@ -77,6 +85,14 @@ struct SettingsWindow: View {
             .cornerRadius(15)
             .shadow(radius: colorScheme == .dark ? 20 : 100)
             //.scaleEffect(1.2)
+        }
+        .onAppear {
+            guard playerTurnNotifEnabled else { return }
+            NotificationManager.authorizationStatus { status in
+                if status == .denied {
+                    playerTurnNotifEnabled = false
+                }
+            }
         }
     }
 }

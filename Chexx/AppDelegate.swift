@@ -8,6 +8,27 @@
 import SwiftUI
 import FirebaseCore
 import GoogleSignIn
+import UserNotifications
+
+// Local notification permission/authorization handling. Remote/push notifications
+// (e.g. opponent-move alerts while the app is closed) are a separate, later step.
+struct NotificationManager {
+    static func requestAuthorization(completion: @escaping (Bool) -> Void) {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
+            DispatchQueue.main.async {
+                completion(granted)
+            }
+        }
+    }
+
+    static func authorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
+        UNUserNotificationCenter.current().getNotificationSettings { settings in
+            DispatchQueue.main.async {
+                completion(settings.authorizationStatus)
+            }
+        }
+    }
+}
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
