@@ -28,7 +28,7 @@
   - [x] Audit HexChessLite (iMessage extension) views for the same view-inefficiency patterns
 - [~] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
   - [x] Enable ProMotion 120Hz rendering capability (CADisableMinimumFrameDurationOnPhone in Info.plist) and raise SpriteView's preferredFramesPerSecond ceiling to 120 in GameView (main app)
-  - [ ] Add a shared animation-activity tracker in GameScene that increments/decrements while piece-move slides and repeating highlight/glow/wobble actions are running
+  - [x] Add a shared animation-activity tracker in GameScene that increments/decrements while piece-move slides and repeating highlight/glow/wobble actions are running
   - [ ] Wire that tracker into GameView's SpriteView preferredFramesPerSecond so it drops to 10 fps when idle and jumps to 120 fps while any tracked animation is active
   - [ ] Apply the same dynamic framerate wiring to the iMessage extension (HexChessLite MGameView/MGameScene)
 - [ ] Remove the "Thinking" CPU animation glow and make it much smaller

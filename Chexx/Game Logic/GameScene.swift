@@ -41,7 +41,25 @@ class GameScene: SKScene {
     var redStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextUpdater: ((String) -> Void)?
     var whiteStatusTextMiniUpdater: ((String) -> Void)?
-    
+
+    // Number of currently-running piece slides / wobble / highlight-pulse animations.
+    // GameView observes this (via animationActivityUpdater) to raise SpriteView's frame rate
+    // only while something is actually animating, and drop back down when idle.
+    private(set) var animationActivityCount: Int = 0 {
+        didSet { animationActivityUpdater?(animationActivityCount) }
+    }
+    var animationActivityUpdater: ((Int) -> Void)?
+    private var areValidMoveHighlightsActive = false
+    private var areCheckHighlightsActive = false
+
+    private func beginAnimationActivity() {
+        animationActivityCount += 1
+    }
+
+    private func endAnimationActivity() {
+        animationActivityCount = max(0, animationActivityCount - 1)
+    }
+
     init(size: CGSize, isVsCPU: Bool, isPassAndPlay: Bool, isOnlineMultiplayer: Bool) {
         self.isVsCPU = isVsCPU
         self.isPassAndPlay = isPassAndPlay
@@ -415,6 +433,9 @@ class GameScene: SKScene {
     private func resetPiece(_ pieceNode: SKSpriteNode) {
         let initialRotation = pieceNode.userData?["initialRotation"] as? CGFloat ?? 0.0
         pieceNode.setScale(1.0)
+        if pieceNode.action(forKey: "wobbleEffect") != nil {
+            endAnimationActivity()
+        }
         pieceNode.removeAction(forKey: "wobbleEffect")
         pieceNode.zRotation = initialRotation
     }
@@ -425,6 +446,7 @@ class GameScene: SKScene {
         let wobble = SKAction.sequence([wobbleLeft, wobbleRight, wobbleRight, wobbleLeft])
         let wobbleRepeat = SKAction.repeatForever(wobble)
         pieceNode.run(wobbleRepeat, withKey: "wobbleEffect")
+        beginAnimationActivity()
     }
     
     // Touch Moved
@@ -466,7 +488,12 @@ class GameScene: SKScene {
     
     func highlightValidMoves(_ validMoves: [String]) {
         guard highlightEnabled else { return }
-        
+
+        if !validMoves.isEmpty && !areValidMoveHighlightsActive {
+            areValidMoveHighlightsActive = true
+            beginAnimationActivity()
+        }
+
         for hexTiles in validMoves {
             if let hexagon = hexagonsByName[hexTiles] {
                 let glowOverlay = SKShapeNode(path: hexagon.path!)
@@ -490,6 +517,11 @@ class GameScene: SKScene {
     func highlightCheckStatus(for positions: [String]) {
         for position in positions {
             highlightCheckingPiece(at: position)
+        }
+
+        if !positions.isEmpty && !areCheckHighlightsActive {
+            areCheckHighlightsActive = true
+            beginAnimationActivity()
         }
     }
     
@@ -520,13 +552,21 @@ class GameScene: SKScene {
                 hexagon.childNode(withName: "validMovesOverlay")?.removeFromParent()
             }
         }
+        if areValidMoveHighlightsActive {
+            areValidMoveHighlightsActive = false
+            endAnimationActivity()
+        }
     }
-    
+
     func clearCheckHighlights() {
         for node in children {
             if let hexagon = node as? HexagonNode {
                 hexagon.childNode(withName: "checkOverlay")?.removeFromParent()
             }
+        }
+        if areCheckHighlightsActive {
+            areCheckHighlightsActive = false
+            endAnimationActivity()
         }
         redStatusTextUpdater?("")
     }
@@ -1059,9 +1099,11 @@ class GameScene: SKScene {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
                         let slideAction = SKAction.move(to: destinationPosition, duration: 0.25)
                         //slideAction.timingMode = .linear
+                        self.beginAnimationActivity()
                         cpuPieceNode.run(slideAction)
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //pretty sure this improves the frame rate
                             guard let self = self else { return }
+                            self.endAnimationActivity()
                             let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
                             self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
                         }
@@ -1142,9 +1184,11 @@ class GameScene: SKScene {
                 if let parent = pieceNode.parent {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
+                    beginAnimationActivity()
                     pieceNode.run(slideAction)
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
                         guard let self = self else { return }
+                        self.endAnimationActivity()
                         self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
                     }
                 }
