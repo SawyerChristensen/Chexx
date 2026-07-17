@@ -19,7 +19,7 @@
     - [x] Wire LiveActivityManager into the move-handling/push-notification flow so the opponent's move updates the Live Activity with a board preview and "[opponent] [moved to/captured] [tile/piece]" text
 - [x] Review the turkish translation and make sure we use the new terminology "Altıgen Satranç"
 - [x] Review the korean translation and make sure we use the new terminology "육각형 체스"
-- [ ] Add the fact we dont have any encryption in the app to the apps plist so that we dont have to check the button every time in App Store Connect
+- [x] Add the fact we dont have any encryption in the app to the apps plist so that we dont have to check the button every time in App Store Connect
 - [ ] Review app for view inefficiencies so that the app runs as smoothly as possible
 - [ ] Enable 120 hz in app settings/dynamic framerates. the app should be 10hz when just looking at the board, 120hz when a piece is moving if possible
 - [ ] Remove the "Thinking" CPU animation glow and make it much smaller
