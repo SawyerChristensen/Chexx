@@ -73,7 +73,16 @@ private func parsePosition(_ position: String) -> (col: Int, row: Int)? {
 }
 
 func validMovesForPiece(at position: String, color: String, type: String, in gameState: inout GameState, skipKingCheck: Bool = false) -> [String] {
-    var possibleMoves: [String] = []
+    guard let tuplePosition = parsePosition(position) else { return [] }
+    let moves = validMovesForPiece(at: tuplePosition, color: color, type: type, in: &gameState, skipKingCheck: skipKingCheck)
+    return boardToHex(moves)
+}
+
+// Tuple-based core: dispatches straight to the tuple piece-type generators and tuple
+// filterMovesThatExposeKing, so callers that already have board indices (e.g. GameCPU's search
+// loop) never round-trip through algebraic notation.
+func validMovesForPiece(at position: (Int, Int), color: String, type: String, in gameState: inout GameState, skipKingCheck: Bool = false) -> [(Int, Int)] {
+    var possibleMoves: [(Int, Int)] = []
 
     switch type {
     case "pawn":
@@ -83,9 +92,8 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
     case "bishop":
         possibleMoves = validMovesForBishop(color, at: position, in: gameState)
     case "queen":
-        let rookMoves = validMovesForRook(color, at: position, in: gameState)
-        let bishopMoves = validMovesForBishop(color, at: position, in: gameState)
-        possibleMoves = Array(Set(rookMoves + bishopMoves))
+        // Rook- and bishop-direction destinations for a queen never overlap, so no dedup is needed.
+        possibleMoves = validMovesForRook(color, at: position, in: gameState) + validMovesForBishop(color, at: position, in: gameState)
     case "king":
         possibleMoves = validMovesForKing(color, at: position, in: gameState)
     case "knight":
