@@ -133,7 +133,7 @@ class GameCPU {
     }
 
     private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: SearchMove?) {
-        if depth == 0 || gameState.isGameOver().0 {
+        if depth == 0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, nil)
         }
@@ -164,8 +164,14 @@ class GameCPU {
         var bestValue = maximizingPlayer ? Int.min : Int.max
         var bestMoves: [SearchMove] = [] // List of moves with the best score
 
-        // Generate and order moves for better alpha/beta pruning
+        // Generate and order moves for better alpha/beta pruning. An empty result means the side
+        // to move has no legal moves (checkmate/stalemate) — this replaces a separate isGameOver()
+        // legality scan that used to run first and re-derive the same thing via its own full pass.
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
+        if possibleMoves.isEmpty {
+            let value = evaluateGameState(gameState, for: originalPlayerColor)
+            return (value, nil)
+        }
         var orderedMoves = orderMoves(possibleMoves, gameState: gameState)
 
         // Try the transposition table's previously-best move first; it's the move most likely to

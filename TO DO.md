@@ -3,11 +3,17 @@
 
 ## Update 1.5 — Mac Port  💻
 - [x] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
+- [~] Review the CPU file/struct/class structure and see if there are any inefficiencies there. Do another general review of the CPU architecture and see if there are any performance gains to be made. If you find any, list them here and do them one by one.
+  - [x] minimax() called gameState.isGameOver() (a full legal-move-existence scan) and then generateAllFullMoves() (a full legal-move-list build) back to back at every internal search node, duplicating the same per-piece legality filtering. Generate the move list once per node and derive "no legal moves" from its emptiness instead.
+  - [ ] filterMovesThatExposeKing (PieceRules.swift) checks each pseudo-legal move's legality by doing a full makeMove + isKingInCheckUsingKingSight ray-scan + unmakeMove, for every candidate move of every piece, every node — this is the dominant cost in the tree and compounds with depth. Replace with real pin/check-ray detection that doesn't require simulating each move.
+  - [ ] Move generation/search is String-based end-to-end (e.g. "A1-B2"), forcing repeated parse/allocate round-trips (hexColumns.firstIndex(of:) etc.) in GameCPU, PieceRules, GameState.makeMove, and evaluateMove's move-ordering sort. Thread (col,row) Int tuples through the hot path instead of algebraic-notation strings.
+  - [ ] Queen move generation builds `Array(Set(rookMoves + bishopMoves))` to dedupe, which is unnecessary since rook- and bishop-direction destinations for a queen never overlap — just concatenate the arrays.
 - [x] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
 - [~] Add Notifications!
-  - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it
+  - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it.
+  - [ ] The ability to send notification should only be enabled after the user enters their first online game. (so they can get updates from the game)
   - [x] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
   - [~] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
     - [x] Register for an FCM token (FirebaseMessaging) alongside the existing raw APNs device token and store it per-user in Firestore, so a Cloud Function can target devices via the Firebase Admin SDK
@@ -64,7 +70,7 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 ---
 
 ## Update 1.6 — Multiplayer v2  􀉬
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE
+NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE (ecluding app store connect to-do)
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
 - [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
