@@ -8,8 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */; };
+		19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD021CFE553872F49DC3911 /* ChexxTests.swift */; };
 		29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7017F2C885574833D4FBA47 /* SwiftUI.framework */; };
 		308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		60F23E62C82642B3A374EBD7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD7814AF114864DBE58241 /* Foundation.framework */; };
 		68038A4466C44B85898CF764 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 1C4B1598D7EC5A5B3044B9A3 /* FirebaseMessaging */; };
 		794DCD94DC3AA22C66DE659C /* LiveActivityManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 716F809085AE1230B7C914ED /* LiveActivityManager.swift */; };
 		79CF2D07EE8B41EBFFED7529 /* ReviewRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */; };
@@ -85,6 +87,13 @@
 			remoteGlobalIDString = BE7D04AE2E5A77D6000920FC;
 			remoteInfo = HexChessLite;
 		};
+		E0A3DCA0332A1B7ABEEA2F28 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BE76A9A42C2A2602009113B4 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = BE76A9AB2C2A2602009113B4;
+			remoteInfo = Chexx;
+		};
 		EBE3AB62BC4C25092C657D27 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = BE76A9A42C2A2602009113B4 /* Project object */;
@@ -115,6 +124,7 @@
 		716F809085AE1230B7C914ED /* LiveActivityManager.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = LiveActivityManager.swift; sourceTree = "<group>"; };
 		7A5F9A5AEC59560EE65D2353 /* UIApplication+ActiveScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+ActiveScene.swift"; sourceTree = "<group>"; };
 		83FD982D63F19C77EB8F3F87 /* ActivityKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ActivityKit.framework; path = System/Library/Frameworks/ActivityKit.framework; sourceTree = SDKROOT; };
+		87A1F346A31BA8F3345F46B2 /* ChexxTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChexxTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B10C013D65BF0A962A1E7BAE /* ReviewRequestManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewRequestManager.swift; sourceTree = "<group>"; };
 		BE091A4E2CC124C500C1A3EC /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		BE091A562CC2888100C1A3EC /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
@@ -156,19 +166,20 @@
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 		C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLiveActivityAttributes.swift; sourceTree = "<group>"; };
 		C7017F2C885574833D4FBA47 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		CFD021CFE553872F49DC3911 /* ChexxTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChexxTests.swift; sourceTree = "<group>"; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChexxWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		3FA44FEA36C9F4F7C1533B3F /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		3FA44FEA36C9F4F7C1533B3F /* Exceptions for "ChexxWidgets" folder in "ChexxWidgets" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */;
 		};
-		BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		BE7D04C22E5A77D7000920FC /* Exceptions for "HexChessLite" folder in "HexChessLite" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -178,8 +189,30 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (3FA44FEA36C9F4F7C1533B3F /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ChexxWidgets; sourceTree = "<group>"; };
-		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (BE7D04C22E5A77D7000920FC /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = HexChessLite; sourceTree = "<group>"; };
+		6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				3FA44FEA36C9F4F7C1533B3F /* Exceptions for "ChexxWidgets" folder in "ChexxWidgets" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = ChexxWidgets;
+			sourceTree = "<group>";
+		};
+		BE7D04B32E5A77D6000920FC /* HexChessLite */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				BE7D04C22E5A77D7000920FC /* Exceptions for "HexChessLite" folder in "HexChessLite" target */,
+			);
+			explicitFileTypes = {
+			};
+			explicitFolders = (
+			);
+			path = HexChessLite;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +223,14 @@
 				C5DA40C901162FCC43497E9A /* WidgetKit.framework in Frameworks */,
 				29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */,
 				D619B801D7F938EB0D3CF838 /* ActivityKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		5A6F8E6802D1E1E9F01BEDFD /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				60F23E62C82642B3A374EBD7 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -237,6 +278,7 @@
 				BE7D04B02E5A77D6000920FC /* Frameworks */,
 				BE76A9AD2C2A2602009113B4 /* Products */,
 				6ED7513729EA8D3CFDB64CD1 /* ChexxWidgets */,
+				E3D688122ADF32556CBE547A /* ChexxTests */,
 			);
 			sourceTree = "<group>";
 		};
@@ -246,6 +288,7 @@
 				BE76A9AC2C2A2602009113B4 /* Chexx.app */,
 				BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */,
 				FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */,
+				87A1F346A31BA8F3345F46B2 /* ChexxTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -347,9 +390,36 @@
 			path = "Sound Effects";
 			sourceTree = "<group>";
 		};
+		E3D688122ADF32556CBE547A /* ChexxTests */ = {
+			isa = PBXGroup;
+			children = (
+				CFD021CFE553872F49DC3911 /* ChexxTests.swift */,
+			);
+			name = ChexxTests;
+			path = ChexxTests;
+			sourceTree = SOURCE_ROOT;
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		69C40A37B7F92F61213CFF6C /* ChexxTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = C1481B6E65EE9CCF6D6278A1 /* Build configuration list for PBXNativeTarget "ChexxTests" */;
+			buildPhases = (
+				59159E267F71DC5E76E0A67E /* Sources */,
+				5A6F8E6802D1E1E9F01BEDFD /* Frameworks */,
+				B6A25CF9A6ADBB39C1EEFA9C /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				5C396B12D8C27F9A1512C74F /* PBXTargetDependency */,
+			);
+			name = ChexxTests;
+			productName = ChexxTests;
+			productReference = 87A1F346A31BA8F3345F46B2 /* ChexxTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		BE76A9AB2C2A2602009113B4 /* Chexx */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = BE76A9C32C2A2603009113B4 /* Build configuration list for PBXNativeTarget "Chexx" */;
@@ -475,12 +545,20 @@
 				BE76A9AB2C2A2602009113B4 /* Chexx */,
 				BE7D04AE2E5A77D6000920FC /* HexChessLite */,
 				F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */,
+				69C40A37B7F92F61213CFF6C /* ChexxTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		3B72D6A60A75CDACFD719AC2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B6A25CF9A6ADBB39C1EEFA9C /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -531,6 +609,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		59159E267F71DC5E76E0A67E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -588,6 +674,12 @@
 			target = F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */;
 			targetProxy = EBE3AB62BC4C25092C657D27 /* PBXContainerItemProxy */;
 		};
+		5C396B12D8C27F9A1512C74F /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = Chexx;
+			target = BE76A9AB2C2A2602009113B4 /* Chexx */;
+			targetProxy = E0A3DCA0332A1B7ABEEA2F28 /* PBXContainerItemProxy */;
+		};
 		BE7D04BD2E5A77D7000920FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = BE7D04AE2E5A77D6000920FC /* HexChessLite */;
@@ -615,6 +707,29 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		50CDAD1C980456A92347738E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.ChexxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chexx.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Chexx";
+			};
+			name = Debug;
+		};
 		AF5D583D073793C15AF94392 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -905,6 +1020,30 @@
 			};
 			name = Release;
 		};
+		D34341A5A788D566314F0356 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx.ChexxTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTS_MACCATALYST = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Chexx.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Chexx";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -940,6 +1079,15 @@
 			buildConfigurations = (
 				BE7D04C02E5A77D7000920FC /* Debug */,
 				BE7D04C12E5A77D7000920FC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		C1481B6E65EE9CCF6D6278A1 /* Build configuration list for PBXNativeTarget "ChexxTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D34341A5A788D566314F0356 /* Release */,
+				50CDAD1C980456A92347738E /* Debug */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
