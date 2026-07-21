@@ -20,7 +20,7 @@ private struct TranspositionEntry {
     let depth: Int
     let value: Int
     let flag: TranspositionFlag
-    let bestMove: String
+    let bestMove: SearchMove?
 }
 
 private enum TranspositionFlag {
@@ -29,12 +29,14 @@ private enum TranspositionFlag {
     case upperBound // real value is <= `value` (this node failed low against alpha)
 }
 
-// A move with its start/destination/promotion already split out, computed once at generation
-// time so the search hot path never re-parses a "A1-B2=queen"-style string.
-private struct SearchMove {
-    let notation: String
-    let start: String
-    let destination: String
+// A move expressed purely as (col,row) board indices, so the search hot path never parses or
+// formats algebraic-notation strings. Only the final chosen move is converted to a notation
+// string, at the GameCPU/GameScene boundary.
+private struct SearchMove: Equatable {
+    let fromCol: Int
+    let fromRow: Int
+    let toCol: Int
+    let toRow: Int
     let promotion: String?
 }
 
@@ -56,23 +58,21 @@ class GameCPU {
     }
 
     private func generateAllFullMoves(for color: String, in gameState: inout GameState) -> [SearchMove] {
-        let columns = hexColumns
         var allMoves: [SearchMove] = []
 
         for colIndex in 0..<GameState.columnSizes.count {
             for rowIndex in 0..<GameState.columnSizes[colIndex] {
                 guard let piece = gameState[colIndex, rowIndex], piece.color == color else { continue }
-                let currentPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                let validMoves = validMovesForPiece(at: currentPosition, color: piece.color, type: piece.type, in: &gameState)
+                let validMoves = validMovesForPiece(at: (colIndex, rowIndex), color: piece.color, type: piece.type, in: &gameState)
 
                 // For each valid destination, create a move that includes the start and destination
-                for destination in validMoves {
-                    if piece.type == "pawn", isPromotionDestination(destination, color: piece.color, in: gameState) {
+                for (toCol, toRow) in validMoves {
+                    if piece.type == "pawn", isPromotionDestination(toCol, toRow, color: piece.color, in: gameState) {
                         for promotionType in ["queen", "rook", "bishop", "knight"] {
-                            allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)=\(promotionType)", start: currentPosition, destination: destination, promotion: promotionType))
+                            allMoves.append(SearchMove(fromCol: colIndex, fromRow: rowIndex, toCol: toCol, toRow: toRow, promotion: promotionType))
                         }
                     } else {
-                        allMoves.append(SearchMove(notation: "\(currentPosition)-\(destination)", start: currentPosition, destination: destination, promotion: nil))
+                        allMoves.append(SearchMove(fromCol: colIndex, fromRow: rowIndex, toCol: toCol, toRow: toRow, promotion: nil))
                     }
                 }
             }
@@ -82,13 +82,8 @@ class GameCPU {
     }
 
     // Whether a pawn moving to this destination would be promoting
-    private func isPromotionDestination(_ destination: String, color: String, in gameState: GameState) -> Bool {
-        guard let colLetter = destination.first,
-              let colIndex = hexColumnIndex(for: colLetter),
-              let rowIndex = Int(destination.dropFirst()).map({ $0 - 1 }) else {
-            return false
-        }
-        return color == "white" ? rowIndex == gameState.rowCount(forCol: colIndex) - 1 : rowIndex == 0
+    private func isPromotionDestination(_ toCol: Int, _ toRow: Int, color: String, in gameState: GameState) -> Bool {
+        color == "white" ? toRow == gameState.rowCount(forCol: toCol) - 1 : toRow == 0
     }
 
     // Main function to decide and make a move
@@ -112,10 +107,19 @@ class GameCPU {
         }
     }
 
+    // Formats a (col,row) search move to algebraic notation. Only called once, at the boundary,
+    // for the final move the search/random selection settles on.
+    private func notation(for move: SearchMove) -> (start: String, destination: String, promotion: String?) {
+        let columns = hexColumns
+        let start = "\(columns[move.fromCol])\(move.fromRow + 1)"
+        let destination = "\(columns[move.toCol])\(move.toRow + 1)"
+        return (start, destination, move.promotion)
+    }
+
     // Randomly select a move
     private func selectRandomMove(from moves: [SearchMove]) -> (start: String, destination: String, promotion: String?)? {
         guard let move = moves.randomElement() else { return nil }
-        return (move.start, move.destination, move.promotion)
+        return notation(for: move)
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String, promotion: String?)? {
@@ -128,7 +132,7 @@ class GameCPU {
         let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
 
         guard let move = bestMove.move else { return nil }
-        return (move.start, move.destination, move.promotion)
+        return notation(for: move)
     }
 
     private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: SearchMove?) {
@@ -141,7 +145,7 @@ class GameCPU {
         let betaAtEntry = beta
 
         let ttKey = transpositionKey(for: gameState)
-        var ttBestMoveNotation: String? = nil
+        var ttBestMove: SearchMove? = nil
         if let entry = transpositionTable[ttKey], entry.depth >= depth {
             switch entry.flag {
             case .exact:
@@ -155,7 +159,7 @@ class GameCPU {
                     return (entry.value, nil)
                 }
             }
-            ttBestMoveNotation = entry.bestMove
+            ttBestMove = entry.bestMove
         }
 
         var alpha = alpha
@@ -175,7 +179,7 @@ class GameCPU {
 
         // Try the transposition table's previously-best move first; it's the move most likely to
         // cause a cutoff, since it was already good enough at this position at an earlier search
-        if let ttBestMoveNotation = ttBestMoveNotation, let ttMoveIndex = orderedMoves.firstIndex(where: { $0.notation == ttBestMoveNotation }) {
+        if let ttBestMove = ttBestMove, let ttMoveIndex = orderedMoves.firstIndex(where: { $0 == ttBestMove }) {
             let ttMove = orderedMoves.remove(at: ttMoveIndex)
             orderedMoves.insert(ttMove, at: 0)
         }
@@ -184,7 +188,7 @@ class GameCPU {
             if Date() >= deadline { //mayyyy not need this
                 return (bestValue, bestMoves.randomElement())}
 
-            let undoInfo = gameState.makeMove(move.start, to: move.destination, promotionType: move.promotion ?? "queen")
+            let undoInfo = gameState.makeMove(fromCol: move.fromCol, fromRow: move.fromRow, toCol: move.toCol, toRow: move.toRow, promotionType: move.promotion ?? "queen")
             gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
             let result = minimax(
@@ -196,7 +200,7 @@ class GameCPU {
                 originalPlayerColor: originalPlayerColor,
                 deadline: deadline)
 
-            gameState.unmakeMove(move.start, to: move.destination, undoInfo: undoInfo)
+            gameState.unmakeMove(undoInfo: undoInfo)
             gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
             // Update best value and moves based on maximizing/minimizing
@@ -239,7 +243,7 @@ class GameCPU {
         } else {
             flag = .exact
         }
-        transpositionTable[ttKey] = TranspositionEntry(depth: depth, value: bestValue, flag: flag, bestMove: bestMove?.notation ?? "")
+        transpositionTable[ttKey] = TranspositionEntry(depth: depth, value: bestValue, flag: flag, bestMove: bestMove)
 
         return (bestValue, bestMove)
     }
@@ -263,8 +267,8 @@ class GameCPU {
 
     // Simple heuristic to prioritize moves
     private func evaluateMove(_ move: SearchMove, in gameState: GameState) -> Int {
-        if let fromPiece = gameState.pieceAt(move.start),
-           let toPiece = gameState.pieceAt(move.destination) {
+        if let fromPiece = gameState.pieceAt(col: move.fromCol, row: move.fromRow),
+           let toPiece = gameState.pieceAt(col: move.toCol, row: move.toRow) {
             // Capture move
             return pieceValue(toPiece.type) - pieceValue(fromPiece.type)
         } else {

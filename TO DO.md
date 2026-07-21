@@ -3,19 +3,20 @@
 
 ## Update 1.5 — Mac Port  💻
 - [x] There is a bug loading my google icon photo. I signed out and in to my google account again but my photo doesnt still doesnt show up.
-- [~] Review the CPU file/struct/class structure and see if there are any inefficiencies there. Do another general review of the CPU architecture and see if there are any performance gains to be made. If you find any, list them here and do them one by one.
+- [x] Review the CPU file/struct/class structure and see if there are any inefficiencies there. Do another general review of the CPU architecture and see if there are any performance gains to be made. If you find any, list them here and do them one by one.
   - [x] minimax() called gameState.isGameOver() (a full legal-move-existence scan) and then generateAllFullMoves() (a full legal-move-list build) back to back at every internal search node, duplicating the same per-piece legality filtering. Generate the move list once per node and derive "no legal moves" from its emptiness instead.
   - [x] filterMovesThatExposeKing (PieceRules.swift) checks each pseudo-legal move's legality by doing a full makeMove + isKingInCheckUsingKingSight ray-scan + unmakeMove, for every candidate move of every piece, every node — this is the dominant cost in the tree and compounds with depth. Replace with real pin/check-ray detection that doesn't require simulating each move. (Added `isPinned`: a cheap remove-piece/re-scan-king-sight check that identifies pinned pieces via ray diffing. Non-king, non-pawn pieces that aren't pinned and whose king isn't already in check now skip the make/unmake simulation entirely and return their pseudo-legal moves as-is. Pawns are still simulated per-move because en passant can drop two pawns off the same rank at once, which single-piece pin detection can't catch.)
-  - [~] Move generation/search is String-based end-to-end (e.g. "A1-B2"), forcing repeated parse/allocate round-trips (hexColumns.firstIndex(of:) etc.) in GameCPU, PieceRules, GameState.makeMove, and evaluateMove's move-ordering sort. Thread (col,row) Int tuples through the hot path instead of algebraic-notation strings.
+  - [x] Move generation/search is String-based end-to-end (e.g. "A1-B2"), forcing repeated parse/allocate round-trips (hexColumns.firstIndex(of:) etc.) in GameCPU, PieceRules, GameState.makeMove, and evaluateMove's move-ordering sort. Thread (col,row) Int tuples through the hot path instead of algebraic-notation strings.
     - [x] Replace the ~17 `hexColumns.firstIndex(of: String(letter))` linear scans (which also allocated a throwaway String per call) across GameCPU, GameScene, PieceRules, and GameState with an O(1) `hexColumnIndex(for:)` letter-to-index helper.
     - [x] Add (col,row) tuple overloads of GameState.pieceAt/makeMove/unmakeMove that skip the notation-string round trip when the caller (GameCPU's search loop) already has indices, keeping the existing String-based versions as thin wrappers for other callers (GameScene, multiplayer sync).
     - [x] Convert PieceRules' validMovesFor* generators (pawn/rook/bishop/king/knight) to build (col,row) tuples internally and convert to notation strings only once at the public API boundary.
-    - [~] Convert GameCPU's SearchMove/generateAllFullMoves/evaluateMove/orderMoves to operate on (col,row) tuples end-to-end, formatting to a notation string only for the final chosen move.
+    - [x] Convert GameCPU's SearchMove/generateAllFullMoves/evaluateMove/orderMoves to operate on (col,row) tuples end-to-end, formatting to a notation string only for the final chosen move.
       - [x] Convert PieceRules' pawnPureCaptures and isKingInCheckUsingKingSight to tuple-based cores (mirroring the validMovesFor* pattern), keeping the String-based versions as thin wrappers that parse/format only at the boundary.
       - [x] Convert PieceRules' isPinned and filterMovesThatExposeKing to tuple-based cores using the new tuple isKingInCheckUsingKingSight, keeping String-based wrappers as thin boundary converters.
       - [x] Add a tuple-based validMovesForPiece dispatcher that calls the tuple piece-type generators and the tuple filterMovesThatExposeKing directly, keeping the String-based validMovesForPiece as a thin wrapper.
-      - [ ] Convert GameCPU's SearchMove struct to store (col,row) indices instead of notation strings, and update generateAllFullMoves/evaluateMove/orderMoves/minimax to use the tuple validMovesForPiece/pieceAt/makeMove path end-to-end, formatting a notation string only for the final chosen move and the transposition-table best-move key.
+      - [x] Convert GameCPU's SearchMove struct to store (col,row) indices instead of notation strings, and update generateAllFullMoves/evaluateMove/orderMoves/minimax to use the tuple validMovesForPiece/pieceAt/makeMove path end-to-end, formatting a notation string only for the final chosen move and the transposition-table best-move key.
   - [x] Queen move generation builds `Array(Set(rookMoves + bishopMoves))` to dedupe, which is unnecessary since rook- and bishop-direction destinations for a queen never overlap — just concatenate the arrays. (Resolved as a side effect of the tuple-based validMovesForPiece dispatcher above, which concatenates instead of deduping and is now the sole implementation the String-based wrapper calls.)
+- [ ] Create an extensive CPU testing suite to make sure the CPU works as intended. Be able to log exact time differences and % increases in efficiency.
 - [x] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
@@ -47,6 +48,7 @@
   - [x] Apply the same dynamic framerate wiring to the iMessage extension (HexChessLite MGameView/MGameScene)
 - [x] Remove the "Thinking" CPU animation glow and make it much smaller
 - [ ] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
+- [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
 - [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
 The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.
 
@@ -68,17 +70,15 @@ The archive did not include a dSYM for the grpcpp.framework with the UUIDs [62CB
 Upload Symbols Failed
 The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs [0A8C77A3-2823-3285-843A-62B5BB169964]. Ensure that the archive's dSYM folder includes a DWARF file for openssl_grpc.framework with the expected UUIDs." If you can include those dSYM files somehow so that these warnings don't appear anymore that would be great
 
-
 - [ ] App Store Connect/photoshop work:
-  - [ ] Better App Store pictures for iPad (1/3 of all users!!) Is this what mac uses
+  - [ ] Better App Store pictures for iPad (1/3 of all users!!) Is this what mac uses?
   - [ ] Listing canvas gaps should be shorter?
   - [ ] Modify Russian listing photo text?
-  - [ ] Modify the Chinese listing photo text?
+  - [ ] Modify the Chinese listing photo text? Add Chinese Trad
 
 ---
 
 ## Update 1.6 — Multiplayer v2  􀉬
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE (ecluding app store connect to-do)
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
 - [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
@@ -87,6 +87,8 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE (ecluding app store connect 
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
 - [ ] Home Screen quick actions?
 - [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty
+- [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
+  - [ ] Display first name, country emoji, Elo?
 - [ ] Login does not check if your email is actually real
 - [ ] In multiplayer, show opponent's Game Center icon if they don't have a Google icon
 - [ ] If user is anonymous, do not update Elo. Is this still needed?
@@ -97,19 +99,16 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE (ecluding app store connect 
 ---
 
 ## Update 1.7 — CPU  🤖
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces
 - [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Turn into AI? (TensorFlow, PyTorch) (AlphaZero loop on GPU?)
 - [x] gameCPU will not see knight's moves upon promotion, only queen
-- [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
-  - [ ] Display first name, country emoji, Elo?
 - [ ] End game screen displaying username instead of color?
-- [ ] Add random matchmaking if you're signed in?
+- [ ] Add random matchmaking if you're signed in? (via GameCenter, or Firebase?
   - [ ] If added, need name checking for online play (just hide the icons, unless joining a friend's game)
-- [ ] Make games more secure? (works perfectly fine for now)
-- [ ] Enable an option to play as black against the CPU (would need to change promotion logic)
-- [ ] Optimizations to game CPU
+- [ ] Make games more secure? (they work fine for now)
+- [ ] More optimizations to CPU
+- [ ] Add standard openings to the CPU
 
 ### CPU Performance Notes
 | Depth | Time | Notes |
@@ -142,11 +141,11 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.5 IS DONE
 ---
 
 ## Update 1.8 — Achievements
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Automate all Game Center translation changes, similar to how DeckedOut does it
 - [ ] Update the mail achievement icon and first win icon
 - [ ] Game Center achievements for Dutch
 - [ ] App Store pictures for Dutch
+- [ ] New achievement icons
 
 ### Achievements
 | Achievement | Description | Status |
@@ -155,31 +154,30 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 | Hex Machina | Checkmate the CPU | Implemented |
 | Hexceeded Hexpectations | Win a joined game | Implemented |
 | Friendly Hexchange | Have a player join a game you created | Implemented |
-| Hexcalibur | Underpromote a pawn to a knight | Implemented |
-| Hexecutioner | Checkmate after capturing all enemy pieces | Implemented |
-| Hexperimenter | Win with 10 different openings | |
-| Hexathon | Win 26 games | |
+| Hexcalibur | Underpromote a pawn to a knight| Implemented |
+| Hexecutioner | Checkmate after capturing all enemy pieces| Implemented |
+| Hexperimenter | Win with 10 different openings| |
+| Hexathon | Win 26 games| |
 | Hexpedition | Move your king to the opposing king's starting position | Implemented |
-| Hexplorer | Visit every tile in a single game | |
-| Hextra Power | Promote a pawn for the first time | Implemented |
-| Hexceptional Morale | Promote 3 pawns in a single game | |
-| The Great Hexcape | Checkmate after being put in check 3 times | |
-| Hexclusion Zone | Deliver a smothered mate | |
-| Hextreme Measures | Checkmate using your own king | Implemented |
-| Tactical Hexcellence | Checkmate without losing any pieces | |
+| Hexplorer | Visit every tile in a single game| |
+| Hextra Power | Promote a pawn for the first time| Implemented |
+| Hexceptional Morale | Promote 3 pawns in a single game| |
+| The Great Hexcape | Checkmate after being put in check 3 times| |
+| Hexclusion Zone | Deliver a smothered mate| |
+| Hextreme Measures | Checkmate using your own king| Implemented |
+| Tactical Hexcellence | Checkmate without losing any pieces| |
 
 ### Secret Achievements
 | Achievement | Description | Status |
 | --- | --- | --- |
-| Hexpect the Unexpected | Open by moving your king | |
-| Hexhausted | Have a game last over 100 turns | |
-| Seasoned Hexpert | Complete all other achievements | |
-| Un-Hexciting Finish | Deliver a stalemate | |
+| Hexpect the Unexpected | Open by moving your king| |
+| Hexhausted | Have a game last over 100 turns| |
+| Seasoned Hexpert | Complete all other achievements| |
+| Un-Hexciting Finish | Deliver a stalemate| |
 
 ---
 
 ## ⚙️ Other Changes
-NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 
 ### Bugs
 - [ ] Game Center icon only loads the second time looking at the profile? (check if still true)
@@ -198,6 +196,7 @@ NOTE: DO NOT START ON THIS UNTIL ALL OF 1.4 IS DONE
 - [ ] Change profile icon to Game Center access point? (Apple only!!)
 - [ ] Refine UI for iPad (country picker, font, achievement stars). 
 - [ ] 50-move no-capture rule for draw
+- [ ] Enable an option to play as black against the CPU (would need to change promotion logic)
 - [ ] Threefold repetition rule for draw
   - [ ] Zobrist hashing for more efficient computation of threefold-rule detection — not needed at launch, could be an important update
 - [ ] Get rid of "not verified for macOS" badge in macOS App Store (it's still available as is)
