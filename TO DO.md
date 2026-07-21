@@ -29,7 +29,7 @@
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
 - [~] Add Notifications!
   - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it.
-  - [ ] The ability to send notification should only be enabled after the user enters their first online game. (so they can get updates from the game)
+  - [x] The ability to send notification should only be enabled after the user enters their first online game. (so they can get updates from the game)
   - [x] Enable Push Notifications capability, register for remote notifications, and store APNs/FCM device tokens per user in Firestore
   - [~] Send a push notification to the opponent when a move is made in an online game (Cloud Function trigger on Firestore game document update)
     - [x] Register for an FCM token (FirebaseMessaging) alongside the existing raw APNs device token and store it per-user in Firestore, so a Cloud Function can target devices via the Firebase Admin SDK

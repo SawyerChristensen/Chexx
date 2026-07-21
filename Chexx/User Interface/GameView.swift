@@ -20,6 +20,7 @@ struct GameView: View {
     @State var isOnlineMultiplayer: Bool = false
     @State private var scene: SKScene?
     @State private var preferredFramesPerSecond: Int = 10
+    @AppStorage("hasEnteredOnlineGame") private var hasEnteredOnlineGame = false
     var startNewGame: Bool = false
     //@State var variant: String
 
@@ -35,6 +36,9 @@ struct GameView: View {
                 }
             }
             .onAppear {
+                if isOnlineMultiplayer && !hasEnteredOnlineGame {
+                    hasEnteredOnlineGame = true
+                }
                 if scene == nil {
                     if isVsCPU && startNewGame == true {
                         deleteGameFile(filename: "currentSinglePlayer")
@@ -42,7 +46,7 @@ struct GameView: View {
                     if isPassAndPlay && startNewGame == true {
                         deleteGameFile(filename: "currentPassAndPlay")
                     }
-                    scene = createScene(size: geometry.size) 
+                    scene = createScene(size: geometry.size)
                 }
             }
             .onChange(of: geometry.size) { _, newSize in

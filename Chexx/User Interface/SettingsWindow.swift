@@ -16,7 +16,8 @@ struct SettingsWindow: View {
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
     @AppStorage("playerTurnNotifEnabled") private var playerTurnNotifEnabled = false
-    
+    @AppStorage("hasEnteredOnlineGame") private var hasEnteredOnlineGame = false
+
     @Environment(\.presentationMode) var presentationMode // to dismiss the view
 
     var body: some View {
@@ -59,6 +60,7 @@ struct SettingsWindow: View {
                     .frame(maxWidth: min(screenHeight / 2.4, 500))
                     .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
+                    .disabled(!hasEnteredOnlineGame)
                     .onChange(of: playerTurnNotifEnabled) { _, newValue in
                         guard newValue else { return }
                         NotificationManager.requestAuthorization { granted in
@@ -67,6 +69,11 @@ struct SettingsWindow: View {
                             }
                         }
                     }
+                if !hasEnteredOnlineGame {
+                    Text("Available after your first online game")
+                        .font(.system(size: min(screenHeight / 48, 18), weight: .regular, design: .serif))
+                        .foregroundColor(.secondary)
+                }
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
