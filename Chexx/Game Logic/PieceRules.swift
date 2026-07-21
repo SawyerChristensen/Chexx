@@ -45,19 +45,31 @@ func isValidPosition(columnToCheck: Int, rowToCheck: Int, in gameState: GameStat
 func boardToHex(_ positions: [(Int, Int)]) -> [String] {
     let columns = hexColumns
     var algebraicPositions: [String] = []
-    
+
     for (colIndex, rowIndex) in positions {
         //guard colIndex >= 0 && colIndex < columns.count else {
         //    continue // Skip invalid column indices
         //}
-        
+
         let columnLetter = columns[colIndex]
         let row = rowIndex + 1 // Assuming the input rowIndex is 0-based and needs to be 1-based
-        
+
         algebraicPositions.append("\(columnLetter)\(row)")
     }
-    
+
     return algebraicPositions
+}
+
+// Parses algebraic notation (e.g. "a1") into a 0-indexed (col, row) tuple matching gameState.board,
+// shared by the validMovesFor*(String) wrappers so each one does exactly one parse at its boundary.
+private func parsePosition(_ position: String) -> (col: Int, row: Int)? {
+    guard position.count >= 2,
+          let columnLetter = position.first,
+          let rowValue = Int(String(position.dropFirst())),
+          let colIndex = hexColumnIndex(for: columnLetter) else {
+        return nil
+    }
+    return (colIndex, rowValue - 1)
 }
 
 func validMovesForPiece(at position: String, color: String, type: String, in gameState: inout GameState, skipKingCheck: Bool = false) -> [String] {
@@ -90,17 +102,17 @@ func validMovesForPiece(at position: String, color: String, type: String, in gam
 }
 
 func validMovesForPawn(_ color: String, at position: String, in gameState: GameState) -> [String] {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
+        print("Position only has string length of 1!")
+        return []
+    }
+    return boardToHex(validMovesForPawn(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func validMovesForPawn(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
     let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
-
-    guard position.count >= 2, //this is a tad silly, could maybe remove this but I guess more error checking doesnt hurt
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
-        print("Position only has string length of 1!")
-        return boardToHex(validBoardMoves)
-    }
-    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    let (colIndex, rowIndex) = position
 
     if color == "white" {
         // Move up 1
@@ -273,20 +285,20 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
             }
         }
     }
-    return boardToHex(validBoardMoves)
+    return validBoardMoves
 }
 
 func validMovesForRook(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    var validBoardMoves: [(Int, Int)] = []
-
-    guard position.count >= 2,
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
         print("Position only has string length of 1??")
-        return boardToHex(validBoardMoves)
+        return []
     }
-    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    return boardToHex(validMovesForRook(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func validMovesForRook(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
+    var validBoardMoves: [(Int, Int)] = []
+    let (colIndex, rowIndex) = position
 
     // Rook moves in four directions: up, down, left, right
 
@@ -438,21 +450,21 @@ func validMovesForRook(_ color: String, at position: String, in gameState: GameS
             counter += 1
         }
 
-    return boardToHex(validBoardMoves)
+    return validBoardMoves
 }
 
 func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    var validBoardMoves: [(Int, Int)] = []
-    
-    guard position.count >= 2,
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
         print("Position only has string length of 1!")
-        return boardToHex(validBoardMoves)
+        return []
     }
-    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
-    
+    return boardToHex(validMovesForBishop(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func validMovesForBishop(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
+    var validBoardMoves: [(Int, Int)] = []
+    let (colIndex, rowIndex) = position
+
     // Bishop moves in six diagonal directions: up left, up right, down left, down right, perfect left, perfect right
     
     // Move up left diagonal...
@@ -668,20 +680,20 @@ func validMovesForBishop(_ color: String, at position: String, in gameState: Gam
             counter += 1
         }
 
-    return boardToHex(validBoardMoves)
+    return validBoardMoves
 }
 
 func validMovesForKing(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    var validBoardMoves: [(Int, Int)] = []
-
-    guard position.count >= 2,
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
         print("Position only has string length of 1!")
-        return boardToHex(validBoardMoves)
+        return []
     }
-    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    return boardToHex(validMovesForKing(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func validMovesForKing(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
+    var validBoardMoves: [(Int, Int)] = []
+    let (colIndex, rowIndex) = position
 
     // King moves one tile in all directions: up, down, left, right, up left, up right, down left, down right, up diagonal left, up diagonal right, down diagonal left, and down diagonal right (12 total directions)
 
@@ -817,20 +829,20 @@ func validMovesForKing(_ color: String, at position: String, in gameState: GameS
         }
     }
     
-    return boardToHex(validBoardMoves)
+    return validBoardMoves
 }
 
 func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    var validBoardMoves: [(Int, Int)] = []
-
-    guard position.count >= 2,
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
         print("Position only has string length of 1!")
-        return boardToHex(validBoardMoves)
+        return []
     }
-    rowIndex = rowIndex - 1 // making it 0 indexed
+    return boardToHex(validMovesForKnight(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func validMovesForKnight(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
+    var validBoardMoves: [(Int, Int)] = []
+    let (colIndex, rowIndex) = position
 
     func tryAddMove(col: Int, row: Int) {
         if isValidPosition(columnToCheck: col, rowToCheck: row, in: gameState),
@@ -974,7 +986,7 @@ func validMovesForKnight(_ color: String, at position: String, in gameState: Gam
         tryAddMove(col: colIndex + 1, row: rowIndex - 2)
     }
 
-    return boardToHex(validBoardMoves)
+    return validBoardMoves
 }
 
 
