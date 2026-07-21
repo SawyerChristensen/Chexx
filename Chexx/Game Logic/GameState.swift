@@ -423,7 +423,6 @@ struct GameState: Codable {
     }
     
     mutating func makeMove(_ from: String, to: String, promotionType: String = "queen") -> MoveUndoInfo { //able to undo this with the output info, not with movePiece()
-        let columns = hexColumns
         let fromColLetter = String(from.prefix(1))
         let fromRowString = String(from.dropFirst())
         let toColLetter = String(to.prefix(1))
@@ -436,6 +435,13 @@ struct GameState: Codable {
             fatalError("Invalid move coordinates")
         }
 
+        return makeMove(fromCol: fromColIndex, fromRow: fromRowIndex, toCol: toColIndex, toRow: toRowIndex, promotionType: promotionType)
+    }
+
+    // (col,row) fast path: skips the notation-string parse for callers (e.g. GameCPU's search
+    // loop) that already have board indices in hand.
+    mutating func makeMove(fromCol fromColIndex: Int, fromRow fromRowIndex: Int, toCol toColIndex: Int, toRow toRowIndex: Int, promotionType: String = "queen") -> MoveUndoInfo {
+        let columns = hexColumns
         let movingPiece = self[fromColIndex, fromRowIndex]
         let capturedPiece = self[toColIndex, toRowIndex]
         let previousZobristHash = zobristHash
@@ -546,6 +552,12 @@ struct GameState: Codable {
     }
 
     mutating func unmakeMove(_ from: String, to: String, undoInfo: MoveUndoInfo) {
+        unmakeMove(undoInfo: undoInfo)
+    }
+
+    // (col,row) fast path: undoInfo already carries the board indices, so callers with no other
+    // use for notation strings (e.g. GameCPU's search loop) can skip passing from/to entirely.
+    mutating func unmakeMove(undoInfo: MoveUndoInfo) {
         // Reverse material/slider-count changes first, while the board still reflects any promotion that happened
         if let moving = undoInfo.movingPiece, moving.type == "pawn",
            let promotedType = self[undoInfo.toColIndex, undoInfo.toRowIndex]?.type, promotedType != "pawn" {
@@ -719,6 +731,12 @@ struct GameState: Codable {
     }
 
     
+    // (col,row) fast path: skips the notation-string parse for callers (e.g. GameCPU's search
+    // loop) that already have board indices in hand.
+    func pieceAt(col: Int, row: Int) -> Piece? {
+        self[col, row]
+    }
+
     func pieceAt(_ position: String) -> Piece? {
         let colLetter = String(position.prefix(1))
         let rowString = String(position.dropFirst())
@@ -728,7 +746,7 @@ struct GameState: Codable {
             return nil
         }
 
-        return self[colIndex, rowIndex]
+        return pieceAt(col: colIndex, row: rowIndex)
     }
 
     mutating func setPiece(_ piece: Piece?, at position: String) {
