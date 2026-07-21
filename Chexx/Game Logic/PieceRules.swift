@@ -1069,13 +1069,22 @@ private func isPinned(_ position: String, for color: String, in gameState: inout
 }
 
 func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout GameState) -> (Bool, String) {
-    let kingPosition: String
-    if color == "white" {
-        kingPosition = currentGameState.whiteKingPosition
-    } else {
-        kingPosition = currentGameState.blackKingPosition
+    let kingPositionString = color == "white" ? currentGameState.whiteKingPosition : currentGameState.blackKingPosition
+    guard let kingPosition = parsePosition(kingPositionString) else {
+        return (false, "none")
     }
 
+    let (inCheck, attackerPosition) = isKingInCheckUsingKingSight(for: color, at: kingPosition, in: currentGameState)
+    guard inCheck, let attackerPosition = attackerPosition,
+          let piece = currentGameState.pieceAt(col: attackerPosition.0, row: attackerPosition.1) else {
+        return (inCheck, "none")
+    }
+    return (true, "\(boardToHex([attackerPosition])[0]) \(piece.color) \(piece.type)")
+}
+
+// Tuple-based core: works directly off the king's (col,row) so callers that already have board
+// indices (e.g. isPinned, filterMovesThatExposeKing) never round-trip through algebraic notation.
+func isKingInCheckUsingKingSight(for color: String, at kingPosition: (Int, Int), in currentGameState: GameState) -> (Bool, (Int, Int)?) {
     let opponentColor = color == "white" ? "black" : "white"
 
     // Rook/bishop/queen threats can only exist if the opponent still has a sliding piece on the
@@ -1084,20 +1093,20 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
         // Rook and Queen threats (straight-line moves)
         let rookMoves = validMovesForRook(color, at: kingPosition, in: currentGameState)
         for position in rookMoves {
-            if let piece = currentGameState.pieceAt(position),
+            if let piece = currentGameState.pieceAt(col: position.0, row: position.1),
                piece.color == opponentColor,
                (piece.type == "rook" || piece.type == "queen") {
-                return (true, ("\(position) \(piece.color) \(piece.type)"))
+                return (true, position)
             }
         }
 
         // Bishop and Queen threats (diagonal moves)
         let bishopMoves = validMovesForBishop(color, at: kingPosition, in: currentGameState)
         for position in bishopMoves {
-            if let piece = currentGameState.pieceAt(position),
+            if let piece = currentGameState.pieceAt(col: position.0, row: position.1),
                piece.color == opponentColor,
                (piece.type == "bishop" || piece.type == "queen") {
-                return (true, ("\(position) \(piece.color) \(piece.type)"))
+                return (true, position)
             }
         }
     }
@@ -1105,48 +1114,48 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
     // Knight threats (L-shaped moves)
     let knightMoves = validMovesForKnight(color, at: kingPosition, in: currentGameState)
     for position in knightMoves {
-        if let piece = currentGameState.pieceAt(position),
+        if let piece = currentGameState.pieceAt(col: position.0, row: position.1),
            piece.color == opponentColor,
            piece.type == "knight" {
-            return (true, ("\(position) \(piece.color) \(piece.type)"))
+            return (true, position)
         }
     }
-    
+
     // Opposing king potential threats (should never happen, this is so they are avoided)
     let kingMoves = validMovesForKing(color, at: kingPosition, in: currentGameState)
     for position in kingMoves {
-        if let piece = currentGameState.pieceAt(position),
+        if let piece = currentGameState.pieceAt(col: position.0, row: position.1),
            piece.color == opponentColor,
            piece.type == "king" {
-            return (true, ("\(position) \(piece.color) \(piece.type)"))
+            return (true, position)
         }
     }
 
     // Pawn threats (single step diagonal moves towards the king)
     let pawnMoves = pawnPureCaptures(color, at: kingPosition, in: currentGameState)
     for position in pawnMoves { //this is also checking straight ahead, wrong //fix this later
-        if let piece = currentGameState.pieceAt(position),
+        if let piece = currentGameState.pieceAt(col: position.0, row: position.1),
            piece.color == opponentColor,
            piece.type == "pawn" {
-            return (true, ("\(position) \(piece.color) \(piece.type)"))
+            return (true, position)
         }
     }
 
-    return (false, "none") // No threats detected
+    return (false, nil) // No threats detected
 }
 
 func pawnPureCaptures(_ color: String, at position: String, in gameState: GameState) -> [String] {
+    guard let (colIndex, rowIndex) = parsePosition(position) else {
+        print("Position only has string length of 1!")
+        return []
+    }
+    return boardToHex(pawnPureCaptures(color, at: (colIndex, rowIndex), in: gameState))
+}
+
+func pawnPureCaptures(_ color: String, at position: (Int, Int), in gameState: GameState) -> [(Int, Int)] {
     let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
-
-    guard position.count >= 2,
-          let columnLetter = position.first,
-          var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = hexColumnIndex(for: columnLetter) else {
-        print("Position only has string length of 1!")
-        return boardToHex(validBoardMoves)
-    }
-    rowIndex = rowIndex - 1 // making it 0 indexed to work with gameState.board
+    let (colIndex, rowIndex) = position
 
     if color == "white" {
         // Capture logic for left and right
@@ -1224,8 +1233,7 @@ func pawnPureCaptures(_ color: String, at position: String, in gameState: GameSt
             }
         }
     }
-    return boardToHex(validBoardMoves)
-
+    return validBoardMoves
 }
 
 /*
