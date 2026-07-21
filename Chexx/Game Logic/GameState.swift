@@ -733,6 +733,19 @@ struct GameState: Codable {
 
         return self[colIndex, rowIndex]
     }
+
+    mutating func setPiece(_ piece: Piece?, at position: String) {
+        let columns = hexColumns
+        let colLetter = String(position.prefix(1))
+        let rowString = String(position.dropFirst())
+
+        guard let colIndex = columns.firstIndex(of: colLetter),
+              let rowIndex = Int(rowString).map({ $0 - 1 }) else {
+            return
+        }
+
+        self[colIndex, rowIndex] = piece
+    }
     
     func getPieces(for color: String) -> [Piece] {
         var pieces = [Piece]()

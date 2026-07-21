@@ -966,10 +966,23 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
     // attacker (rook/bishop/queen). If the opponent has no sliding pieces left, neither is possible,
     // so every pseudo-legal move is legal and we can skip the make/unmake simulation entirely.
     let opponentColor = color == "white" ? "black" : "white"
-    if gameState.pieceAt(position)?.type != "king" && gameState.sliderCount(for: opponentColor) == 0 {
-        let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
-        if !kingAlreadyInCheck {
-            return moves
+    let movingPieceType = gameState.pieceAt(position)?.type
+    if movingPieceType != "king" {
+        if gameState.sliderCount(for: opponentColor) == 0 {
+            let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
+            if !kingAlreadyInCheck {
+                return moves
+            }
+        } else if movingPieceType != "pawn" {
+            // Sliders are on the board, but a piece that isn't pinned to its own king can't expose
+            // that king by moving (unless the king is already in check, which still needs the full
+            // per-move check below). Pawns are excluded from this shortcut because an en passant
+            // capture removes two pawns from the same rank at once, which can expose the king even
+            // though neither pawn is individually pinned.
+            let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
+            if !kingAlreadyInCheck && !isPinned(position, for: color, in: &gameState) {
+                return moves
+            }
         }
     }
 
@@ -983,6 +996,43 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
 
         return !kingInCheck.0
     }
+}
+
+// Determines whether the piece at `position` is pinned to its own king by a sliding attacker, by
+// briefly removing it from the board and checking whether that opens the king's rook/bishop sight
+// line to an enemy rook/queen or bishop/queen. This is far cheaper than simulating every one of the
+// piece's candidate moves individually, since it costs a handful of ray scans per piece instead of
+// per move.
+private func isPinned(_ position: String, for color: String, in gameState: inout GameState) -> Bool {
+    let opponentColor = color == "white" ? "black" : "white"
+    let kingPosition = color == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
+    let removedPiece = gameState.pieceAt(position)
+
+    let rookSightBefore = Set(validMovesForRook(color, at: kingPosition, in: gameState))
+    gameState.setPiece(nil, at: position)
+    let rookSightAfter = validMovesForRook(color, at: kingPosition, in: gameState)
+    gameState.setPiece(removedPiece, at: position)
+
+    for square in rookSightAfter where !rookSightBefore.contains(square) {
+        if let blocker = gameState.pieceAt(square), blocker.color == opponentColor,
+           blocker.type == "rook" || blocker.type == "queen" {
+            return true
+        }
+    }
+
+    let bishopSightBefore = Set(validMovesForBishop(color, at: kingPosition, in: gameState))
+    gameState.setPiece(nil, at: position)
+    let bishopSightAfter = validMovesForBishop(color, at: kingPosition, in: gameState)
+    gameState.setPiece(removedPiece, at: position)
+
+    for square in bishopSightAfter where !bishopSightBefore.contains(square) {
+        if let blocker = gameState.pieceAt(square), blocker.color == opponentColor,
+           blocker.type == "bishop" || blocker.type == "queen" {
+            return true
+        }
+    }
+
+    return false
 }
 
 func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout GameState) -> (Bool, String) {
