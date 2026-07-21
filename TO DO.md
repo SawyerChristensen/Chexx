@@ -95,7 +95,7 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 - [x] Changing Google icon breaks Google icon retrieval in app
 - [x] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
-- [ ] Home Screen quick actions?
+- [x] Home Screen quick actions?
 - [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty
 - [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
   - [ ] Display first name, country emoji, Elo?

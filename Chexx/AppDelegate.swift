@@ -48,7 +48,22 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
             }
         }
 
+        // cold launch via a Home Screen quick action: stash it and tell the
+        // system we've handled it ourselves rather than also calling
+        // performActionFor for this same launch
+        if let shortcutItem = launchOptions?[.shortcutItem] as? UIApplicationShortcutItem {
+            QuickActionManager.shared.pendingAction = QuickAction(rawValue: shortcutItem.type)
+            return false
+        }
+
         return true
+    }
+
+    // Home Screen quick action tapped while the app was already running/suspended
+    func application(_ application: UIApplication, performActionFor shortcutItem: UIApplicationShortcutItem, completionHandler: @escaping (Bool) -> Void) {
+        let action = QuickAction(rawValue: shortcutItem.type)
+        QuickActionManager.shared.pendingAction = action
+        completionHandler(action != nil)
     }
 
     // handle Google Sign-In callback

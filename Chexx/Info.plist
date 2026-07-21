@@ -21,5 +21,32 @@
 	<false/>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
+	<key>UIApplicationShortcutItems</key>
+	<array>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.chexx.quickaction.vsCPU</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>vs. CPU</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypePlay</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.chexx.quickaction.passAndPlay</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Pass &amp; Play</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeTime</string>
+		</dict>
+		<dict>
+			<key>UIApplicationShortcutItemType</key>
+			<string>com.chexx.quickaction.online</string>
+			<key>UIApplicationShortcutItemTitle</key>
+			<string>Online</string>
+			<key>UIApplicationShortcutItemIconType</key>
+			<string>UIApplicationShortcutIconTypeCloud</string>
+		</dict>
+	</array>
 </dict>
 </plist>

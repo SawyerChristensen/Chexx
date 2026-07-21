@@ -42,6 +42,7 @@
 		BE75E1DA2F214A5F004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
 		BE75E1DB2F21505E004BD0BF /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE75E1D92F214A4C004BD0BF /* HapticManager.swift */; };
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
+		18A9A53318994F0EB69BC9A0 /* QuickActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC858F40FF344FDB0C1B202 /* QuickActionManager.swift */; };
 		BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B52C2A2602009113B4 /* GameScene.swift */; };
 		BE76A9BB2C2A2602009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BA2C2A2602009113B4 /* Base */; };
 		BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BC2C2A2603009113B4 /* Assets.xcassets */; };
@@ -143,6 +144,7 @@
 		BE75E1D92F214A4C004BD0BF /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		BE76A9AC2C2A2602009113B4 /* Chexx.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Chexx.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FAC858F40FF344FDB0C1B202 /* QuickActionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuickActionManager.swift; sourceTree = "<group>"; };
 		BE76A9B52C2A2602009113B4 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		BE76A9BA2C2A2602009113B4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BE76A9BC2C2A2603009113B4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -301,6 +303,7 @@
 			isa = PBXGroup;
 			children = (
 				BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */,
+				FAC858F40FF344FDB0C1B202 /* QuickActionManager.swift */,
 				BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */,
 				BE76A9BE2C2A2603009113B4 /* LaunchScreen.storyboard */,
 				BE76A9B92C2A2602009113B4 /* Main.storyboard */,
@@ -651,6 +654,7 @@
 				BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */,
 				BEB2FD842C6599BB008BCB26 /* GameView.swift in Sources */,
 				BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */,
+				18A9A53318994F0EB69BC9A0 /* QuickActionManager.swift in Sources */,
 				BECA2C092D01ED32002B14BE /* GameLinkSheet.swift in Sources */,
 				BEB2FD862C66C08E008BCB26 /* AudioManager.swift in Sources */,
 				D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */,

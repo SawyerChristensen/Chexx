@@ -13,6 +13,7 @@ struct MainMenuView: View {
     //@AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @StateObject private var audioManager = AudioManager()
     @StateObject var authViewModel = AuthViewModel()
+    @ObservedObject private var quickActionManager = QuickActionManager.shared
     @Environment(\.colorScheme) var colorScheme //detecting the current color scheme
     @State private var isKeyboardVisible = false //for logging in to profile view
     
@@ -533,6 +534,7 @@ struct MainMenuView: View {
                 if backgroundMusicEnabled {
                     audioManager.playBackgroundMusic(fileName: "carmen-habanera", fileType: "mp3")
                 }
+                handlePendingQuickAction() // covers a cold launch from a Home Screen quick action
             }
             .onChange(of: backgroundMusicEnabled) {
                 if backgroundMusicEnabled {
@@ -541,11 +543,25 @@ struct MainMenuView: View {
                     audioManager.stopBackgroundMusic()
                 }
             }
+            .onChange(of: quickActionManager.pendingAction) {
+                handlePendingQuickAction() // covers a quick action tapped while already running
+            }
             .background(Color(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
     
+    // Jumps to the submenu matching a Home Screen quick action tap, then clears it.
+    func handlePendingQuickAction() {
+        guard let action = quickActionManager.pendingAction else { return }
+        quickActionManager.pendingAction = nil
+        withAnimation {
+            onlineOptions = (action == .online)
+            singlePlayerOptions = (action == .vsCPU)
+            passAndPlayOptions = (action == .passAndPlay)
+        }
+    }
+
     func authenticateGameCenter() {
         if let root = UIApplication.shared.activeRootViewController {
             GameCenterManager.shared.authenticateLocalPlayer(presentingViewController: root)
