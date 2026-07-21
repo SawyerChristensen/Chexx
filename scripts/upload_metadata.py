@@ -11,6 +11,7 @@ Usage:
     python upload_metadata.py --version 1.2.0   # target a specific App Store version
     python upload_metadata.py --translate       # auto-fill missing locales via Claude API first
     python upload_metadata.py --translate-only  # fill JSON via Claude API, don't upload
+    python upload_metadata.py --whats-new-only  # push only whatsNew, skip everything else
 
 Requires env vars (load from ~/.appstoreconnect/config.env or your shell):
     ASC_KEY_ID         App Store Connect API key ID (10-char string)
@@ -387,16 +388,20 @@ def find_previous_version_localizations(client: ASCClient, app_id: str,
 
 
 def upload_version_localizations(client: ASCClient, app_id: str, version_id: str,
-                                 metadata: dict) -> None:
+                                 metadata: dict, whats_new_only: bool = False) -> None:
     """PATCH whatsNew (from metadata.json) and inherit everything else
     (description, keywords, promotionalText) from the most recent prior version
-    unless metadata.json explicitly overrides."""
+    unless metadata.json explicitly overrides.
+
+    If whats_new_only is set, only the whatsNew field is considered — no
+    inheritance lookup, no description/keywords/promotionalText pushes."""
     existing = client.get(f"appStoreVersions/{version_id}/appStoreVersionLocalizations",
                           params={"limit": 50})["data"]
     by_locale = {loc["attributes"]["locale"]: loc["id"] for loc in existing}
     current_attrs = {loc["attributes"]["locale"]: loc["attributes"] for loc in existing}
 
-    previous_attrs = find_previous_version_localizations(client, app_id, version_id)
+    previous_attrs = {} if whats_new_only else \
+        find_previous_version_localizations(client, app_id, version_id)
 
     locales = [loc for loc in metadata["_meta"]["locales"]]
     vloc = metadata["version_localizations"]
@@ -406,6 +411,8 @@ def upload_version_localizations(client: ASCClient, app_id: str, version_id: str
         attributes = {}
         sources: list[str] = []
         for json_key, asc_attr in VERSION_ATTR_MAP.items():
+            if whats_new_only and json_key != "whats_new":
+                continue
             override = vloc[json_key].get(xcode_loc)
             if override:
                 # Skip if the live value is already identical — re-writing it is a
@@ -639,6 +646,9 @@ def main() -> None:
                         help="Skip App Store version metadata (only do Game Center).")
     parser.add_argument("--skip-achievements", action="store_true",
                         help="Skip Game Center achievements (only do version metadata).")
+    parser.add_argument("--whats-new-only", action="store_true",
+                        help="Push only the whatsNew field (no inherited description/"
+                             "keywords/promotional_text, no Game Center achievements).")
     args = parser.parse_args()
 
     load_config()
@@ -661,9 +671,10 @@ def main() -> None:
     if not args.skip_version:
         print("\n=== App Store version localizations ===")
         version_id = find_editable_version(client, app_id, args.version)
-        upload_version_localizations(client, app_id, version_id, metadata)
+        upload_version_localizations(client, app_id, version_id, metadata,
+                                     whats_new_only=args.whats_new_only)
 
-    if not args.skip_achievements:
+    if not args.skip_achievements and not args.whats_new_only:
         print("\n=== Game Center achievements ===")
         upload_achievements(client, app_id, metadata)
 

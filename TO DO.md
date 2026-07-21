@@ -56,7 +56,8 @@
 - [x] Remove the "Thinking" CPU animation glow and make it much smaller
 - [~] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
   - [x] Update metadata.json's `whats_new` field for every locale to a translated "[localized app name] now natively supports macOS!" release note, using each locale's current CFBundleDisplayName (Chexx/InfoPlist.xcstrings) as the app name
-  - [ ] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements), then run it to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
+  - [x] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements)
+  - [ ] Run `upload_metadata.py --whats-new-only` to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
 - [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
 - [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
 The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.
