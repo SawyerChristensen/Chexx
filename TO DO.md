@@ -91,7 +91,7 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 ## Update 1.6 — Multiplayer v2  􀉬
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
-- [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
+- [x] Make the main title slowly pulse from 0.98 to 1.02 in size
 - [x] Changing Google icon breaks Google icon retrieval in app
 - [x] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
@@ -120,14 +120,14 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 - [ ] More optimizations to CPU
 - [ ] Add standard openings to the CPU
 
-### CPU Performance Notes
-| Depth | Time (seconds)| Notes |
+### CPU Performance Notes 7/21/26
+| Depth | Time (seconds)| How much more time is required |
 | --- | --- | --- |
-| 1 | 0.0003 | |
-| 2 | 0.0092 | |
-| 3 | 0.0207 | |
-| 4 | 0.3831|  |
-| 5 |  2.8505|  |
+| 1 | 0.0003 | Base|
+| 2 | 0.0092 | 30x|
+| 3 | 0.0207 | 2.25x|
+| 4 | 0.3831|  18.5x|
+| 5 |  2.8505|  7.5x|
 
 - Look for current eval functions that loop through the game state — they are all likely O(n²) and slow
 - Use hashing / transposition tables / other techniques to speed this up, especially at higher depths when we potentially eval the same state multiple times
