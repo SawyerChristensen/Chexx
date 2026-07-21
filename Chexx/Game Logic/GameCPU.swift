@@ -86,6 +86,18 @@ class GameCPU {
         color == "white" ? toRow == gameState.rowCount(forCol: toCol) - 1 : toRow == 0
     }
 
+    // Runs a raw minimax search to a fixed depth with an effectively unbounded deadline, so
+    // callers get the search's true elapsed time for that depth rather than a time capped by
+    // minimaxMove's 3-second cutoff. Used by ChexxTests to benchmark search performance per depth;
+    // not used by the app's normal move-selection path (see findMove/minimaxMove).
+    func timedSearch(gameState: inout GameState, depth: Int) -> TimeInterval {
+        transpositionTable.removeAll()
+        let maximizingPlayerColor = gameState.currentPlayer
+        let start = Date()
+        _ = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: Date.distantFuture)
+        return Date().timeIntervalSince(start)
+    }
+
     // Main function to decide and make a move
     func findMove(gameState: inout GameState) -> (start: String, destination: String, promotion: String?)? { //this being conditional can maybe be changed, idk
         // Use the existing function to get all possible moves

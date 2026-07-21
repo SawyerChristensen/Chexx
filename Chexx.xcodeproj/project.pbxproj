@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */; };
 		19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD021CFE553872F49DC3911 /* ChexxTests.swift */; };
+		4A2B7E1D9F5C4E8A8B6D0C3F /* GameCPUBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */; };
 		29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7017F2C885574833D4FBA47 /* SwiftUI.framework */; };
 		308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		60F23E62C82642B3A374EBD7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD7814AF114864DBE58241 /* Foundation.framework */; };
@@ -167,6 +168,7 @@
 		C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLiveActivityAttributes.swift; sourceTree = "<group>"; };
 		C7017F2C885574833D4FBA47 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CFD021CFE553872F49DC3911 /* ChexxTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChexxTests.swift; sourceTree = "<group>"; };
+		7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameCPUBenchmarkTests.swift; sourceTree = "<group>"; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChexxWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -394,6 +396,7 @@
 			isa = PBXGroup;
 			children = (
 				CFD021CFE553872F49DC3911 /* ChexxTests.swift */,
+				7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */,
 			);
 			name = ChexxTests;
 			path = ChexxTests;
@@ -617,6 +620,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */,
+				4A2B7E1D9F5C4E8A8B6D0C3F /* GameCPUBenchmarkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
