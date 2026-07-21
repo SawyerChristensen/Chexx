@@ -18,8 +18,9 @@
   - [x] Queen move generation builds `Array(Set(rookMoves + bishopMoves))` to dedupe, which is unnecessary since rook- and bishop-direction destinations for a queen never overlap — just concatenate the arrays. (Resolved as a side effect of the tuple-based validMovesForPiece dispatcher above, which concatenates instead of deduping and is now the sole implementation the String-based wrapper calls.)
 - [~] Create an extensive CPU testing suite to make sure the CPU works as intended. Be able to log exact time differences and % increases in efficiency.
   - [x] Add an XCTest unit test target (ChexxTests) to the Xcode project, wired into the Chexx scheme's Test action, with a minimal placeholder test to confirm the target builds and runs
-  - [ ] Add CPU correctness tests: known checkmate/stalemate positions and legal-move-count (perft-style) assertions against GameState/PieceRules to verify move generation correctness
+  - [x] Add CPU correctness tests: known checkmate/stalemate positions and legal-move-count (perft-style) assertions against GameState/PieceRules to verify move generation correctness
   - [ ] Add a CPU search benchmarking test/utility that times minimax at depths 1-4, logs exact elapsed time per depth, and computes % speedup versus a recorded baseline
+  - [ ] Maybe checkout an earlier commit (a commit from 3 months ago), test and save the CPU’s performance data somewhere beyond the scope of the project, revert back to the most modern commit, and compare the old statistic to a recent test/what we have now.
   - [ ] Add CPU behavior tests for edge cases (en passant, castling, promotion choices, pinned-piece move filtering) mentioned in the CPU performance notes
 - [x] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
