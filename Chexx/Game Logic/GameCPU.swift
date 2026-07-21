@@ -83,9 +83,8 @@ class GameCPU {
 
     // Whether a pawn moving to this destination would be promoting
     private func isPromotionDestination(_ destination: String, color: String, in gameState: GameState) -> Bool {
-        let columns = hexColumns
         guard let colLetter = destination.first,
-              let colIndex = columns.firstIndex(of: String(colLetter)),
+              let colIndex = hexColumnIndex(for: colLetter),
               let rowIndex = Int(destination.dropFirst()).map({ $0 - 1 }) else {
             return false
         }

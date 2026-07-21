@@ -598,24 +598,23 @@ class GameScene: SKScene {
             return
         }
         
-        let columns = hexColumns
         let columnLetter = hexagonName.prefix(1)
         let rowIndexString = hexagonName.dropFirst()
-        
-        guard let colIndex = columns.firstIndex(of: String(columnLetter)),
+
+        guard let colIndex = hexColumnIndex(for: columnLetter),
               var rowIndex = Int(rowIndexString) else { return }
         rowIndex = rowIndex - 1 //rowIndex is originally not 0 indexed, have to - 1
-        
+
         // Check if pieceNode.name is not nil and split it to find original position
         guard let pieceDetails = pieceNode.name?.split(separator: "_"),
             pieceDetails.count == 3 else {
             print("Invalid piece identifier")
             return
         }
-        
+
         let originalPosition = String(pieceDetails[0])
         guard let originalFirstChar = originalPosition.first,
-              let originalColIndex = columns.firstIndex(of: String(originalFirstChar)),
+              let originalColIndex = hexColumnIndex(for: originalFirstChar),
               var originalRowIndex = Int(String(originalPosition.dropFirst())) else {
             print("Invalid original position")
             return
@@ -1207,12 +1206,11 @@ class GameScene: SKScene {
     // Builds the "[opponent] moved to/captured [tile/piece at tile]" text for the
     // Live Activity, using board state as it was just before this move is applied.
     private func updateLiveActivity(destinationPosition: String) {
-        let columns = hexColumns
         let destColumnLetter = destinationPosition.prefix(1)
         let destRowIndexString = destinationPosition.dropFirst()
 
         var capturedPieceType: String? = nil
-        if let destColIndex = columns.firstIndex(of: String(destColumnLetter)),
+        if let destColIndex = hexColumnIndex(for: destColumnLetter),
            let destRowIndex = Int(destRowIndexString) {
             capturedPieceType = gameState[destColIndex, destRowIndex - 1]?.type
         }

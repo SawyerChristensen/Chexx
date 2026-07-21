@@ -373,10 +373,10 @@ struct GameState: Codable {
         
         // Convert from and to positions to board indices
         guard let fromChar = from.first,
-              let fromColumn = columns.firstIndex(of: String(fromChar)),
+              let fromColumn = hexColumnIndex(for: fromChar),
               let fromRow = Int(from.dropFirst()),
               let toChar = to.first,
-              let toColumn = columns.firstIndex(of: String(toChar)),
+              let toColumn = hexColumnIndex(for: toChar),
               let toRow = Int(to.dropFirst()) else {
             return
         }
@@ -429,8 +429,8 @@ struct GameState: Codable {
         let toColLetter = String(to.prefix(1))
         let toRowString = String(to.dropFirst())
 
-        guard let fromColIndex = columns.firstIndex(of: fromColLetter),
-              let toColIndex = columns.firstIndex(of: toColLetter),
+        guard let fromColIndex = hexColumnIndex(for: fromColLetter),
+              let toColIndex = hexColumnIndex(for: toColLetter),
               let fromRowIndex = Int(fromRowString).map({ $0 - 1 }),
               let toRowIndex = Int(toRowString).map({ $0 - 1 }) else {
             fatalError("Invalid move coordinates")
@@ -605,11 +605,9 @@ struct GameState: Codable {
     }
     
     func positionStringToInt(position: String) -> UInt8 {
-        let columns = hexColumns
-
         // Convert from and to positions to board indices
         guard let firstChar = position.first,
-              let columnPos = columns.firstIndex(of: String(firstChar)),
+              let columnPos = hexColumnIndex(for: firstChar),
               var rowPos = Int(position.dropFirst()) else {
             return 0
         }
@@ -722,11 +720,10 @@ struct GameState: Codable {
 
     
     func pieceAt(_ position: String) -> Piece? {
-        let columns = hexColumns
         let colLetter = String(position.prefix(1))
         let rowString = String(position.dropFirst())
 
-        guard let colIndex = columns.firstIndex(of: colLetter),
+        guard let colIndex = hexColumnIndex(for: colLetter),
               let rowIndex = Int(rowString).map({ $0 - 1 }) else {
             return nil
         }
@@ -735,11 +732,10 @@ struct GameState: Codable {
     }
 
     mutating func setPiece(_ piece: Piece?, at position: String) {
-        let columns = hexColumns
         let colLetter = String(position.prefix(1))
         let rowString = String(position.dropFirst())
 
-        guard let colIndex = columns.firstIndex(of: colLetter),
+        guard let colIndex = hexColumnIndex(for: colLetter),
               let rowIndex = Int(rowString).map({ $0 - 1 }) else {
             return
         }

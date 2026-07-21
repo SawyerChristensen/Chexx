@@ -10,6 +10,31 @@ import SpriteKit
 
 let hexColumns = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "k", "l"]
 
+// O(1) column-letter lookup, replacing `hexColumns.firstIndex(of: String(letter))` linear scans
+// (which also allocated a throwaway single-character String on every call) throughout the
+// move-generation/search hot path.
+func hexColumnIndex(for letter: Character) -> Int? {
+    switch letter {
+    case "a": return 0
+    case "b": return 1
+    case "c": return 2
+    case "d": return 3
+    case "e": return 4
+    case "f": return 5
+    case "g": return 6
+    case "h": return 7
+    case "i": return 8
+    case "k": return 9
+    case "l": return 10
+    default: return nil
+    }
+}
+
+func hexColumnIndex(for letter: some StringProtocol) -> Int? {
+    guard letter.count == 1, let char = letter.first else { return nil }
+    return hexColumnIndex(for: char)
+}
+
 func isValidPosition(columnToCheck: Int, rowToCheck: Int, in gameState: GameState) -> Bool {
     return columnToCheck >= 0 &&
     columnToCheck <= 10 &&
@@ -71,7 +96,7 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
     guard position.count >= 2, //this is a tad silly, could maybe remove this but I guess more error checking doesnt hurt
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1!")
         return boardToHex(validBoardMoves)
     }
@@ -252,13 +277,12 @@ func validMovesForPawn(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForRook(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1??")
         return boardToHex(validBoardMoves)
     }
@@ -418,13 +442,12 @@ func validMovesForRook(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForBishop(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
     
     guard position.count >= 2,
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1!")
         return boardToHex(validBoardMoves)
     }
@@ -649,13 +672,12 @@ func validMovesForBishop(_ color: String, at position: String, in gameState: Gam
 }
 
 func validMovesForKing(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1!")
         return boardToHex(validBoardMoves)
     }
@@ -799,13 +821,12 @@ func validMovesForKing(_ color: String, at position: String, in gameState: GameS
 }
 
 func validMovesForKnight(_ color: String, at position: String, in gameState: GameState) -> [String] {
-    let columns = hexColumns
     var validBoardMoves: [(Int, Int)] = []
 
     guard position.count >= 2,
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1!")
         return boardToHex(validBoardMoves)
     }
@@ -1109,7 +1130,7 @@ func pawnPureCaptures(_ color: String, at position: String, in gameState: GameSt
     guard position.count >= 2,
           let columnLetter = position.first,
           var rowIndex = Int(String(position.dropFirst())),
-          let colIndex = columns.firstIndex(of: String(columnLetter)) else {
+          let colIndex = hexColumnIndex(for: columnLetter) else {
         print("Position only has string length of 1!")
         return boardToHex(validBoardMoves)
     }
