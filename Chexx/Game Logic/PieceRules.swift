@@ -991,7 +991,13 @@ func validMovesForKnight(_ color: String, at position: (Int, Int), in gameState:
 
 
 private func filterMovesThatExposeKing(_ moves: [String], for color: String, at position: String, in gameState: inout GameState) -> [String] {
-    //print("moves", moves, "for", color, "position", position)
+    guard let tuplePosition = parsePosition(position) else { return moves }
+    let tupleMoves = moves.compactMap { parsePosition($0) }
+    let filteredMoves = filterMovesThatExposeKing(tupleMoves, for: color, at: tuplePosition, in: &gameState)
+    return boardToHex(filteredMoves)
+}
+
+private func filterMovesThatExposeKing(_ moves: [(Int, Int)], for color: String, at position: (Int, Int), in gameState: inout GameState) -> [(Int, Int)] {
     guard !moves.isEmpty else { return moves }
 
     // A move by a piece other than the king can only expose its own king to check if the king is
@@ -999,11 +1005,10 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
     // attacker (rook/bishop/queen). If the opponent has no sliding pieces left, neither is possible,
     // so every pseudo-legal move is legal and we can skip the make/unmake simulation entirely.
     let opponentColor = color == "white" ? "black" : "white"
-    let movingPieceType = gameState.pieceAt(position)?.type
+    let movingPieceType = gameState.pieceAt(col: position.0, row: position.1)?.type
     if movingPieceType != "king" {
         if gameState.sliderCount(for: opponentColor) == 0 {
-            let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
-            if !kingAlreadyInCheck {
+            if !isKingInCheck(for: color, in: gameState) {
                 return moves
             }
         } else if movingPieceType != "pawn" {
@@ -1012,23 +1017,29 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
             // per-move check below). Pawns are excluded from this shortcut because an en passant
             // capture removes two pawns from the same rank at once, which can expose the king even
             // though neither pawn is individually pinned.
-            let kingAlreadyInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState).0
-            if !kingAlreadyInCheck && !isPinned(position, for: color, in: &gameState) {
+            if !isKingInCheck(for: color, in: gameState) && !isPinned(position, for: color, in: &gameState) {
                 return moves
             }
         }
     }
 
     return moves.filter { move in
+        let undoInfo = gameState.makeMove(fromCol: position.0, fromRow: position.1, toCol: move.0, toRow: move.1)
 
-        let undoInfo = gameState.makeMove(position, to: move)
+        let inCheck = isKingInCheck(for: color, in: gameState) //can swap out this function for the commented out one, the commented out one fs works but is slow
 
-        let kingInCheck = isKingInCheckUsingKingSight(for: color, in: &gameState) //can swap out this function for the commented out one, the commented out one fs works but is slow
+        gameState.unmakeMove(undoInfo: undoInfo)
 
-        gameState.unmakeMove(position, to: move, undoInfo: undoInfo)
-
-        return !kingInCheck.0
+        return !inCheck
     }
+}
+
+// Thin helper over the tuple-based isKingInCheckUsingKingSight core, resolving the king's own
+// position tuple fresh from gameState each call (needed since a simulated king move updates it).
+private func isKingInCheck(for color: String, in gameState: GameState) -> Bool {
+    let kingPositionString = color == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
+    guard let kingPosition = parsePosition(kingPositionString) else { return false }
+    return isKingInCheckUsingKingSight(for: color, at: kingPosition, in: gameState).0
 }
 
 // Determines whether the piece at `position` is pinned to its own king by a sliding attacker, by
@@ -1036,30 +1047,31 @@ private func filterMovesThatExposeKing(_ moves: [String], for color: String, at 
 // line to an enemy rook/queen or bishop/queen. This is far cheaper than simulating every one of the
 // piece's candidate moves individually, since it costs a handful of ray scans per piece instead of
 // per move.
-private func isPinned(_ position: String, for color: String, in gameState: inout GameState) -> Bool {
+private func isPinned(_ position: (Int, Int), for color: String, in gameState: inout GameState) -> Bool {
     let opponentColor = color == "white" ? "black" : "white"
-    let kingPosition = color == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
-    let removedPiece = gameState.pieceAt(position)
+    let kingPositionString = color == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
+    guard let kingPosition = parsePosition(kingPositionString) else { return false }
+    let removedPiece = gameState[position.0, position.1]
 
-    let rookSightBefore = Set(validMovesForRook(color, at: kingPosition, in: gameState))
-    gameState.setPiece(nil, at: position)
+    let rookSightBefore = validMovesForRook(color, at: kingPosition, in: gameState)
+    gameState[position.0, position.1] = nil
     let rookSightAfter = validMovesForRook(color, at: kingPosition, in: gameState)
-    gameState.setPiece(removedPiece, at: position)
+    gameState[position.0, position.1] = removedPiece
 
-    for square in rookSightAfter where !rookSightBefore.contains(square) {
-        if let blocker = gameState.pieceAt(square), blocker.color == opponentColor,
+    for square in rookSightAfter where !rookSightBefore.contains(where: { $0 == square }) {
+        if let blocker = gameState.pieceAt(col: square.0, row: square.1), blocker.color == opponentColor,
            blocker.type == "rook" || blocker.type == "queen" {
             return true
         }
     }
 
-    let bishopSightBefore = Set(validMovesForBishop(color, at: kingPosition, in: gameState))
-    gameState.setPiece(nil, at: position)
+    let bishopSightBefore = validMovesForBishop(color, at: kingPosition, in: gameState)
+    gameState[position.0, position.1] = nil
     let bishopSightAfter = validMovesForBishop(color, at: kingPosition, in: gameState)
-    gameState.setPiece(removedPiece, at: position)
+    gameState[position.0, position.1] = removedPiece
 
-    for square in bishopSightAfter where !bishopSightBefore.contains(square) {
-        if let blocker = gameState.pieceAt(square), blocker.color == opponentColor,
+    for square in bishopSightAfter where !bishopSightBefore.contains(where: { $0 == square }) {
+        if let blocker = gameState.pieceAt(col: square.0, row: square.1), blocker.color == opponentColor,
            blocker.type == "bishop" || blocker.type == "queen" {
             return true
         }
