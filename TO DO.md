@@ -54,7 +54,9 @@
   - [x] Wire that tracker into GameView's SpriteView preferredFramesPerSecond so it drops to 10 fps when idle and jumps to 120 fps while any tracked animation is active
   - [x] Apply the same dynamic framerate wiring to the iMessage extension (HexChessLite MGameView/MGameScene)
 - [x] Remove the "Thinking" CPU animation glow and make it much smaller
-- [ ] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
+- [~] Go to metadata.json and replace the update notice there with a translated "[localized name for Hex Chess] now natively supports macOS!" for every local before running upload\_metadata with just the update notice argument
+  - [x] Update metadata.json's `whats_new` field for every locale to a translated "[localized app name] now natively supports macOS!" release note, using each locale's current CFBundleDisplayName (Chexx/InfoPlist.xcstrings) as the app name
+  - [ ] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements), then run it to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
 - [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
 - [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
 The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.
@@ -118,12 +120,13 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 - [ ] Add standard openings to the CPU
 
 ### CPU Performance Notes
-| Depth | Time | Notes |
+| Depth | Time (seconds)| Notes |
 | --- | --- | --- |
-| 1 | 0.01 seconds | |
-| 2 | ~0.2 seconds | |
-| 3 | ~2.0 seconds | Depth 3 is target default |
-| 4 | ~20 seconds | Unacceptable |
+| 1 | 0.0003 | |
+| 2 | 0.0092 | |
+| 3 | 0.0207 | |
+| 4 | 0.3831|  |
+| 5 |  2.8505|  |
 
 - Look for current eval functions that loop through the game state — they are all likely O(n²) and slow
 - Use hashing / transposition tables / other techniques to speed this up, especially at higher depths when we potentially eval the same state multiple times
