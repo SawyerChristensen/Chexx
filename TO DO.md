@@ -96,7 +96,9 @@
   - [ ] If the above concludes it's worth pursuing, design and build an offline self-play data-generation pipeline (many CPU-vs-CPU games at high search depth) to produce training positions/labels
   - [ ] If the above concludes it's worth pursuing, train a small NNUE-style or Core ML evaluation model offline on the generated data, convert/integrate it into GameCPU.evaluateGameState behind a feature flag, and benchmark search speed and playing strength against the current material-only evaluator
 - [x] Game CPU will not see knight's moves upon promotion, only queen
-- [ ] Do CPU calculations in the background with increasing depths while it is the users turn
+- [~] Do CPU calculations in the background with increasing depths while it is the users turn
+  - [x] Add a cancellable `ponder(gameState:shouldCancel:)` search to GameCPU that iteratively deepens in short (0.25s) time slices to warm the shared transposition table, and stop unconditionally clearing the transposition table at the start of every real move search — TT entries are keyed by Zobrist hash + side-to-move, so they're never stale/wrong, only unused once irrelevant, meaning pondered work can now be reused by the real search that follows
+  - [ ] Wire `ponder()` into GameScene: start it on a background queue as soon as it becomes the human player's turn in a vs-CPU game, and cancel it — waiting for it to fully stop before touching the shared GameCPU instance again — as soon as the human's move is made and the real CPU search begins
   - [ ] Prioritizing looking at branches that involve the currently tapped piece if the user taps on a piece (they are likely to be moving that piece).
 
 ### CPU Performance Notes 7/21/26

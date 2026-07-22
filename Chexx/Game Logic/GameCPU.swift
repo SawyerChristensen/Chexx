@@ -235,10 +235,11 @@ class GameCPU {
     }
 
     private func minimaxMove(gameState: inout GameState, depth: Int) -> (start: String, destination: String, promotion: String?)? {
-        // Fresh table per move decision: entries from a prior search are keyed off a board that
-        // no longer exists once real moves have been played, so there's nothing to gain by keeping them
-        transpositionTable.removeAll()
-
+        // The table is deliberately NOT cleared here: entries are keyed by Zobrist hash (+ side
+        // to move), so a stale entry from an earlier position simply never gets looked up again —
+        // it's not a correctness risk, just a few extra dictionary entries. Keeping it warm lets
+        // this search reuse anything a background ponder() pass already computed for positions
+        // reachable from here (see ponder below), instead of throwing that work away.
         let maximizingPlayerColor = gameState.currentPlayer
         let deadline = Date().addingTimeInterval(3.0)
 
@@ -260,6 +261,37 @@ class GameCPU {
 
         guard let move = bestMove else { return nil }
         return notation(for: move)
+    }
+
+    // How long each ponder() search slice runs before checking for cancellation. Short enough
+    // that pondering stops promptly once the human moves, long enough to keep iterative-deepening
+    // overhead (re-walking already-searched shallow nodes) small relative to useful new work.
+    private static let ponderSliceDuration: TimeInterval = 0.25
+
+    // Runs an unbounded iterative-deepening search on `gameState` purely to warm the shared
+    // transposition table while it's the human's turn to move, so the real search that follows
+    // the human's actual move can reuse whatever overlapping subtrees were already explored.
+    // Intended to be called from a background queue and stopped by making `shouldCancel` return
+    // true; searches in short time slices and re-checks cancellation between them rather than
+    // relying on a single long-running deadline, so it stops promptly instead of running on for
+    // an entire deep iteration after it's no longer wanted. Callers must ensure this never runs
+    // concurrently with a real findMove/minimaxMove search on the same GameCPU instance (e.g. by
+    // dispatching both on the same serial queue) since both mutate transpositionTable.
+    func ponder(gameState: GameState, shouldCancel: @escaping () -> Bool) {
+        var searchState = gameState
+        let maximizingPlayerColor = searchState.currentPlayer
+
+        var currentDepth = 1
+        while !shouldCancel() {
+            let sliceDeadline = Date().addingTimeInterval(Self.ponderSliceDuration)
+            _ = minimax(gameState: &searchState, depth: currentDepth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: sliceDeadline)
+
+            // Only advance once this depth actually finished within its slice; otherwise retry the
+            // same depth next slice, now with a warmer table from the partial work already done.
+            if Date() < sliceDeadline {
+                currentDepth += 1
+            }
+        }
     }
 
     // Null-move pruning parameters: R is how much shallower the "pass" search is run, and
