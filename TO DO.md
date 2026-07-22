@@ -58,7 +58,7 @@
   - [x] Update metadata.json's `whats_new` field for every locale to a translated "[localized app name] now natively supports macOS!" release note, using each locale's current CFBundleDisplayName (Chexx/InfoPlist.xcstrings) as the app name
   - [x] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements)
   - [ ] Run `upload_metadata.py --whats-new-only` to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
-- [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
+- [x] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge (Chexx target's Mac Catalyst config had `TARGETED_DEVICE_FAMILY = "1,2"` with no `SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD` override, meaning it defaulted to YES — i.e. "Designed for iPad, scaled to fit" mode, which is exactly what triggers this badge. Set `SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO` in both Debug and Release configs to switch to "Optimized for Mac" idiom instead. No `.pad`/`userInterfaceIdiom` branches exist in the codebase that this could break. Note: verifying the badge is actually gone requires seeing the live App Store Connect listing after a future submission — human step. Also found and logged a pre-existing, unrelated Mac Catalyst build break in the Bugs section below.)
 - [x] Fix the lone warning in MainMenuView
 - [~] Make the main title slowly pulse from 0.98 to 1.02 in size
   - [x] This is broken! It changes the entire view heirarchy. everything starts pulsing except the main logo.  (Root cause: `titlePulseScale` was `@State` on `MainMenuView` itself, so `withAnimation`'s implicit transaction scoped to that view's entire body re-render, bleeding the repeatForever animation into unrelated sibling views. Fix: extracted the pulsing "Hex Chess" text into its own leaf `PulsingTitleText` subview with its own local `@State`, so the animated transaction only ever re-renders that one Text.)
@@ -180,6 +180,7 @@
 ### Bugs
 - [ ] Game Center icon only loads the second time looking at the profile? (check if still true)
 - [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty after. is this change still needed? What if we allow one empty game per user? verify that other games are deleted if a user creates a new game key
+- [ ] The Chexx target's Mac Catalyst build (`-destination 'platform=macOS,variant=Mac Catalyst'`) currently fails to compile: `ActivityAttributes`/`Activity`/`ActivityAuthorizationInfo` (GameLiveActivityAttributes.swift, LiveActivityManager.swift) are marked unavailable on Mac Catalyst by ActivityKit itself. Guard the Live Activity code behind `#if !targetEnvironment(macCatalyst)` (or equivalent) so the Mac build compiles again; found while fixing the "not verified for macOS" badge below, pre-existing and unrelated to that fix
 
 ### iMessage
 - [ ] Figure out memory problem with resizing the window??
