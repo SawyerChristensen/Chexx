@@ -9,6 +9,23 @@ import SpriteKit
 import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
 import SwiftUI
 
+// Thread-safe on/off switch used to tell a running GameCPU.ponder() loop to stop. Kept as its
+// own object (rather than a plain Bool property on GameScene) so the background pondering
+// closure can observe cancellation without capturing `self`, and so cancelling from deinit is safe.
+private final class PonderCancellationToken {
+    private let lock = NSLock()
+    private var cancelled = false
+
+    func cancel() {
+        lock.lock(); cancelled = true; lock.unlock()
+    }
+
+    var isCancelled: Bool {
+        lock.lock(); defer { lock.unlock() }
+        return cancelled
+    }
+}
+
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
@@ -24,6 +41,30 @@ class GameScene: SKScene {
     var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
     var gameCPU: GameCPU!
     var hexPgn: [UInt8] = [0] //pretty sure this isn't needed if hexPgn is used via gameState.hexPgn...
+
+    // Serial so a background ponder() pass and the real findMove/minimaxMove search can never run
+    // concurrently on the shared gameCPU instance (both mutate its transposition table).
+    private let cpuSearchQueue = DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)
+    private var ponderToken: PonderCancellationToken?
+
+    // Starts a background pondering pass on the current position, intended to be called as soon
+    // as it becomes the human's turn in a vs-CPU game. Cancelled via stopPondering() as soon as
+    // the human's move is made; the cancellation + serial cpuSearchQueue together guarantee the
+    // real search below never starts until pondering has actually stopped.
+    private func startPondering() {
+        guard isVsCPU, gameCPU != nil else { return }
+        let token = PonderCancellationToken()
+        ponderToken = token
+        let stateSnapshot: GameState = gameState
+        cpuSearchQueue.async { [gameCPU] in
+            gameCPU?.ponder(gameState: stateSnapshot, shouldCancel: { token.isCancelled })
+        }
+    }
+
+    private func stopPondering() {
+        ponderToken?.cancel()
+        ponderToken = nil
+    }
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
@@ -1045,6 +1086,12 @@ class GameScene: SKScene {
         updateGameStatusUI(gameStatus: gameStatus)
         
         if isVsCPU && gameState.currentPlayer == "black" {
+            // The human's move was just made and the real search is about to start: stop any
+            // background pondering first. cpuSearchQueue is serial, so enqueueing the real search
+            // below guarantees it won't actually run until the ponder loop above has observed the
+            // cancellation and returned, even though we don't block waiting for it here.
+            stopPondering()
+
             // Only bother with the "Thinking…" status text if the search is actually expected to
             // take long enough for the player to notice — no point animating dots for a sub-100ms lookup.
             let legalMoveCount = gameCPU.legalMoveCount(for: &gameState)
@@ -1068,7 +1115,7 @@ class GameScene: SKScene {
             // concurrently with the main thread — that data race corrupted the array buffer and
             // trapped in unmakeMove (_ArrayBuffer._checkValidSubscriptMutating).
             let cpuSearchState: GameState = gameState
-            DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
+            cpuSearchQueue.asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove(searchState: cpuSearchState)
 
                 // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
@@ -1077,12 +1124,16 @@ class GameScene: SKScene {
                     self.whiteStatusTextUpdater?("") // Clear the status text
                 }
             }
+        } else if isVsCPU && gameState.currentPlayer == "white" {
+            // It's now the human's turn: warm the transposition table in the background while
+            // they think, so the CPU's real search above can reuse overlapping subtrees.
+            startPondering()
         }
-        
+
         if isVsCPU {
             saveGameStateToFile(hexPgn: gameState.HexPgn, to: "currentSinglePlayer")
         }
-        
+
     }
     
     func cpuMakeMove(searchState: GameState) { //for single player, also moves the piece
@@ -1400,6 +1451,7 @@ class GameScene: SKScene {
     }
     
     deinit { //(upon memory deninitialization of the GameScene (i actually have no idea when this triggers)
+        stopPondering() // let any in-flight background ponder loop stop rather than run forever
         if isOnlineMultiplayer {
             Task { @MainActor in
                 MultiplayerManager.shared.stopListening()
