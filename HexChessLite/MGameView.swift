@@ -18,6 +18,7 @@ struct MessagesGameView: View {
     @State private var waitingForOpponentText: String = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage")
     @State private var waitingForOpponentBackgroundOpacity: Double = 0.8
     @State private var waitingTimer: Timer?
+    private let waitingForOpponentMaxWidthText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage") + "..."
 
     var body: some View {
         GeometryReader { geometry in
@@ -41,29 +42,39 @@ struct MessagesGameView: View {
                         //.ignoresSafeArea()
                         //.transition(.opacity)
                     
-                    Text(waitingForOpponentText)
-                        .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
-                        .foregroundColor(.white)
-                        .lineLimit(1)
-                        .fixedSize(horizontal: true, vertical: false)
-                        .padding()
-                        .background(
-                            Color(white: 0.2)
-                                .cornerRadius(10).opacity(waitingForOpponentBackgroundOpacity))
-                        .cornerRadius(10)
-                        .onAppear {
-                            startWaitingTextAnimation()
-                            
-                            waitingForOpponentBackgroundOpacity = 0.8
-                            withAnimation(
-                                .easeInOut(duration: 0.75)
-                                .repeatForever(autoreverses: true)
-                            ) { waitingForOpponentBackgroundOpacity = 0.65 }
-                        }
-                        .onDisappear {
-                            stopWaitingAnimation()
-                            waitingForOpponentBackgroundOpacity = 0.8
-                        }
+                    ZStack {
+                        // Invisible placeholder sized for the widest dot-count state, reserving the badge's
+                        // layout space up front so the pill doesn't jitter as the dot count animates.
+                        Text(waitingForOpponentMaxWidthText)
+                            .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
+                            .lineLimit(1)
+                            .fixedSize(horizontal: true, vertical: false)
+                            .padding()
+                            .opacity(0)
+
+                        Color(white: 0.2)
+                            .cornerRadius(10)
+                            .opacity(waitingForOpponentBackgroundOpacity)
+
+                        Text(waitingForOpponentText)
+                            .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
+                            .foregroundColor(.white)
+                            .lineLimit(1)
+                    }
+                    .cornerRadius(10)
+                    .onAppear {
+                        startWaitingTextAnimation()
+
+                        waitingForOpponentBackgroundOpacity = 0.8
+                        withAnimation(
+                            .easeInOut(duration: 0.75)
+                            .repeatForever(autoreverses: true)
+                        ) { waitingForOpponentBackgroundOpacity = 0.65 }
+                    }
+                    .onDisappear {
+                        stopWaitingAnimation()
+                        waitingForOpponentBackgroundOpacity = 0.8
+                    }
                 }
             }
 

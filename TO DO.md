@@ -68,7 +68,7 @@
     - [x] Replace MainMenuView's remaining `maxScreenDimension`/`screenHeight`/`screenWidth`-derived paddings and spacing with fixed constants, and remove the outer GeometryReader if nothing still needs it (Replaced the king-stencil image size/padding, all 12 submenu button frames, the back-arrow icon size/padding, and the profile-sheet Close button frame with fixed point values computed from base iPhone 17 dimensions (393x852). Left `screenHeight`/`maxScreenDimension` GeometryReader values feeding `ProfileView`, `SettingsWindow`, and `GameLinkSheet` in place since those call sites are the next subtask; GeometryReader itself still can't be removed until that's done.)
     - [x] Update ProfileView.swift and SettingsWindow.swift call sites that receive screenHeight/screenWidth from MainMenuView to use fixed font numbers internally instead
     - [ ] Run the app on a base iPhone 17 simulator, capture before/after screenshots of the main menu (portrait and landscape), and compare for layout regressions
-- [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
+- [x] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Haptic feedback on check/game win
 - [ ] Verify we ask for a review after the 2nd CPU game win
 
