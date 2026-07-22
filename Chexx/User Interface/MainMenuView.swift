@@ -396,10 +396,10 @@ struct MainMenuView: View {
                             Image(systemName: "person.crop.circle")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .frame(width: 56, height: 56)
                                 .contentShape(Rectangle())
-                                .padding(.top, maxScreenDimension / 30)
-                                .padding(.leading, maxScreenDimension / 30)
+                                .padding(.top, 28)
+                                .padding(.leading, 28)
                         }
                         .fullScreenCover(isPresented: $isProfilePresented) {
                             VStack {
@@ -466,10 +466,10 @@ struct MainMenuView: View {
                             Image(systemName: "trophy")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .frame(width: 56, height: 56)
                                 .contentShape(Rectangle())
-                                .padding(.top, maxScreenDimension / 30)
-                                .padding(.leading, maxScreenDimension / 30)
+                                .padding(.top, 28)
+                                .padding(.leading, 28)
                         }
                     }
                     
@@ -489,10 +489,10 @@ struct MainMenuView: View {
                             Image(systemName: "gearshape.fill")
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .frame(width: 56, height: 56)
                                 .contentShape(Rectangle())
-                                .padding(.top, maxScreenDimension / 30)
-                                .padding(.trailing, maxScreenDimension / 30)
+                                .padding(.top, 28)
+                                .padding(.trailing, 28)
                         }
                         
                         // Tutorial Icon
@@ -502,10 +502,10 @@ struct MainMenuView: View {
                             Image(systemName: "text.book.closed") //originally just book.closed
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
+                                .frame(width: 56, height: 56)
                                 .contentShape(Rectangle())
-                                .padding(.top, maxScreenDimension / 30)
-                                .padding(.trailing, maxScreenDimension / 30)
+                                .padding(.top, 28)
+                                .padding(.trailing, 28)
                         }
                         .sheet(isPresented: $isTutorialPresented) {
                             TutorialSheet()
