@@ -268,6 +268,17 @@ class GameCPU {
     private static let nullMoveReduction = 2
     private static let nullMoveMinDepth = 3
 
+    // Late move reduction parameters: once a node's move ordering has already tried its most
+    // promising candidates (the TT best move and any high-scoring captures sort near the front —
+    // see orderMoves), later quiet moves are unlikely to be best. Search them at a shallower depth
+    // first, only paying for a full-depth re-search if that reduced search suggests they might
+    // actually beat the current bound. minDepth keeps the reduced search from going below depth 1,
+    // and fullSearchMoveCount is how many of a node's earliest moves are always searched at full
+    // depth, unreduced.
+    private static let lmrReduction = 1
+    private static let lmrMinDepth = 3
+    private static let lmrFullSearchMoveCount = 3
+
     // Null-move pruning assumes having the move is always at least as good as not having it, which
     // is false in zugzwang-prone positions — most commonly king-and-pawn-only endgames, where being
     // forced to move can only weaken the position. Skip it there, and skip it whenever the side to
@@ -354,22 +365,68 @@ class GameCPU {
             orderedMoves.insert(ttMove, at: 0)
         }
 
-        for move in orderedMoves {
+        // Side to move is constant across this whole loop (it only flips once a move is actually
+        // made below), so whether it's in check is computed once rather than per candidate move.
+        let sideToMoveInCheck = !isRoot && depth >= Self.lmrMinDepth
+            ? isKingInCheckUsingKingSight(for: gameState.currentPlayer, in: &gameState).0
+            : false
+
+        for (moveIndex, move) in orderedMoves.enumerated() {
             if Date() >= deadline { //mayyyy not need this
                 return (bestValue, bestMoves.randomElement())}
+
+            // Late move reduction candidacy is decided before the move is made: it needs the
+            // pre-move board (to tell whether the destination square is occupied, i.e. a capture)
+            // and the pre-move side to move (already captured above).
+            let isLMRCandidate = !isRoot
+                && depth >= Self.lmrMinDepth
+                && moveIndex >= Self.lmrFullSearchMoveCount
+                && move.promotion == nil
+                && !sideToMoveInCheck
+                && gameState.pieceAt(col: move.toCol, row: move.toRow) == nil
 
             let undoInfo = gameState.makeMove(fromCol: move.fromCol, fromRow: move.fromRow, toCol: move.toCol, toRow: move.toRow, promotionType: move.promotion ?? "queen")
             gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
 
-            let result = minimax(
-                gameState: &gameState,
-                depth: depth - 1,
-                alpha: alpha,
-                beta: beta,
-                maximizingPlayer: !maximizingPlayer,
-                originalPlayerColor: originalPlayerColor,
-                deadline: deadline,
-                isRoot: false)
+            var result: (value: Int, move: SearchMove?)
+            if isLMRCandidate {
+                // Search at reduced depth first. If it still looks good enough to potentially
+                // improve this node's bound, it wasn't safe to dismiss at reduced depth — re-search
+                // at full depth to get an accurate value before trusting it.
+                let reducedDepth = max(1, depth - 1 - Self.lmrReduction)
+                result = minimax(
+                    gameState: &gameState,
+                    depth: reducedDepth,
+                    alpha: alpha,
+                    beta: beta,
+                    maximizingPlayer: !maximizingPlayer,
+                    originalPlayerColor: originalPlayerColor,
+                    deadline: deadline,
+                    isRoot: false)
+
+                let reducedSearchLooksPromising = maximizingPlayer ? result.value > alpha : result.value < beta
+                if reducedSearchLooksPromising {
+                    result = minimax(
+                        gameState: &gameState,
+                        depth: depth - 1,
+                        alpha: alpha,
+                        beta: beta,
+                        maximizingPlayer: !maximizingPlayer,
+                        originalPlayerColor: originalPlayerColor,
+                        deadline: deadline,
+                        isRoot: false)
+                }
+            } else {
+                result = minimax(
+                    gameState: &gameState,
+                    depth: depth - 1,
+                    alpha: alpha,
+                    beta: beta,
+                    maximizingPlayer: !maximizingPlayer,
+                    originalPlayerColor: originalPlayerColor,
+                    deadline: deadline,
+                    isRoot: false)
+            }
 
             gameState.unmakeMove(undoInfo: undoInfo)
             gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
