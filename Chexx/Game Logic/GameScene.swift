@@ -1045,14 +1045,23 @@ class GameScene: SKScene {
         updateGameStatusUI(gameStatus: gameStatus)
         
         if isVsCPU && gameState.currentPlayer == "black" {
+            // Only bother with the "Thinking…" status text if the search is actually expected to
+            // take long enough for the player to notice — no point animating dots for a sub-100ms lookup.
+            let legalMoveCount = gameCPU.legalMoveCount(for: &gameState)
+            let estimatedDuration = gameCPU.estimatedThinkingDuration(legalMoveCount: legalMoveCount)
+            let shouldShowThinkingIndicator = estimatedDuration > 0.3
+
             var dotCount = 0
-            let thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
-                let base = NSLocalizedString("Thinking", comment: "CPU thinking text")
-                let animatedThinkingText = base + String(repeating: ".", count: dotCount)
-                self.whiteStatusTextUpdater?(animatedThinkingText)
-                dotCount = (dotCount + 1) % 4
+            var thinkingTimer: Timer?
+            if shouldShowThinkingIndicator {
+                thinkingTimer = Timer.scheduledTimer(withTimeInterval: 0.2, repeats: true) { _ in
+                    let base = NSLocalizedString("Thinking", comment: "CPU thinking text")
+                    let animatedThinkingText = base + String(repeating: ".", count: dotCount)
+                    self.whiteStatusTextUpdater?(animatedThinkingText)
+                    dotCount = (dotCount + 1) % 4
+                }
             }
-            
+
             let delay: TimeInterval = gameCPU.difficulty == .extraHard ? 0.01 : 0.1 //delay isnt really needed
             // Snapshot the live gameState on the main thread. The CPU search runs on this
             // value-type copy so the background thread never mutates the scene's gameState.board
@@ -1061,10 +1070,10 @@ class GameScene: SKScene {
             let cpuSearchState: GameState = gameState
             DispatchQueue.global(qos: .userInitiated).asyncAfter(deadline: .now() + delay) {
                 self.cpuMakeMove(searchState: cpuSearchState)
-                
+
                 // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
                 DispatchQueue.main.async {
-                    thinkingTimer.invalidate() // Stop the timer
+                    thinkingTimer?.invalidate() // Stop the timer, if it was started
                     self.whiteStatusTextUpdater?("") // Clear the status text
                 }
             }

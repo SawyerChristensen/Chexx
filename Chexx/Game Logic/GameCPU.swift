@@ -99,6 +99,41 @@ class GameCPU {
         return Date().timeIntervalSince(start)
     }
 
+    // The search depth findMove will use for the current difficulty, or nil for .random (which
+    // doesn't search at all). Mirrors the switch in findMove; kept separate so callers can cheaply
+    // estimate think time without duplicating findMove's move-selection logic.
+    private var searchDepth: Int? {
+        switch difficulty {
+        case .random: return nil
+        case .easy: return 1
+        case .medium: return 2
+        case .hard: return 3
+        case .extraHard: return 5
+        }
+    }
+
+    // Per-depth search times measured by ChexxTests' CPU search benchmark on the game's starting
+    // position (see TO DO.md's "CPU Performance Notes"), against a baseline legal-move count.
+    // Used only to guess whether a search is worth showing a "Thinking…" indicator for.
+    private static let benchmarkDepthDurations: [Int: TimeInterval] = [1: 0.0003, 2: 0.0092, 3: 0.0207, 4: 0.3831, 5: 2.8505]
+    private static let benchmarkMoveCount: Double = 30
+
+    // Cheap legal-move count for the position, exposed so GameScene can scale the thinking-duration
+    // estimate below without running (or duplicating) the actual minimax search.
+    func legalMoveCount(for gameState: inout GameState) -> Int {
+        generateAllFullMoves(for: gameState.currentPlayer, in: &gameState).count
+    }
+
+    // Rough guess at how long findMove will take for the current difficulty and position, scaling
+    // the recorded benchmark time for this depth by how many legal moves are actually on the board
+    // relative to the benchmark's baseline. Not precise — just enough to decide whether the
+    // "Thinking…" status text is worth showing.
+    func estimatedThinkingDuration(legalMoveCount: Int) -> TimeInterval {
+        guard let depth = searchDepth, let baseline = GameCPU.benchmarkDepthDurations[depth] else { return 0 }
+        let scale = Double(legalMoveCount) / GameCPU.benchmarkMoveCount
+        return baseline * max(scale, 0.1)
+    }
+
     // Main function to decide and make a move
     func findMove(gameState: inout GameState) -> (start: String, destination: String, promotion: String?)? { //this being conditional can maybe be changed, idk
         // Skip the search entirely on the CPU's very first move of the game if a hardcoded
