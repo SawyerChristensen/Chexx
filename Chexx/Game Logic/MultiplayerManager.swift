@@ -392,7 +392,62 @@ class MultiplayerManager: ObservableObject {
         gameListener?.remove()
         gameListener = nil //do i really need to set this to nil?
     }
-    
+
+    // MARK: - Random Matchmaking
+    private var matchmakingListener: ListenerRegistration?
+
+    // Adds (or refreshes) the current user's entry in the `matchmakingQueue` collection so a pairing
+    // process can match them with another waiting player, then listens on that same entry for a
+    // `matchedGameId` field to appear once a pairing process assigns them a game.
+    func joinMatchmakingQueue(matched: @escaping (String) -> Void, completion: @escaping (Bool) -> Void) {
+        fetchElo(forUserId: currentUserId) { elo in
+            let queueRef = self.db.collection("matchmakingQueue").document(self.currentUserId)
+            let queueData: [String: Any] = [
+                "uid": self.currentUserId,
+                "elo": elo ?? 1000,
+                "timestamp": FieldValue.serverTimestamp()
+            ]
+
+            queueRef.setData(queueData) { error in
+                DispatchQueue.main.async {
+                    if let error = error {
+                        print("Error joining matchmaking queue: \(error)")
+                        completion(false)
+                        return
+                    }
+
+                    self.matchmakingListener?.remove()
+                    self.matchmakingListener = queueRef.addSnapshotListener { snapshot, error in
+                        if let error = error {
+                            print("Error listening for matchmaking result: \(error)")
+                            return
+                        }
+                        guard let data = snapshot?.data(),
+                              let matchedGameId = data["matchedGameId"] as? String else { return }
+                        matched(matchedGameId)
+                    }
+                    completion(true)
+                }
+            }
+        }
+    }
+
+    // Removes the current user's entry from the matchmaking queue and stops listening for a match,
+    // e.g. when they cancel/dismiss the "searching for opponent" screen.
+    func leaveMatchmakingQueue(completion: ((Bool) -> Void)? = nil) {
+        matchmakingListener?.remove()
+        matchmakingListener = nil
+
+        db.collection("matchmakingQueue").document(currentUserId).delete { error in
+            if let error = error {
+                print("Error leaving matchmaking queue: \(error)")
+                completion?(false)
+            } else {
+                completion?(true)
+            }
+        }
+    }
+
     // MARK: - ELO Functions
     // Fetch a single user's Elo from Firestore.
     func fetchElo(forUserId userId: String, completion: @escaping (Int?) -> Void) {
