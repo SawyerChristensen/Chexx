@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
@@ -13,18 +14,21 @@ import FirebaseFirestore
 @MainActor
 class MultiplayerManager: ObservableObject {
     static let shared = MultiplayerManager()
-    
+
     private let db = Firestore.firestore()
     private var gameListener: ListenerRegistration?
-    
+
     var gameId: String?
     var currentUserId: String
     var opponentId: String?
     var currentPlayerColor: String = ""
-    
+
     @Published var opponentName: String = ""
     @Published var opponentProfileImageURL: URL?
     @Published var opponentCountry: String = ""
+    // Fallback avatar shown in GameView when the opponent has no Google profile photo
+    // (opponentProfileImageURL is nil), populated from their stored Game Center photo.
+    @Published var opponentGameCenterImage: UIImage?
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -310,7 +314,7 @@ class MultiplayerManager: ObservableObject {
     
     // Fetch opponent's information
     private func fetchOpponentInfo(userId: String) {
-        AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL, country in
+        AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL, country, gameCenterPhotoBase64 in
             DispatchQueue.main.async {
                 guard let self = self else { return }
                 self.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
@@ -320,6 +324,12 @@ class MultiplayerManager: ObservableObject {
                     self.opponentProfileImageURL = nil
                 }
                 self.opponentCountry = country ?? ""
+                if let gameCenterPhotoBase64 = gameCenterPhotoBase64,
+                   let imageData = Data(base64Encoded: gameCenterPhotoBase64) {
+                    self.opponentGameCenterImage = UIImage(data: imageData)
+                } else {
+                    self.opponentGameCenterImage = nil
+                }
 
                 // Now that we know who the opponent is, (re)start the Live Activity
                 // for this game so its content can be kept up to date as moves arrive.

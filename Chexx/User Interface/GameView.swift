@@ -91,7 +91,8 @@ struct GameView: View {
                                     .foregroundColor(.white)
                                 //.padding()
                                 
-                                // Opponent's Profile Image
+                                // Opponent's Profile Image (falls back to their Game Center
+                                // photo, if they have one, when they have no Google photo)
                                 if let url = MultiplayerManager.shared.opponentProfileImageURL {
                                     CachedAsyncImage(url: url) { image in
                                         image.resizable()
@@ -103,6 +104,12 @@ struct GameView: View {
                                             .fill(Color.gray)
                                             .frame(width: 40, height: 40)
                                     }
+                                } else if let gcImage = MultiplayerManager.shared.opponentGameCenterImage {
+                                    Image(uiImage: gcImage)
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
                                 }
                                 
                                 // Opponent's Name

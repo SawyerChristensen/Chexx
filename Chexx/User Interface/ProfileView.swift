@@ -674,6 +674,14 @@ struct ProfileView: View {
             GameCenterManager.shared.loadGameCenterProfileImage { image in
                 DispatchQueue.main.async { // remember to switch to the main thread before updating SwiftUI state
                     self.gameCenterImage = image
+
+                    // Share it to Firestore so opponents without a Google photo of their own
+                    // can still show something in the multiplayer game view's opponent row.
+                    if authViewModel.profileImageURL == nil,
+                       let image = image,
+                       let jpegData = image.jpegData(compressionQuality: 0.5) {
+                        authViewModel.updateGameCenterPhotoInFirestore(base64: jpegData.base64EncodedString())
+                    }
                 }
             }
         }

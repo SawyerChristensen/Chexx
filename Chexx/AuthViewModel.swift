@@ -11,6 +11,7 @@ import FirebaseFirestore
 import GoogleSignIn
 import CryptoKit
 import AuthenticationServices
+import UIKit
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -113,17 +114,17 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func fetchUserDataByUserId(_ userId: String, completion: @escaping (String?, String?, String?) -> Void) {
+    func fetchUserDataByUserId(_ userId: String, completion: @escaping (String?, String?, String?, String?) -> Void) {
         db.collection("users").document(userId).getDocument { document, error in
             if let error = error {
                 print("Error fetching user data: \(error)")
-                completion(nil, nil, nil)
+                completion(nil, nil, nil, nil)
                 return
             }
 
             guard let data = document?.data() else {
                 print("No Firestore document found for userId: \(userId)")
-                completion(nil, nil, nil)
+                completion(nil, nil, nil, nil)
                 return
             }
 
@@ -132,10 +133,11 @@ class AuthViewModel: ObservableObject {
             let displayName = data["displayName"] as? String
             let profileImageURL = data["profileImageURL"] as? String
             let country = data["country"] as? String
+            let gameCenterPhotoBase64 = data["gameCenterPhotoBase64"] as? String
 
             //print("Fetched displayName: \(displayName ?? "None"), profileImageURL: \(profileImageURL ?? "None")") // Debugging
 
-            completion(displayName, profileImageURL, country)
+            completion(displayName, profileImageURL, country, gameCenterPhotoBase64)
         }
     }
 
@@ -238,6 +240,28 @@ class AuthViewModel: ObservableObject {
             }
         } else {
             print("Country is the same as the stored value, no update needed.")
+        }
+    }
+
+    // Uploaded only when the user has no Google profile photo, so opponents in multiplayer
+    // still have some avatar to show instead of nothing (see GameView's opponent info row).
+    func updateGameCenterPhotoInFirestore(base64: String) {
+        guard let userID = Auth.auth().currentUser?.uid else {
+            return
+        }
+
+        let currentStoredPhoto = UserDefaults.standard.string(forKey: "gameCenterPhotoBase64") ?? ""
+
+        if currentStoredPhoto != base64 {
+            db.collection("users").document(userID).updateData([
+                "gameCenterPhotoBase64": base64
+            ]) { error in
+                if let error = error {
+                    print("Error updating Game Center photo in Firestore: \(error.localizedDescription)")
+                } else {
+                    UserDefaults.standard.set(base64, forKey: "gameCenterPhotoBase64")
+                }
+            }
         }
     }
 
