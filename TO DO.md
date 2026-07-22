@@ -128,7 +128,7 @@
 ## Update 1.7 — More Achievements 🏅
 - [ ] Automate all Game Center translation updates for all languages in metadata.json, similar to how DeckedOut does it,  or would it be easier with a GameCenterResources file we can pull/push to ASC from within Xcode proper?
 - [ ] Update all achievement icons
-- [ ] Game Center achievements for Dutch
+- [x] Game Center achievements for Dutch
 - [ ] App Store pictures for Dutch
 - [ ] New achievement icons
 

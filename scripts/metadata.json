@@ -68,7 +68,7 @@
         "_tone": "Punchy, ideally clever. Marks the player's first win of any game.",
         "en": "Hexceptional Win!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hexceptionele winst!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -76,7 +76,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Win your first game.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Win je eerste spel.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -84,7 +84,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You won your first game!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt je eerste spel gewonnen!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -95,7 +95,7 @@
         "_tone": "Punchy, ideally clever. Marks checkmating the CPU opponent.",
         "en": "Hex Machina",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Deus Hex Machina", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -103,7 +103,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Checkmate the CPU.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Zet de CPU schaakmat.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -111,7 +111,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You checkmated the CPU!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt de CPU schaakmat gezet!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -122,7 +122,7 @@
         "_tone": "Punchy, ideally clever. Marks winning a multiplayer game that the player joined (rather than created).",
         "en": "Hexceeded Hexpectations",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hexpectaties overtroffen", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -130,7 +130,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Win a game you joined.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Win een spel waaraan je hebt deelgenomen.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -138,7 +138,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You won a game you joined!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt een spel gewonnen waaraan je had deelgenomen!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -149,7 +149,7 @@
         "_tone": "Punchy, ideally clever. Marks another player joining a game the player created.",
         "en": "Friendly Hexchange",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Vriendelijke uitwisseling", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -157,7 +157,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Have another player join a game you created.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Laat een andere speler deelnemen aan een spel dat je hebt gemaakt.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -165,7 +165,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "Another player joined a game you created!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Een andere speler heeft zich aangesloten bij een spel dat je hebt gemaakt!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -176,7 +176,7 @@
         "_tone": "Punchy, ideally clever. Marks underpromoting a pawn to a knight instead of a queen.",
         "en": "Hexcalibur",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hexcalibur", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -184,7 +184,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Underpromote a pawn to a knight.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Onderpromoveer een pion naar een paard.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -192,7 +192,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You underpromoted a pawn to a knight!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt een pion ondergepromoveerd naar een paard!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -203,7 +203,7 @@
         "_tone": "Punchy, ideally clever. Marks checkmating the opponent after capturing every one of their pieces.",
         "en": "Hexecutioner",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hexenbeul", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -211,7 +211,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Checkmate after capturing all enemy pieces.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Zet schaakmat na het slaan van alle vijandelijke stukken.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -219,7 +219,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You delivered checkmate after capturing every enemy piece!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt schaakmat gezet na het slaan van alle vijandelijke stukken!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -230,7 +230,7 @@
         "_tone": "Punchy, ideally clever. Marks marching the player's king all the way to the opposing king's starting tile.",
         "en": "Hexpedition",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hexpeditie", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -238,7 +238,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Move your king to the opposing king's starting position.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Verplaats je koning naar de startpositie van de tegenstander.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -246,7 +246,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You marched your king all the way to the opposing king's starting position!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt je koning helemaal naar de startpositie van de tegenstander verplaatst!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -257,7 +257,7 @@
         "_tone": "Punchy, ideally clever. Marks promoting a pawn for the first time.",
         "en": "Hextra Power",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hextra kracht", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -265,7 +265,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Promote a pawn for the first time.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Promoveer voor het eerst een pion.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -273,7 +273,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You promoted a pawn for the first time!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt voor het eerst een pion gepromoveerd!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     },
@@ -284,7 +284,7 @@
         "_tone": "Punchy, ideally clever. Marks delivering checkmate using the player's own king.",
         "en": "Hextreme Measures",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Hextreme maatregelen", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "before_earned_description": {
@@ -292,7 +292,7 @@
         "_tone": "Tells the player what they need to do. Imperative.",
         "en": "Checkmate using your own king.",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Zet schaakmat met je eigen koning.", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       },
       "after_earned_description": {
@@ -300,7 +300,7 @@
         "_tone": "Celebrates the player's accomplishment. Past tense.",
         "en": "You delivered checkmate using your own king!",
         "ar": null, "da": null, "de": null, "es": null, "fi": null, "fr": null, "he": null, "hi": null, "id": null, "it": null,
-        "ja": null, "ko": null, "nb": null, "nl": null, "pl": null, "pt": null, "ru": null,
+        "ja": null, "ko": null, "nb": null, "nl": "Je hebt schaakmat gezet met je eigen koning!", "pl": null, "pt": null, "ru": null,
         "sv": null, "tr": null, "zh-Hans": null, "zh-Hant": null
       }
     }
