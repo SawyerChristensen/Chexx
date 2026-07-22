@@ -241,9 +241,24 @@ class GameCPU {
 
         let maximizingPlayerColor = gameState.currentPlayer
         let deadline = Date().addingTimeInterval(3.0)
-        let bestMove = minimax(gameState: &gameState, depth: depth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
 
-        guard let move = bestMove.move else { return nil }
+        // Iterative deepening: search depth 1, then 2, ... up to the target depth, stopping early
+        // if the deadline is hit. Each iteration populates the transposition table, so the next,
+        // deeper iteration finds a ttBestMove to search first — improving move ordering and pruning
+        // at every depth instead of only benefiting from within-search TT hits. If a deeper
+        // iteration gets cut off partway through by the deadline, the previous fully-searched
+        // iteration's move is kept rather than an incomplete one.
+        var bestMove: SearchMove? = nil
+        for currentDepth in 1...depth {
+            if Date() >= deadline { break }
+            let result = minimax(gameState: &gameState, depth: currentDepth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: deadline)
+            if Date() >= deadline, currentDepth > 1 { break }
+            if let move = result.move {
+                bestMove = move
+            }
+        }
+
+        guard let move = bestMove else { return nil }
         return notation(for: move)
     }
 
