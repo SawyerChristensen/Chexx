@@ -1048,7 +1048,7 @@ class GameScene: SKScene {
             // Only bother with the "Thinking…" status text if the search is actually expected to
             // take long enough for the player to notice — no point animating dots for a sub-100ms lookup.
             let legalMoveCount = gameCPU.legalMoveCount(for: &gameState)
-            let estimatedDuration = gameCPU.estimatedThinkingDuration(legalMoveCount: legalMoveCount)
+            let estimatedDuration = gameCPU.estimatedThinkingDuration(legalMoveCount: legalMoveCount, gameState: &gameState)
             let shouldShowThinkingIndicator = estimatedDuration > 0.3
 
             var dotCount = 0

@@ -99,17 +99,31 @@ class GameCPU {
         return Date().timeIntervalSince(start)
     }
 
-    // The search depth findMove will use for the current difficulty, or nil for .random (which
-    // doesn't search at all). Mirrors the switch in findMove; kept separate so callers can cheaply
-    // estimate think time without duplicating findMove's move-selection logic.
-    private var searchDepth: Int? {
-        switch difficulty {
-        case .random: return nil
-        case .easy: return 1
-        case .medium: return 2
-        case .hard: return 3
-        case .extraHard: return 5
+    // The base search depth for each difficulty, before any endgame scaling. nil for .random
+    // (which doesn't search at all).
+    private static let baseSearchDepth: [CPUDifficulty: Int] = [.easy: 1, .medium: 2, .hard: 3, .extraHard: 5]
+
+    // As the opponent's pieces thin out, the position's branching factor drops sharply, so the
+    // search can look further ahead within the same time budget. .easy is deliberately weak and
+    // left unscaled. Thresholds count the opponent's pieces including their king.
+    private func endgameDepthBonus(opponentPieceCount: Int) -> Int {
+        switch opponentPieceCount {
+        case ..<4: return 2
+        case ..<8: return 1
+        default: return 0
         }
+    }
+
+    // The search depth findMove will use for the current difficulty and position, or nil for
+    // .random (which doesn't search at all). Mirrors the switch in findMove; kept separate so
+    // callers can cheaply estimate think time without duplicating findMove's move-selection logic.
+    private func resolvedSearchDepth(gameState: inout GameState) -> Int? {
+        guard let baseDepth = Self.baseSearchDepth[difficulty] else { return nil }
+        guard difficulty != .easy else { return baseDepth }
+
+        let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
+        let opponentPieceCount = gameState.getPieces(for: opponentColor).count
+        return baseDepth + endgameDepthBonus(opponentPieceCount: opponentPieceCount)
     }
 
     // Per-depth search times measured by ChexxTests' CPU search benchmark on the game's starting
@@ -127,9 +141,12 @@ class GameCPU {
     // Rough guess at how long findMove will take for the current difficulty and position, scaling
     // the recorded benchmark time for this depth by how many legal moves are actually on the board
     // relative to the benchmark's baseline. Not precise — just enough to decide whether the
-    // "Thinking…" status text is worth showing.
-    func estimatedThinkingDuration(legalMoveCount: Int) -> TimeInterval {
-        guard let depth = searchDepth, let baseline = GameCPU.benchmarkDepthDurations[depth] else { return 0 }
+    // "Thinking…" status text is worth showing. If endgame scaling has pushed the depth past what
+    // was benchmarked, falls back to the deepest known benchmark as a floor rather than showing 0.
+    func estimatedThinkingDuration(legalMoveCount: Int, gameState: inout GameState) -> TimeInterval {
+        guard let depth = resolvedSearchDepth(gameState: &gameState) else { return 0 }
+        let knownDepth = min(depth, GameCPU.benchmarkDepthDurations.keys.max() ?? depth)
+        guard let baseline = GameCPU.benchmarkDepthDurations[knownDepth] else { return 0 }
         let scale = Double(legalMoveCount) / GameCPU.benchmarkMoveCount
         return baseline * max(scale, 0.1)
     }
@@ -150,18 +167,10 @@ class GameCPU {
             return nil // No valid moves available
         }
 
-        switch difficulty {
-        case .random:
+        guard let depth = resolvedSearchDepth(gameState: &gameState) else {
             return selectRandomMove(from: possibleMoves)
-        case .easy:
-            return minimaxMove(gameState: &gameState, depth: 1)
-        case .medium:
-            return minimaxMove(gameState: &gameState, depth: 2)
-        case .hard:
-            return minimaxMove(gameState: &gameState, depth: 3)
-        case .extraHard:
-            return minimaxMove(gameState: &gameState, depth: 5)
         }
+        return minimaxMove(gameState: &gameState, depth: depth)
     }
 
     // White's starting row in each pawn-bearing column (see GameState.setInitialPiecePositions).
