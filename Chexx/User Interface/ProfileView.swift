@@ -40,8 +40,6 @@ struct Country: Hashable {
 }
 
 struct ProfileView: View {
-    let screenHeight: CGFloat
-    let screenWidth: CGFloat
     @Environment(\.colorScheme) var colorScheme
     @EnvironmentObject var authViewModel: AuthViewModel
     @Environment(\.dismiss) var dismiss
@@ -328,7 +326,6 @@ struct ProfileView: View {
     private static let sortedCountries: [Country] = countries.sorted(by: { $0.localizedName < $1.localizedName })
 
     var body: some View {
-        let minDimension = min(self.screenHeight, self.screenWidth)
         VStack(spacing: 10) {
             
             if authViewModel.isLoggedIn { //LOGGED IN!
@@ -380,7 +377,7 @@ struct ProfileView: View {
                     } else {
                         HStack {
                             Text("Display Name:  \(authViewModel.displayName)")
-                                .font(.system(size: minDimension / 20, weight: .medium, design: .serif))
+                                .font(.system(size: 20, weight: .medium, design: .serif))
                                 .lineLimit(1)
                                 .multilineTextAlignment(.leading)
                             
@@ -406,7 +403,7 @@ struct ProfileView: View {
                 // MARK: Country Selection
                 HStack {
                     Text("Representing:")
-                        .font(.system(size: minDimension / 20, weight: .medium, design: .serif))
+                        .font(.system(size: 20, weight: .medium, design: .serif))
                         .lineLimit(1)
                         .layoutPriority(1)
 
@@ -434,7 +431,7 @@ struct ProfileView: View {
                 
                 // MARK: ELO Rating
                 Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)") //could be modified to use a local toggle that shows if its been updated, preventing the server call EVERY profile view, but we can implement that later
-                    .font(.system(size: minDimension / 20, weight: .medium, design: .serif))
+                    .font(.system(size: 20, weight: .medium, design: .serif))
                     .onAppear {
                         // when the view appears, fetch elo (we already have a function for this in multiplayerManager)
                         MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
@@ -446,7 +443,7 @@ struct ProfileView: View {
                 HStack(spacing: 20) {
                     Button(action: authViewModel.signOut) { //maybe make this smaller?
                         Text("Sign Out")
-                            .font(.system(size: minDimension / 24, weight: .medium, design: .serif))
+                            .font(.system(size: 16, weight: .medium, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
@@ -454,7 +451,7 @@ struct ProfileView: View {
                     
                     Button(action: {showDeleteConfirmation = true}) {
                         Text("Delete Account")
-                            .font(.system(size: minDimension / 24, weight: .medium, design: .serif))
+                            .font(.system(size: 16, weight: .medium, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
@@ -480,11 +477,11 @@ struct ProfileView: View {
                         // MARK: - Achievements section
                         HStack {
                             Image(systemName: "trophy.fill")
-                                .font(.system(size: screenHeight / 30, weight: .medium, design: .serif))
+                                .font(.system(size: 28, weight: .medium, design: .serif))
                                 .foregroundColor(Color.accentColor)
                             
                             Text("Achievements")
-                                .font(.system(size: minDimension / 18, weight: .medium, design: .serif))
+                                .font(.system(size: 22, weight: .medium, design: .serif))
                         }
                         
                         ScrollView {
@@ -493,7 +490,7 @@ struct ProfileView: View {
                                     HStack {
                                         VStack(alignment: .leading) {
                                             Text(achievement.title)
-                                                .font(.system(size: minDimension / 20, weight: .medium, design: .serif))
+                                                .font(.system(size: 20, weight: .medium, design: .serif))
                                             
                                             Text(achievement.description)
                                                 .font(.body)
@@ -694,5 +691,5 @@ struct ProfileView: View {
 
 //can remove for production:
 //#Preview {
-    //ProfileView(screenHeight: 720, screenWidth: 200) //??????
+    //ProfileView()
 //}

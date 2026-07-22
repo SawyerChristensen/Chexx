@@ -406,7 +406,7 @@ struct MainMenuView: View {
                                 
                                 Spacer()
                                 
-                                ProfileView(screenHeight: screenHeight, screenWidth: screenWidth)
+                                ProfileView()
                                     .environmentObject(authViewModel)
                                 
                                 Spacer()
@@ -480,7 +480,7 @@ struct MainMenuView: View {
                         // Settings icon
                         Button(action: {
                             if let rootViewController = UIApplication.shared.activeRootViewController {
-                                let settingsViewController = UIHostingController(rootView: SettingsWindow(screenHeight: maxScreenDimension))
+                                let settingsViewController = UIHostingController(rootView: SettingsWindow())
                                 settingsViewController.modalPresentationStyle = .overCurrentContext
                                 settingsViewController.view.backgroundColor = .clear // Transparent background
                                 rootViewController.present(settingsViewController, animated: true, completion: nil)

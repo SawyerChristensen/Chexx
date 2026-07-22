@@ -9,7 +9,6 @@ import SwiftUI
 import UserNotifications
 
 struct SettingsWindow: View {
-    let screenHeight: CGFloat //built off of 720 for initial iphone 15 pro test
     @Environment(\.colorScheme) var colorScheme // Detecting the current color scheme
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
@@ -29,36 +28,36 @@ struct SettingsWindow: View {
                     presentationMode.wrappedValue.dismiss()}
             
             VStack {
-                //WaveText(text: "Settings", fontSize: screenHeight / 24)
+                //WaveText(text: "Settings", fontSize: 39)
                 Text("Settings")
-                    .font(.system(size: screenHeight / 22, weight: .semibold, design: .serif))
+                    .font(.system(size: 39, weight: .semibold, design: .serif))
                     .padding()
-                    
+
                 Toggle("Show Legal Moves", isOn: $highlightEnabled) //note: toggle does not scale with font
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
+                    .frame(maxWidth: 355)
+                    .font(.system(size: 24, weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
-                
+
                 Toggle("Background Music", isOn: $backgroundMusicEnabled)
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
+                    .frame(maxWidth: 355)
+                    .font(.system(size: 24, weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     //.padding(.bottom, 2)
-                
+
                 Toggle("Sound Effects", isOn: $soundEffectsEnabled)
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
+                    .frame(maxWidth: 355)
+                    .font(.system(size: 24, weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
-                
+
                 Toggle("Low Motion", isOn: $lowMotionEnabled)
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
+                    .frame(maxWidth: 355)
+                    .font(.system(size: 24, weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
 
                 Toggle("Player Turn Notification", isOn: $playerTurnNotifEnabled)
-                    .frame(maxWidth: min(screenHeight / 2.4, 500))
-                    .font(.system(size: min(screenHeight / 36, 28), weight: .medium, design: .serif))
+                    .frame(maxWidth: 355)
+                    .font(.system(size: 24, weight: .medium, design: .serif))
                     .foregroundColor(colorScheme == .dark ? .white : .black)
                     .disabled(!hasEnteredOnlineGame)
                     .onChange(of: playerTurnNotifEnabled) { _, newValue in
@@ -71,16 +70,16 @@ struct SettingsWindow: View {
                     }
                 if !hasEnteredOnlineGame {
                     Text("Available after your first online game")
-                        .font(.system(size: min(screenHeight / 48, 18), weight: .regular, design: .serif))
+                        .font(.system(size: 18, weight: .regular, design: .serif))
                         .foregroundColor(.secondary)
                 }
                 Button(action: {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Close")
-                        .font(.system(size: screenHeight / 30, weight: .semibold, design: .serif))
+                        .font(.system(size: 28, weight: .semibold, design: .serif))
                         .padding()
-                        .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 18)
+                        .frame(minWidth: 189, maxHeight: 47)
                         .background(Color.accentColor)
                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                         .clipShape(HexagonEdgeRectangleShape())
@@ -106,7 +105,7 @@ struct SettingsWindow: View {
 /*
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(screenHeight: 720)
+        SettingsView()
     }
 }*/
 
