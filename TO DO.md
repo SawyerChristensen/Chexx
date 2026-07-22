@@ -126,11 +126,11 @@
 --
 
 ## Update 1.7 — More Achievements 🏅
-- [~] Automate all Game Center translation updates for all languages in metadata.json, similar to how DeckedOut does it,  or would it be easier with a GameCenterResources file we can pull/push to ASC from within Xcode proper? (Resolved: the metadata.json + scripts/upload_metadata.py approach was already copied over from DeckedOut in a prior update — it's the same automation DeckedOut uses, and `upload_achievements()` already pushes Game Center localizations for every locale in `_meta.locales` via the App Store Connect API, so a separate GameCenterResources/Xcode-native pull-push isn't needed. What's actually still missing is the achievement translation *content* itself in metadata.json — only `en` and `nl` were filled in; the other 20 locales were still `null`. Filling those in directly (translating myself rather than going through the script's `--translate` Claude-API path, so no ANTHROPIC_API_KEY is needed) is the remaining work, broken into locale batches below.)
+- [x] Automate all Game Center translation updates for all languages in metadata.json, similar to how DeckedOut does it,  or would it be easier with a GameCenterResources file we can pull/push to ASC from within Xcode proper? (Resolved: the metadata.json + scripts/upload_metadata.py approach was already copied over from DeckedOut in a prior update — it's the same automation DeckedOut uses, and `upload_achievements()` already pushes Game Center localizations for every locale in `_meta.locales` via the App Store Connect API, so a separate GameCenterResources/Xcode-native pull-push isn't needed. What's actually still missing is the achievement translation *content* itself in metadata.json — only `en` and `nl` were filled in; the other 20 locales were still `null`. Filling those in directly (translating myself rather than going through the script's `--translate` Claude-API path, so no ANTHROPIC_API_KEY is needed) is the remaining work, broken into locale batches below.)
   - [x] Fill in Game Center achievement translations (title/before/after descriptions, all 9 achievements) in metadata.json for locales: ar, da, de, es, fi
   - [x] Fill in Game Center achievement translations in metadata.json for locales: fr, he, hi, id, it
   - [x] Fill in Game Center achievement translations in metadata.json for locales: ja, ko, nb, pl, pt
-  - [ ] Fill in Game Center achievement translations in metadata.json for locales: ru, sv, tr, zh-Hans, zh-Hant
+  - [x] Fill in Game Center achievement translations in metadata.json for locales: ru, sv, tr, zh-Hans, zh-Hant
 - [ ] Update all achievement icons
 - [x] Game Center achievements for Dutch
 - [ ] App Store pictures for Dutch

@@ -158,11 +158,11 @@
         "nl": "Hexceptionele winst!",
         "pl": "Heksjątkowe zwycięstwo!",
         "pt": "Vitória Hexcepcional!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Исключительная победа!",
+        "sv": "Hexceptionell seger!",
+        "tr": "Muhteşem Zafer!",
+        "zh-Hans": "非凡的胜利！",
+        "zh-Hant": "非凡的勝利！"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -184,11 +184,11 @@
         "nl": "Win je eerste spel.",
         "pl": "Wygraj swoją pierwszą partię",
         "pt": "Vença seu primeiro jogo",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Одержите свою первую победу.",
+        "sv": "Vinn din första match.",
+        "tr": "İlk oyununu kazan.",
+        "zh-Hans": "赢得你的第一场比赛。",
+        "zh-Hant": "贏得你的第一場比賽。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -210,11 +210,11 @@
         "nl": "Je hebt je eerste spel gewonnen!",
         "pl": "Wygrałeś swoją pierwszą partię!",
         "pt": "Você venceu seu primeiro jogo!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы одержали свою первую победу!",
+        "sv": "Du vann din första match!",
+        "tr": "İlk oyununu kazandın!",
+        "zh-Hans": "你赢得了你的第一场比赛！",
+        "zh-Hant": "你贏得了你的第一場比賽！"
       }
     },
     "HexMachina": {
@@ -239,11 +239,11 @@
         "nl": "Deus Hex Machina",
         "pl": "Hex Machina",
         "pt": "Hex Machina",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Hex Machina",
+        "sv": "Hex Machina",
+        "tr": "Hex Machina",
+        "zh-Hans": "Hex Machina",
+        "zh-Hant": "Hex Machina"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -265,11 +265,11 @@
         "nl": "Zet de CPU schaakmat.",
         "pl": "Zamat w partii przeciwko komputerowi",
         "pt": "Dê xeque-mate na CPU",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Поставьте мат компьютеру.",
+        "sv": "Sätt matt på datorn.",
+        "tr": "Bilgisayarı mat et.",
+        "zh-Hans": "将死电脑。",
+        "zh-Hant": "將死電腦。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -291,11 +291,11 @@
         "nl": "Je hebt de CPU schaakmat gezet!",
         "pl": "Zamatowałeś komputer!",
         "pt": "Você deu xeque-mate na CPU!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы поставили мат компьютеру!",
+        "sv": "Du satte matt på datorn!",
+        "tr": "Bilgisayarı mat ettin!",
+        "zh-Hans": "你将死了电脑！",
+        "zh-Hant": "你將死了電腦！"
       }
     },
     "HexceededHexpectations": {
@@ -320,11 +320,11 @@
         "nl": "Hexpectaties overtroffen",
         "pl": "Ponad Hekspektacje",
         "pt": "Superou as Hexpectativas",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Превзошёл ожидания",
+        "sv": "Överträffade Förväntningarna",
+        "tr": "Beklentileri Aştı",
+        "zh-Hans": "超乎期待",
+        "zh-Hant": "超乎期待"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -346,11 +346,11 @@
         "nl": "Win een spel waaraan je hebt deelgenomen.",
         "pl": "Wygraj mecz dołączony do innego gracza",
         "pt": "Vença um jogo em que entrou",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Выиграйте игру, к которой присоединились.",
+        "sv": "Vinn en match du gick med i.",
+        "tr": "Katıldığın bir oyunu kazan.",
+        "zh-Hans": "赢得你加入的一场比赛。",
+        "zh-Hant": "贏得你加入的一場比賽。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -372,11 +372,11 @@
         "nl": "Je hebt een spel gewonnen waaraan je had deelgenomen!",
         "pl": "Wygrałeś mecz, do którego dołączyłeś!",
         "pt": "Você venceu um jogo em que entrou!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы выиграли игру, к которой присоединились!",
+        "sv": "Du vann en match du gick med i!",
+        "tr": "Katıldığın bir oyunu kazandın!",
+        "zh-Hans": "你赢得了你加入的一场比赛！",
+        "zh-Hant": "你贏得了你加入的一場比賽！"
       }
     },
     "FriendlyHexchange": {
@@ -401,11 +401,11 @@
         "nl": "Vriendelijke uitwisseling",
         "pl": "Przyjazna Hekszmiana",
         "pt": "Troca Amigável",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Дружественный обмен",
+        "sv": "Vänligt utbyte",
+        "tr": "Dostane Alışveriş",
+        "zh-Hans": "友好交流",
+        "zh-Hant": "友好交流"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -427,11 +427,11 @@
         "nl": "Laat een andere speler deelnemen aan een spel dat je hebt gemaakt.",
         "pl": "Do gry, którą stworzyłeś, dołączy inny gracz",
         "pt": "Faça um jogador entrar em um jogo criado por você",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Пусть другой игрок присоединится к созданной вами игре.",
+        "sv": "Låt en annan spelare gå med i en match du skapat.",
+        "tr": "Oluşturduğun bir oyuna başka bir oyuncunun katılmasını sağla.",
+        "zh-Hans": "让另一位玩家加入你创建的比赛。",
+        "zh-Hant": "讓另一位玩家加入你創建的比賽。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -453,11 +453,11 @@
         "nl": "Een andere speler heeft zich aangesloten bij een spel dat je hebt gemaakt!",
         "pl": "Inny gracz dołączył do gry, którą stworzyłeś!",
         "pt": "Um jogador entrou em um jogo criado por você!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Другой игрок присоединился к созданной вами игре!",
+        "sv": "En annan spelare gick med i en match du skapat!",
+        "tr": "Oluşturduğun bir oyuna başka bir oyuncu katıldı!",
+        "zh-Hans": "另一位玩家加入了你创建的比赛！",
+        "zh-Hant": "另一位玩家加入了你創建的比賽！"
       }
     },
     "Hexcalibur": {
@@ -482,11 +482,11 @@
         "nl": "Hexcalibur",
         "pl": "Hexcalibur",
         "pt": "Hexcalibur",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Hexcalibur",
+        "sv": "Hexcalibur",
+        "tr": "Hexcalibur",
+        "zh-Hans": "Hexcalibur",
+        "zh-Hant": "Hexcalibur"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -508,11 +508,11 @@
         "nl": "Onderpromoveer een pion naar een paard.",
         "pl": "Zamiast hetmana awansuj pionka na skoczka",
         "pt": "Subpromova um peão para um cavalo",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Превратите пешку в коня при слабом превращении.",
+        "sv": "Underforvandla en bonde till en springare.",
+        "tr": "Bir piyonu at'a düşük terfi ettir.",
+        "zh-Hans": "将一个兵升变为骑士，而非皇后。",
+        "zh-Hant": "將一個兵升變為騎士，而非皇后。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -534,11 +534,11 @@
         "nl": "Je hebt een pion ondergepromoveerd naar een paard!",
         "pl": "Awansowałeś pionka na skoczka zamiast hetmana!",
         "pt": "Você subpromoveu um peão para um cavalo!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы превратили пешку в коня при слабом превращении!",
+        "sv": "Du underforvandlade en bonde till en springare!",
+        "tr": "Bir piyonu at'a düşük terfi ettirdin!",
+        "zh-Hans": "你将一个兵升变为了骑士，而非皇后！",
+        "zh-Hant": "你將一個兵升變為了騎士，而非皇后！"
       }
     },
     "Hexecutioner": {
@@ -563,11 +563,11 @@
         "nl": "Hexenbeul",
         "pl": "Heks-kucja",
         "pt": "Hexecutador",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Палач",
+        "sv": "Bödeln",
+        "tr": "Cellat",
+        "zh-Hans": "刽子手",
+        "zh-Hant": "劊子手"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -589,11 +589,11 @@
         "nl": "Zet schaakmat na het slaan van alle vijandelijke stukken.",
         "pl": "Zamat po zbiciu wszystkich figur przeciwnika",
         "pt": "Dê xeque-mate após capturar todas as peças inimigas",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Поставьте мат, взяв все фигуры противника.",
+        "sv": "Sätt matt efter att ha tagit alla fiendens pjäser.",
+        "tr": "Rakibin tüm taşlarını aldıktan sonra mat et.",
+        "zh-Hans": "吃掉所有敌方棋子后将死对方。",
+        "zh-Hant": "吃掉所有敵方棋子後將死對方。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -615,11 +615,11 @@
         "nl": "Je hebt schaakmat gezet na het slaan van alle vijandelijke stukken!",
         "pl": "Zamatowałeś po zbiciu wszystkich figur przeciwnika!",
         "pt": "Você deu xeque-mate após capturar todas as peças inimigas!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы поставили мат, взяв все фигуры противника!",
+        "sv": "Du satte matt efter att ha tagit alla fiendens pjäser!",
+        "tr": "Rakibin tüm taşlarını aldıktan sonra mat ettin!",
+        "zh-Hans": "你吃掉了所有敌方棋子后将死了对方！",
+        "zh-Hant": "你吃掉了所有敵方棋子後將死了對方！"
       }
     },
     "Hexpedition": {
@@ -644,11 +644,11 @@
         "nl": "Hexpeditie",
         "pl": "Hekspedycja",
         "pt": "Hexpedição",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Гекспедиция",
+        "sv": "Hexpedition",
+        "tr": "Keşif Seferi",
+        "zh-Hans": "远征",
+        "zh-Hant": "遠征"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -670,11 +670,11 @@
         "nl": "Verplaats je koning naar de startpositie van de tegenstander.",
         "pl": "Przesuń króla na początkowe pole króla przeciwnika",
         "pt": "Mova seu rei para a posição inicial do rei oponente",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Доведите своего короля до начальной позиции короля противника.",
+        "sv": "Flytta din kung till motståndarens kungs startposition.",
+        "tr": "Kralını, rakip kralın başlangıç konumuna taşı.",
+        "zh-Hans": "将你的王移动到对方王的起始位置。",
+        "zh-Hant": "將你的王移動到對方王的起始位置。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -696,11 +696,11 @@
         "nl": "Je hebt je koning helemaal naar de startpositie van de tegenstander verplaatst!",
         "pl": "Przesunąłeś króla na początkowe pole króla przeciwnika!",
         "pt": "Você moveu seu rei para a posição inicial do rei oponente!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы довели своего короля до самой начальной позиции короля противника!",
+        "sv": "Du flyttade din kung ända till motståndarens kungs startposition!",
+        "tr": "Kralını, rakip kralın başlangıç konumuna kadar taşıdın!",
+        "zh-Hans": "你将王一路移动到了对方王的起始位置！",
+        "zh-Hant": "你將王一路移動到了對方王的起始位置！"
       }
     },
     "HextraPower": {
@@ -725,11 +725,11 @@
         "nl": "Hextra kracht",
         "pl": "Heksowa Moc",
         "pt": "Hextra Poder",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Гекстра сила",
+        "sv": "Hextra kraft",
+        "tr": "Hextra Güç",
+        "zh-Hans": "超能力",
+        "zh-Hant": "超能力"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -751,11 +751,11 @@
         "nl": "Promoveer voor het eerst een pion.",
         "pl": "Awansuj pionka po raz pierwszy",
         "pt": "Promova um peão pela primeira vez",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Превратите пешку впервые.",
+        "sv": "Befordra en bonde för första gången.",
+        "tr": "İlk kez bir piyonu terfi ettir.",
+        "zh-Hans": "第一次升变一个兵。",
+        "zh-Hant": "第一次升變一個兵。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -777,11 +777,11 @@
         "nl": "Je hebt voor het eerst een pion gepromoveerd!",
         "pl": "Awansowałeś pionka po raz pierwszy!",
         "pt": "Você promoveu um peão pela primeira vez!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы впервые превратили пешку!",
+        "sv": "Du befordrade en bonde för första gången!",
+        "tr": "İlk kez bir piyonu terfi ettirdin!",
+        "zh-Hans": "你第一次升变了一个兵！",
+        "zh-Hant": "你第一次升變了一個兵！"
       }
     },
     "HextremeMeasures": {
@@ -806,11 +806,11 @@
         "nl": "Hextreme maatregelen",
         "pl": "Hekstremalne Środki",
         "pt": "Medidas Hextremas",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Гекстремальные меры",
+        "sv": "Hextrema åtgärder",
+        "tr": "Hextrem Önlemler",
+        "zh-Hans": "非常手段",
+        "zh-Hant": "非常手段"
       },
       "before_earned_description": {
         "_max_chars": 256,
@@ -832,11 +832,11 @@
         "nl": "Zet schaakmat met je eigen koning.",
         "pl": "Zamat wykonany twoim własnym królem",
         "pt": "Dê xeque-mate usando seu próprio rei",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Поставьте мат собственным королём.",
+        "sv": "Sätt matt med din egen kung.",
+        "tr": "Kendi kralınla mat et.",
+        "zh-Hans": "用你自己的王将死对方。",
+        "zh-Hant": "用你自己的王將死對方。"
       },
       "after_earned_description": {
         "_max_chars": 256,
@@ -858,11 +858,11 @@
         "nl": "Je hebt schaakmat gezet met je eigen koning!",
         "pl": "Wykonałeś zamat swoim własnym królem!",
         "pt": "Você deu xeque-mate usando seu próprio rei!",
-        "ru": null,
-        "sv": null,
-        "tr": null,
-        "zh-Hans": null,
-        "zh-Hant": null
+        "ru": "Вы поставили мат собственным королём!",
+        "sv": "Du satte matt med din egen kung!",
+        "tr": "Kendi kralınla mat ettin!",
+        "zh-Hans": "你用自己的王将死了对方！",
+        "zh-Hant": "你用自己的王將死了對方！"
       }
     }
   }
