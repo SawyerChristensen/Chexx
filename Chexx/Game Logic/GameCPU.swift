@@ -277,14 +277,20 @@ class GameCPU {
     // an entire deep iteration after it's no longer wanted. Callers must ensure this never runs
     // concurrently with a real findMove/minimaxMove search on the same GameCPU instance (e.g. by
     // dispatching both on the same serial queue) since both mutate transpositionTable.
-    func ponder(gameState: GameState, shouldCancel: @escaping () -> Bool) {
+    //
+    // `priorityFromSquare`, if set, is the board square the human currently has selected/tapped —
+    // they're most likely about to move that piece, so root moves starting from it are searched
+    // (and thus deepened, and cached in the transposition table) before other root moves within
+    // each time slice, rather than in whatever order generateAllFullMoves/orderMoves happened to
+    // produce.
+    func ponder(gameState: GameState, shouldCancel: @escaping () -> Bool, priorityFromSquare: (col: Int, row: Int)? = nil) {
         var searchState = gameState
         let maximizingPlayerColor = searchState.currentPlayer
 
         var currentDepth = 1
         while !shouldCancel() {
             let sliceDeadline = Date().addingTimeInterval(Self.ponderSliceDuration)
-            _ = minimax(gameState: &searchState, depth: currentDepth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: sliceDeadline)
+            _ = minimax(gameState: &searchState, depth: currentDepth, alpha: Int.min, beta: Int.max, maximizingPlayer: true, originalPlayerColor: maximizingPlayerColor, deadline: sliceDeadline, priorityFromSquare: priorityFromSquare)
 
             // Only advance once this depth actually finished within its slice; otherwise retry the
             // same depth next slice, now with a warmer table from the partial work already done.
@@ -321,7 +327,7 @@ class GameCPU {
         return gameState.getPieces(for: sideToMove).contains { $0.type != "pawn" && $0.type != "king" }
     }
 
-    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date, isRoot: Bool = true) -> (value: Int, move: SearchMove?) {
+    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date, isRoot: Bool = true, priorityFromSquare: (col: Int, row: Int)? = nil) -> (value: Int, move: SearchMove?) {
         if depth == 0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, nil)
@@ -389,6 +395,13 @@ class GameCPU {
             return (value, nil)
         }
         var orderedMoves = orderMoves(possibleMoves, gameState: gameState)
+
+        // At the root only, if the human has a piece selected, they're most likely about to move
+        // it — search those root moves (and thus deepen/cache them) ahead of the rest so pondering
+        // spends its limited time on the branches most likely to actually be played.
+        if isRoot, let priority = priorityFromSquare {
+            orderedMoves = prioritizeMoves(orderedMoves, fromCol: priority.col, fromRow: priority.row)
+        }
 
         // Try the transposition table's previously-best move first; it's the move most likely to
         // cause a cutoff, since it was already good enough at this position at an earlier search
@@ -535,5 +548,16 @@ class GameCPU {
             // Non-capture move
             return 0
         }
+    }
+
+    // Moves the front of `moves` starting from (fromCol, fromRow) to the very front, preserving
+    // the existing relative order within both that group and the remainder. Used to bias pondering
+    // toward the piece the human currently has selected without disturbing capture-based ordering
+    // otherwise.
+    private func prioritizeMoves(_ moves: [SearchMove], fromCol: Int, fromRow: Int) -> [SearchMove] {
+        let priorityMoves = moves.filter { $0.fromCol == fromCol && $0.fromRow == fromRow }
+        guard !priorityMoves.isEmpty else { return moves }
+        let remainingMoves = moves.filter { !($0.fromCol == fromCol && $0.fromRow == fromRow) }
+        return priorityMoves + remainingMoves
     }
 }

@@ -51,19 +51,32 @@ class GameScene: SKScene {
     // as it becomes the human's turn in a vs-CPU game. Cancelled via stopPondering() as soon as
     // the human's move is made; the cancellation + serial cpuSearchQueue together guarantee the
     // real search below never starts until pondering has actually stopped.
-    private func startPondering() {
+    //
+    // `priorityFromSquare`, if set, is passed straight through to GameCPU.ponder so root moves
+    // starting from the human's currently-selected piece are searched (and deepened) first.
+    private func startPondering(priorityFromSquare: (col: Int, row: Int)? = nil) {
         guard isVsCPU, gameCPU != nil else { return }
         let token = PonderCancellationToken()
         ponderToken = token
         let stateSnapshot: GameState = gameState
         cpuSearchQueue.async { [gameCPU] in
-            gameCPU?.ponder(gameState: stateSnapshot, shouldCancel: { token.isCancelled })
+            gameCPU?.ponder(gameState: stateSnapshot, shouldCancel: { token.isCancelled }, priorityFromSquare: priorityFromSquare)
         }
     }
 
     private func stopPondering() {
         ponderToken?.cancel()
         ponderToken = nil
+    }
+
+    // Restarts pondering biased toward a newly-selected piece. Only called while it's genuinely
+    // the human's turn (selectNewPiece is only reachable for the current player's own piece, and
+    // touchDown only allows selecting a piece in a vs-CPU game when it's white/the human's turn),
+    // so this never races the real CPU search.
+    private func restartPonderingPrioritizing(col: Int, row: Int) {
+        guard isVsCPU else { return }
+        stopPondering()
+        startPondering(priorityFromSquare: (col: col, row: row))
     }
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
@@ -448,8 +461,15 @@ class GameScene: SKScene {
             let position = String(pieceDetails[0])
             let color = String(pieceDetails[1])
             let type = String(pieceDetails[2])
-            
+
             validMoves = validMovesForPiece(at: position, color: color, type: type, in: &gameState)
+
+            // The human just tapped this piece and is most likely about to move it — bias
+            // background pondering toward branches starting from this square.
+            if let columnLetter = position.first, let colIndex = hexColumnIndex(for: columnLetter),
+               let rowNumber = Int(position.dropFirst()) {
+                restartPonderingPrioritizing(col: colIndex, row: rowNumber - 1)
+            }
         } else {
             validMoves = []
         }
