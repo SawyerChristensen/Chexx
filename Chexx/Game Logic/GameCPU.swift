@@ -262,7 +262,23 @@ class GameCPU {
         return notation(for: move)
     }
 
-    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date) -> (value: Int, move: SearchMove?) {
+    // Null-move pruning parameters: R is how much shallower the "pass" search is run, and
+    // minDepth is the shallowest depth it's attempted at (so the reduced search below it, at
+    // depth - 1 - R, is never negative).
+    private static let nullMoveReduction = 2
+    private static let nullMoveMinDepth = 3
+
+    // Null-move pruning assumes having the move is always at least as good as not having it, which
+    // is false in zugzwang-prone positions — most commonly king-and-pawn-only endgames, where being
+    // forced to move can only weaken the position. Skip it there, and skip it whenever the side to
+    // move is already in check (passing would leave an illegal, still-in-check "position").
+    private func canApplyNullMove(gameState: inout GameState) -> Bool {
+        let sideToMove = gameState.currentPlayer
+        guard !isKingInCheckUsingKingSight(for: sideToMove, in: &gameState).0 else { return false }
+        return gameState.getPieces(for: sideToMove).contains { $0.type != "pawn" && $0.type != "king" }
+    }
+
+    private func minimax(gameState: inout GameState, depth: Int, alpha: Int, beta: Int, maximizingPlayer: Bool, originalPlayerColor: String, deadline: Date, isRoot: Bool = true) -> (value: Int, move: SearchMove?) {
         if depth == 0 {
             let value = evaluateGameState(gameState, for: originalPlayerColor)
             return (value, nil)
@@ -270,6 +286,33 @@ class GameCPU {
 
         let alphaAtEntry = alpha
         let betaAtEntry = beta
+
+        // Null-move pruning: let the side to move "pass" and search the resulting position — with
+        // the opponent effectively granted a free tempo — at a reduced depth. If even that best-case
+        // result for the opponent still fails to beat the current bound, a real move can only do
+        // better, so this whole subtree is pruned without searching any of its moves. Never applied
+        // at the root, since minimaxMove needs an actual move back from that call.
+        if !isRoot, depth >= Self.nullMoveMinDepth, Date() < deadline, canApplyNullMove(gameState: &gameState) {
+            let sideToMove = gameState.currentPlayer
+            gameState.currentPlayer = sideToMove == "white" ? "black" : "white"
+            let nullMoveResult = minimax(
+                gameState: &gameState,
+                depth: depth - 1 - Self.nullMoveReduction,
+                alpha: maximizingPlayer ? beta - 1 : alpha,
+                beta: maximizingPlayer ? beta : alpha + 1,
+                maximizingPlayer: !maximizingPlayer,
+                originalPlayerColor: originalPlayerColor,
+                deadline: deadline,
+                isRoot: false)
+            gameState.currentPlayer = sideToMove
+
+            if maximizingPlayer, nullMoveResult.value >= beta {
+                return (beta, nil)
+            }
+            if !maximizingPlayer, nullMoveResult.value <= alpha {
+                return (alpha, nil)
+            }
+        }
 
         let ttKey = transpositionKey(for: gameState)
         var ttBestMove: SearchMove? = nil
@@ -325,7 +368,8 @@ class GameCPU {
                 beta: beta,
                 maximizingPlayer: !maximizingPlayer,
                 originalPlayerColor: originalPlayerColor,
-                deadline: deadline)
+                deadline: deadline,
+                isRoot: false)
 
             gameState.unmakeMove(undoInfo: undoInfo)
             gameState.currentPlayer = gameState.currentPlayer == "white" ? "black" : "white"
