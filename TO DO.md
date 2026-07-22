@@ -81,7 +81,7 @@
 ---
 
 ## Update 1.6 — CPU  🤖
-- [ ] Make 5 the new default search depth
+- [x] Make 5 the new default search depth
 - [ ] Add new hardcoded opening play responses so that we dont even have to run the CPU on the very first move
 - [ ] Instead of showing the "Thinking" animation every time, guess how long this calculation will take and only show if it looks like its going to be a long calculation. Is this feasible?
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces?

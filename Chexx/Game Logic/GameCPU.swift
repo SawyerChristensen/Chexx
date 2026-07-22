@@ -118,7 +118,7 @@ class GameCPU {
         case .hard:
             return minimaxMove(gameState: &gameState, depth: 3)
         case .extraHard:
-            return minimaxMove(gameState: &gameState, depth: 4)
+            return minimaxMove(gameState: &gameState, depth: 5)
         }
     }
 
