@@ -437,7 +437,34 @@ struct ProfileView: View {
                         MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
                             authViewModel.eloScore = elo ?? 1000
                         }
+                        // verifying happens outside the app (in the user's mail client), so re-check status whenever the profile is shown
+                        authViewModel.refreshEmailVerificationStatus()
                     }
+
+                // MARK: Email Verification Banner
+                if !authViewModel.isEmailVerified {
+                    VStack(spacing: 6) {
+                        HStack {
+                            Image(systemName: "exclamationmark.triangle.fill")
+                                .foregroundColor(.yellow)
+                            Text("Please verify your email address (\(authViewModel.email))")
+                                .font(.footnote)
+                                .multilineTextAlignment(.leading)
+                        }
+
+                        Button(action: {
+                            authViewModel.resendEmailVerification()
+                        }) {
+                            Text("Resend Verification Email")
+                                .font(.footnote)
+                                .underline()
+                        }
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                    .background(Color(.systemGray5))
+                    .cornerRadius(12)
+                }
                 
                 // MARK: Sign Out Button / Delete Account Button
                 HStack(spacing: 20) {

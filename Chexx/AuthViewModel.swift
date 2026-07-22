@@ -28,6 +28,7 @@ class AuthViewModel: ObservableObject {
     @Published var errorMessage: String = ""
     @Published var userCountry: String = ""
     @Published var eloScore: Int = 1000 // the default ELO score
+    @Published var isEmailVerified: Bool = true // true for providers that already verify ownership (Google, Apple, anonymous); only meaningful/false for email+password accounts until they confirm the verification email
     
     private var currentNonce: String? //(for apple sign in)
     
@@ -40,6 +41,7 @@ class AuthViewModel: ObservableObject {
             fetchUserDataFromFirestore { //get the data from the server and wait until we get a response
                 self.saveUserDataToDevice() //save the most recent data just in case
             }
+            self.isEmailVerified = Auth.auth().currentUser?.isEmailVerified ?? true
         } else { //does not create user document in user database, so no storing of achievements. need to be signed in properly for achievements
             //if anon users can start storing achievements and have a stored elo, need to change from deleting old account to linking accounts when signing in with an identity provider
             // If not logged in, sign in anonymously?
@@ -359,6 +361,7 @@ class AuthViewModel: ObservableObject {
             
             self.isLoggedIn = true
             self.email = firebaseUser.email ?? "Unknown Email"
+            self.isEmailVerified = firebaseUser.isEmailVerified
             self.displayName = firstName
             self.profileImageURL = user.profile?.imageURL(withDimension: 200)
 
@@ -415,6 +418,7 @@ class AuthViewModel: ObservableObject {
                             deleteUserAndFirestoreDoc(oldUser)
                         }
                         self.isLoggedIn = true
+                        self.isEmailVerified = result.user.isEmailVerified
                         //self.profileImageURL = URL(string: ("https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/Chess_qlt45.svg/240px-Chess_qlt45.svg.png"))
                         self.fetchUserDataFromFirestore(completion: {})
                         
@@ -461,11 +465,12 @@ class AuthViewModel: ObservableObject {
             self.errorMessage = ""
             self.email = result?.user.email ?? "error@notfound.com" //this should never display if the error catching is working properly
             self.displayName = self.email
-            
+            self.isEmailVerified = result?.user.isEmailVerified ?? false
+
             self.fetchUserDataFromFirestore(completion: {})
         }
     }
-    
+
     func registerWithEmail(email: String, password: String) {
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -476,11 +481,45 @@ class AuthViewModel: ObservableObject {
             self.errorMessage = ""
             self.email = result?.user.email ?? "error@notfound.com"
             self.displayName = self.email
-            
+            self.isEmailVerified = result?.user.isEmailVerified ?? false
+
+            // a freshly-registered email/password account's ownership hasn't been confirmed yet
+            result?.user.sendEmailVerification { error in
+                if let error = error {
+                    print("Error sending verification email: \(error.localizedDescription)")
+                }
+            }
+
             self.fetchUserDataFromFirestore(completion: {})
         }
     }
-    
+
+    // Re-sends the verification email to the currently signed-in user (email/password accounts only)
+    func resendEmailVerification() {
+        guard let user = Auth.auth().currentUser else { return }
+
+        user.sendEmailVerification { error in
+            if let error = error {
+                self.errorMessage = "Failed to send verification email: \(error.localizedDescription)"
+            } else {
+                self.errorMessage = "Verification email sent!"
+            }
+        }
+    }
+
+    // Refreshes isEmailVerified from Firebase, since verifying happens outside the app (in the user's mail client)
+    func refreshEmailVerificationStatus() {
+        guard let user = Auth.auth().currentUser else { return }
+
+        user.reload { error in
+            if let error = error {
+                print("Error reloading user for email verification status: \(error.localizedDescription)")
+                return
+            }
+            self.isEmailVerified = Auth.auth().currentUser?.isEmailVerified ?? false
+        }
+    }
+
     func sendPasswordReset(email: String) {
         Auth.auth().sendPasswordReset(withEmail: email) { error in
             if let error = error {
@@ -502,7 +541,8 @@ class AuthViewModel: ObservableObject {
            self.displayName = ""
            self.userCountry = ""
            self.eloScore = 0
-           
+           self.isEmailVerified = true
+
            // Remove saved data
            UserDefaults.standard.removeObject(forKey: "isLoggedIn")
            UserDefaults.standard.removeObject(forKey: "email")
@@ -570,6 +610,7 @@ class AuthViewModel: ObservableObject {
         self.displayName = ""
         self.userCountry = ""
         self.eloScore = 0
+        self.isEmailVerified = true
 
         UserDefaults.standard.removeObject(forKey: "isLoggedIn")
         UserDefaults.standard.removeObject(forKey: "email")
