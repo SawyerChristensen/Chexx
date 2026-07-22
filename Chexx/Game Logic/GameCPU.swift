@@ -12,6 +12,7 @@ enum CPUDifficulty {
     case easy
     case medium
     case hard
+    case extraHard
 }
 
 // A cached minimax result for a position, keyed by its Zobrist hash. `depth` records how deep the
@@ -116,6 +117,8 @@ class GameCPU {
             return minimaxMove(gameState: &gameState, depth: 2)
         case .hard:
             return minimaxMove(gameState: &gameState, depth: 3)
+        case .extraHard:
+            return minimaxMove(gameState: &gameState, depth: 4)
         }
     }
 

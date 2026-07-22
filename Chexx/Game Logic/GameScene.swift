@@ -82,7 +82,7 @@ class GameScene: SKScene {
             gameState = loadGameStateFromFile(from: "currentPassAndPlay") ?? GameState()
         } else if isVsCPU {
             gameState = loadGameStateFromFile(from: "currentSinglePlayer") ?? GameState()
-            gameCPU = GameCPU(difficulty: CPUDifficulty.hard)
+            gameCPU = GameCPU(difficulty: CPUDifficulty.extraHard)
         } else if isOnlineMultiplayer {
             gameState = GameState()
         } else {
@@ -917,7 +917,7 @@ class GameScene: SKScene {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
-                        if gameCPU.difficulty == .hard { //only prompt for review once the CPU is sufficiently advanced
+                        if gameCPU.difficulty == .extraHard { //only prompt for review once the CPU is sufficiently advanced
                             ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
                         }
                     } else {
@@ -1001,7 +1001,7 @@ class GameScene: SKScene {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                             GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                            if gameCPU.difficulty == .hard { //only prompt for review once the CPU is sufficiently advanced
+                            if gameCPU.difficulty == .extraHard { //only prompt for review once the CPU is sufficiently advanced
                                 ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
                             }
                         } else {
@@ -1051,7 +1051,7 @@ class GameScene: SKScene {
                 dotCount = (dotCount + 1) % 4
             }
             
-            let delay: TimeInterval = gameCPU.difficulty == .hard ? 0.01 : 0.1 //delay isnt really needed
+            let delay: TimeInterval = gameCPU.difficulty == .extraHard ? 0.01 : 0.1 //delay isnt really needed
             // Snapshot the live gameState on the main thread. The CPU search runs on this
             // value-type copy so the background thread never mutates the scene's gameState.board
             // concurrently with the main thread — that data race corrupted the array buffer and

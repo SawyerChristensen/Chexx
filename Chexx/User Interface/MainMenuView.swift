@@ -201,17 +201,15 @@ struct MainMenuView: View {
                                     }
                                     .padding(8)
                                 }
-                                
-                                // NavigationLink to GameView
-                                NavigationLink(destination: GameView(isOnlineMultiplayer: true)
-                                    .onAppear {
-                                        audioManager.stopBackgroundMusic()
-                                    }, isActive: $navigateToGameView) {
-                                    EmptyView()
-                                }
                             }
                             .alert(isPresented: $showErrorAlert) {
                                 Alert(title: Text("Error"), message: Text(errorMessage), dismissButton: .default(Text("OK")))
+                            }
+                            .navigationDestination(isPresented: $navigateToGameView) {
+                                GameView(isOnlineMultiplayer: true)
+                                    .onAppear {
+                                        audioManager.stopBackgroundMusic()
+                                    }
                             }
                         }
 

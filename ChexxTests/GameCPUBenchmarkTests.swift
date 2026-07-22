@@ -22,7 +22,7 @@ final class GameCPUBenchmarkTests: XCTestCase {
 
         for depth in 1...4 {
             var state = GameState()
-            let cpu = GameCPU(difficulty: .hard)
+            let cpu = GameCPU(difficulty: .extraHard)
 
             let elapsed = cpu.timedSearch(gameState: &state, depth: depth)
 

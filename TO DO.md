@@ -59,26 +59,13 @@
   - [x] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements)
   - [ ] Run `upload_metadata.py --whats-new-only` to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
 - [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
-- [ ] When I validate or upload my app, there are a couple warnings although they are not critical. I'll list them here: "Upload Symbols Failed
-The archive did not include a dSYM for the FirebaseAnalytics.framework with the UUIDs [26293A07-BCC7-38AE-9EEC-3ED8FAC81379]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseAnalytics.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the FirebaseFirestoreInternal.framework with the UUIDs [8ED328E4-50A6-3597-806D-B1B83CC9E391]. Ensure that the archive's dSYM folder includes a DWARF file for FirebaseFirestoreInternal.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the GoogleAppMeasurement.framework with the UUIDs [C76BAB2B-80E5-3C3E-BB4F-5B56155FD24A]. Ensure that the archive's dSYM folder includes a DWARF file for GoogleAppMeasurement.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the absl.framework with the UUIDs [50755F1C-66E6-3B25-B216-C07F2BDD4244]. Ensure that the archive's dSYM folder includes a DWARF file for absl.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the grpc.framework with the UUIDs [B6F6C9E2-1EEC-38D1-B756-603410A0708A]. Ensure that the archive's dSYM folder includes a DWARF file for grpc.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the grpcpp.framework with the UUIDs [62CB9CC2-5216-3561-8663-DB920B3DEEA3]. Ensure that the archive's dSYM folder includes a DWARF file for grpcpp.framework with the expected UUIDs.
-
-Upload Symbols Failed
-The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs [0A8C77A3-2823-3285-843A-62B5BB169964]. Ensure that the archive's dSYM folder includes a DWARF file for openssl_grpc.framework with the expected UUIDs." If you can include those dSYM files somehow so that these warnings don't appear anymore that would be great
+- [x] Fix the lone warning in MainMenuView
+- [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
+  - [ ] This is broken! It changes the entire view heirarchy. everything starts pulsing except the main logo. 
+  - [ ] Refactor the main view so that instead of geometry readers dividing screen height and width, we give everything normal font numbers. Run base iphone 17 simulations testing the height/width numbers, and compare screenshots before and after
+- [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
+- [ ] Haptic feedback on check/game win
+- [ ] Verify we ask for a review after the 2nd CPU game win
 
 - [ ] App Store Connect/photoshop work:
   - [ ] Better App Store pictures for iPad (1/3 of all users!!) Is this what mac uses?
@@ -88,19 +75,94 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 
 ---
 
-## Update 1.6 — Multiplayer v2  􀉬
+## Update 1.6 — CPU  🤖
+- [ ] Make 5 the new default search depth
+- [ ] Add new hardcoded opening play responses so that we dont even have to run the CPU on the very first move
+- [ ] Instead of showing the "Thinking" animation every time, guess how long this calculation will take and only show if it looks like its going to be a long calculation. Is this feasible?
+- [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces?
+- [ ] Research popular optimization techniques that other Chess Engines (such as stockfish use) and implement them here
+- [ ] Add AI components to CPU? (TensorFlow, PyTorch) (AlphaZero loop on GPU?) (ideas)
+  - [ ] For this to work, many CPU games would have to be simulated at high depths to make good training data
+  - [ ] Utilize Apple's newer ML frameworks? Research this! Can we utilize on device neural engines?
+- [x] Game CPU will not see knight's moves upon promotion, only queen
+- [ ] Do CPU calculations in the background with increasing depths while it is the users turn
+  - [ ] Prioritizing looking at branches that involve the currently tapped piece if the user taps on a piece (they are likely to be moving that piece).
+
+### CPU Performance Notes 7/21/26
+| Depth | Time (seconds)| How much more time is required from previous|
+| --- | --- | --- |
+| 1 | 0.0003 | Base|
+| 2 | 0.0092 | 30x|
+| 3 | 0.0207 | 2.25x|
+| 4 | 0.3831| 18.5x|
+| 5 |  2.8505| 7.5x|
+
+### Possible Future Optimizations
+| Optimization | Expected Speedup | Status |
+| --- | --- | --- |
+| Alpha-Beta Pruning | Up to 10x reduction in search space | Done? Make sure it works optimally |
+| Multi-Threading (Parallel Search) | Up to 2–8x, depending on hardware | ? Make sure it doesn't load the GS every thread — might be why it's so slow right now|
+| Hashing (Zobrist Hashing) | 10–50% | ?|
+| Transposition Tables (TT) | 20–100%, depending on position complexity | ?|
+| Parallelized Evaluation Functions | 2–4x, depending on how parallelizable | ?|
+| SIMD & GPU Offloading | 2–10x, depending on hardware and implementation | ?|
+| Move Ordering & Iterative Deepening | 10–30% | ? |
+| Late Move Reductions | 10–30% |? |
+| Null Move Pruning | 10–20% | ?|
+
+--
+
+## Update 1.7 — More Achievements 🏅
+- [ ] Automate all Game Center translation updates for all languages in metadata.json, similar to how DeckedOut does it,  or would it be easier with a GameCenterResources file we can pull/push to ASC from within Xcode proper?
+- [ ] Update all achievement icons
+- [ ] Game Center achievements for Dutch
+- [ ] App Store pictures for Dutch
+- [ ] New achievement icons
+
+### Achievements
+| Achievement | Description | Status | Icon graphic |
+| --- | --- | --- | --- |
+| Hexceptional Win! | Win your first game | Implemented |1 - Gold|
+| Hex Machina | Checkmate the CPU | Implemented | Robot emoji - Blue|
+| Hexceeded Hexpectations | Win a joined game | Implemented | Hands shaking emoji - Blue|
+| Friendly Hexchange | Have a player join a game you created | Implemented | Mail emoji - Blue|
+| Hexcalibur | Underpromote a pawn to a knight| Implemented | Knight icon - Green|
+| Hexecutioner | Checkmate after capturing all enemy pieces| Implemented | Swords emoji - Red|
+| Hexperimenter | Win with 10 different openings| | |
+| Hexathon | Win 26 games| | |
+| Hexpedition | Move your king to the opposing king's starting position | Implemented | Map emoji - Blue|
+| Hexplorer | Visit every tile in a single game| | |
+| Hextra Power | Promote a pawn for the first time| Implemented | Pawn icon - Green|
+| Hexceptional Morale | Promote 3 pawns in a single game| | |
+| The Great Hexcape | Checkmate after being put in check 3 times| | |
+| Hexclusion Zone | Deliver a smothered mate| | |
+| Hextreme Measures | Checkmate using your own king| Implemented | King icons - Red|
+| Tactical Hexcellence | Checkmate without losing any pieces| | |
+
+### Secret Achievements
+| Achievement | Description | Status | Icon graphic |
+| --- | --- | --- | --- |
+| Hexpect the Unexpected | Open by moving your king| | |
+| Hexhausted | Have a game last over 100 turns| | |
+| Seasoned Hexpert | Complete all other achievements| | |
+| Un-Hexciting Finish | Deliver a stalemate| | |
+
+---
+
+## Update 1.8 — Multiplayer v2  􀉬
 - [x] "Waiting for opponent..." should be animated like in iMessage
 - [x] See if how we determine winner color is redundant
-- [x] Make the main title slowly pulse from 0.98 to 1.02 in size
 - [x] Changing Google icon breaks Google icon retrieval in app
 - [x] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
 - [x] Home Screen quick actions?
-- [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty
 - [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
   - [ ] Display first name, country emoji, Elo?
 - [ ] Login does not check if your email is actually real
 - [ ] In multiplayer, show opponent's Game Center icon if they don't have a Google icon
+- [ ] Add random matchmaking if you're signed in? (via GameCenter, or Firebase?
+  - [ ] If added, need name checking for online play (just hide the icons, unless joining a friend's game)
+- [ ] Make games more secure? (they work fine for now)
 - [ ] If user is anonymous, do not update Elo. Is this still needed?
 - [ ] User country loads from Firestore every time profile is opened; local storage should update from Firestore once the app is opened, then pull from local every profile view
 - [ ] Elo is checked every profile view — can maybe use a local toggle to see if it's been changed in a recent game before asking the server, eliminating redundant server calls (not necessary for now)
@@ -108,90 +170,11 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 
 ---
 
-## Update 1.7 — CPU  🤖
-- [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces
-- [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
-- [ ] Turn into AI? (TensorFlow, PyTorch) (AlphaZero loop on GPU?)
-- [x] gameCPU will not see knight's moves upon promotion, only queen
-- [ ] End game screen displaying username instead of color?
-- [ ] Add random matchmaking if you're signed in? (via GameCenter, or Firebase?
-  - [ ] If added, need name checking for online play (just hide the icons, unless joining a friend's game)
-- [ ] Make games more secure? (they work fine for now)
-- [ ] More optimizations to CPU
-- [ ] Add standard openings to the CPU
-
-### CPU Performance Notes 7/21/26
-| Depth | Time (seconds)| How much more time is required |
-| --- | --- | --- |
-| 1 | 0.0003 | Base|
-| 2 | 0.0092 | 30x|
-| 3 | 0.0207 | 2.25x|
-| 4 | 0.3831|  18.5x|
-| 5 |  2.8505|  7.5x|
-
-- Look for current eval functions that loop through the game state — they are all likely O(n²) and slow
-- Use hashing / transposition tables / other techniques to speed this up, especially at higher depths when we potentially eval the same state multiple times
-
-### Possible Future Optimizations
-| Optimization | Expected Speedup | Status |
-| --- | --- | --- |
-| Alpha-Beta Pruning | Up to 10x reduction in search space | Done? Make sure it works optimally |
-| Multi-Threading (Parallel Search) | Up to 2–8x, depending on hardware | Make sure it doesn't load the GS every thread — might be why it's so slow right now |
-| Hashing (Zobrist Hashing) | 10–50% | |
-| Transposition Tables (TT) | 20–100%, depending on position complexity | |
-| Parallelized Evaluation Functions | 2–4x, depending on how parallelizable | |
-| SIMD & GPU Offloading | 2–10x, depending on hardware and implementation | |
-| Move Ordering & Iterative Deepening | 10–30% | Did move ordering |
-| Late Move Reductions | 10–30% | |
-| Null Move Pruning | 10–20% | |
-
-- Prioritize looking at branches over the current branch max that involve a piece if the user taps on a piece (likely to be moving that piece)
-- Do CPU calculations in the background with increasing depths — use the idea above
-*(Might be able to get to depth 4 with all of these improvements.)*
-
----
-
-## Update 1.8 — Achievements
-- [ ] Automate all Game Center translation changes, similar to how DeckedOut does it
-- [ ] Update the mail achievement icon and first win icon
-- [ ] Game Center achievements for Dutch
-- [ ] App Store pictures for Dutch
-- [ ] New achievement icons
-
-### Achievements
-| Achievement | Description | Status |
-| --- | --- | --- |
-| Hexceptional Win! | Win your first game | Implemented |
-| Hex Machina | Checkmate the CPU | Implemented |
-| Hexceeded Hexpectations | Win a joined game | Implemented |
-| Friendly Hexchange | Have a player join a game you created | Implemented |
-| Hexcalibur | Underpromote a pawn to a knight| Implemented |
-| Hexecutioner | Checkmate after capturing all enemy pieces| Implemented |
-| Hexperimenter | Win with 10 different openings| |
-| Hexathon | Win 26 games| |
-| Hexpedition | Move your king to the opposing king's starting position | Implemented |
-| Hexplorer | Visit every tile in a single game| |
-| Hextra Power | Promote a pawn for the first time| Implemented |
-| Hexceptional Morale | Promote 3 pawns in a single game| |
-| The Great Hexcape | Checkmate after being put in check 3 times| |
-| Hexclusion Zone | Deliver a smothered mate| |
-| Hextreme Measures | Checkmate using your own king| Implemented |
-| Tactical Hexcellence | Checkmate without losing any pieces| |
-
-### Secret Achievements
-| Achievement | Description | Status |
-| --- | --- | --- |
-| Hexpect the Unexpected | Open by moving your king| |
-| Hexhausted | Have a game last over 100 turns| |
-| Seasoned Hexpert | Complete all other achievements| |
-| Un-Hexciting Finish | Deliver a stalemate| |
-
----
-
 ## ⚙️ Other Changes
 
 ### Bugs
 - [ ] Game Center icon only loads the second time looking at the profile? (check if still true)
+- [ ] If you create an online game, enter, do nothing, and leave, the game does not automatically get deleted. Currently not an issue since each account is "allowed" one empty created game — any previously created game is removed from the server on every new create-game call. Better to delete the game when the game view is dismissed and it is empty after. is this change still needed? What if we allow one empty game per user? verify that other games are deleted if a user creates a new game key
 
 ### iMessage
 - [ ] Figure out memory problem with resizing the window??
@@ -213,7 +196,7 @@ The archive did not include a dSYM for the openssl_grpc.framework with the UUIDs
 - [ ] Get rid of "not verified for macOS" badge in macOS App Store (it's still available as is)
 - [ ] Game history button in profile view? (store past user games — who vs who — and then display hex FEN format)
   - [ ] Single player stored on device, multiplayer stored in cloud
-- [ ] Haptic feedback on check?
+- [ ] End game screen displaying username instead of color?
 - [ ] Alternate board color schemes in settings? (beige, grayscale, black/white/red, other?)
   - Beige — Light tile: `#ffce9e`, "Grey" tile: `#e8ab6f`, Dark tile: `#d18b47`
   - [ ] Put color schemes in profile view?
