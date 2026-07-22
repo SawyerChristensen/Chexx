@@ -101,6 +101,13 @@ class GameCPU {
 
     // Main function to decide and make a move
     func findMove(gameState: inout GameState) -> (start: String, destination: String, promotion: String?)? { //this being conditional can maybe be changed, idk
+        // Skip the search entirely on the CPU's very first move of the game if a hardcoded
+        // opening reply applies (see openingBookMove) — running a full minimax at this stage buys
+        // nothing since every reply is roughly equally sound this early
+        if let bookMove = openingBookMove(for: &gameState) {
+            return bookMove
+        }
+
         // Use the existing function to get all possible moves
         let possibleMoves = generateAllFullMoves(for: gameState.currentPlayer, in: &gameState)
 
@@ -120,6 +127,52 @@ class GameCPU {
         case .extraHard:
             return minimaxMove(gameState: &gameState, depth: 5)
         }
+    }
+
+    // White's starting row in each pawn-bearing column (see GameState.setInitialPiecePositions).
+    // Black's starting pawn row is 6 in every one of those columns — a consequence of the board's
+    // per-column vertical mirror symmetry between White's and Black's home ranks.
+    private static let whitePawnStartRow: [Int: Int] = [1: 0, 2: 1, 3: 2, 4: 3, 5: 4, 6: 3, 7: 2, 8: 1, 9: 0]
+    private static let blackPawnStartRow = 6
+
+    // A tiny hardcoded opening book for the CPU's very first move (its reply to White's first
+    // move), so the engine can skip minimax entirely at that point. Currently covers White's most
+    // common/only-really-available first moves — a single or double pawn push — by mirroring it
+    // with Black's pawn in the same column. Anything else (e.g. an opening knight or queen move)
+    // returns nil here and falls through to the normal search in findMove.
+    private func openingBookMove(for gameState: inout GameState) -> (start: String, destination: String, promotion: String?)? {
+        // HexPgn starts with one variant-tag byte, then 2 bytes per move — 3 bytes means exactly
+        // White's first move has been played and it's now Black's very first move of the game
+        guard gameState.HexPgn.count == 3, gameState.currentPlayer == "black" else { return nil }
+
+        for (col, whiteStartRow) in Self.whitePawnStartRow {
+            guard gameState.pieceAt(col: col, row: whiteStartRow) == nil else { continue }
+
+            let pushedRows: Int
+            if let p = gameState.pieceAt(col: col, row: whiteStartRow + 1), p.color == "white", p.type == "pawn" {
+                pushedRows = 1
+            } else if let p = gameState.pieceAt(col: col, row: whiteStartRow + 2), p.color == "white", p.type == "pawn" {
+                pushedRows = 2
+            } else {
+                continue
+            }
+
+            let responseFromRow = Self.blackPawnStartRow
+            let responseToRow = Self.blackPawnStartRow - pushedRows
+            guard let piece = gameState.pieceAt(col: col, row: responseFromRow), piece.color == "black", piece.type == "pawn" else { continue }
+
+            // Safety net: only ever play this if it's genuinely a legal move in the exact current
+            // position, so a hardcoded reply can never produce an illegal move
+            let legalMoves = validMovesForPiece(at: (col, responseFromRow), color: "black", type: "pawn", in: &gameState)
+            guard legalMoves.contains(where: { $0 == (col, responseToRow) }) else { continue }
+
+            let columns = hexColumns
+            let start = "\(columns[col])\(responseFromRow + 1)"
+            let destination = "\(columns[col])\(responseToRow + 1)"
+            return (start, destination, nil)
+        }
+
+        return nil
     }
 
     // Formats a (col,row) search move to algebraic notation. Only called once, at the boundary,

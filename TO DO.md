@@ -82,7 +82,7 @@
 
 ## Update 1.6 — CPU  🤖
 - [x] Make 5 the new default search depth
-- [ ] Add new hardcoded opening play responses so that we dont even have to run the CPU on the very first move
+- [x] Add new hardcoded opening play responses so that we dont even have to run the CPU on the very first move (Added `GameCPU.openingBookMove`: when it's Black's very first move of the game (`HexPgn.count == 3`) and White's opening move was a single or double pawn push, the CPU mirrors it with Black's pawn in the same column instead of running minimax — verified legal via a safety-net legality check before playing it, with any other opening (knight/queen move) falling through to the normal search unchanged. Covered by new tests `testOpeningBookMirrorsASingleStepPawnPush`/`testOpeningBookMirrorsADoubleStepPawnPush` in ChexxTests/GameRulesEdgeCaseTests.swift.)
 - [ ] Instead of showing the "Thinking" animation every time, guess how long this calculation will take and only show if it looks like its going to be a long calculation. Is this feasible?
 - [ ] Make CPU better at endgames by increasing depth searches if opponent has limited pieces?
 - [ ] Research popular optimization techniques that other Chess Engines (such as stockfish use) and implement them here

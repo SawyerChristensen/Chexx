@@ -154,4 +154,35 @@ final class GameRulesEdgeCaseTests: XCTestCase {
         // a2 (staying between king and pin), a4 (still blocking), a5 (capturing the pinning rook)
         XCTAssertEqual(legalMoves, ["0,1", "0,3", "0,4"])
     }
+
+    // MARK: - Opening book
+
+    // GameCPU short-circuits its very first move (Black's reply to White's first move) with a
+    // hardcoded mirrored pawn push instead of running a search, whenever White's opening move was
+    // itself a single or double pawn push. See GameCPU.openingBookMove.
+    func testOpeningBookMirrorsASingleStepPawnPush() {
+        var state = GameState()
+        _ = state.makeMove(fromCol: 9, fromRow: 0, toCol: 9, toRow: 1) // k1-k2
+        state.addMoveToHexPgn(from: "k1", to: "k2", promotionOffset: 0)
+        state.currentPlayer = "black"
+        XCTAssertEqual(state.HexPgn.count, 3, "sanity check: exactly White's first move has been recorded")
+
+        let cpu = GameCPU(difficulty: .extraHard)
+        let move = cpu.findMove(gameState: &state)
+        XCTAssertEqual(move?.start, "k7")
+        XCTAssertEqual(move?.destination, "k6")
+    }
+
+    func testOpeningBookMirrorsADoubleStepPawnPush() {
+        var state = GameState()
+        _ = state.makeMove(fromCol: 9, fromRow: 0, toCol: 9, toRow: 2) // k1-k3
+        state.addMoveToHexPgn(from: "k1", to: "k3", promotionOffset: 0)
+        state.currentPlayer = "black"
+        XCTAssertEqual(state.HexPgn.count, 3, "sanity check: exactly White's first move has been recorded")
+
+        let cpu = GameCPU(difficulty: .extraHard)
+        let move = cpu.findMove(gameState: &state)
+        XCTAssertEqual(move?.start, "k7")
+        XCTAssertEqual(move?.destination, "k5")
+    }
 }
