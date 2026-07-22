@@ -60,8 +60,8 @@
   - [ ] Run `upload_metadata.py --whats-new-only` to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
 - [ ] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge
 - [x] Fix the lone warning in MainMenuView
-- [ ] Make the main title slowly pulse from 0.98 to 1.02 in size
-  - [ ] This is broken! It changes the entire view heirarchy. everything starts pulsing except the main logo. 
+- [~] Make the main title slowly pulse from 0.98 to 1.02 in size
+  - [x] This is broken! It changes the entire view heirarchy. everything starts pulsing except the main logo.  (Root cause: `titlePulseScale` was `@State` on `MainMenuView` itself, so `withAnimation`'s implicit transaction scoped to that view's entire body re-render, bleeding the repeatForever animation into unrelated sibling views. Fix: extracted the pulsing "Hex Chess" text into its own leaf `PulsingTitleText` subview with its own local `@State`, so the animated transaction only ever re-renders that one Text.)
   - [ ] Refactor the main view so that instead of geometry readers dividing screen height and width, we give everything normal font numbers. Run base iphone 17 simulations testing the height/width numbers, and compare screenshots before and after
 - [ ] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
 - [ ] Haptic feedback on check/game win

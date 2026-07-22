@@ -38,8 +38,6 @@ struct MainMenuView: View {
     @State private var hasSavedSinglePlayerGame: Bool = false
     @State private var hasSavedPassAndPlayGame: Bool = false
 
-    @State private var titlePulseScale: CGFloat = 0.98
-
     var body: some View {
         NavigationView {
             GeometryReader { geometry in
@@ -76,17 +74,10 @@ struct MainMenuView: View {
                         }
                         
                         //WaveText(text: "Hex Chess", fontSize: maxScreenDimension * 0.07)
-                        Text("Hex Chess")
-                            .font(.system(size: maxScreenDimension * 0.07, weight: .semibold, design: .serif))
-                            .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
-                            .padding(.top, -5)
-                            .multilineTextAlignment(.center)
-                            .scaleEffect(titlePulseScale)
-                            .onAppear {
-                                withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
-                                    titlePulseScale = 1.02
-                                }
-                            }
+                        PulsingTitleText(
+                            fontSize: maxScreenDimension * 0.07,
+                            color: colorScheme == .dark ? Color.white : Color.black
+                        )
                         
                         Spacer()
                         
@@ -625,6 +616,29 @@ struct MainMenuView: View {
     
 }
 
+
+// Isolated in its own view so the repeatForever scale animation's implicit
+// transaction only ever re-renders this Text, not all of MainMenuView's body.
+private struct PulsingTitleText: View {
+    let fontSize: CGFloat
+    let color: Color
+
+    @State private var scale: CGFloat = 0.98
+
+    var body: some View {
+        Text("Hex Chess")
+            .font(.system(size: fontSize, weight: .semibold, design: .serif))
+            .foregroundColor(color)
+            .padding(.top, -5)
+            .multilineTextAlignment(.center)
+            .scaleEffect(scale)
+            .onAppear {
+                withAnimation(.easeInOut(duration: 2).repeatForever(autoreverses: true)) {
+                    scale = 1.02
+                }
+            }
+    }
+}
 
 struct HexagonEdgeRectangleShape: Shape {
     func path(in rect: CGRect) -> Path {
