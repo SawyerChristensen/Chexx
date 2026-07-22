@@ -53,6 +53,7 @@
 		BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA472C3F07F1009113B4 /* MainMenuView.swift */; };
 		BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */; };
 		BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA4F2C4622DE009113B4 /* ProfileView.swift */; };
+		8B67E85B125D40AD8C89A314 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53FFD06A579428CB01D5631 /* LeaderboardView.swift */; };
 		BE7D04B22E5A77D6000920FC /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BE7D04B12E5A77D6000920FC /* Messages.framework */; };
 		BE7D04BE2E5A77D7000920FC /* HexChessLite.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
@@ -155,6 +156,7 @@
 		BE76AA472C3F07F1009113B4 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
 		BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindow.swift; sourceTree = "<group>"; };
 		BE76AA4F2C4622DE009113B4 /* ProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileView.swift; sourceTree = "<group>"; };
+		A53FFD06A579428CB01D5631 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HexChessLite.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7D04B12E5A77D6000920FC /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		BE8B84BC3006D41C00A55F49 /* TO DO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TO DO.md"; sourceTree = "<group>"; };
@@ -366,6 +368,7 @@
 			children = (
 				BE76AA472C3F07F1009113B4 /* MainMenuView.swift */,
 				BE76AA4F2C4622DE009113B4 /* ProfileView.swift */,
+				A53FFD06A579428CB01D5631 /* LeaderboardView.swift */,
 				BE76AA4D2C4620F9009113B4 /* SettingsWindow.swift */,
 				BE9522602D2324B400836D0F /* TutorialSheet.swift */,
 				BECA2C082D01ED2C002B14BE /* GameLinkSheet.swift */,
@@ -637,6 +640,7 @@
 			files = (
 				BEB2FD802C653BF4008BCB26 /* PromotionWindow.swift in Sources */,
 				BE76AA502C4622DE009113B4 /* ProfileView.swift in Sources */,
+				8B67E85B125D40AD8C89A314 /* LeaderboardView.swift in Sources */,
 				BE76AA4E2C4620F9009113B4 /* SettingsWindow.swift in Sources */,
 				BE76AA482C3F07F1009113B4 /* MainMenuView.swift in Sources */,
 				BE091A572CC2889700C1A3EC /* AuthViewModel.swift in Sources */,

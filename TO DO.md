@@ -169,8 +169,8 @@
 - [x] Stalemate is not a draw. Instead the player delivering stalemate receives 0.75 points and the stalemated player receives 0.25 (implement for multiplayer ruling)
 - [x] In multiplayer, add the player's flag next to their username if they have a country selected in profile view
 - [x] Home Screen quick actions?
-- [ ] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy)
-  - [ ] Display first name, country emoji, Elo?
+- [x] Leaderboard button underneath profile view — simply rank all users by Elo (icon represented by trophy) (Added `LeaderboardView.swift`: queries the top 100 users from Firestore's `users` collection ordered by `eloScore` descending. The MainMenuView trophy button — previously a "temporary" stand-in that opened the native Game Center achievements UI, per its own comment — now opens this leaderboard instead; in-app achievement viewing is unaffected since ProfileView already has its own full achievements list independent of the native GameKit UI.)
+  - [x] Display first name, country emoji, Elo? (Each row shows rank, `Country.flagEmoji(forCode:)` next to `displayName` (first name), and `eloScore`; the current user's row is bolded and tinted if present in the top 100.)
 - [ ] Login does not check if your email is actually real
 - [ ] In multiplayer, show opponent's Game Center icon if they don't have a Google icon
 - [ ] Add random matchmaking if you're signed in? (via GameCenter, or Firebase?

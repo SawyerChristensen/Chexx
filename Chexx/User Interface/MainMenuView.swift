@@ -20,6 +20,7 @@ struct MainMenuView: View {
     @State private var isSettingsPresented = false
     @State private var isProfilePresented = false
     @State private var isTutorialPresented = false
+    @State private var isLeaderboardPresented = false
     //the submenus:
     @State private var onlineOptions = false
     @State private var singlePlayerOptions = false
@@ -442,26 +443,9 @@ struct MainMenuView: View {
                             }
                         }
                         
-                       /* // Leaderboard Icon
+                        // Leaderboard Icon
                         Button(action: {
-                        //    isLeaderboardPresented = true
-                        }) {
-                            Image(systemName: "list.bullet.rectangle")
-                                .resizable()
-                                .frame(width: maxScreenDimension / 15, height: maxScreenDimension / 15)
-                                .padding(.top, maxScreenDimension / 30)
-                                .padding(.leading, maxScreenDimension / 30)
-                        }
-                        //.sheet(isPresented: $isLeaderboardPresented) {
-                         //   LeaderboardView()
-                            // replace with actual leaderboard implementation
-                        //}*/
-                        
-                        // Temporary Game Center Achievement Button until leaderboard is implemented
-                        Button(action: {
-                            if let rootVC = UIApplication.shared.activeRootViewController {
-                                GameCenterManager.shared.showAchievements(from: rootVC)
-                            }
+                            isLeaderboardPresented = true
                         }) {
                             Image(systemName: "trophy")
                                 .resizable()
@@ -470,6 +454,29 @@ struct MainMenuView: View {
                                 .contentShape(Rectangle())
                                 .padding(.top, 28)
                                 .padding(.leading, 28)
+                        }
+                        .fullScreenCover(isPresented: $isLeaderboardPresented) {
+                            VStack {
+                                Spacer()
+
+                                LeaderboardView()
+
+                                Spacer()
+
+                                Button(action: {
+                                    isLeaderboardPresented = false
+                                }) {
+                                    Text("Close")
+                                        .font(.system(size: 20, weight: .semibold, design: .serif))
+                                        .padding()
+                                        .frame(minWidth: 189, maxHeight: 47)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                            }
+                            .padding()
+                            .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                         }
                     }
                     
