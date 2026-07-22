@@ -920,9 +920,7 @@ class GameScene: SKScene {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
-                        if gameCPU.difficulty == .extraHard { //only prompt for review once the CPU is sufficiently advanced
-                            ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
-                        }
+                        ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: self.view?.window?.windowScene)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -1006,9 +1004,7 @@ class GameScene: SKScene {
                             HapticManager.playNotification(type: .success)
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                             GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                            if gameCPU.difficulty == .extraHard { //only prompt for review once the CPU is sufficiently advanced
-                                ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
-                            }
+                            ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: self.view?.window?.windowScene)
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
