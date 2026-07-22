@@ -69,7 +69,7 @@
     - [x] Update ProfileView.swift and SettingsWindow.swift call sites that receive screenHeight/screenWidth from MainMenuView to use fixed font numbers internally instead
     - [x] Run the app on a base iPhone 17 simulator, capture before/after screenshots of the main menu (portrait and landscape), and compare for layout regressions (Built and ran commit `6efccf8`, the last commit before the GeometryReader→fixed-size refactor, alongside current HEAD in a scratch git worktree on the iPhone 17 simulator, screenshotting MainMenuView on both. Icon sizes/positions, title size, and button sizes matched pixel-for-pixel between before and after — no layout regression. Landscape was not applicable: the Chexx target's `INFOPLIST_KEY_UISupportedInterfaceOrientations` is locked to `UIInterfaceOrientationPortrait` on iPhone — only the iPad idiom supports landscape — so there is no iPhone landscape state to compare.)
 - [x] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
-- [ ] Haptic feedback on check/game win
+- [x] Haptic feedback on check/game win
 - [ ] Verify we ask for a review after the 2nd CPU game win
 
 - [ ] App Store Connect/photoshop work:

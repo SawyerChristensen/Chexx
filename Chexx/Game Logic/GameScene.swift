@@ -822,6 +822,7 @@ class GameScene: SKScene {
                     
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
@@ -867,6 +868,7 @@ class GameScene: SKScene {
                     
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         deleteGameFile(filename: "currentPassAndPlay")
@@ -913,6 +915,7 @@ class GameScene: SKScene {
                 if isVsCPU {
                     if winnerColor == "white" {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
@@ -953,6 +956,7 @@ class GameScene: SKScene {
                     
                     if localUserIsWinner {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
@@ -999,6 +1003,7 @@ class GameScene: SKScene {
                     if isVsCPU {
                         if winnerColor == "white" {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                            HapticManager.playNotification(type: .success)
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                             GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                             if gameCPU.difficulty == .extraHard { //only prompt for review once the CPU is sufficiently advanced
@@ -1012,6 +1017,7 @@ class GameScene: SKScene {
                     
                     if isPassAndPlay {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
+                        HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         deleteGameFile(filename: "currentPassAndPlay")
@@ -1248,6 +1254,7 @@ class GameScene: SKScene {
         //MARK: highlight any pieces in check
         if gameStatus.starts(with: "check") {
             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
+            HapticManager.playNotification(type: .warning)
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
             let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }

@@ -730,6 +730,7 @@ class MessagesGameScene: SKScene {
         if theGameIsOver {
             if !applyingUpdate { //you just won the game! (could also check this by comparing winnerColor & localPlayerColor)
                 WinTracker.shared.incrementWins()
+                HapticManager.playNotification(type: .success)
             }
             
             let winnerColor = gameState.currentPlayer == "white" ? "black" : "white" //opposite of current
@@ -861,6 +862,7 @@ class MessagesGameScene: SKScene {
         
         if gameStatus.starts(with: "check") { //highlight any pieces in check
             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
+            HapticManager.playNotification(type: .warning)
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")
             let checkPositions = checkPositionsString.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
