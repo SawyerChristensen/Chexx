@@ -11,6 +11,7 @@
 		19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD021CFE553872F49DC3911 /* ChexxTests.swift */; };
 		4A2B7E1D9F5C4E8A8B6D0C3F /* GameCPUBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */; };
 		5AF9437112C744A4B047BCFD /* SelfPlayGenerator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C90D1EC0AF4C4009989E253C /* SelfPlayGenerator.swift */; };
+		490A3D64004E4B0FB8AF0E63 /* TrainingDataExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */; };
 		6703496E974D5295DE9A22C6 /* GameRulesEdgeCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */; };
 		29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7017F2C885574833D4FBA47 /* SwiftUI.framework */; };
 		308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -176,6 +177,7 @@
 		CFD021CFE553872F49DC3911 /* ChexxTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChexxTests.swift; sourceTree = "<group>"; };
 		7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameCPUBenchmarkTests.swift; sourceTree = "<group>"; };
 		C90D1EC0AF4C4009989E253C /* SelfPlayGenerator.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = SelfPlayGenerator.swift; sourceTree = "<group>"; };
+		25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainingDataExtractor.swift; sourceTree = "<group>"; };
 		3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameRulesEdgeCaseTests.swift; sourceTree = "<group>"; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChexxWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -409,6 +411,7 @@
 				7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */,
 				3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */,
 				C90D1EC0AF4C4009989E253C /* SelfPlayGenerator.swift */,
+				25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */,
 			);
 			name = ChexxTests;
 			path = ChexxTests;
@@ -635,6 +638,7 @@
 				4A2B7E1D9F5C4E8A8B6D0C3F /* GameCPUBenchmarkTests.swift in Sources */,
 				6703496E974D5295DE9A22C6 /* GameRulesEdgeCaseTests.swift in Sources */,
 				5AF9437112C744A4B047BCFD /* SelfPlayGenerator.swift in Sources */,
+				490A3D64004E4B0FB8AF0E63 /* TrainingDataExtractor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
