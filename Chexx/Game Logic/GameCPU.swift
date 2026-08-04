@@ -363,19 +363,25 @@ class GameCPU {
             }
         }
 
+        // At the root, this call must return an actual move (minimaxMove has nothing else to fall
+        // back on), so a cached value alone is never enough to short-circuit here even if it's
+        // otherwise conclusive — only non-root nodes, which only need to hand a value back up to
+        // their parent, may return early on a TT hit.
         let ttKey = transpositionKey(for: gameState)
         var ttBestMove: SearchMove? = nil
         if let entry = transpositionTable[ttKey], entry.depth >= depth {
-            switch entry.flag {
-            case .exact:
-                return (entry.value, nil)
-            case .lowerBound:
-                if entry.value >= beta {
+            if !isRoot {
+                switch entry.flag {
+                case .exact:
                     return (entry.value, nil)
-                }
-            case .upperBound:
-                if entry.value <= alpha {
-                    return (entry.value, nil)
+                case .lowerBound:
+                    if entry.value >= beta {
+                        return (entry.value, nil)
+                    }
+                case .upperBound:
+                    if entry.value <= alpha {
+                        return (entry.value, nil)
+                    }
                 }
             }
             ttBestMove = entry.bestMove
