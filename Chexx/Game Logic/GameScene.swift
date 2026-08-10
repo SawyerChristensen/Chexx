@@ -1178,15 +1178,26 @@ class GameScene: SKScene {
                 if let destinationHexagon = self.hexagonsByName[move.destination] {
                     if let parent = cpuPieceNode.parent {
                         let destinationPosition = parent.convert(destinationHexagon.position, from: self)
-                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.25)
+                        let slideAction = SKAction.move(to: destinationPosition, duration: 0.33)
                         //slideAction.timingMode = .linear
                         self.beginAnimationActivity()
-                        cpuPieceNode.run(slideAction)
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in //pretty sure this improves the frame rate
+                        // Drive the follow-up off the action's real completion instead of a fixed
+                        // wall-clock delay: a hardcoded asyncAfter can fire before or after the
+                        // slide has actually finished rendering if a frame drops elsewhere, which
+                        // showed up as an occasional hitch right at the end of the CPU's move.
+                        cpuPieceNode.run(slideAction) { [weak self] in
                             guard let self = self else { return }
                             self.endAnimationActivity()
-                            let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
-                            self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
+                            // endAnimationActivity() above triggers a SwiftUI @State change that
+                            // ramps preferredFramesPerSecond back down. Deferring the heavier
+                            // updateGameState (which runs a full isGameOver() legal-move scan) to
+                            // the next runloop turn keeps it from compounding with that ramp-down
+                            // in the same frame.
+                            DispatchQueue.main.async { [weak self] in
+                                guard let self = self else { return }
+                                let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
+                                self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
+                            }
                         }
                     }
                 } else {
@@ -1266,11 +1277,15 @@ class GameScene: SKScene {
                     let destinationPoint = parent.convert(destinationHexagon.position, from: self)
                     let slideAction = SKAction.move(to: destinationPoint, duration: 0.25)
                     beginAnimationActivity()
-                    pieceNode.run(slideAction)
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { [weak self] in
+                    // See cpuMakeMove for why this uses the action's real completion instead of a
+                    // fixed wall-clock delay, and why updateGameState is deferred one more turn.
+                    pieceNode.run(slideAction) { [weak self] in
                         guard let self = self else { return }
                         self.endAnimationActivity()
-                        self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
+                        DispatchQueue.main.async { [weak self] in
+                            guard let self = self else { return }
+                            self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
+                        }
                     }
                 }
             } else {

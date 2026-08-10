@@ -5,9 +5,9 @@
 - [ ] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac (NO MAC TARGET YET)
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
 - [ ] Verify 120hz works in the iMessage target
-- [ ] Occasional animation hangs near end of piece move
 - [ ] Increase text size of buttons
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
+  - [ ] Maybe undo this...
 - [~] Add Notifications!
   - [x] Add local notification permission infrastructure (NotificationManager, request authorization) and wire the "Player Turn Notification" toggle in Settings to request/reflect it.
   - [x] The ability to send notification should only be enabled after the user enters their first online game. (so they can get updates from the game)
@@ -26,13 +26,16 @@
   - [x] Add a `--whats-new-only` flag to scripts/upload\_metadata.py that pushes only the whatsNew field (skipping inherited description/keywords/promotional\_text and Game Center achievements)
   - [ ] Run `upload_metadata.py --whats-new-only` to push the update notice to App Store Connect (requires ASC credentials — human step to execute/confirm)
 - [x] Verfy we will be removing the "Designed for iPad. Not verified for macOS" badge (Chexx target's Mac Catalyst config had `TARGETED_DEVICE_FAMILY = "1,2"` with no `SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD` override, meaning it defaulted to YES — i.e. "Designed for iPad, scaled to fit" mode, which is exactly what triggers this badge. Set `SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO` in both Debug and Release configs to switch to "Optimized for Mac" idiom instead. No `.pad`/`userInterfaceIdiom` branches exist in the codebase that this could break. Note: verifying the badge is actually gone requires seeing the live App Store Connect listing after a future submission — human step. Also found and logged a pre-existing, unrelated Mac Catalyst build break in the Bugs section below.)
-- [x] Fix the lone warning in MainMenuView
+  - [ ] Do we still need this if we have an explicit Mac Target?
 - [x] Make the "waiting for opponent" screen in iMessage more similar to DeckedOut, where the "Waiting for opponent..." space is reserved, made invisible, and then the animated text is added over it
+  - [ ] Verify ^
 - [x] Haptic feedback on check/game win
+  - [ ] Verify ^
 - [ ] Verify we ask for a review after the 2nd CPU game win (Previously the CPU-win review prompt only fired at `.extraHard` difficulty and shared a "every 5th eligible win" counter with multiplayer wins, so it never actually triggered on a 2nd CPU win. Added a dedicated `requestReviewAfterCPUWinIfAppropriate` path in ReviewRequestManager.swift with its own `reviewPromptCPUWinCount` counter that prompts once on exactly the player's 2nd CPU win, regardless of difficulty, still subject to the existing 60-day cooldown. Wired into both CPU-win branches (checkmate and stalemate) in GameScene.swift.)
 
 - [ ] App Store Connect/photoshop work:
-  - [ ] Better App Store pictures for iPad (1/3 of all users!!) Is this what mac uses?
+  - [ ] Better App Store pictures for iPad (1/3 of all users!!) 
+    - [ ] And Mac!
   - [ ] Listing canvas gaps should be shorter?
   - [ ] Modify Russian listing photo text?
   - [ ] Modify the Chinese listing photo text? Add Chinese Trad
@@ -86,7 +89,7 @@
 | Parallelized Evaluation Functions | 2–4x, depending on how parallelizable | ?|
 | SIMD & GPU Offloading | 2–10x, depending on hardware and implementation | Not adopted — evaluation is already O(1) (no per-square scan to vectorize) and the actual per-node cost (move generation/legality filtering, alpha-beta control flow) is branchy/sequential, which SIMD/GPU (SIMT) execution handles poorly. See Update 1.6 research note.|
 | Move Ordering & Iterative Deepening | 10–30% | ? |
-| Late Move Reductions | 10–30% |? |
+| Late Move Reductions | 10–30% | ? |
 | Null Move Pruning | 10–20% | ?|
 
 --
