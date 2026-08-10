@@ -8,6 +8,33 @@
 import SwiftUI
 import SpriteKit
 
+// Wraps SKView directly (instead of SwiftUI's SpriteView) because SpriteView doesn't reliably
+// push updated preferredFramesPerSecond values down to its underlying SKView after creation.
+struct AdaptiveSpriteView: UIViewRepresentable {
+    let scene: SKScene
+    let preferredFramesPerSecond: Int
+
+    func makeUIView(context: Context) -> SKView {
+        let view = SKView()
+        view.preferredFramesPerSecond = preferredFramesPerSecond
+#if DEBUG
+        view.showsFPS = true
+        view.showsNodeCount = true
+#endif
+        view.presentScene(scene)
+        return view
+    }
+
+    func updateUIView(_ uiView: SKView, context: Context) {
+        if uiView.scene !== scene {
+            uiView.presentScene(scene)
+        }
+        if uiView.preferredFramesPerSecond != preferredFramesPerSecond {
+            uiView.preferredFramesPerSecond = preferredFramesPerSecond
+        }
+    }
+}
+
 struct GameView: View {
     @Environment(\.dismiss) private var dismiss
     @State private var redStatusText: String = ""
@@ -31,7 +58,7 @@ struct GameView: View {
                 Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
                 if let scene = scene { //the actual board
-                    SpriteView(scene: scene, preferredFramesPerSecond: preferredFramesPerSecond)
+                    AdaptiveSpriteView(scene: scene, preferredFramesPerSecond: preferredFramesPerSecond)
                         .ignoresSafeArea()
                 }
             }

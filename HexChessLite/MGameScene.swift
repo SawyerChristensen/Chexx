@@ -40,8 +40,8 @@ class MessagesGameScene: SKScene {
     var turnStateUpdater: ((_ isLocalPlayersTurn: Bool) -> Void)? //what notifies GameView of the turn changing
 
     // Number of currently-running piece slides / wobble / highlight-pulse animations.
-    // MessagesGameView observes this (via animationActivityUpdater) to raise SpriteView's frame rate
-    // only while something is actually animating, and drop back down when idle.
+    // MessagesGameView observes this (via animationActivityUpdater) to raise the SKView's frame
+    // rate only while something is actually animating, and drop back down when idle.
     private(set) var animationActivityCount: Int = 0 {
         didSet { animationActivityUpdater?(animationActivityCount) }
     }
