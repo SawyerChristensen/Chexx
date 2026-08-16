@@ -5,6 +5,7 @@
 //  Created by Sawyer Christensen on 7/16/26.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 extension UIApplication {
@@ -18,3 +19,14 @@ extension UIApplication {
         return scene?.windows.first(where: \.isKeyWindow)?.rootViewController ?? scene?.windows.first?.rootViewController
     }
 }
+#elseif os(macOS)
+import AppKit
+
+extension NSApplication {
+    /// The current key (or otherwise frontmost) window, used as the presentation
+    /// anchor for sheets like the Google Sign-In flow on native macOS.
+    var activeWindow: NSWindow? {
+        keyWindow ?? windows.first
+    }
+}
+#endif

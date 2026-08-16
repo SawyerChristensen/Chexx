@@ -11,7 +11,11 @@ import FirebaseFirestore
 import GoogleSignIn
 import CryptoKit
 import AuthenticationServices
+#if canImport(UIKit)
 import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 @MainActor
 class AuthViewModel: ObservableObject {
@@ -354,13 +358,20 @@ class AuthViewModel: ObservableObject {
         let config = GIDConfiguration(clientID: clientID)
         GIDSignIn.sharedInstance.configuration = config
         
-        guard let rootViewController = UIApplication.shared.activeRootViewController else {
+        #if canImport(UIKit)
+        guard let presentingSurface = UIApplication.shared.activeRootViewController else {
             print("There is no root view controller")
             return false
         }
-        
+        #elseif os(macOS)
+        guard let presentingSurface = NSApplication.shared.activeWindow else {
+            print("There is no active window")
+            return false
+        }
+        #endif
+
         do {
-            let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: rootViewController)
+            let userAuthentication = try await GIDSignIn.sharedInstance.signIn(withPresenting: presentingSurface)
             let user = userAuthentication.user
             
             guard let idToken = user.idToken else {
