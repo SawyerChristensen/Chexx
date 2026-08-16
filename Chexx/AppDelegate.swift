@@ -150,7 +150,9 @@ class AppDelegate: NSObject, NSApplicationDelegate, MessagingDelegate {
     // from a Cloud Function via the Firebase Admin SDK
     func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
         guard let fcmToken else { return }
-        AuthViewModel.shared.updateFCMTokenInFirestore(token: fcmToken)
+        Task { @MainActor in
+            AuthViewModel.shared.updateFCMTokenInFirestore(token: fcmToken)
+        }
     }
 
     func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
