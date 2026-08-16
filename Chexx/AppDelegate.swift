@@ -48,7 +48,6 @@ struct NotificationManager {
 #if canImport(UIKit)
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        FirebaseApp.configure()
         Messaging.messaging().delegate = self
 
         // if the user already granted notification permission in a previous session,
@@ -121,7 +120,6 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
 // Google Sign-In URL callback) has a direct AppKit/NSApplicationDelegate equivalent.
 class AppDelegate: NSObject, NSApplicationDelegate, MessagingDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        FirebaseApp.configure()
         Messaging.messaging().delegate = self
 
         // if the user already granted notification permission in a previous session,
@@ -168,6 +166,14 @@ struct ChexxApp: App {
     #elseif os(macOS)
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
     #endif
+
+    init() {
+        // Configured here, rather than in AppDelegate's launch callback, since
+        // SwiftUI can construct MainMenuView's @StateObject AuthViewModel (which
+        // touches Firestore/Auth at init) before that callback fires — App.init()
+        // is guaranteed to run first on every platform.
+        FirebaseApp.configure()
+    }
 
     var body: some Scene {
         WindowGroup {
