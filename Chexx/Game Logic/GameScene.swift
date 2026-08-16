@@ -51,6 +51,16 @@ class GameScene: SKScene {
     private let cpuSearchQueue = DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)
     private var ponderToken: PonderCancellationToken?
 
+    // AppStore.requestReview(in:) is presented from a UIWindowScene on iOS/Catalyst but from an
+    // NSViewController on native macOS — see ReviewRequestManager.ReviewPresentationContext.
+    private var reviewPresentationContext: ReviewRequestManager.ReviewPresentationContext? {
+        #if canImport(UIKit)
+        return self.view?.window?.windowScene
+        #elseif os(macOS)
+        return self.view?.window?.contentViewController
+        #endif
+    }
+
     // Starts a background pondering pass on the current position, intended to be called as soon
     // as it becomes the human's turn in a vs-CPU game. Cancelled via stopPondering() as soon as
     // the human's move is made; the cancellation + serial cpuSearchQueue together guarantee the
@@ -890,7 +900,7 @@ class GameScene: SKScene {
                         HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
+                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: reviewPresentationContext)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -985,7 +995,7 @@ class GameScene: SKScene {
                         AchievementManager.shared.unlockAchievement(withID: "hex_machina")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
                         GameCenterManager.shared.reportAchievement(identifier: "HexMachina")
-                        ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: self.view?.window?.windowScene)
+                        ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: reviewPresentationContext)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -1022,7 +1032,7 @@ class GameScene: SKScene {
                         HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                         GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: self.view?.window?.windowScene)
+                        ReviewRequestManager.shared.requestReviewIfAppropriate(in: reviewPresentationContext)
                     } else {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                     }
@@ -1069,7 +1079,7 @@ class GameScene: SKScene {
                             HapticManager.playNotification(type: .success)
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
                             GameCenterManager.shared.reportAchievement(identifier: "HexceptionalWin")
-                            ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: self.view?.window?.windowScene)
+                            ReviewRequestManager.shared.requestReviewAfterCPUWinIfAppropriate(in: reviewPresentationContext)
                         } else {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
                         }
