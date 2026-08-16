@@ -16,14 +16,17 @@ public typealias PlatformFontDescriptor = NSFontDescriptor
 
 extension View {
     /// `.hoverEffect()` (pointer/trackpad hover feedback) is UIKit-only —
-    /// available on iOS and Mac Catalyst, but not native macOS, where hover
-    /// feedback is handled natively by AppKit controls instead.
+    /// available on iOS and Mac Catalyst, but not native macOS. These call
+    /// sites are all custom-shaped `Button` labels (hexagon buttons etc.),
+    /// not standard AppKit controls, so they get no automatic hover
+    /// highlighting on native macOS either — `NativeMacHoverEffect` below
+    /// gives them an explicit `onHover`-driven highlight there instead.
     @ViewBuilder
     func crossPlatformHoverEffect() -> some View {
         #if canImport(UIKit)
         self.hoverEffect()
         #else
-        self
+        self.modifier(NativeMacHoverEffect())
         #endif
     }
 
@@ -84,6 +87,23 @@ enum PlatformTextInputAutocapitalization {
     }
     #endif
 }
+
+#if os(macOS)
+/// Pointer-hover highlight for native macOS, standing in for `.hoverEffect()`
+/// on the app's custom-shaped buttons (which get no automatic AppKit hover
+/// styling since they aren't standard controls).
+private struct NativeMacHoverEffect: ViewModifier {
+    @State private var isHovering = false
+
+    func body(content: Content) -> some View {
+        content
+            .brightness(isHovering ? -0.06 : 0)
+            .scaleEffect(isHovering ? 1.03 : 1.0)
+            .animation(.easeOut(duration: 0.12), value: isHovering)
+            .onHover { isHovering = $0 }
+    }
+}
+#endif
 
 extension ToolbarItemPlacement {
     /// Cross-platform equivalent of `.navigationBarLeading`, which is
