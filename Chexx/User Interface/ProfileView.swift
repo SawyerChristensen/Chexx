@@ -535,6 +535,7 @@ struct ProfileView: View {
                             }
                             .frame(maxWidth: .infinity, alignment: .leading)
                         }
+                        .scrollBounceBehavior(.basedOnSize)
                     }
                 }
 

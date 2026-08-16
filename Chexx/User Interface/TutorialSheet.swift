@@ -187,6 +187,7 @@ struct TutorialSheet: View {
             }
             .padding()
         }
+        .scrollBounceBehavior(.basedOnSize)
         .navigationTitle("Tutorial")
         /*.toolbar {
             ToolbarItem(placement: .navigationBarLeading) {

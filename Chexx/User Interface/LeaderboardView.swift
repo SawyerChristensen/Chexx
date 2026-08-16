@@ -60,6 +60,7 @@ struct LeaderboardView: View {
                     .padding(.horizontal)
                     .padding(.top, 8)
                 }
+                .scrollBounceBehavior(.basedOnSize)
             }
         }
         .onAppear(perform: loadLeaderboard)

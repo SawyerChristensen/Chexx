@@ -2,8 +2,11 @@
 ---
 
 ## Update 1.5 — Mac Port  💻
-- [ ] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac (NO MAC TARGET YET)
+- [~] Add an official Mac post of Hex Chess that has a square window. Modify our scroll views or whatever to use what is reccomended UI for Mac (NO MAC TARGET YET)
   - [x] Set a fixed/square default window size on Mac (e.g. via WindowGroup's defaultSize / windowResizability) sized for the hex board
+  - [x] Apply Mac/pointer-appropriate scroll behavior (`.scrollBounceBehavior(.basedOnSize)`) to the app's ScrollViews (ProfileView achievements list, TutorialSheet, LeaderboardView) so fully-visible content doesn't rubber-band under trackpad/mouse scrolling on Mac, matching Apple's own recommendation for pointer-driven platforms
+  - [ ] Audit primary interactive controls (buttons, menus) for Mac Catalyst pointer support — add `.hoverEffect` where appropriate for hover feedback under mouse/trackpad
+  - [ ] Do a visual pass on an actual Mac Catalyst build/window to confirm scroll and control behavior look correct (requires running the app on a Mac — human step to visually verify)
 - [ ] Verify 120hz works in the iMessage target
 - [ ] Increase text size of buttons
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
