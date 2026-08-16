@@ -46,9 +46,9 @@
 		BE76A9B02C2A2602009113B4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9AF2C2A2602009113B4 /* AppDelegate.swift */; };
 		18A9A53318994F0EB69BC9A0 /* QuickActionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAC858F40FF344FDB0C1B202 /* QuickActionManager.swift */; };
 		BE76A9B62C2A2602009113B4 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76A9B52C2A2602009113B4 /* GameScene.swift */; };
-		BE76A9BB2C2A2602009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BA2C2A2602009113B4 /* Base */; };
+		BE76A9BB2C2A2602009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BA2C2A2602009113B4 /* Base */; platformFilters = (ios, ipados, ); };
 		BE76A9BD2C2A2603009113B4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BC2C2A2603009113B4 /* Assets.xcassets */; };
-		BE76A9C02C2A2603009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BF2C2A2603009113B4 /* Base */; };
+		BE76A9C02C2A2603009113B4 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9BF2C2A2603009113B4 /* Base */; platformFilters = (ios, ipados, ); };
 		BE76A9FD2C2A3EDA009113B4 /* carmen-habanera.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = BE76A9E22C2A3EDA009113B4 /* carmen-habanera.mp3 */; };
 		BE76AA3E2C30DF82009113B4 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3D2C30DF82009113B4 /* GameState.swift */; };
 		BE76AA402C3720EE009113B4 /* PieceRules.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE76AA3F2C3720EE009113B4 /* PieceRules.swift */; };
@@ -920,7 +920,9 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				"INFOPLIST_KEY_UILaunchStoryboardName[sdk=macosx*]" = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				"INFOPLIST_KEY_UIMainStoryboardFile[sdk=macosx*]" = "";
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
@@ -959,7 +961,9 @@
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.board-games";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				"INFOPLIST_KEY_UILaunchStoryboardName[sdk=macosx*]" = "";
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				"INFOPLIST_KEY_UIMainStoryboardFile[sdk=macosx*]" = "";
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
