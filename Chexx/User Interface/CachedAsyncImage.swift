@@ -3,15 +3,15 @@ import SwiftUI
 final class ImageCache {
     static let shared = ImageCache()
 
-    private let cache = NSCache<NSURL, UIImage>()
+    private let cache = NSCache<NSURL, PlatformImage>()
 
     private init() {}
 
-    func image(for url: URL) -> UIImage? {
+    func image(for url: URL) -> PlatformImage? {
         cache.object(forKey: url as NSURL)
     }
 
-    func insert(_ image: UIImage, for url: URL) {
+    func insert(_ image: PlatformImage, for url: URL) {
         cache.setObject(image, forKey: url as NSURL)
     }
 }
@@ -24,12 +24,12 @@ struct CachedAsyncImage<Content: View, Placeholder: View>: View {
     @ViewBuilder var content: (Image) -> Content
     @ViewBuilder var placeholder: () -> Placeholder
 
-    @State private var uiImage: UIImage?
+    @State private var uiImage: PlatformImage?
 
     var body: some View {
         Group {
             if let uiImage {
-                content(Image(uiImage: uiImage))
+                content(Image(platformImage: uiImage))
             } else {
                 placeholder()
             }
@@ -64,7 +64,7 @@ struct CachedAsyncImage<Content: View, Placeholder: View>: View {
             do {
                 let (data, response) = try await URLSession.shared.data(for: request)
                 guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200,
-                      let downloaded = UIImage(data: data) else {
+                      let downloaded = PlatformImage(data: data) else {
                     print("CachedAsyncImage: failed to decode image from \(url) (attempt \(attempt + 1))")
                     continue
                 }

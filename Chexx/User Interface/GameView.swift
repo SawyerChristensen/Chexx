@@ -10,6 +10,9 @@ import SpriteKit
 
 // Wraps SKView directly (instead of SwiftUI's SpriteView) because SpriteView doesn't reliably
 // push updated preferredFramesPerSecond values down to its underlying SKView after creation.
+// UIViewRepresentable/NSViewRepresentable share the same shape but different protocol/method
+// names, so the two platforms each get their own conformance below.
+#if canImport(UIKit)
 struct AdaptiveSpriteView: UIViewRepresentable {
     let scene: SKScene
     let preferredFramesPerSecond: Int
@@ -34,6 +37,32 @@ struct AdaptiveSpriteView: UIViewRepresentable {
         }
     }
 }
+#elseif os(macOS)
+struct AdaptiveSpriteView: NSViewRepresentable {
+    let scene: SKScene
+    let preferredFramesPerSecond: Int
+
+    func makeNSView(context: Context) -> SKView {
+        let view = SKView()
+        view.preferredFramesPerSecond = preferredFramesPerSecond
+#if DEBUG
+        view.showsFPS = true
+        view.showsNodeCount = true
+#endif
+        view.presentScene(scene)
+        return view
+    }
+
+    func updateNSView(_ nsView: SKView, context: Context) {
+        if nsView.scene !== scene {
+            nsView.presentScene(scene)
+        }
+        if nsView.preferredFramesPerSecond != preferredFramesPerSecond {
+            nsView.preferredFramesPerSecond = preferredFramesPerSecond
+        }
+    }
+}
+#endif
 
 struct GameView: View {
     @Environment(\.dismiss) private var dismiss
@@ -55,7 +84,7 @@ struct GameView: View {
         GeometryReader { geometry in
 
             ZStack { //background color
-                Color(UIColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
+                Color(SKColor(hex: "#262626")).edgesIgnoringSafeArea(.all)
                 
                 if let scene = scene { //the actual board
                     AdaptiveSpriteView(scene: scene, preferredFramesPerSecond: preferredFramesPerSecond)
@@ -173,7 +202,7 @@ struct GameView: View {
                     Image(systemName: "chevron.backward")
                         .foregroundColor(.white)
                 }
-                .hoverEffect()
+                .crossPlatformHoverEffect()
             }
         }
         .onDisappear {

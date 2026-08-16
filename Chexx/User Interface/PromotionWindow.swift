@@ -36,13 +36,13 @@ struct PromotionWindow: View {
                             .foregroundColor(Color.primary)
                             .clipShape(HexagonEdgeRectangleShape())
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
                     .padding(5)
                 }
             }
         }
         .padding()
-        .background(Color(UIColor.systemBackground))
+        .background(Color.platformSystemBackground)
         .cornerRadius(15)
         .shadow(radius: 10)
     }

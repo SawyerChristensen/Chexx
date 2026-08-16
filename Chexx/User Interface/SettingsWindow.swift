@@ -84,11 +84,11 @@ struct SettingsWindow: View {
                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                         .clipShape(HexagonEdgeRectangleShape())
                 }
-                .hoverEffect()
+                .crossPlatformHoverEffect()
                 .padding(.top, 20)
             }
             .padding()
-            .background(Color(UIColor.systemBackground))
+            .background(Color.platformSystemBackground)
             .cornerRadius(15)
             .shadow(radius: colorScheme == .dark ? 20 : 100)
             //.scaleEffect(1.2)

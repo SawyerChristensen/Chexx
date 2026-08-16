@@ -6,6 +6,11 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 struct GameLinkSheet: View {
     @Binding var isPresented: Bool
@@ -32,14 +37,19 @@ struct GameLinkSheet: View {
                     .padding()
 
                 Button(action: {
+                    #if canImport(UIKit)
                     UIPasteboard.general.string = gameLink
+                    #elseif os(macOS)
+                    NSPasteboard.general.clearContents()
+                    NSPasteboard.general.setString(gameLink, forType: .string)
+                    #endif
                 }) {
                     Text("Copy to Clipboard")
                         .font(.system(size: 18, weight: .medium, design: .serif))
                         .underline()
                 }
                 .underline(true)
-                .hoverEffect()
+                .crossPlatformHoverEffect()
                 .padding(.bottom, 24)
             }
 
@@ -52,10 +62,10 @@ struct GameLinkSheet: View {
                     .padding()
                     .frame(minWidth: 240, maxHeight: 60)
                     .background(Color.accentColor)
-                    .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
+                    .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : .white)
                     .clipShape(HexagonEdgeRectangleShape())
             }
-            .hoverEffect()
+            .crossPlatformHoverEffect()
             .padding()
         }
         .padding()

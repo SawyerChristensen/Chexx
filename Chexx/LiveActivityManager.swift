@@ -3,13 +3,19 @@
 //  Chexx
 //
 
-import ActivityKit
 import Foundation
 
 // Owns the ActivityKit lifecycle (start/update/end) for the current game's Live
 // Activity. Callers just report game events; the widget extension that renders
 // the activity's UI is wired up separately, and move-detection callers are wired
 // up separately too.
+//
+// ActivityKit's `Activity`/`ActivityAuthorizationInfo` are unavailable on both
+// Mac Catalyst and native macOS, so start/update/end are no-ops there — callers
+// don't need their own platform checks.
+#if os(iOS) && !targetEnvironment(macCatalyst)
+import ActivityKit
+
 enum LiveActivityManager {
     private static var currentActivity: Activity<GameLiveActivityAttributes>?
 
@@ -54,3 +60,10 @@ enum LiveActivityManager {
         }
     }
 }
+#else
+enum LiveActivityManager {
+    static func start(gameId: String, opponentName: String) {}
+    static func update(moveDescription: String) {}
+    static func end() {}
+}
+#endif

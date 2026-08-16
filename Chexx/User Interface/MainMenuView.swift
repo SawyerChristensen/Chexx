@@ -6,6 +6,11 @@
 //
 
 import SwiftUI
+#if canImport(UIKit)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 struct MainMenuView: View {
     @AppStorage("backgroundMusicEnabled") private var backgroundMusicEnabled = true
@@ -96,10 +101,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                                 .sheet(isPresented: $presentGameLink, onDismiss: {
                                     if !navigateToGameView {
@@ -131,10 +136,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                                 .sheet(isPresented: $isGameIDEntryPresented) {
                                     VStack {
@@ -168,10 +173,10 @@ struct MainMenuView: View {
                                                 .padding()
                                                 .frame(minWidth: 240, maxHeight: 60)
                                                 .background(Color.accentColor)
-                                                .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
+                                                .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : .white)
                                                 .clipShape(HexagonEdgeRectangleShape())
                                         }
-                                        .hoverEffect()
+                                        .crossPlatformHoverEffect()
                                         .padding()
                                     }
                                     .padding()
@@ -191,10 +196,10 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                     .padding(8)
                                 }
                             }
@@ -219,10 +224,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                                 
                                 NavigationLink(destination: GameView(isVsCPU: true).onAppear {
@@ -233,10 +238,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                             }
                         }
@@ -260,10 +265,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                                 
                                 NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
@@ -274,10 +279,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                             }
                             
@@ -296,10 +301,10 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                     .padding(8)
                                     
                                 } else { //there is no saved single player game, jump right in!
@@ -311,10 +316,10 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                     .padding(8)
                                 }
                                 
@@ -328,10 +333,10 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                     .padding(8)
                                     
                                 } else {
@@ -343,10 +348,10 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                     .padding(8)
                                 }
                                 
@@ -360,10 +365,10 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                                 .padding(8)
                             }
                             
@@ -384,7 +389,7 @@ struct MainMenuView: View {
                                         .font(.system(size: 43, weight: .semibold, design: .serif))
                                 }
                             }
-                            .hoverEffect()
+                            .crossPlatformHoverEffect()
                             .padding(.bottom, 17)
                             .padding(.top, -17)
                         }
@@ -416,7 +421,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.leading, 28)
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
                         .fullScreenCover(isPresented: $isProfilePresented) {
                             VStack {
                                 
@@ -437,14 +442,14 @@ struct MainMenuView: View {
                                             .padding()
                                             .frame(minWidth: 189, maxHeight: 47)
                                             .background(Color.accentColor)
-                                            .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                            .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
-                                    .hoverEffect()
+                                    .crossPlatformHoverEffect()
                                 }
                             }
                             .padding()
-                            .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                            .background(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                             .onAppear {
                                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                     isKeyboardVisible = true
@@ -471,7 +476,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.leading, 28)
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
                         .fullScreenCover(isPresented: $isLeaderboardPresented) {
                             VStack {
                                 Spacer()
@@ -488,13 +493,13 @@ struct MainMenuView: View {
                                         .padding()
                                         .frame(minWidth: 189, maxHeight: 47)
                                         .background(Color.accentColor)
-                                        .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
-                                .hoverEffect()
+                                .crossPlatformHoverEffect()
                             }
                             .padding()
-                            .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
+                            .background(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                         }
                     }
                     
@@ -519,7 +524,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.trailing, 28)
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
 
                         // Tutorial Icon
                         Button(action: {
@@ -533,7 +538,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.trailing, 28)
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
                         .sheet(isPresented: $isTutorialPresented) {
                             TutorialSheet()
                                 .presentationDragIndicator(.visible)
@@ -562,7 +567,7 @@ struct MainMenuView: View {
             .onChange(of: quickActionManager.pendingAction) {
                 handlePendingQuickAction() // covers a quick action tapped while already running
             }
-            .background(Color(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)) //change this to change main menu background color
+            .background(Color(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)) //change this to change main menu background color
         }
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
     }
@@ -579,9 +584,15 @@ struct MainMenuView: View {
     }
 
     func authenticateGameCenter() {
+        #if canImport(UIKit)
         if let root = UIApplication.shared.activeRootViewController {
             GameCenterManager.shared.authenticateLocalPlayer(presentingViewController: root)
         }
+        #elseif os(macOS)
+        if let root = NSApplication.shared.activeWindow?.contentViewController {
+            GameCenterManager.shared.authenticateLocalPlayer(presentingViewController: root)
+        }
+        #endif
     }
     
     // MARK: - Main Menu Helper functions

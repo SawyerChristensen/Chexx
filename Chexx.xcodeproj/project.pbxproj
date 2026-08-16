@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		9BA8343215BA4A44989AB253 /* PlatformColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3A121A2AD4653BF5690FA /* PlatformColor.swift */; };
+		132F687B1D3D4F2B8FBDC5CC /* PlatformColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 43D3A121A2AD4653BF5690FA /* PlatformColor.swift */; };
 		06413BA9D084ACC2436044CD /* GameLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */; };
 		19999A42C17BC18F66B458FC /* ChexxTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CFD021CFE553872F49DC3911 /* ChexxTests.swift */; };
 		4A2B7E1D9F5C4E8A8B6D0C3F /* GameCPUBenchmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */; };
@@ -173,6 +175,7 @@
 		BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
 		BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiplayerManager.swift; sourceTree = "<group>"; };
 		C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameLiveActivityAttributes.swift; sourceTree = "<group>"; };
+		43D3A121A2AD4653BF5690FA /* PlatformColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlatformColor.swift; sourceTree = "<group>"; };
 		C7017F2C885574833D4FBA47 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		CFD021CFE553872F49DC3911 /* ChexxTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ChexxTests.swift; sourceTree = "<group>"; };
 		7D3F9A6E1C2B4F8D9E0A5B7C /* GameCPUBenchmarkTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameCPUBenchmarkTests.swift; sourceTree = "<group>"; };
@@ -326,6 +329,7 @@
 				BE2B42972ED35256000E5B05 /* HCLiquidGlass.icon */,
 				C4FDADA1CFE1E5EA4CCA236D /* GameLiveActivityAttributes.swift */,
 				716F809085AE1230B7C914ED /* LiveActivityManager.swift */,
+				43D3A121A2AD4653BF5690FA /* PlatformColor.swift */,
 			);
 			path = Chexx;
 			sourceTree = "<group>";
@@ -673,6 +677,7 @@
 				A3C68ED76CD6528BAEF5884B /* UIApplication+ActiveScene.swift in Sources */,
 				81100593DDC8F4D0949C2F5C /* GameLiveActivityAttributes.swift in Sources */,
 				794DCD94DC3AA22C66DE659C /* LiveActivityManager.swift in Sources */,
+				9BA8343215BA4A44989AB253 /* PlatformColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -686,6 +691,7 @@
 				BE7D04EE2E625C3F000920FC /* GameState.swift in Sources */,
 				BE75E1DB2F21505E004BD0BF /* HapticManager.swift in Sources */,
 				BE192FBD2FA27607008806D7 /* PieceNames.swift in Sources */,
+				132F687B1D3D4F2B8FBDC5CC /* PlatformColor.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

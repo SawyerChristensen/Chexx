@@ -533,24 +533,25 @@ class GameScene: SKScene {
         }
     }
     
+    #if canImport(UIKit)
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchDown(atPoint: t.location(in: self))
         }
     }
-    
+
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchMoved(toPoint: t.location(in: self))
         }
     }
-    
+
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
         for t in touches {
             self.touchUp(atPoint: t.location(in: self))
         }
     }
-    
+
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         if let selectedPiece = selectedPiece {
             selectedPiece.position = originalPosition ?? selectedPiece.position
@@ -560,6 +561,21 @@ class GameScene: SKScene {
             clearValidMoveHighlights()
         }
     }
+    #elseif os(macOS)
+    // Mouse-driven equivalents of the touch handlers above, for native macOS —
+    // a click-drag-release maps directly onto touchDown/touchMoved/touchUp.
+    override func mouseDown(with event: NSEvent) {
+        touchDown(atPoint: event.location(in: self))
+    }
+
+    override func mouseDragged(with event: NSEvent) {
+        touchMoved(toPoint: event.location(in: self))
+    }
+
+    override func mouseUp(with event: NSEvent) {
+        touchUp(atPoint: event.location(in: self))
+    }
+    #endif
     
     func highlightValidMoves(_ validMoves: [String]) {
         guard highlightEnabled else { return }

@@ -68,7 +68,7 @@ struct GameOverWindow: View {
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
                     .padding(5)
 
                     if !isOnlineMultiplayer {
@@ -84,12 +84,12 @@ struct GameOverWindow: View {
                                 .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                                 .clipShape(HexagonEdgeRectangleShape())
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
                         .padding(5)
                     }
                 }
                 .padding()
-                .background(Color(UIColor.systemBackground))
+                .background(Color.platformSystemBackground)
                 .cornerRadius(15)
                 .shadow(radius: 10)
                 .padding(.horizontal, 40)

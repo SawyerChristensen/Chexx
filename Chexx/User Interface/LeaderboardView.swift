@@ -124,7 +124,7 @@ private struct LeaderboardRow: View {
         .padding(.vertical, 8)
         .background(
             RoundedRectangle(cornerRadius: 10)
-                .fill(isCurrentUser ? Color.accentColor.opacity(0.15) : (colorScheme == .dark ? Color(UIColor.systemGray5) : Color(UIColor.systemGray6)))
+                .fill(isCurrentUser ? Color.accentColor.opacity(0.15) : (colorScheme == .dark ? Color.platformSystemGray5 : Color.platformSystemGray6))
         )
     }
 }

@@ -45,7 +45,7 @@ struct ProfileView: View {
     @Environment(\.dismiss) var dismiss
     @FocusState private var focus: FocusableField?
     
-    @State private var gameCenterImage: UIImage?
+    @State private var gameCenterImage: PlatformImage?
     @State private var isEditing = false
     @State private var isKeyboardVisible = false
     @State private var showDeleteConfirmation = false
@@ -347,7 +347,7 @@ struct ProfileView: View {
                     }
                     
                 } else if let gcImage = gameCenterImage {
-                    Image(uiImage: gcImage)
+                    Image(platformImage: gcImage)
                         .resizable()
                         .scaledToFit()
                         .clipShape(Circle())
@@ -390,7 +390,7 @@ struct ProfileView: View {
                                     .font(.headline)
                                     .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             }
-                            .hoverEffect()
+                            .crossPlatformHoverEffect()
                             .padding(.leading, 5)
                         }
                         .onChange(of: isEditing) {
@@ -460,7 +460,7 @@ struct ProfileView: View {
                                 .font(.subheadline)
                                 .underline()
                         }
-                        .hoverEffect()
+                        .crossPlatformHoverEffect()
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -477,7 +477,7 @@ struct ProfileView: View {
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
 
                     Button(action: {showDeleteConfirmation = true}) {
                         Text("Delete Account")
@@ -486,7 +486,7 @@ struct ProfileView: View {
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
                     .alert(isPresented: $showDeleteConfirmation) {
                         Alert(
                             title: Text("Delete Account"),
@@ -613,7 +613,7 @@ struct ProfileView: View {
                             .padding()
                             .foregroundColor(.red)
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
 
                 }
                     
@@ -625,7 +625,7 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
                     .padding()
 
                     Button(action: { authViewModel.registerWithEmail(email: authViewModel.email, password: password) }) {
@@ -635,7 +635,7 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
-                    .hoverEffect()
+                    .crossPlatformHoverEffect()
                     .padding()
                 }
                 
@@ -663,7 +663,7 @@ struct ProfileView: View {
                                 .frame(width: 32, height: 32, alignment: .center)
                         }
                 }
-                .hoverEffect()
+                .crossPlatformHoverEffect()
                 .padding(.vertical, 10)
                 .buttonStyle(.bordered) //gives rounded edges
                 
@@ -688,7 +688,7 @@ struct ProfileView: View {
                     // can still show something in the multiplayer game view's opponent row.
                     if authViewModel.profileImageURL == nil,
                        let image = image,
-                       let jpegData = image.jpegData(compressionQuality: 0.5) {
+                       let jpegData = image.platformJPEGData(compressionQuality: 0.5) {
                         authViewModel.updateGameCenterPhotoInFirestore(base64: jpegData.base64EncodedString())
                     }
                 }

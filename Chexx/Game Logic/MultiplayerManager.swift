@@ -30,6 +30,19 @@ extension Image {
     }
 }
 
+extension PlatformImage {
+    /// JPEG-encodes the image, mirroring `UIImage.jpegData(compressionQuality:)`
+    /// on platforms (`NSImage` has no equivalent method of its own).
+    func platformJPEGData(compressionQuality: CGFloat) -> Data? {
+        #if canImport(UIKit)
+        return jpegData(compressionQuality: compressionQuality)
+        #elseif os(macOS)
+        guard let tiffData = tiffRepresentation, let bitmap = NSBitmapImageRep(data: tiffData) else { return nil }
+        return bitmap.representation(using: .jpeg, properties: [.compressionFactor: compressionQuality])
+        #endif
+    }
+}
+
 @MainActor
 class MultiplayerManager: ObservableObject {
     static let shared = MultiplayerManager()
