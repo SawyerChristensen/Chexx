@@ -12,6 +12,7 @@ class AudioManager: ObservableObject {
     var soundEffectPlayer: AVAudioPlayer?
 
     func playBackgroundMusic(fileName: String, fileType: String) {
+        #if canImport(UIKit)
         // Configure the session to allow mixing with Spotify/Podcasts
         let audioSession = AVAudioSession.sharedInstance()
         do {
@@ -27,6 +28,7 @@ class AudioManager: ObservableObject {
             //print("User is already playing audio. Game music muted.")
             return
         }
+        #endif
 
         guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else {
             print("Background music file not found: \(fileName).\(fileType)")

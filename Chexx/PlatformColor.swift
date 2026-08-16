@@ -38,6 +38,31 @@ extension View {
         self
         #endif
     }
+
+    /// `.keyboardType(_:)` only applies to UIKit's on-screen keyboard — there's
+    /// no on-screen keyboard (or `UIKeyboardType`) on native macOS, so this is
+    /// a no-op there.
+    @ViewBuilder
+    func crossPlatformASCIICapableKeyboard() -> some View {
+        #if canImport(UIKit)
+        self.keyboardType(.asciiCapable)
+        #else
+        self
+        #endif
+    }
+
+    /// `.fullScreenCover(isPresented:content:)` is unavailable on native macOS
+    /// (there's no modal concept that covers the whole screen there) — falls
+    /// back to `.sheet(isPresented:content:)`, AppKit's equivalent modal
+    /// presentation.
+    @ViewBuilder
+    func crossPlatformFullScreenCover<Content: View>(isPresented: Binding<Bool>, @ViewBuilder content: @escaping () -> Content) -> some View {
+        #if canImport(UIKit)
+        self.fullScreenCover(isPresented: isPresented, content: content)
+        #else
+        self.sheet(isPresented: isPresented, content: content)
+        #endif
+    }
 }
 
 /// Cross-platform stand-in for SwiftUI's `TextInputAutocapitalization`, which

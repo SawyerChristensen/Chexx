@@ -160,7 +160,7 @@ struct MainMenuView: View {
                                             .textFieldStyle(RoundedBorderTextFieldStyle())
                                             .autocorrectionDisabled()
                                             //.textInputAutocapitalization()
-                                            .keyboardType(.asciiCapable)
+                                            .crossPlatformASCIICapableKeyboard()
                                             .padding()
                                             .onSubmit {
                                                 joinOnlineGame(gameId: gameIDToJoin)
@@ -422,7 +422,7 @@ struct MainMenuView: View {
                                 .padding(.leading, 28)
                         }
                         .crossPlatformHoverEffect()
-                        .fullScreenCover(isPresented: $isProfilePresented) {
+                        .crossPlatformFullScreenCover(isPresented: $isProfilePresented) {
                             VStack {
                                 
                                 Spacer()
@@ -451,16 +451,20 @@ struct MainMenuView: View {
                             .padding()
                             .background(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
                             .onAppear {
+                                #if canImport(UIKit)
                                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                                     isKeyboardVisible = true
                                 }
                                 NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
                                     isKeyboardVisible = false
                                 }
+                                #endif
                             }
                             .onDisappear {
+                                #if canImport(UIKit)
                                 NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
                                 NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+                                #endif
                             }
                         }
                         
@@ -477,7 +481,7 @@ struct MainMenuView: View {
                                 .padding(.leading, 28)
                         }
                         .crossPlatformHoverEffect()
-                        .fullScreenCover(isPresented: $isLeaderboardPresented) {
+                        .crossPlatformFullScreenCover(isPresented: $isLeaderboardPresented) {
                             VStack {
                                 Spacer()
 
@@ -509,12 +513,19 @@ struct MainMenuView: View {
                     VStack {
                         // Settings icon
                         Button(action: {
+                            #if canImport(UIKit)
                             if let rootViewController = UIApplication.shared.activeRootViewController {
                                 let settingsViewController = UIHostingController(rootView: SettingsWindow())
                                 settingsViewController.modalPresentationStyle = .overCurrentContext
                                 settingsViewController.view.backgroundColor = .clear // Transparent background
                                 rootViewController.present(settingsViewController, animated: true, completion: nil)
                             }
+                            #elseif os(macOS)
+                            if let hostViewController = NSApplication.shared.activeWindow?.contentViewController {
+                                let settingsViewController = NSHostingController(rootView: SettingsWindow())
+                                hostViewController.presentAsSheet(settingsViewController)
+                            }
+                            #endif
                         }) {
                             Image(systemName: "gearshape.fill")
                                 .resizable()
@@ -569,7 +580,9 @@ struct MainMenuView: View {
             }
             .background(Color(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)) //change this to change main menu background color
         }
+        #if canImport(UIKit)
         .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
+        #endif
     }
     
     // Jumps to the submenu matching a Home Screen quick action tap, then clears it.
