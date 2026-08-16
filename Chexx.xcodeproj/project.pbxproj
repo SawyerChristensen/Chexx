@@ -695,6 +695,7 @@
 		2B36F163E861FA5934E00453 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = ChexxWidgets;
+			platformFilters = (ios, ipados, );
 			target = F49DA73CF7F3AA7239DD8C63 /* ChexxWidgets */;
 			targetProxy = EBE3AB62BC4C25092C657D27 /* PBXContainerItemProxy */;
 		};
@@ -706,6 +707,7 @@
 		};
 		BE7D04BD2E5A77D7000920FC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
+			platformFilters = (ios, ipados, );
 			target = BE7D04AE2E5A77D6000920FC /* HexChessLite */;
 			targetProxy = BE7D04BC2E5A77D7000920FC /* PBXContainerItemProxy */;
 		};
@@ -927,9 +929,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -962,9 +968,13 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
+				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
 				MARKETING_VERSION = 1.5.0;
 				PRODUCT_BUNDLE_IDENTIFIER = SawyerChristensen.Chexx;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = YES;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
