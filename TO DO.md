@@ -7,6 +7,12 @@
   - [x] Apply Mac/pointer-appropriate scroll behavior (`.scrollBounceBehavior(.basedOnSize)`) to the app's ScrollViews (ProfileView achievements list, TutorialSheet, LeaderboardView) so fully-visible content doesn't rubber-band under trackpad/mouse scrolling on Mac, matching Apple's own recommendation for pointer-driven platforms
   - [x] Audit primary interactive controls (buttons, menus) for Mac Catalyst pointer support — add `.hoverEffect` where appropriate for hover feedback under mouse/trackpad (Added `.hoverEffect()` to every `Button` and `NavigationLink` across the app's User Interface views — MainMenuView, ProfileView, GameView, GameOverWindow, PromotionWindow, SettingsWindow, GameLinkSheet — so pointer/trackpad users on Mac Catalyst get visible hover feedback on all primary interactive controls. LeaderboardView and TutorialSheet were audited and found to have no interactive controls of their own (list/static content only). Verified with a clean Debug build for iphonesimulator: BUILD SUCCEEDED, zero compiler warnings.)
   - [ ] Do a visual pass on an actual Mac Catalyst build/window to confirm scroll and control behavior look correct (requires running the app on a Mac — human step to visually verify)
+- [ ] Add a real Mac target. Everything above is Mac Catalyst compatibility work (scroll behavior,
+  hover effects, window sizing) on the existing iOS target — there's still no actual native macOS
+  destination/target in the Xcode project (the "NO MAC TARGET YET" note on the item above). Add a
+  proper macOS target (or convert to a multiplatform target the way newer Xcode project templates
+  do — see QuestLog's `SDKROOT = auto` setup at `/Users/sawyerchristensen/Documents/QuestLog` for
+  reference) so the app can build and ship as a real native Mac app, not just run under Catalyst.
 - [ ] Verify 120hz works in the iMessage target
 - [ ] Increase text size of buttons
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
