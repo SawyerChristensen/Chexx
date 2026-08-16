@@ -57,9 +57,13 @@ struct WaveText: View {
     private var amplitude: CGFloat { fontSize * 0.1 }
 
     private var naturalTextWidth: CGFloat {
-        let baseDescriptor = UIFont.systemFont(ofSize: fontSize, weight: .semibold).fontDescriptor
+        let baseDescriptor = PlatformFont.systemFont(ofSize: fontSize, weight: .semibold).fontDescriptor
         let descriptor = baseDescriptor.withDesign(.serif) ?? baseDescriptor
-        let font = UIFont(descriptor: descriptor, size: fontSize)
+        #if canImport(UIKit)
+        let font = PlatformFont(descriptor: descriptor, size: fontSize)
+        #else
+        let font = PlatformFont(descriptor: descriptor, size: fontSize) ?? PlatformFont.systemFont(ofSize: fontSize, weight: .semibold)
+        #endif
         return (text as NSString).size(withAttributes: [.font: font]).width
     }
 

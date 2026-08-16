@@ -369,10 +369,10 @@ struct ProfileView: View {
                             focus = nil
                         }
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color.platformSystemGray6)
                         .cornerRadius(8)
                         .padding(.horizontal)
-                        .textInputAutocapitalization(.words)
+                        .crossPlatformTextInputAutocapitalization(.words)
                         .disableAutocorrection(true)
                     } else {
                         HStack {
@@ -464,7 +464,7 @@ struct ProfileView: View {
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(Color(.systemGray5))
+                    .background(Color.platformSystemGray5)
                     .cornerRadius(12)
                 }
                 
@@ -545,17 +545,21 @@ struct ProfileView: View {
 
                 .onAppear { //if the keyboard is on screen, hide achievement section
                     AchievementManager.shared.loadUserAchievements()
-                    
+
+                    #if canImport(UIKit)
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { _ in
                         isKeyboardVisible = true
                     }
                     NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
                         isKeyboardVisible = false
                     }
+                    #endif
                 }
                 .onDisappear {
+                    #if canImport(UIKit)
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
                     NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+                    #endif
                 }
 
                 
@@ -572,10 +576,10 @@ struct ProfileView: View {
                 HStack {
                     //Image(systemName: "at")
                     TextField("Email", text: $authViewModel.email)
-                        .textInputAutocapitalization(.never)
+                        .crossPlatformTextInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .padding()
-                        .background(Color(.systemGray5))
+                        .background(Color.platformSystemGray5)
                         .cornerRadius(12)
                         .focused($focus, equals: .email)
                         .submitLabel(.next) //show "next" on the keyboard
@@ -590,10 +594,10 @@ struct ProfileView: View {
                 HStack {
                     //Image(systemName: "lock")
                     SecureField("Password", text: $password)
-                        .textInputAutocapitalization(.never)
+                        .crossPlatformTextInputAutocapitalization(.never)
                         .disableAutocorrection(true)
                         .padding()
-                        .background(Color(.systemGray5))
+                        .background(Color.platformSystemGray5)
                         .cornerRadius(12)
                         .focused($focus, equals: .password)
                         .submitLabel(.go) // Show "Go" on the keyboard
@@ -621,7 +625,7 @@ struct ProfileView: View {
                     Button(action: { authViewModel.signInWithEmail(email: authViewModel.email, password: password) }) {
                         Text("Sign In")
                             .padding()
-                            .background(Color(.systemGray4))
+                            .background(Color.platformSystemGray4)
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
@@ -631,7 +635,7 @@ struct ProfileView: View {
                     Button(action: { authViewModel.registerWithEmail(email: authViewModel.email, password: password) }) {
                         Text("Register")
                             .padding()
-                            .background(Color(.systemGray4))
+                            .background(Color.platformSystemGray4)
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }

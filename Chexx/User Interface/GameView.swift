@@ -197,7 +197,7 @@ struct GameView: View {
         }
         .navigationBarBackButtonHidden(true) //this
         .toolbar { //and this is to disable the ability to swipe out of the view, only allowing (by recreating) the back button to exit view
-            ToolbarItem(placement: .navigationBarLeading) {
+            ToolbarItem(placement: .platformLeading) {
                 Button(action: { dismiss() }) {
                     Image(systemName: "chevron.backward")
                         .foregroundColor(.white)

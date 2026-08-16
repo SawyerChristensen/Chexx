@@ -6,8 +6,12 @@
 import SwiftUI
 #if canImport(UIKit)
 import UIKit
+public typealias PlatformFont = UIFont
+public typealias PlatformFontDescriptor = UIFontDescriptor
 #elseif os(macOS)
 import AppKit
+public typealias PlatformFont = NSFont
+public typealias PlatformFontDescriptor = NSFontDescriptor
 #endif
 
 extension View {
@@ -20,6 +24,51 @@ extension View {
         self.hoverEffect()
         #else
         self
+        #endif
+    }
+
+    /// `.textInputAutocapitalization(_:)` only applies to UIKit's on-screen
+    /// keyboard — the `TextInputAutocapitalization` type itself doesn't exist
+    /// on native macOS, so this is a no-op there.
+    @ViewBuilder
+    func crossPlatformTextInputAutocapitalization(_ autocapitalization: PlatformTextInputAutocapitalization?) -> some View {
+        #if canImport(UIKit)
+        self.textInputAutocapitalization(autocapitalization?.uiKitValue)
+        #else
+        self
+        #endif
+    }
+}
+
+/// Cross-platform stand-in for SwiftUI's `TextInputAutocapitalization`, which
+/// isn't available on native macOS.
+enum PlatformTextInputAutocapitalization {
+    case never
+    case words
+    case sentences
+    case characters
+
+    #if canImport(UIKit)
+    var uiKitValue: TextInputAutocapitalization {
+        switch self {
+        case .never: return .never
+        case .words: return .words
+        case .sentences: return .sentences
+        case .characters: return .characters
+        }
+    }
+    #endif
+}
+
+extension ToolbarItemPlacement {
+    /// Cross-platform equivalent of `.navigationBarLeading`, which is
+    /// UIKit-only (iOS/tvOS/watchOS). `.navigation` is AppKit's leading-edge
+    /// navigation item placement (e.g. a Back button) on native macOS.
+    static var platformLeading: ToolbarItemPlacement {
+        #if canImport(UIKit)
+        .navigationBarLeading
+        #else
+        .navigation
         #endif
     }
 }
@@ -51,6 +100,15 @@ extension Color {
         Color(UIColor.systemGray5)
         #elseif os(macOS)
         Color(NSColor.separatorColor)
+        #endif
+    }
+
+    /// Cross-platform approximation of `UIColor.systemGray4`.
+    static var platformSystemGray4: Color {
+        #if canImport(UIKit)
+        Color(UIColor.systemGray4)
+        #elseif os(macOS)
+        Color(NSColor.tertiaryLabelColor)
         #endif
     }
 }
