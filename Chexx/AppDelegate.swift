@@ -11,6 +11,12 @@ import FirebaseMessaging
 import GoogleSignIn
 import UserNotifications
 
+#if canImport(UIKit)
+import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
+
 // Local notification permission/authorization handling, plus remote (push)
 // notification registration. The resulting APNs device token is stored per-user
 // in Firestore so a Cloud Function can later push opponent-move alerts.
@@ -19,7 +25,11 @@ struct NotificationManager {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
             DispatchQueue.main.async {
                 if granted {
+                    #if canImport(UIKit)
                     UIApplication.shared.registerForRemoteNotifications()
+                    #elseif os(macOS)
+                    NSApplication.shared.registerForRemoteNotifications()
+                    #endif
                 }
                 completion(granted)
             }
@@ -35,6 +45,7 @@ struct NotificationManager {
     }
 }
 
+#if canImport(UIKit)
 class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         FirebaseApp.configure()
@@ -104,10 +115,57 @@ class AppDelegate: NSObject, UIApplicationDelegate, MessagingDelegate {
         // Restart any tasks paused (or not started) while the app was inactive
     }
 }
+#elseif os(macOS)
+// Native macOS has no Home Screen quick actions, so the UIApplicationShortcutItem
+// handling above doesn't carry over; everything else (Firebase, push registration,
+// Google Sign-In URL callback) has a direct AppKit/NSApplicationDelegate equivalent.
+class AppDelegate: NSObject, NSApplicationDelegate, MessagingDelegate {
+    func applicationDidFinishLaunching(_ notification: Notification) {
+        FirebaseApp.configure()
+        Messaging.messaging().delegate = self
+
+        // if the user already granted notification permission in a previous session,
+        // re-register for a device token (APNs tokens can change, e.g. after reinstall)
+        NotificationManager.authorizationStatus { status in
+            if status == .authorized {
+                NSApplication.shared.registerForRemoteNotifications()
+            }
+        }
+    }
+
+    // handle Google Sign-In callback
+    func application(_ application: NSApplication, open urls: [URL]) {
+        for url in urls {
+            _ = GIDSignIn.sharedInstance.handle(url)
+        }
+    }
+
+    func application(_ application: NSApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        let token = deviceToken.map { String(format: "%02.2hhx", $0) }.joined()
+        AuthViewModel.shared.updateDeviceTokenInFirestore(token: token)
+        Messaging.messaging().apnsToken = deviceToken
+    }
+
+    // called whenever FCM (re)generates the registration token used to target this device
+    // from a Cloud Function via the Firebase Admin SDK
+    func messaging(_ messaging: Messaging, didReceiveRegistrationToken fcmToken: String?) {
+        guard let fcmToken else { return }
+        AuthViewModel.shared.updateFCMTokenInFirestore(token: fcmToken)
+    }
+
+    func application(_ application: NSApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        print("Failed to register for remote notifications: \(error.localizedDescription)")
+    }
+}
+#endif
 
 @main
 struct ChexxApp: App {
+    #if canImport(UIKit)
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    #elseif os(macOS)
+    @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
+    #endif
 
     var body: some Scene {
         WindowGroup {
