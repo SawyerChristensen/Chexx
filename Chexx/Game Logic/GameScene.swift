@@ -6,7 +6,11 @@
 //
 
 import SpriteKit
-import UIKit //this and extensionUIColor could maybe be put in another file later. All this is is changing the tile color to a UIColor instance to be compatible with the HexagonNode class
+#if canImport(UIKit)
+import UIKit //this and extension SKColor could maybe be put in another file later. All this is is changing the tile color to a SKColor instance to be compatible with the HexagonNode class
+#elseif os(macOS)
+import AppKit
+#endif
 import SwiftUI
 
 // Thread-safe on/off switch used to tell a running GameCPU.ponder() loop to stop. Kept as its
@@ -81,9 +85,9 @@ class GameScene: SKScene {
     
     var hexagonSize: CGFloat = 50 //reset later when screen size is found
     // Colors for hexagon tiles (could be customized or adjusted based on settings)
-    let light = UIColor(hex: "#ffce9e")
-    let grey = UIColor(hex: "#e8ab6f")
-    let dark = UIColor(hex: "#d18b47")
+    let light = SKColor(hex: "#ffce9e")
+    let grey = SKColor(hex: "#e8ab6f")
+    let dark = SKColor(hex: "#d18b47")
 
     var selectedPiece: SKSpriteNode?
     var originalPosition: CGPoint?
@@ -234,7 +238,7 @@ class GameScene: SKScene {
         let sharedPath = HexagonNode.createHexagonPath(size: radius)
 
         // Define a list of directions to generate hexagons around the center
-        let directions: [(String, Direction, UIColor)] = [ //every hexagons name is SEPERATE from the gamestate data structure. every hexagons string address should remain a string
+        let directions: [(String, Direction, SKColor)] = [ //every hexagons name is SEPERATE from the gamestate data structure. every hexagons string address should remain a string
             ("f6", .none, grey),
             ("f7", .above, light),
             ("e6", .bottomLeft, dark),
@@ -558,8 +562,8 @@ class GameScene: SKScene {
         for hexTiles in validMoves {
             if let hexagon = hexagonsByName[hexTiles] {
                 let glowOverlay = SKShapeNode(path: hexagon.path!)
-                glowOverlay.fillColor = UIColor.yellow.withAlphaComponent(0.3)
-                glowOverlay.strokeColor = UIColor.yellow
+                glowOverlay.fillColor = SKColor.yellow.withAlphaComponent(0.3)
+                glowOverlay.strokeColor = SKColor.yellow
                 glowOverlay.lineWidth = 4
                 glowOverlay.zPosition = 1
                 glowOverlay.name = "validMovesOverlay"
@@ -589,8 +593,8 @@ class GameScene: SKScene {
     func highlightCheckingPiece(at position: String) { //sdfsf
         if let hexagon = hexagonsByName[position] {
             let glowOverlay = SKShapeNode(path: hexagon.path!)
-            glowOverlay.fillColor = UIColor.red.withAlphaComponent(0.3)
-            glowOverlay.strokeColor = UIColor.red
+            glowOverlay.fillColor = SKColor.red.withAlphaComponent(0.3)
+            glowOverlay.strokeColor = SKColor.red
             glowOverlay.lineWidth = 4
             glowOverlay.zPosition = 1
             glowOverlay.name = "checkOverlay" //same as yellow highlights! might cause bugs!
@@ -1497,7 +1501,7 @@ class GameScene: SKScene {
     
 }
 
-extension UIColor {
+extension SKColor {
     convenience init(hex: String) {
         let hexString: String = hex.trimmingCharacters(in: .whitespacesAndNewlines)
         let scanner = Scanner(string: hexString)
@@ -1526,7 +1530,7 @@ extension UIColor {
 class HexagonNode: SKShapeNode {
     
     static func createHexagonPath(size: CGFloat) -> CGPath {
-        let path = UIBezierPath()
+        let path = CGMutablePath()
         let angle: CGFloat = .pi / 3
         for i in 0..<6 {
             let x = size * cos(angle * CGFloat(i))
@@ -1537,11 +1541,11 @@ class HexagonNode: SKShapeNode {
                 path.addLine(to: CGPoint(x: x, y: y))
             }
         }
-        path.close()
-        return path.cgPath
+        path.closeSubpath()
+        return path
     }
-    
-    init(size: CGFloat, color: UIColor) {
+
+    init(size: CGFloat, color: SKColor) {
         super.init()
         self.path = HexagonNode.createHexagonPath(size: size)
         self.fillColor = color
@@ -1551,7 +1555,7 @@ class HexagonNode: SKShapeNode {
 
     // Reuses a path computed once by the caller instead of recomputing the same
     // hexagon geometry (cos/sin per vertex) for every tile on the board.
-    init(sharedPath: CGPath, color: UIColor) {
+    init(sharedPath: CGPath, color: SKColor) {
         super.init()
         self.path = sharedPath
         self.fillColor = color
