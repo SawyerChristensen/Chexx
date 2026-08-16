@@ -1443,15 +1443,26 @@ class GameScene: SKScene {
     }
     
     func presentPromotionOptions(completion: @escaping (String) -> Void) {
+        #if canImport(UIKit)
         if let viewController = self.view?.window?.rootViewController {
             let promotionViewController = UIHostingController(rootView: PromotionWindow(completion: completion))
             promotionViewController.modalPresentationStyle = .overCurrentContext
             promotionViewController.view.backgroundColor = .clear
             viewController.present(promotionViewController, animated: true, completion: nil)
         }
+        #elseif os(macOS)
+        // No UIViewController.present(animated:completion:) equivalent on macOS; a sheet is the
+        // idiomatic native-Mac modal presentation, and NSHostingController wires SwiftUI's
+        // presentationMode.dismiss() (used in PromotionWindow) up to it automatically.
+        if let hostViewController = self.view?.window?.contentViewController {
+            let promotionViewController = NSHostingController(rootView: PromotionWindow(completion: completion))
+            hostViewController.presentAsSheet(promotionViewController)
+        }
+        #endif
     }
-    
+
     func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
+        #if canImport(UIKit)
         if let viewController = self.view?.window?.rootViewController {
             let presentBlock = {
                 let gameOverViewController = UIHostingController(
@@ -1468,6 +1479,23 @@ class GameScene: SKScene {
                 presentBlock()
             }
         }
+        #elseif os(macOS)
+        if let hostViewController = self.view?.window?.contentViewController {
+            let presentBlock = {
+                let gameOverViewController = NSHostingController(
+                    rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
+                )
+                hostViewController.presentAsSheet(gameOverViewController)
+            }
+
+            if let presented = hostViewController.presentedViewControllers, !presented.isEmpty {
+                presented.forEach { hostViewController.dismiss($0) }
+                presentBlock()
+            } else {
+                presentBlock()
+            }
+        }
+        #endif
     }
 
     
