@@ -1373,17 +1373,33 @@ class GameScene: SKScene {
     var boardIsRotated: Bool = false // This will track if the board is rotated by 180 degrees
     
     func rotateBoard() {
-        guard self.view != nil else {
+        guard let view = self.view else {
             print("View is nil, can't rotate board")
             return
         }
-        
+
         boardIsRotated.toggle()
+        #if canImport(UIKit)
         UIView.animate(withDuration: 0.5) {
-            self.view?.transform = (self.view?.transform.rotated(by: .pi))!
+            view.transform = view.transform.rotated(by: .pi)
         }
+        #elseif os(macOS)
+        // NSView has no UIView-style `.transform`; rotate its backing CALayer instead, animating
+        // the visible presentation with an explicit CABasicAnimation since layer-backed NSViews
+        // don't implicitly animate direct layer property changes the way UIView.animate does.
+        view.wantsLayer = true
+        guard let layer = view.layer else { return }
+        let fromTransform = layer.affineTransform()
+        let toTransform = fromTransform.rotated(by: .pi)
+        let animation = CABasicAnimation(keyPath: "transform")
+        animation.fromValue = CATransform3DMakeAffineTransform(fromTransform)
+        animation.toValue = CATransform3DMakeAffineTransform(toTransform)
+        animation.duration = 0.5
+        layer.add(animation, forKey: "rotateBoard")
+        layer.setAffineTransform(toTransform)
+        #endif
     }
-    
+
     func rotateBoardImmediately() {
         guard let view = self.view else {
             print("View is nil, can't rotate board")
@@ -1392,7 +1408,12 @@ class GameScene: SKScene {
 
         boardIsRotated.toggle()
         // Set the transform directly without animation
+        #if canImport(UIKit)
         view.transform = view.transform.rotated(by: .pi)
+        #elseif os(macOS)
+        view.wantsLayer = true
+        view.layer?.setAffineTransform(view.layer!.affineTransform().rotated(by: .pi))
+        #endif
     }
     
     func rotateAllPieces() {
