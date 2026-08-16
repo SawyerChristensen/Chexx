@@ -50,7 +50,7 @@ struct MessagesGameOverWindow: View {
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("View Board")
-                            .font(.system(size: screenHeight / 28, weight: .semibold, design: .serif))
+                            .font(.system(size: screenHeight / 24, weight: .semibold, design: .serif))
                             .padding()
                             .frame(minWidth: screenHeight / 3.66, maxHeight: screenHeight / 20)
                             .background(Color.accent)
@@ -64,7 +64,7 @@ struct MessagesGameOverWindow: View {
                         presentationMode.wrappedValue.dismiss()
                     }) {
                         Text("Rematch")
-                            .font(.system(size: screenHeight / 28, weight: .semibold, design: .serif))
+                            .font(.system(size: screenHeight / 24, weight: .semibold, design: .serif))
                             .padding()
                             .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 20)
                             .background(Color.accent)

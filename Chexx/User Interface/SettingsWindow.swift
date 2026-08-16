@@ -77,7 +77,7 @@ struct SettingsWindow: View {
                     self.presentationMode.wrappedValue.dismiss()
                 }) {
                     Text("Close")
-                        .font(.system(size: 28, weight: .semibold, design: .serif))
+                        .font(.system(size: 32, weight: .semibold, design: .serif))
                         .padding()
                         .frame(minWidth: 189, maxHeight: 47)
                         .background(Color.accentColor)

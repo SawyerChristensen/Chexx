@@ -29,7 +29,7 @@ struct PromotionWindow: View {
                         self.presentationMode.wrappedValue.dismiss()
                     }) {
                         Text(PieceNames.localized(option))
-                            .font(.system(size: 24, weight: .semibold, design: .serif))
+                            .font(.system(size: 27, weight: .semibold, design: .serif))
                             .padding()
                             .frame(minWidth: 160, maxHeight: 40)
                             .background(Color(red: 232/255, green: 171/255, blue: 111/255)) //the accent color in rgb because imessage doesnt want to recognize the accent color in assets (only here though?)

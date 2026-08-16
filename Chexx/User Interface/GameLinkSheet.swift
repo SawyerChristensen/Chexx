@@ -35,6 +35,7 @@ struct GameLinkSheet: View {
                     UIPasteboard.general.string = gameLink
                 }) {
                     Text("Copy to Clipboard")
+                        .font(.system(size: 18, weight: .medium, design: .serif))
                         .underline()
                 }
                 .underline(true)
@@ -47,7 +48,7 @@ struct GameLinkSheet: View {
                 navigateToGameView = true
             }) {
                 Text("Start Game →")
-                    .font(.system(size: 30, weight: .semibold, design: .serif))
+                    .font(.system(size: 34, weight: .semibold, design: .serif))
                     .padding()
                     .frame(minWidth: 240, maxHeight: 60)
                     .background(Color.accentColor)

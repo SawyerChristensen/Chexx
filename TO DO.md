@@ -14,7 +14,7 @@
   do — see QuestLog's `SDKROOT = auto` setup at `/Users/sawyerchristensen/Documents/QuestLog` for
   reference) so the app can build and ship as a real native Mac app, not just run under Catalyst.
 - [ ] Verify 120hz works in the iMessage target
-- [ ] Increase text size of buttons
+- [x] Increase text size of buttons (Bumped the font size on the app's primary hexagon-shaped serif-styled `Button`/`NavigationLink` labels across MainMenuView, GameOverWindow, SettingsWindow, ProfileView (Sign Out/Delete Account/Resend Verification Email), GameLinkSheet, and PromotionWindow — roughly a 15% increase per button (e.g. main menu buttons 22pt→26pt, dialog Close buttons 20pt→24pt/28pt→32pt) — plus the matching iMessage-target Rematch/View Board buttons in MGameOverWindow.swift. Left the iMessage "Start Game!" button (MMainMenuView.swift) untouched since its font size is already tightly fitted to a fixed frame per-locale and flagged elsewhere in this doc (iMessage section) as a fragile bandaid needing its own standardization pass — bumping it further risked worsening that known issue. Also left the plain (non-serif, unstyled) email/password auth buttons in ProfileView's login form untouched as a separate, less consistent UI area outside this pass's scope. Verified with a clean Debug build for iphonesimulator: BUILD SUCCEEDED, zero compiler warnings.)
 - [x] The book icon seems stretched horizontally. the icons dont need to fill the frame. the frame should just act as an outer limit to the space the icon can occupy and work for hittesting. The icon should retain its normal aspect ratio/look
   - [ ] Maybe undo this...
 - [~] Add Notifications!

@@ -92,7 +92,7 @@ struct MainMenuView: View {
                                     createOnlineGame()
                                 }) {
                                     Text("Create Game")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -127,7 +127,7 @@ struct MainMenuView: View {
                                     isGameIDEntryPresented = true
                                 }) {
                                     Text("Join Game")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -164,7 +164,7 @@ struct MainMenuView: View {
                                             joinOnlineGame(gameId: gameIDToJoin)
                                         }) {
                                             Text("Join Game →")
-                                                .font(.system(size: 30, weight: .semibold, design: .serif)) //join is HARDCODED, UNLIKE CREATE
+                                                .font(.system(size: 34, weight: .semibold, design: .serif)) //join is HARDCODED, UNLIKE CREATE
                                                 .padding()
                                                 .frame(minWidth: 240, maxHeight: 60)
                                                 .background(Color.accentColor)
@@ -187,7 +187,7 @@ struct MainMenuView: View {
                                         resumeOnlineGame()
                                     }) {
                                         Text("Resume")
-                                            .font(.system(size: 22, weight: .semibold, design: .serif))
+                                            .font(.system(size: 26, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
@@ -215,7 +215,7 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -229,7 +229,7 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("Resume")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -256,7 +256,7 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("New Game")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -270,7 +270,7 @@ struct MainMenuView: View {
                                     audioManager.stopBackgroundMusic()
                                 }) {
                                     Text("Resume")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -292,7 +292,7 @@ struct MainMenuView: View {
                                         //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                     }) {
                                         Text("Single Player")
-                                            .font(.system(size: 22, weight: .semibold, design: .serif))
+                                            .font(.system(size: 26, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
@@ -307,7 +307,7 @@ struct MainMenuView: View {
                                         audioManager.stopBackgroundMusic()
                                     }) {
                                         Text("Single Player")
-                                            .font(.system(size: 22, weight: .semibold, design: .serif))
+                                            .font(.system(size: 26, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
@@ -324,7 +324,7 @@ struct MainMenuView: View {
                                         passAndPlayOptions = true
                                     }) {
                                         Text("Pass & Play")
-                                            .font(.system(size: 22, weight: .semibold, design: .serif))
+                                            .font(.system(size: 26, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
@@ -339,7 +339,7 @@ struct MainMenuView: View {
                                         audioManager.stopBackgroundMusic()
                                     }) {
                                         Text("Pass & Play")
-                                            .font(.system(size: 22, weight: .semibold, design: .serif))
+                                            .font(.system(size: 26, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 273, maxHeight: 71)
                                             .background(Color.accentColor)
@@ -356,7 +356,7 @@ struct MainMenuView: View {
                                     //if soundEffectsEnabled { audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3") }
                                 }) {
                                     Text("Online")
-                                        .font(.system(size: 22, weight: .semibold, design: .serif))
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 273, maxHeight: 71)
                                         .background(Color.accentColor)
@@ -433,7 +433,7 @@ struct MainMenuView: View {
                                         isProfilePresented = false
                                     }) {
                                         Text("Close")
-                                            .font(.system(size: 20, weight: .semibold, design: .serif))
+                                            .font(.system(size: 24, weight: .semibold, design: .serif))
                                             .padding()
                                             .frame(minWidth: 189, maxHeight: 47)
                                             .background(Color.accentColor)
@@ -484,7 +484,7 @@ struct MainMenuView: View {
                                     isLeaderboardPresented = false
                                 }) {
                                     Text("Close")
-                                        .font(.system(size: 20, weight: .semibold, design: .serif))
+                                        .font(.system(size: 24, weight: .semibold, design: .serif))
                                         .padding()
                                         .frame(minWidth: 189, maxHeight: 47)
                                         .background(Color.accentColor)

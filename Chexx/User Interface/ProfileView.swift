@@ -457,7 +457,7 @@ struct ProfileView: View {
                             authViewModel.resendEmailVerification()
                         }) {
                             Text("Resend Verification Email")
-                                .font(.footnote)
+                                .font(.subheadline)
                                 .underline()
                         }
                         .hoverEffect()
@@ -472,7 +472,7 @@ struct ProfileView: View {
                 HStack(spacing: 20) {
                     Button(action: authViewModel.signOut) { //maybe make this smaller?
                         Text("Sign Out")
-                            .font(.system(size: 16, weight: .medium, design: .serif))
+                            .font(.system(size: 19, weight: .medium, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
@@ -481,7 +481,7 @@ struct ProfileView: View {
 
                     Button(action: {showDeleteConfirmation = true}) {
                         Text("Delete Account")
-                            .font(.system(size: 16, weight: .medium, design: .serif))
+                            .font(.system(size: 19, weight: .medium, design: .serif))
                             .underline()
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
