@@ -36,6 +36,7 @@ struct PromotionWindow: View {
                             .foregroundColor(Color.primary)
                             .clipShape(HexagonEdgeRectangleShape())
                     }
+                    .hoverEffect()
                     .padding(5)
                 }
             }

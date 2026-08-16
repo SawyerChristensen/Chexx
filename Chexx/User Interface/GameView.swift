@@ -173,6 +173,7 @@ struct GameView: View {
                     Image(systemName: "chevron.backward")
                         .foregroundColor(.white)
                 }
+                .hoverEffect()
             }
         }
         .onDisappear {

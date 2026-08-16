@@ -84,6 +84,7 @@ struct SettingsWindow: View {
                         .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                         .clipShape(HexagonEdgeRectangleShape())
                 }
+                .hoverEffect()
                 .padding(.top, 20)
             }
             .padding()

@@ -390,6 +390,7 @@ struct ProfileView: View {
                                     .font(.headline)
                                     .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                             }
+                            .hoverEffect()
                             .padding(.leading, 5)
                         }
                         .onChange(of: isEditing) {
@@ -459,6 +460,7 @@ struct ProfileView: View {
                                 .font(.footnote)
                                 .underline()
                         }
+                        .hoverEffect()
                     }
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -475,7 +477,8 @@ struct ProfileView: View {
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
                     }
-                    
+                    .hoverEffect()
+
                     Button(action: {showDeleteConfirmation = true}) {
                         Text("Delete Account")
                             .font(.system(size: 16, weight: .medium, design: .serif))
@@ -483,6 +486,7 @@ struct ProfileView: View {
                             .padding(5)
                             .foregroundColor(colorScheme == .dark ? Color.white : Color.red)
                     }
+                    .hoverEffect()
                     .alert(isPresented: $showDeleteConfirmation) {
                         Alert(
                             title: Text("Delete Account"),
@@ -609,7 +613,8 @@ struct ProfileView: View {
                             .padding()
                             .foregroundColor(.red)
                     }
-                    
+                    .hoverEffect()
+
                 }
                     
                 HStack{
@@ -620,8 +625,9 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
+                    .hoverEffect()
                     .padding()
-                    
+
                     Button(action: { authViewModel.registerWithEmail(email: authViewModel.email, password: password) }) {
                         Text("Register")
                             .padding()
@@ -629,6 +635,7 @@ struct ProfileView: View {
                             .foregroundColor(.white)
                             .cornerRadius(12)
                     }
+                    .hoverEffect()
                     .padding()
                 }
                 
@@ -656,6 +663,7 @@ struct ProfileView: View {
                                 .frame(width: 32, height: 32, alignment: .center)
                         }
                 }
+                .hoverEffect()
                 .padding(.vertical, 10)
                 .buttonStyle(.bordered) //gives rounded edges
                 

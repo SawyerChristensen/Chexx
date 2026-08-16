@@ -38,6 +38,7 @@ struct GameLinkSheet: View {
                         .underline()
                 }
                 .underline(true)
+                .hoverEffect()
                 .padding(.bottom, 24)
             }
 
@@ -53,6 +54,7 @@ struct GameLinkSheet: View {
                     .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
                     .clipShape(HexagonEdgeRectangleShape())
             }
+            .hoverEffect()
             .padding()
         }
         .padding()

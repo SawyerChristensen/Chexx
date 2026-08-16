@@ -99,6 +99,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                                 .sheet(isPresented: $presentGameLink, onDismiss: {
                                     if !navigateToGameView {
@@ -133,6 +134,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                                 .sheet(isPresented: $isGameIDEntryPresented) {
                                     VStack {
@@ -169,6 +171,7 @@ struct MainMenuView: View {
                                                 .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : .white)
                                                 .clipShape(HexagonEdgeRectangleShape())
                                         }
+                                        .hoverEffect()
                                         .padding()
                                     }
                                     .padding()
@@ -191,6 +194,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                     .padding(8)
                                 }
                             }
@@ -218,6 +222,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                                 
                                 NavigationLink(destination: GameView(isVsCPU: true).onAppear {
@@ -231,6 +236,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                             }
                         }
@@ -257,6 +263,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                                 
                                 NavigationLink(destination: GameView(isPassAndPlay: true).onAppear {
@@ -270,6 +277,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                             }
                             
@@ -291,6 +299,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                     .padding(8)
                                     
                                 } else { //there is no saved single player game, jump right in!
@@ -305,6 +314,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                     .padding(8)
                                 }
                                 
@@ -321,6 +331,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                     .padding(8)
                                     
                                 } else {
@@ -335,6 +346,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                     .padding(8)
                                 }
                                 
@@ -351,6 +363,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                                 .padding(8)
                             }
                             
@@ -371,6 +384,7 @@ struct MainMenuView: View {
                                         .font(.system(size: 43, weight: .semibold, design: .serif))
                                 }
                             }
+                            .hoverEffect()
                             .padding(.bottom, 17)
                             .padding(.top, -17)
                         }
@@ -402,6 +416,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.leading, 28)
                         }
+                        .hoverEffect()
                         .fullScreenCover(isPresented: $isProfilePresented) {
                             VStack {
                                 
@@ -425,6 +440,7 @@ struct MainMenuView: View {
                                             .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                             .clipShape(HexagonEdgeRectangleShape())
                                     }
+                                    .hoverEffect()
                                 }
                             }
                             .padding()
@@ -455,6 +471,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.leading, 28)
                         }
+                        .hoverEffect()
                         .fullScreenCover(isPresented: $isLeaderboardPresented) {
                             VStack {
                                 Spacer()
@@ -474,6 +491,7 @@ struct MainMenuView: View {
                                         .foregroundColor(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
                                         .clipShape(HexagonEdgeRectangleShape())
                                 }
+                                .hoverEffect()
                             }
                             .padding()
                             .background(colorScheme == .dark ? Color(UIColor.systemGray6) : Color.white)
@@ -501,7 +519,8 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.trailing, 28)
                         }
-                        
+                        .hoverEffect()
+
                         // Tutorial Icon
                         Button(action: {
                             isTutorialPresented = true
@@ -514,6 +533,7 @@ struct MainMenuView: View {
                                 .padding(.top, 28)
                                 .padding(.trailing, 28)
                         }
+                        .hoverEffect()
                         .sheet(isPresented: $isTutorialPresented) {
                             TutorialSheet()
                                 .presentationDragIndicator(.visible)

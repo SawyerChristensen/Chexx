@@ -68,8 +68,9 @@ struct GameOverWindow: View {
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
                     }
+                    .hoverEffect()
                     .padding(5)
-                    
+
                     if !isOnlineMultiplayer {
                         Button(action: {
                             completion("rematch")
@@ -83,6 +84,7 @@ struct GameOverWindow: View {
                                 .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                                 .clipShape(HexagonEdgeRectangleShape())
                         }
+                        .hoverEffect()
                         .padding(5)
                     }
                 }
