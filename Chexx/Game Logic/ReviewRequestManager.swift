@@ -5,11 +5,23 @@
 
 import Foundation
 import StoreKit
+#if canImport(UIKit)
 import UIKit
+#elseif os(macOS)
+import AppKit
+#endif
 
 class ReviewRequestManager {
     static let shared = ReviewRequestManager()
     private init() {}
+
+    // AppStore.requestReview(in:) is presented from a UIWindowScene on iOS/Catalyst
+    // but from an NSViewController on native macOS.
+    #if canImport(UIKit)
+    typealias ReviewPresentationContext = UIWindowScene
+    #elseif os(macOS)
+    typealias ReviewPresentationContext = NSViewController
+    #endif
 
     private let eligibleWinCountKey = "reviewPromptEligibleWinCount"
     private let cpuWinCountKey = "reviewPromptCPUWinCount"
@@ -19,7 +31,7 @@ class ReviewRequestManager {
     private let minDaysBetweenPrompts = 60
 
     // Call after a multiplayer win, or a CPU win at the CPU's hardest difficulty.
-    func requestReviewIfAppropriate(in scene: UIWindowScene?) {
+    func requestReviewIfAppropriate(in context: ReviewPresentationContext?) {
         let defaults = UserDefaults.standard
 
         let winCount = defaults.integer(forKey: eligibleWinCountKey) + 1
@@ -27,11 +39,11 @@ class ReviewRequestManager {
 
         guard winCount % winsBetweenPrompts == 0 else { return }
 
-        requestReview(in: scene)
+        requestReview(in: context)
     }
 
     // Call after any CPU win, regardless of difficulty. Prompts once, on the player's 2nd CPU win.
-    func requestReviewAfterCPUWinIfAppropriate(in scene: UIWindowScene?) {
+    func requestReviewAfterCPUWinIfAppropriate(in context: ReviewPresentationContext?) {
         let defaults = UserDefaults.standard
 
         let winCount = defaults.integer(forKey: cpuWinCountKey) + 1
@@ -39,10 +51,10 @@ class ReviewRequestManager {
 
         guard winCount == cpuWinsBeforeFirstPrompt else { return }
 
-        requestReview(in: scene)
+        requestReview(in: context)
     }
 
-    private func requestReview(in scene: UIWindowScene?) {
+    private func requestReview(in context: ReviewPresentationContext?) {
         let defaults = UserDefaults.standard
 
         if let lastRequestDate = defaults.object(forKey: lastRequestDateKey) as? Date {
@@ -50,11 +62,11 @@ class ReviewRequestManager {
             guard daysSinceLastRequest >= minDaysBetweenPrompts else { return }
         }
 
-        guard let scene = scene else { return }
+        guard let context = context else { return }
 
         defaults.set(Date(), forKey: lastRequestDateKey)
         Task { @MainActor in
-            AppStore.requestReview(in: scene)
+            AppStore.requestReview(in: context)
         }
     }
 }
