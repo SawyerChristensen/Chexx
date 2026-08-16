@@ -6,10 +6,29 @@
 //
 
 import Foundation
+import SwiftUI
+#if canImport(UIKit)
 import UIKit
+public typealias PlatformImage = UIImage
+#elseif os(macOS)
+import AppKit
+public typealias PlatformImage = NSImage
+#endif
 import Firebase
 import FirebaseAuth
 import FirebaseFirestore
+
+extension Image {
+    /// Wraps a `PlatformImage` (`UIImage` on iOS/Catalyst, `NSImage` on native macOS)
+    /// so call sites don't need their own `#if canImport(UIKit)` branch.
+    init(platformImage: PlatformImage) {
+        #if canImport(UIKit)
+        self.init(uiImage: platformImage)
+        #elseif os(macOS)
+        self.init(nsImage: platformImage)
+        #endif
+    }
+}
 
 @MainActor
 class MultiplayerManager: ObservableObject {
@@ -28,7 +47,7 @@ class MultiplayerManager: ObservableObject {
     @Published var opponentCountry: String = ""
     // Fallback avatar shown in GameView when the opponent has no Google profile photo
     // (opponentProfileImageURL is nil), populated from their stored Game Center photo.
-    @Published var opponentGameCenterImage: UIImage?
+    @Published var opponentGameCenterImage: PlatformImage?
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -326,7 +345,7 @@ class MultiplayerManager: ObservableObject {
                 self.opponentCountry = country ?? ""
                 if let gameCenterPhotoBase64 = gameCenterPhotoBase64,
                    let imageData = Data(base64Encoded: gameCenterPhotoBase64) {
-                    self.opponentGameCenterImage = UIImage(data: imageData)
+                    self.opponentGameCenterImage = PlatformImage(data: imageData)
                 } else {
                     self.opponentGameCenterImage = nil
                 }

@@ -132,7 +132,7 @@ struct GameView: View {
                                             .frame(width: 40, height: 40)
                                     }
                                 } else if let gcImage = MultiplayerManager.shared.opponentGameCenterImage {
-                                    Image(uiImage: gcImage)
+                                    Image(platformImage: gcImage)
                                         .resizable()
                                         .aspectRatio(contentMode: .fill)
                                         .frame(width: 40, height: 40)
