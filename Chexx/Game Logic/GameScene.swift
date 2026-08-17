@@ -925,18 +925,27 @@ class GameScene: SKScene {
 
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 1.0 : 0.0, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
-                        let diff = newLocalElo - oldLocalElo
-                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
+                        let eloText: String
+                        if let oldLocalElo, let newLocalElo {
+                            let diff = newLocalElo - oldLocalElo
+                            let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
 
-                        let eloText = String(
-                            format: NSLocalizedString(
-                                "Your ELO rating changed from %d to %d (%@)",
-                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
-                            ),
-                            oldLocalElo,
-                            newLocalElo,
-                            sign
-                        )
+                            eloText = String(
+                                format: NSLocalizedString(
+                                    "Your ELO rating changed from %d to %d (%@)",
+                                    comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
+                                ),
+                                oldLocalElo,
+                                newLocalElo,
+                                sign
+                            )
+                        } else {
+                            // Guest (anonymous) accounts have no persisted Elo to update.
+                            eloText = NSLocalizedString(
+                                "Sign in to track your ELO rating",
+                                comment: "Shown instead of an ELO change when the local player is signed in anonymously (guest)."
+                            )
+                        }
 
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Checkmate", eloText: eloText
@@ -1058,18 +1067,27 @@ class GameScene: SKScene {
                     // Stalemate is not a draw: the player delivering stalemate scores 0.75, the stalemated player scores 0.25
                     MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: localUserIsWinner ? 0.75 : 0.25, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
 
-                        let diff = newLocalElo - oldLocalElo
-                        let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
+                        let eloText: String
+                        if let oldLocalElo, let newLocalElo {
+                            let diff = newLocalElo - oldLocalElo
+                            let sign = diff >= 0 ? "+\(diff)" : "\(diff)" //need to add a plus sign if theres an increase
 
-                        let eloText = String(
-                            format: NSLocalizedString(
-                                "Your ELO rating changed from %d to %d (%@)",
-                                comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
-                            ),
-                            oldLocalElo,
-                            newLocalElo,
-                            sign
-                        )
+                            eloText = String(
+                                format: NSLocalizedString(
+                                    "Your ELO rating changed from %d to %d (%@)",
+                                    comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
+                                ),
+                                oldLocalElo,
+                                newLocalElo,
+                                sign
+                            )
+                        } else {
+                            // Guest (anonymous) accounts have no persisted Elo to update.
+                            eloText = NSLocalizedString(
+                                "Sign in to track your ELO rating",
+                                comment: "Shown instead of an ELO change when the local player is signed in anonymously (guest)."
+                            )
+                        }
 
                         // Now present the game-over window with the eloText
                         self.presentGameOverOptions(winner: winnerColor, method: "Stalemate", eloText: eloText

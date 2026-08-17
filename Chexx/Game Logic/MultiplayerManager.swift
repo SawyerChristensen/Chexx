@@ -539,9 +539,16 @@ class MultiplayerManager: ObservableObject {
      End-of-game Elo updater:
      - `localUserScore`: the local user's game score (1.0 win, 0.75/0.25 stalemate delivered/received, 0.0 loss)
      - This fetches both ELOs, calculates new ELO, and updates them in Firestore
+     - Anonymous (guest) accounts have no Firestore `users` document, so there's nothing to read/update —
+       `completion` is called with `nil` for both values to signal "not tracked" rather than a fake 0/0 change.
      */
-    func adjustElo(localUserId: String, localUserScore: Double, opponentUserId: String, completion: @escaping (Int, Int) -> Void
+    func adjustElo(localUserId: String, localUserScore: Double, opponentUserId: String, completion: @escaping (Int?, Int?) -> Void
     ) {
+        guard Auth.auth().currentUser?.isAnonymous != true else {
+            completion(nil, nil)
+            return
+        }
+
         guard let gameId = self.gameId else {
             print("No gameId found in MultiplayerManager.")
             completion(0, 0)
