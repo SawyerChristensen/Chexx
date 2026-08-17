@@ -1,18 +1,52 @@
 import SwiftUI
+import CryptoKit
 
+/// Backs profile/opponent pictures with both an in-memory cache (for the
+/// current app session) and an on-disk cache (so a fresh launch doesn't need
+/// to re-download the same picture over the network before showing it — the
+/// image loads instantly from disk instead of popping in after a network
+/// round trip, and only a URL change causes a fresh download).
 final class ImageCache {
     static let shared = ImageCache()
 
     private let cache = NSCache<NSURL, PlatformImage>()
+    private let diskCacheDirectory: URL?
 
-    private init() {}
+    private init() {
+        let caches = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first
+        diskCacheDirectory = caches?.appendingPathComponent("ImageCache", isDirectory: true)
+        if let diskCacheDirectory {
+            try? FileManager.default.createDirectory(at: diskCacheDirectory, withIntermediateDirectories: true)
+        }
+    }
 
     func image(for url: URL) -> PlatformImage? {
-        cache.object(forKey: url as NSURL)
+        if let cached = cache.object(forKey: url as NSURL) {
+            return cached
+        }
+        guard let diskURL = diskCacheURL(for: url),
+              let data = try? Data(contentsOf: diskURL),
+              let image = PlatformImage(data: data) else {
+            return nil
+        }
+        cache.setObject(image, forKey: url as NSURL)
+        return image
     }
 
     func insert(_ image: PlatformImage, for url: URL) {
         cache.setObject(image, forKey: url as NSURL)
+        guard let diskURL = diskCacheURL(for: url),
+              let data = image.platformJPEGData(compressionQuality: 0.9) else { return }
+        try? data.write(to: diskURL)
+    }
+
+    // Swift's String.hashValue is randomized per process, so it can't be used
+    // as a stable on-disk filename across launches — hash the URL ourselves.
+    private func diskCacheURL(for url: URL) -> URL? {
+        guard let diskCacheDirectory else { return nil }
+        let digest = SHA256.hash(data: Data(url.absoluteString.utf8))
+        let filename = digest.map { String(format: "%02x", $0) }.joined()
+        return diskCacheDirectory.appendingPathComponent(filename)
     }
 }
 
