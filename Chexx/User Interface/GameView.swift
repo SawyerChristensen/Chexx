@@ -217,6 +217,9 @@ struct GameView: View {
         .onDisappear {
             waitingForOpponentTimer?.invalidate()
             waitingForOpponentTimer = nil
+            if isOnlineMultiplayer {
+                MultiplayerManager.shared.deleteGameIfStillWaitingForOpponent()
+            }
         }
     }
 

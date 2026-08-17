@@ -145,6 +145,24 @@ class MultiplayerManager: ObservableObject {
         }
     }
     
+    // Called when GameView is dismissed for an online game. If the local player created this
+    // game (is player1/"black") and nobody has joined yet (opponentId is still nil), the game
+    // is still empty — no point leaving an abandoned "waiting" doc on the server, so delete it
+    // immediately instead of only cleaning it up the next time this player creates a new game.
+    func deleteGameIfStillWaitingForOpponent() {
+        guard gameId != nil, currentPlayerColor == "black", opponentId == nil else { return }
+        deleteGame { success in
+            if success {
+                self.gameId = nil
+                if UserDefaults.standard.string(forKey: "mostRecentGameId") != nil {
+                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId")
+                }
+            } else {
+                print("Failed to delete the abandoned empty game doc.")
+            }
+        }
+    }
+
     // Deletes the current game from Firestore.
     func deleteGame(completion: @escaping (Bool) -> Void) {
         guard let gameId = gameId else {
