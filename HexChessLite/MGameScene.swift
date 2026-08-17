@@ -97,9 +97,9 @@ class MessagesGameScene: SKScene {
                 rotateAllPiecesImmediately()
             }
             
-            if needsAnimation { //Schedule the animation (Delayed)
+            if needsAnimation { //Schedule the animation, once the view has fully finished presenting/transitioning onto screen
                 Task {
-                    try? await Task.sleep(nanoseconds: 800_000_000) // 0.8 seconds
+                    await waitUntilViewPresentationSettled()
                     await animateMove(hexPgn: latest)
                 }
             }

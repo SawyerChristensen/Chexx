@@ -23,11 +23,38 @@ var blackPlayerID: String?
 
 var isGameOver: Bool = false //not used yet
 
+// Tracks whether the extension's view is mid activation/presentation-style transition, so a move
+// update can be held back and animated only once the view has fully settled on screen — instead of
+// animating while it's still scrolling/being presented. Counted (not a plain bool) since
+// willBecomeActive/didBecomeActive and willTransition/didTransition pairs can overlap.
+private var inFlightPresentationTransitions = 0
+private var viewSettledContinuations: [CheckedContinuation<Void, Never>] = []
+
+func markViewPresentationUnsettled() {
+    inFlightPresentationTransitions += 1
+}
+
+func markViewPresentationSettled() {
+    inFlightPresentationTransitions = max(0, inFlightPresentationTransitions - 1)
+    guard inFlightPresentationTransitions == 0 else { return }
+    let waiting = viewSettledContinuations
+    viewSettledContinuations.removeAll()
+    waiting.forEach { $0.resume() }
+}
+
+func waitUntilViewPresentationSettled() async {
+    guard inFlightPresentationTransitions > 0 else { return }
+    await withCheckedContinuation { continuation in
+        viewSettledContinuations.append(continuation)
+    }
+}
+
 var latestHexPGN: [UInt8]? {
     didSet {
         guard latestHexPGN != oldValue else { return } //oldValue is a value provided by Swift
-        if let scene = currentGameScene, let hexPgn = latestHexPGN { //if scene already valid, animate the new move immediately
+        if let scene = currentGameScene, let hexPgn = latestHexPGN { //if scene already valid, animate the new move once the view is fully on screen
             Task {
+                await waitUntilViewPresentationSettled()
                 await scene.animateMove(hexPgn: hexPgn)
             }
         }
@@ -46,8 +73,9 @@ class MessagesViewController: MSMessagesAppViewController {
     // MARK: - Conversation Handling
     override func willBecomeActive(with conversation: MSConversation) {
         //print("willBecomeActive")
+        markViewPresentationUnsettled()
         super.willBecomeActive(with: conversation)
-        
+
         if let selectedMessage = conversation.selectedMessage,
            let moves = decodeMoves(from: selectedMessage, in: conversation) {
             // A message bubble was tapped
@@ -57,33 +85,46 @@ class MessagesViewController: MSMessagesAppViewController {
             latestHexPGN = nil
         }
     }
-    
+
+    override func didBecomeActive(with conversation: MSConversation) {
+        //print("didBecomeActive")
+        super.didBecomeActive(with: conversation)
+        markViewPresentationSettled()
+    }
+
     override func didSelect(_ message: MSMessage, conversation: MSConversation) { //note: we need to make sure that this does NOT fire when the message is sent, it could result in applyHexPGN being called after the most recent move, which shouldnt happen
         //this is for when you tap on a sent game bubble when the menu is open
         //print("didSelect")
         guard let moves = decodeMoves(from: message, in: conversation) else { return }
         latestHexPGN = moves
     }
-    
+
     override func willTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
         //print("willTransition")
+        markViewPresentationUnsettled()
         super.willTransition(to: presentationStyle)
-        guard let conversation = activeConversation else { return }
+        guard let conversation = activeConversation else { return } //the paired didTransition still fires and settles this
 
         // The menu is compact (iPhone), we do not have a game loaded, so the user is expanding the menu
         if latestHexPGN == nil && children.first is UIHostingController<MessagesMainMenuView> {
             withAnimation(.easeInOut(duration: 0.3)) {
                 menuViewModel?.presentationStyle = presentationStyle }
-            return //exit early to skip presenting the menu view again later. we want a transition!
+            return //exit early to skip presenting the menu view again later. we want a transition! didTransition still fires to mark settled.
         }
-        
+
         if presentationStyle == .expanded && latestHexPGN != nil {
             presentGameController() //there is a game loaded, and we're switching to game view
         } else { //there is either no game loaded, or we are switching to the compact view
             presentMenuController(for: presentationStyle, with: conversation)
         }
     }
-    
+
+    override func didTransition(to presentationStyle: MSMessagesAppPresentationStyle) {
+        //print("didTransition")
+        super.didTransition(to: presentationStyle)
+        markViewPresentationSettled()
+    }
+
     override func didReceive(_ message: MSMessage, conversation: MSConversation) {
         //print("didReceive")
         guard let moves = decodeMoves(from: message, in: conversation) else { return }
