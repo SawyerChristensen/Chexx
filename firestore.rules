@@ -1,0 +1,86 @@
+rules_version = '2';
+
+// Access patterns below were audited directly against MultiplayerManager.swift,
+// AuthViewModel.swift, AchievementManager.swift, LeaderboardView.swift, and
+// functions/index.js (see "Make games more secure?" in TO DO.md). Cloud
+// Functions use the Admin SDK and always bypass these rules.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function isParticipant() {
+      return isSignedIn() &&
+        (request.auth.uid == resource.data.player1Id ||
+          (('player2Id' in resource.data) && request.auth.uid == resource.data.player2Id));
+    }
+
+    function onlyChangedFields(allowed) {
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(allowed);
+    }
+
+    match /users/{uid} {
+      // Any signed-in user can look up another player's public profile
+      // (opponent info shown in-game, top-100 leaderboard query).
+      allow read: if isSignedIn();
+
+      allow create: if isOwner(uid);
+
+      // eloScore is still fully client-computed and self-written (see
+      // MultiplayerManager.updateElo) — these rules restrict *which* fields a
+      // user may touch, but can't stop a modified client from inflating its
+      // own Elo. Moving Elo updates into a Cloud Function would close that
+      // gap; tracked as a follow-up, not addressed here.
+      allow update: if isOwner(uid) &&
+        onlyChangedFields([
+          'displayName', 'country', 'eloScore', 'profileImageURL',
+          'gameCenterPhotoBase64', 'deviceToken', 'fcmToken', 'achievements'
+        ]);
+
+      allow delete: if isOwner(uid);
+    }
+
+    match /games/{gameId} {
+      // The 6-letter game code (MultiplayerManager.generateGameCode) is the
+      // app's existing sharing/capability boundary — any signed-in user who
+      // knows a code can read that game, matching current behavior.
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn() &&
+        request.resource.data.player1Id == request.auth.uid &&
+        request.resource.data.status == 'waiting';
+
+      allow update: if
+        // Player 2 joining an open game.
+        (isSignedIn() &&
+          resource.data.status == 'waiting' &&
+          !('player2Id' in resource.data) &&
+          request.resource.data.player2Id == request.auth.uid &&
+          onlyChangedFields(['player2Id', 'player2Color', 'player2Elo', 'status', 'lastUpdated'])) ||
+        // Either existing participant moving or finalizing the game.
+        (isParticipant() &&
+          onlyChangedFields(['hexPgn', 'lastUpdated', 'readyToDelete']));
+
+      allow delete: if isParticipant();
+    }
+
+    match /matchmakingQueue/{uid} {
+      // Only the Cloud Function (matchPlayers, Admin SDK) sets matchedGameId;
+      // clients may only create/read/delete their own queue entry.
+      allow read: if isOwner(uid);
+      allow create: if isOwner(uid) && request.resource.data.uid == uid;
+      allow update: if false;
+      allow delete: if isOwner(uid);
+    }
+
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
