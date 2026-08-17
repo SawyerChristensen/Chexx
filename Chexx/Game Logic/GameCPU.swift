@@ -44,6 +44,11 @@ private struct SearchMove: Equatable {
 class GameCPU {
     var difficulty: CPUDifficulty // Enum specifying CPU difficulty level
 
+    // Feature flag for the offline-trained piece-square-table evaluator (LearnedEvalWeights),
+    // defaulting off so shipping behavior is unchanged until it's benchmarked against the
+    // material-only evaluator (see the "Add AI components to CPU?" section of TO DO.md).
+    var useLearnedEvaluation: Bool = false
+
     // Cleared at the start of every top-level move search (see minimaxMove) so entries never
     // outlive the position they were computed for
     private var transpositionTable: [UInt64: TranspositionEntry] = [:]
@@ -527,8 +532,16 @@ class GameCPU {
         return (bestValue, bestMove)
     }
 
-    // Evaluate the game state to assign a score, using GameState's incrementally-tracked material totals
+    // Evaluate the game state to assign a score. Defaults to GameState's incrementally-tracked
+    // material totals; when useLearnedEvaluation is on, uses LearnedEvalWeights' trained
+    // piece-square table instead (see the "Add AI components to CPU?" section of TO DO.md).
     private func evaluateGameState(_ gameState: GameState, for player: String) -> Int {
+        if useLearnedEvaluation {
+            let whiteScore = LearnedEvalWeights.score(for: "white", gameState: gameState)
+            let blackScore = LearnedEvalWeights.score(for: "black", gameState: gameState)
+            return player == "white" ? whiteScore - blackScore : blackScore - whiteScore
+        }
+
         let playerScore = player == "white" ? gameState.whiteMaterial : gameState.blackMaterial
         let opponentScore = player == "white" ? gameState.blackMaterial : gameState.whiteMaterial
 
