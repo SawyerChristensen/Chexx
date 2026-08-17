@@ -129,6 +129,7 @@ exports.matchPlayers = onDocumentCreated("matchmakingQueue/{uid}", async (event)
         player2Elo: player2.elo ?? 1000,
         hexPgn: [],
         status: "in-progress",
+        isRandomMatch: true,
         lastUpdated: FieldValue.serverTimestamp(),
       });
 

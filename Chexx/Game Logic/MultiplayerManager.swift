@@ -61,6 +61,9 @@ class MultiplayerManager: ObservableObject {
     // Fallback avatar shown in GameView when the opponent has no Google profile photo
     // (opponentProfileImageURL is nil), populated from their stored Game Center photo.
     @Published var opponentGameCenterImage: PlatformImage?
+    // True when this game came from random matchmaking rather than a shared game code, so the
+    // opponent is a stranger and GameView should hide their profile photo/icon for privacy.
+    @Published var opponentIsRandomMatch: Bool = false
     
     private init() {
         currentUserId = Auth.auth().currentUser?.uid ?? UUID().uuidString
@@ -98,7 +101,8 @@ class MultiplayerManager: ObservableObject {
                 let gameRef = self.db.collection("games").document(gameId)
                 
                 self.currentPlayerColor = "black" // Creator of the game is black
-                
+                self.opponentIsRandomMatch = false // shared-code games are always with a known contact
+
                 let gameData: [String: Any] = [
                     "player1Id": self.currentUserId,
                     "player1Color": self.currentPlayerColor,
@@ -238,6 +242,7 @@ class MultiplayerManager: ObservableObject {
                 
                 DispatchQueue.main.async {
                     self.currentPlayerColor = "white" // Joiner of the game is white by default
+                    self.opponentIsRandomMatch = false // joining via a shared game code is always with a known contact
 
                     gameRef.updateData([
                         "player2Id": self.currentUserId,
@@ -290,8 +295,10 @@ class MultiplayerManager: ObservableObject {
             let player2Id = data["player2Id"] as? String
             let player1Color = data["player1Color"] as? String ?? "black"
             let player2Color = data["player2Color"] as? String ?? "white"
-            
+            let isRandomMatch = data["isRandomMatch"] as? Bool ?? false
+
             DispatchQueue.main.async {
+                self.opponentIsRandomMatch = isRandomMatch
                 // Determine if current user is player1 or player2
                 if player1Id == self.currentUserId {
                     // Current user is player1

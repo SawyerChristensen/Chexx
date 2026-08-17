@@ -148,8 +148,17 @@ struct GameView: View {
                                 //.padding()
                                 
                                 // Opponent's Profile Image (falls back to their Game Center
-                                // photo, if they have one, when they have no Google photo)
-                                if let url = MultiplayerManager.shared.opponentProfileImageURL {
+                                // photo, if they have one, when they have no Google photo).
+                                // Hidden for random-matchmaking opponents (strangers) for privacy,
+                                // shown normally for opponents joined via a shared game code.
+                                if MultiplayerManager.shared.opponentIsRandomMatch {
+                                    Image(systemName: "person.crop.circle.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .frame(width: 40, height: 40)
+                                        .clipShape(Circle())
+                                        .foregroundColor(.gray)
+                                } else if let url = MultiplayerManager.shared.opponentProfileImageURL {
                                     CachedAsyncImage(url: url) { image in
                                         image.resizable()
                                             .aspectRatio(contentMode: .fill)
