@@ -17,6 +17,7 @@
 		490A3D64004E4B0FB8AF0E63 /* TrainingDataExtractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */; };
 		6703496E974D5295DE9A22C6 /* GameRulesEdgeCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */; };
 		C33AE83D84947933DA22517A /* ReviewRequestManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */; };
+		60961C55C80E5D7FFE05272B /* GameSceneInteractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5600FE489F4D14E00E1DAE8 /* GameSceneInteractionTests.swift */; };
 		29DFDBF56CFD872C53982F0F /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7017F2C885574833D4FBA47 /* SwiftUI.framework */; };
 		308EE4D5FBCF3C2DBB2155BF /* ChexxWidgets.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */; platformFilters = (ios, ipados, ); settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		60F23E62C82642B3A374EBD7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1BAD7814AF114864DBE58241 /* Foundation.framework */; };
@@ -188,6 +189,7 @@
 		25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainingDataExtractor.swift; sourceTree = "<group>"; };
 		3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameRulesEdgeCaseTests.swift; sourceTree = "<group>"; };
 		14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewRequestManagerTests.swift; sourceTree = "<group>"; };
+		F5600FE489F4D14E00E1DAE8 /* GameSceneInteractionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = GameSceneInteractionTests.swift; sourceTree = "<group>"; };
 		D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CachedAsyncImage.swift; sourceTree = "<group>"; };
 		FFC0E00B8CA0DCC2329C086D /* ChexxWidgets.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ChexxWidgets.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -423,6 +425,7 @@
 				93A23629CDC3403A9FAABEC1 /* LearnedEvalWeightsTests.swift */,
 				3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */,
 				14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */,
+				F5600FE489F4D14E00E1DAE8 /* GameSceneInteractionTests.swift */,
 				C90D1EC0AF4C4009989E253C /* SelfPlayGenerator.swift */,
 				25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */,
 			);
@@ -652,6 +655,7 @@
 				F054EA7075924585B3151F19 /* LearnedEvalWeightsTests.swift in Sources */,
 				6703496E974D5295DE9A22C6 /* GameRulesEdgeCaseTests.swift in Sources */,
 				C33AE83D84947933DA22517A /* ReviewRequestManagerTests.swift in Sources */,
+				60961C55C80E5D7FFE05272B /* GameSceneInteractionTests.swift in Sources */,
 				5AF9437112C744A4B047BCFD /* SelfPlayGenerator.swift in Sources */,
 				490A3D64004E4B0FB8AF0E63 /* TrainingDataExtractor.swift in Sources */,
 			);
