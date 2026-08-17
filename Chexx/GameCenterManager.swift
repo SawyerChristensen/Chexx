@@ -26,6 +26,13 @@ class GameCenterManager: NSObject {
 
     private let localPlayer = GKLocalPlayer.local
 
+    /// Set once `authenticateHandler` has fired at least once (success or failure). Used to
+    /// distinguish "not authenticated yet because the async handshake is still in flight" (e.g.
+    /// right after launch) from "not authenticated, and we already know that" — callers made
+    /// while the handshake is still in flight get retried instead of permanently failing.
+    private var hasCompletedInitialAuthenticationAttempt = false
+    private var pendingAuthenticationCallbacks: [() -> Void] = []
+
     private override init() { // Private initializer to enforce singleton usage
         super.init()
     }
@@ -52,6 +59,11 @@ class GameCenterManager: NSObject {
             } else {
                 //print("Game Center: Player not authenticated and no login UI available.")
             }
+
+            self.hasCompletedInitialAuthenticationAttempt = true
+            let callbacks = self.pendingAuthenticationCallbacks
+            self.pendingAuthenticationCallbacks.removeAll()
+            callbacks.forEach { $0() }
         }
     }
     
@@ -82,11 +94,19 @@ class GameCenterManager: NSObject {
     /// - Parameter completion: Called with the image if successful, or nil on failure
     func loadGameCenterProfileImage(completion: @escaping (PlatformImage?) -> Void) {
         guard localPlayer.isAuthenticated else {
-            //print("Game Center: Local player not authenticated — can't load profile image.")
-            completion(nil)
+            if !hasCompletedInitialAuthenticationAttempt {
+                // The async authentication handshake (started at app launch) may still be in
+                // flight — retry once it resolves instead of failing permanently.
+                pendingAuthenticationCallbacks.append { [weak self] in
+                    self?.loadGameCenterProfileImage(completion: completion)
+                }
+            } else {
+                //print("Game Center: Local player not authenticated — can't load profile image.")
+                completion(nil)
+            }
             return
         }
-        
+
         localPlayer.loadPhoto(for: .normal) { image, error in
             if error != nil {
                 //print("Game Center: Failed to load profile image: \(error.localizedDescription)")
