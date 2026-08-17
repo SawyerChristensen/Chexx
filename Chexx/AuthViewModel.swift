@@ -312,42 +312,6 @@ class AuthViewModel: ObservableObject {
         }
     }
     
-    func loadUserCountryFromFirestore(completion: @escaping (String?) -> Void) {
-        guard let userID = Auth.auth().currentUser?.uid else {
-            print("No user logged in to load country.")
-            completion(nil) //if no user is logged in
-            return
-        }
-
-        db.collection("users").document(userID).getDocument { document, error in
-            if let error = error {
-                print("Error loading user country from Firestore: \(error.localizedDescription)")
-                completion(nil) //general error
-                return
-            }
-            
-            if let document = document, document.exists {
-                let data = document.data()
-                let firestoreCountry = data?["country"] as? String ?? ""
-                
-                if !firestoreCountry.isEmpty {
-                    UserDefaults.standard.set(firestoreCountry, forKey: "country")
-                    //print("User country loaded from Firestore: \(firestoreCountry)")
-                    DispatchQueue.main.async {
-                        self.userCountry = firestoreCountry
-                        completion(firestoreCountry)
-                    }
-                } else {
-                    completion(nil) // if no country is found
-                    print("No country found in Firestore.")
-                }
-            } else {
-                print("User document does not exist.")
-                completion(nil) // if the document does not exist
-            }
-        }
-    }
-
     func signInWithGoogle() async -> Bool {
         let oldUser = Auth.auth().currentUser
         

@@ -702,20 +702,13 @@ struct ProfileView: View {
     }
     
     func loadSelectedCountry() {
-        // try loading the ISO code from UserDefaults
+        // AuthViewModel already syncs the country from Firestore into UserDefaults once per
+        // app launch (init() -> fetchUserDataFromFirestore -> saveUserDataToDevice), so reading
+        // local storage here is always up to date without re-fetching from Firestore on every
+        // profile view.
         if let savedCountryCode = UserDefaults.standard.string(forKey: "country"),
            let matchingCountry = Self.countries.first(where: { $0.code == savedCountryCode }) {
-            // found a valid country in local storage, assign it
             self.selectedCountry = matchingCountry
-        }
-
-        // regardless, also attempt to load the latest code from Firestore
-        authViewModel.loadUserCountryFromFirestore { loadedCode in
-            // if Firestore returns a valid code that we have in our array, update
-            if let loadedCode = loadedCode,
-               let matchingCountry = Self.countries.first(where: { $0.code == loadedCode }) {
-                self.selectedCountry = matchingCountry
-            }
         }
     }
     
