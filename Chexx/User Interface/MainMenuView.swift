@@ -36,6 +36,7 @@ struct MainMenuView: View {
     @State private var gameLink: String = ""
     @State private var isGameIDEntryPresented = false
     @State private var gameIDToJoin: String = ""
+    @State private var isRandomMatchPresented = false
     @State private var navigateToGameView = false
     @State private var showErrorAlert = false
     @State private var errorMessage = "An error occurred."
@@ -183,7 +184,33 @@ struct MainMenuView: View {
                                     .presentationDetents([.medium])
                                     .presentationDragIndicator(.visible)
                                 }
-                                
+
+                                // --------------------------------
+                                // Random Match Button
+                                // --------------------------------
+                                Button(action: {
+                                    startRandomMatch()
+                                }) {
+                                    Text("Random Match")
+                                        .font(.system(size: 26, weight: .semibold, design: .serif))
+                                        .padding()
+                                        .frame(minWidth: 273, maxHeight: 71)
+                                        .background(Color.accentColor)
+                                        .foregroundColor(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)
+                                        .clipShape(HexagonEdgeRectangleShape())
+                                }
+                                .crossPlatformHoverEffect()
+                                .padding(8)
+                                .sheet(isPresented: $isRandomMatchPresented, onDismiss: {
+                                    if !navigateToGameView {
+                                        MultiplayerManager.shared.leaveMatchmakingQueue()
+                                    }
+                                }) {
+                                    RandomMatchSheet(isPresented: $isRandomMatchPresented)
+                                        .presentationDetents([.medium])
+                                        .presentationDragIndicator(.visible)
+                                }
+
                                 // --------------------------------
                                 // Resume Game Button
                                 // --------------------------------
@@ -633,6 +660,33 @@ struct MainMenuView: View {
                 self.showErrorAlert = true
             }
         }
+    }
+
+    func startRandomMatch() {
+        isRandomMatchPresented = true
+        MultiplayerManager.shared.joinMatchmakingQueue(matched: { matchedGameId in
+            DispatchQueue.main.async {
+                // Load the game the Cloud Function paired us into, the same way
+                // Resume Game loads a previously saved game.
+                UserDefaults.standard.set(matchedGameId, forKey: "mostRecentGameId")
+                MultiplayerManager.shared.leaveMatchmakingQueue()
+                MultiplayerManager.shared.resumeGame { success in
+                    self.isRandomMatchPresented = false
+                    if success {
+                        self.navigateToGameView = true
+                    } else {
+                        self.errorMessage = "Failed to join the matched game."
+                        self.showErrorAlert = true
+                    }
+                }
+            }
+        }, completion: { success in
+            if !success {
+                self.isRandomMatchPresented = false
+                self.errorMessage = "Failed to join matchmaking queue."
+                self.showErrorAlert = true
+            }
+        })
     }
     
     func checkForSavedOnlineGame() {
