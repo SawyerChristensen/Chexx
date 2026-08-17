@@ -939,6 +939,11 @@ class GameScene: SKScene {
                                 newLocalElo,
                                 sign
                             )
+
+                            // Keep the cached local Elo in sync with the value we just wrote to
+                            // Firestore, so ProfileView can trust it without a redundant server fetch.
+                            AuthViewModel.shared.eloScore = newLocalElo
+                            AuthViewModel.shared.saveUserDataToDevice()
                         } else {
                             // Guest (anonymous) accounts have no persisted Elo to update.
                             eloText = NSLocalizedString(
@@ -1081,6 +1086,11 @@ class GameScene: SKScene {
                                 newLocalElo,
                                 sign
                             )
+
+                            // Keep the cached local Elo in sync with the value we just wrote to
+                            // Firestore, so ProfileView can trust it without a redundant server fetch.
+                            AuthViewModel.shared.eloScore = newLocalElo
+                            AuthViewModel.shared.saveUserDataToDevice()
                         } else {
                             // Guest (anonymous) accounts have no persisted Elo to update.
                             eloText = NSLocalizedString(

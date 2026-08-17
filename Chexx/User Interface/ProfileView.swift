@@ -431,13 +431,12 @@ struct ProfileView: View {
                 }
                 
                 // MARK: ELO Rating
-                Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)") //could be modified to use a local toggle that shows if its been updated, preventing the server call EVERY profile view, but we can implement that later
+                // authViewModel.eloScore is already kept fresh without a server round trip on every
+                // appearance: AuthViewModel syncs it from Firestore once per app launch, and GameScene
+                // updates it locally the moment a game finishes adjusting it server-side.
+                Text("Hex Chess Elo Rating:  \(authViewModel.eloScore)")
                     .font(.system(size: 20, weight: .medium, design: .serif))
                     .onAppear {
-                        // when the view appears, fetch elo (we already have a function for this in multiplayerManager)
-                        MultiplayerManager.shared.fetchElo(forUserId: MultiplayerManager.shared.currentUserId) { elo in
-                            authViewModel.eloScore = elo ?? 1000
-                        }
                         // verifying happens outside the app (in the user's mail client), so re-check status whenever the profile is shown
                         authViewModel.refreshEmailVerificationStatus()
                     }
