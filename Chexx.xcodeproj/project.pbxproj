@@ -176,6 +176,8 @@
 		BE7D04AF2E5A77D6000920FC /* HexChessLite.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = HexChessLite.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE7D04B12E5A77D6000920FC /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
 		BE8B84BC3006D41C00A55F49 /* TO DO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TO DO.md"; sourceTree = "<group>"; };
+		29F55D15014FB291C4040ECD /* TO DO_agent.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TO DO_agent.md"; sourceTree = "<group>"; };
+		8DE778F4F4E5437F3565E14C /* TO DO_human.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = "TO DO_human.md"; sourceTree = "<group>"; };
 		BE8FB60D2D8F8E4200057607 /* Chexx.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Chexx.entitlements; sourceTree = "<group>"; };
 		BE9522602D2324B400836D0F /* TutorialSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TutorialSheet.swift; sourceTree = "<group>"; };
 		BE9EA2512D977843006D9FAC /* GameCenterManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCenterManager.swift; sourceTree = "<group>"; };
@@ -275,6 +277,8 @@
 			isa = PBXGroup;
 			children = (
 				BE8B84BC3006D41C00A55F49 /* TO DO.md */,
+				29F55D15014FB291C4040ECD /* TO DO_agent.md */,
+				8DE778F4F4E5437F3565E14C /* TO DO_human.md */,
 				BE76A9BC2C2A2603009113B4 /* Assets.xcassets */,
 				BE76A9AE2C2A2602009113B4 /* Chexx */,
 				BE7D04B32E5A77D6000920FC /* HexChessLite */,
