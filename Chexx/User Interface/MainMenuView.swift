@@ -638,7 +638,7 @@ struct MainMenuView: View {
     // MARK: - Main Menu Helper functions
     func createOnlineGame() {
         MultiplayerManager.shared.createGame { gameId in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 if let gameId = gameId {
                     self.gameLink = gameId
                 } else {
@@ -665,7 +665,7 @@ struct MainMenuView: View {
     func startRandomMatch() {
         isRandomMatchPresented = true
         MultiplayerManager.shared.joinMatchmakingQueue(matched: { matchedGameId in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 // Load the game the Cloud Function paired us into, the same way
                 // Resume Game loads a previously saved game.
                 UserDefaults.standard.set(matchedGameId, forKey: "mostRecentGameId")
