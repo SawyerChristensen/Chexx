@@ -51,7 +51,7 @@ Notes:
 ## Replace DispatchQueue with Swift concurrency (Tasks)
 - [x] `Chexx/Game Logic/GameState.swift` — `saveGameStateToFile`'s `DispatchQueue.global(qos: .utility).async` → `Task.detached(priority: .utility)` (fire-and-forget file write, no shared state)
 - [x] `Chexx/AuthViewModel.swift` — 2x `DispatchQueue.main.async` (lines ~94, ~111) → `Task { @MainActor in }` / `MainActor.run`
-- [ ] `Chexx/AppDelegate.swift` — 2x `DispatchQueue.main.async` (lines ~26, ~41) → `Task { @MainActor in }` / `MainActor.run`
+- [x] `Chexx/AppDelegate.swift` — 2x `DispatchQueue.main.async` (lines ~26, ~41, inside `NotificationManager.requestAuthorization`/`authorizationStatus`) → `Task { @MainActor in }`
 - [ ] `Chexx/User Interface/MainMenuView.swift` — 2x `DispatchQueue.main.async` (lines ~641, ~668) → `Task { @MainActor in }` / `MainActor.run`
 - [ ] `Chexx/User Interface/ProfileView.swift` — 1x `DispatchQueue.main.async` (line ~687) → `Task { @MainActor in }` / `MainActor.run`
 - [ ] `Chexx/User Interface/LeaderboardView.swift` — 1x `DispatchQueue.main.async` (line ~74) → `Task { @MainActor in }` / `MainActor.run`

@@ -23,7 +23,7 @@ import AppKit
 struct NotificationManager {
     static func requestAuthorization(completion: @escaping (Bool) -> Void) {
         UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, _ in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 if granted {
                     #if canImport(UIKit)
                     UIApplication.shared.registerForRemoteNotifications()
@@ -38,7 +38,7 @@ struct NotificationManager {
 
     static func authorizationStatus(completion: @escaping (UNAuthorizationStatus) -> Void) {
         UNUserNotificationCenter.current().getNotificationSettings { settings in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 completion(settings.authorizationStatus)
             }
         }
