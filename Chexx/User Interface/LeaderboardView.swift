@@ -71,7 +71,7 @@ struct LeaderboardView: View {
             .order(by: "eloScore", descending: true)
             .limit(to: maxEntries)
             .getDocuments { snapshot, error in
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     isLoading = false
                     if let error {
                         print("Error loading leaderboard: \(error.localizedDescription)")
