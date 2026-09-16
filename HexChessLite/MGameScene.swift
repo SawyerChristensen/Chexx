@@ -703,7 +703,7 @@ class MessagesGameScene: SKScene {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
             }
         }
-        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "piece_move", fileType: "mp3")}
+        if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "piece_move", fileType: "caf")}
         
         if type == "pawn" && (abs(rowIndex - originalRowIndex) == 2) {
             gameState[colIndex, rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true, isEnPassantTarget: true)
@@ -861,7 +861,7 @@ class MessagesGameScene: SKScene {
         turnStateUpdater?(isUsersTurn)
         
         if gameStatus.starts(with: "check") { //highlight any pieces in check
-            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "mp3")} //for some reason this isnt working rn
+            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "caf")} //for some reason this isnt working rn
             HapticManager.playNotification(type: .warning)
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")

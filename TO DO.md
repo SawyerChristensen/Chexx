@@ -20,7 +20,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] Haptics on check and game win — 👤 human
 - [x] Review prompt after 2nd CPU win
 - [x] Replace DispatchQueue with Swift concurrency (Tasks)
-- [ ] Switch sound effects to PocketPoker's audio format
+- [~] Switch sound effects to PocketPoker's audio format — 🤖 agent
 
 ## Update 1.6 — CPU 🤖
 - [x] Default search depth 5

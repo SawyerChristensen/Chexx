@@ -65,8 +65,14 @@ Notes:
 - `CPUSearchExecutor` lives at file scope above `class GameScene` in GameScene.swift.
 
 ## Switch sound effects to PocketPoker's audio format
+- [x] Convert `piece_move.mp3`/`piece_move_light.mp3`/`check.mp3` to `.caf` (`afconvert -f caff -d LEI16`, matching PocketPoker's `Sound Effects/*.caf` — caff/Int16/interleaved) and update `Chexx.xcodeproj/project.pbxproj` file refs (`lastKnownFileType = "com.apple.coreaudio-format"`) and the `fileType: "mp3"` → `"caf"` call sites in `GameScene.swift`/`MGameScene.swift`
+- [ ] Rewrite `Chexx/Audio/AudioManager.swift` to preload one `AVAudioPlayer` per short SFX at init (`prepareToPlay()`), mirroring PocketPoker's `SoundManager.setupSFX()`, instead of `playSoundEffect` constructing a new `AVAudioPlayer` from disk (decode latency) and stomping the single shared `soundEffectPlayer` property on every call
+- [ ] Give `piece_move`/`check` a 2-voice round-robin pool (PocketPoker's `cardFlipPlayers`/`chipTapPlayers` pattern) so a checking move — which fires `piece_move` then `check` back-to-back — doesn't have the second call cut off the first; this is very likely the actual cause of the "for some reason this isnt working rn" comment on the check-sound call sites in `GameScene.swift`/`MGameScene.swift` (single shared player gets reassigned before the previous sound finishes). Remove that comment once confirmed fixed.
+- [ ] Leave `game_win`/`game_loss` as on-demand-loaded `.mp3` (like PocketPoker's `playGameEnd` loads `game_win`/`game_loss` as `.m4a` on demand, not preloaded/caf) — they're one-shot end-of-game stingers, not the quickly-repeated case this format switch targets
 Notes:
-- Not started. Look in `~/Documents/PocketPoker` for the format it uses. The point is low-latency playback for quickly repeated effects.
+- PocketPoker's `SoundManager` (`~/Documents/PocketPoker/PocketPoker MessagesExtension/Audio/SoundManager.swift`) is the reference: `.caf` (caff container, Int16 PCM) + preloaded/`prepareToPlay()`'d `AVAudioPlayer`s for short repeatable SFX, played by resetting `currentTime = 0` and calling `.play()` on the existing player rather than allocating a new one; player *pools* (not single players) for anything that can retrigger before the previous instance finishes.
+- `piece_move_light.mp3`/`.caf` has no call site anywhere in the codebase (checked both targets) — it's an orphaned asset already; converted for consistency since it shares the pbxproj group with the others, but no code references it.
+- HexChessLite's Sources build phase does NOT include `AudioManager.swift`/`Audio/` — `HexChessLite/MGameScene.swift` declares/uses its own `let audioManager = AudioManager()` pulling in the same file via a shared file reference in the main app group (confirm target membership before assuming a change to `AudioManager.swift` needs a second edit anywhere).
 
 ## CPU learned evaluation
 - [x] Core ML / ANE feasibility research (not a fit per-leaf; NNUE-style CPU eval preferred)
