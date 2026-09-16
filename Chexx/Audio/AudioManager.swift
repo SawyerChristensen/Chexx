@@ -9,7 +9,24 @@ import AVFoundation
 
 class AudioManager: ObservableObject {
     var backgroundMusicPlayer: AVAudioPlayer?
-    var soundEffectPlayer: AVAudioPlayer?
+    /// Retains the most recently, on-demand-loaded effect (e.g. the end-of-game stinger) for the
+    /// duration of its playback — see the fallback branch of `playSoundEffect`.
+    private var oneShotPlayer: AVAudioPlayer?
+    /// One prepared player per short, frequently-repeated SFX, keyed by file name — see `init`.
+    private var soundEffectPlayers: [String: AVAudioPlayer] = [:]
+
+    init() {
+        preloadSoundEffect(fileName: "piece_move", fileType: "caf")
+        preloadSoundEffect(fileName: "check", fileType: "caf")
+    }
+
+    private func preloadSoundEffect(fileName: String, fileType: String) {
+        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType),
+              let player = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: path)) else { return }
+        player.volume = 0.1
+        player.prepareToPlay()
+        soundEffectPlayers[fileName] = player
+    }
 
     func playBackgroundMusic(fileName: String, fileType: String) {
         #if canImport(UIKit)
@@ -50,14 +67,22 @@ class AudioManager: ObservableObject {
         backgroundMusicPlayer?.stop()
     }
 
+    /// Plays a preloaded effect (see `init`) by resetting its playhead, or falls back to loading
+    /// one on demand for anything not preloaded — the one-shot end-of-game stingers.
     func playSoundEffect(fileName: String, fileType: String) {
+        if let player = soundEffectPlayers[fileName] {
+            player.currentTime = 0
+            player.play()
+            return
+        }
+
         guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else { return }
         let url = URL(fileURLWithPath: path)
 
         do {
-            soundEffectPlayer = try AVAudioPlayer(contentsOf: url)
-            soundEffectPlayer?.volume = 0.1
-            soundEffectPlayer?.play()
+            oneShotPlayer = try AVAudioPlayer(contentsOf: url)
+            oneShotPlayer?.volume = 0.1
+            oneShotPlayer?.play()
         } catch {
             //print("Could not play sound effect: \(error)")
         }
