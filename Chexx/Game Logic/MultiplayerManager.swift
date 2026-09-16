@@ -119,13 +119,13 @@ class MultiplayerManager: ObservableObject {
                         completion(nil)
                     } else if let document = document, document.exists {
                         // Game ID already exists, try again
-                        DispatchQueue.main.async {
+                        Task { @MainActor in
                             tryCreateGame(attemptsLeft: attemptsLeft - 1)
                         }
                     } else {
                         // Game ID is unique, create the game
                         gameRef.setData(gameData) { error in
-                            DispatchQueue.main.async {
+                            Task { @MainActor in
                                 if let error = error {
                                     print("Error creating game: \(error)")
                                     completion(nil)
@@ -208,7 +208,7 @@ class MultiplayerManager: ObservableObject {
             if readyToDelete {
                 // If `readyToDelete` is already true, this must be the second
                 // finalize call, so actually delete the document
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.deleteGame { success in
                         if success {
                             self.gameId = nil
@@ -258,7 +258,7 @@ class MultiplayerManager: ObservableObject {
                     return
                 }
                 
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.currentPlayerColor = "white" // Joiner of the game is white by default
                     self.opponentIsRandomMatch = false // joining via a shared game code is always with a known contact
 
@@ -273,7 +273,7 @@ class MultiplayerManager: ObservableObject {
                             print("Error updating game: \(error)")
                             completion(false)
                         } else {
-                            DispatchQueue.main.async {
+                            Task { @MainActor in
                                 self.gameId = gameId //stores the gameID in memory, maybe not necessary
                                 UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
                                 if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
@@ -315,7 +315,7 @@ class MultiplayerManager: ObservableObject {
             let player2Color = data["player2Color"] as? String ?? "white"
             let isRandomMatch = data["isRandomMatch"] as? Bool ?? false
 
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 self.opponentIsRandomMatch = isRandomMatch
                 // Determine if current user is player1 or player2
                 if player1Id == self.currentUserId {
@@ -372,7 +372,7 @@ class MultiplayerManager: ObservableObject {
     // Fetch opponent's information
     private func fetchOpponentInfo(userId: String) {
         AuthViewModel.shared.fetchUserDataByUserId(userId) { [weak self] name, profileURL, country, gameCenterPhotoBase64 in
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 guard let self = self else { return }
                 self.opponentName = name ?? NSLocalizedString("Unknown Player", comment: "")
                 if let profileURL = profileURL {
@@ -466,7 +466,7 @@ class MultiplayerManager: ObservableObject {
             ]
 
             queueRef.setData(queueData) { error in
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     if let error = error {
                         print("Error joining matchmaking queue: \(error)")
                         completion(false)
@@ -598,7 +598,7 @@ class MultiplayerManager: ObservableObject {
                 oppStartElo   = p1StartElo
             }
             
-            DispatchQueue.main.async {
+            Task { @MainActor in
                 // calculate new rating using the start-of-game Elo values
                 let (localNewElo, _) = self.calculateEloChange( //opponent's elo new elo should be _, but the local user doenst have permission to update the opponents user document, only the opponent does where they are the local user
                     playerOneELO: localStartElo,
