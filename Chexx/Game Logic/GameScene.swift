@@ -1429,7 +1429,7 @@ class GameScene: SKScene {
         
         //MARK: highlight any pieces in check
         if gameStatus.starts(with: "check") {
-            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "caf")} //for some reason this isnt working rn
+            if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "check", fileType: "caf")}
             HapticManager.playNotification(type: .warning)
             // Extract positions after "check by " and highlight checking pieces
             let checkPositionsString = gameStatus.replacingOccurrences(of: "check by ", with: "")

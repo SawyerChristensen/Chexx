@@ -12,8 +12,13 @@ class AudioManager: ObservableObject {
     /// Retains the most recently, on-demand-loaded effect (e.g. the end-of-game stinger) for the
     /// duration of its playback — see the fallback branch of `playSoundEffect`.
     private var oneShotPlayer: AVAudioPlayer?
-    /// One prepared player per short, frequently-repeated SFX, keyed by file name — see `init`.
-    private var soundEffectPlayers: [String: AVAudioPlayer] = [:]
+    /// A small pool of prepared players per short, frequently-repeated SFX, keyed by file name —
+    /// see `init`. A single player per effect would have `check` (fired right after `piece_move`
+    /// on every checking move, see `GameScene.updateGameStatusUI`) cut itself or its neighbor off
+    /// mid-playback; a round-robin pool, mirroring PocketPoker's `cardFlipPlayers`, avoids that.
+    private var soundEffectPlayers: [String: [AVAudioPlayer]] = [:]
+    private var nextSoundEffectVoice: [String: Int] = [:]
+    private static let soundEffectVoicesPerSound = 2
 
     init() {
         preloadSoundEffect(fileName: "piece_move", fileType: "caf")
@@ -21,11 +26,14 @@ class AudioManager: ObservableObject {
     }
 
     private func preloadSoundEffect(fileName: String, fileType: String) {
-        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType),
-              let player = try? AVAudioPlayer(contentsOf: URL(fileURLWithPath: path)) else { return }
-        player.volume = 0.1
-        player.prepareToPlay()
-        soundEffectPlayers[fileName] = player
+        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else { return }
+        let url = URL(fileURLWithPath: path)
+        for _ in 0..<Self.soundEffectVoicesPerSound {
+            guard let player = try? AVAudioPlayer(contentsOf: url) else { break }
+            player.volume = 0.1
+            player.prepareToPlay()
+            soundEffectPlayers[fileName, default: []].append(player)
+        }
     }
 
     func playBackgroundMusic(fileName: String, fileType: String) {
@@ -70,7 +78,10 @@ class AudioManager: ObservableObject {
     /// Plays a preloaded effect (see `init`) by resetting its playhead, or falls back to loading
     /// one on demand for anything not preloaded — the one-shot end-of-game stingers.
     func playSoundEffect(fileName: String, fileType: String) {
-        if let player = soundEffectPlayers[fileName] {
+        if let players = soundEffectPlayers[fileName], !players.isEmpty {
+            let voice = nextSoundEffectVoice[fileName, default: 0]
+            nextSoundEffectVoice[fileName] = voice + 1
+            let player = players[voice % players.count]
             player.currentTime = 0
             player.play()
             return
