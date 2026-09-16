@@ -56,14 +56,13 @@ Notes:
 - [x] `Chexx/User Interface/ProfileView.swift` — 1x `DispatchQueue.main.async` (line ~687) → `Task { @MainActor in }` / `MainActor.run`
 - [x] `Chexx/User Interface/LeaderboardView.swift` — 1x `DispatchQueue.main.async` (line ~74) → `Task { @MainActor in }` / `MainActor.run`
 - [x] `Chexx/Game Logic/MultiplayerManager.swift` — ~9x `DispatchQueue.main.async` wrapping Firestore/network completion handlers → `Task { @MainActor in }` / `MainActor.run`
-- [ ] `Chexx/Game Logic/GameScene.swift` — the risky one, do last:
-  - [ ] Replace the serial `cpuSearchQueue` (`DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)`) with an actor or a serialized `Task` chain that preserves today's ordering guarantee: background pondering and the real CPU search must still run strictly one-after-another, never overlapping (see the comments at lines ~66 and ~1168 explaining why)
-  - [ ] Convert the `cpuSearchQueue.asyncAfter(deadline:)` delayed-search call (line ~1196) to `Task` + `Task.sleep(for:)`
-  - [ ] Convert the remaining `DispatchQueue.main.async` call sites in this file (lines ~1200, ~1226, ~1254, ~1343) to `Task { @MainActor in }` / `MainActor.run`
+- [x] `Chexx/Game Logic/GameScene.swift` — the risky one (all subtasks landed in one commit since removing the shared `cpuSearchQueue` required touching both of its use sites together):
+  - [x] Replaced the serial `cpuSearchQueue` (`DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)`) with a private `CPUSearchExecutor` actor that holds a `Task<Void, Never>?` "tail" and chains each new `enqueue`'d work item to `await` the previous one before running — preserves the old serial-queue non-overlap + FIFO guarantee explicitly (Swift doesn't guarantee actors resume suspended callers in FIFO order, so plain `await actor.run { }` calls weren't safe here)
+  - [x] Converted the `cpuSearchQueue.asyncAfter(deadline:)` delayed-search call (was line ~1196) to `Task { try? await Task.sleep(for: .seconds(delay)); ... }` + `cpuSearchExecutor.enqueue`
+  - [x] Converted the remaining `DispatchQueue.main.async` call sites in this file (cpuMakeMove's two hops, applyHexPgn's one) to `Task { @MainActor in }`
 Notes:
-- Each subtask above is its own file/concern and should be its own commit.
-- `DispatchQueue.main.async` → `Task { @MainActor in ... }` is the general pattern; use `await MainActor.run { ... }` instead where the enclosing function is already `async` and needs to wait for the hop to complete before continuing.
-- GameScene's `cpuSearchQueue` is the load-bearing one: pondering (background search while it's the human's turn) and the real CPU search after the human moves rely on strict serial ordering — the second must never start before the first (started earlier for pondering) has been cancelled/finished. An actor with an internal "current search task" property that cancels-and-replaces works, or a manually chained `Task` that awaits the prior one before starting the next. Test with the existing CPU/pondering tests plus a manual play-through before committing.
+- Also fixed two new "consider using asynchronous alternative function" warnings that only appeared on a native `platform=macOS` build (not iphonesimulator) once cpuMakeMove's node manipulation moved inside a `Task { @MainActor in }`: `cpuPieceNode.run(slideAction) { completion }` → `await cpuPieceNode.run(slideAction)` in GameScene.swift, and `MultiplayerManager.swift`'s `joinGame` Firestore `updateData(...) { error in }` → `try await gameRef.updateData(...)` (that second one was latent since the DispatchQueue→Task pass a few commits back; incremental builds were masking it, only a full macOS rebuild surfaced it). Always check a `platform=macOS` build too, not just iphonesimulator — this project targets both and warnings can differ per destination.
+- `CPUSearchExecutor` lives at file scope above `class GameScene` in GameScene.swift.
 
 ## Switch sound effects to PocketPoker's audio format
 Notes:

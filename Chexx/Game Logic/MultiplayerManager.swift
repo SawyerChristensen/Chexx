@@ -262,27 +262,24 @@ class MultiplayerManager: ObservableObject {
                     self.currentPlayerColor = "white" // Joiner of the game is white by default
                     self.opponentIsRandomMatch = false // joining via a shared game code is always with a known contact
 
-                    gameRef.updateData([
-                        "player2Id": self.currentUserId,
-                        "player2Color": self.currentPlayerColor,
-                        "player2Elo":   playerTwoElo,
-                        "status": "in-progress",
-                        "lastUpdated": FieldValue.serverTimestamp()
-                    ]) { error in
-                        if let error = error {
-                            print("Error updating game: \(error)")
-                            completion(false)
-                        } else {
-                            Task { @MainActor in
-                                self.gameId = gameId //stores the gameID in memory, maybe not necessary
-                                UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
-                                if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
-                                    self.opponentId = player1Id
-                                    self.fetchOpponentInfo(userId: player1Id)
-                                }
-                                completion(true)
-                            }
+                    do {
+                        try await gameRef.updateData([
+                            "player2Id": self.currentUserId,
+                            "player2Color": self.currentPlayerColor,
+                            "player2Elo":   playerTwoElo,
+                            "status": "in-progress",
+                            "lastUpdated": FieldValue.serverTimestamp()
+                        ])
+                        self.gameId = gameId //stores the gameID in memory, maybe not necessary
+                        UserDefaults.standard.set(gameId, forKey: "mostRecentGameId") //saves to device so we can retrieve it later
+                        if let player1Id = data["player1Id"] as? String { //fetch opponents info, player1 is the creator
+                            self.opponentId = player1Id
+                            self.fetchOpponentInfo(userId: player1Id)
                         }
+                        completion(true)
+                    } catch {
+                        print("Error updating game: \(error)")
+                        completion(false)
                     }
                 }
             }

@@ -30,25 +30,46 @@ private final class PonderCancellationToken {
     }
 }
 
+// Serializes GameCPU.ponder() and the real findMove/minimaxMove search so they never run
+// concurrently on the shared gameCPU instance (both mutate its transposition table). Work items
+// are chained explicitly (each new item awaits the previous one's Task before running) rather
+// than relying on actor-call ordering alone, since Swift doesn't guarantee suspended callers of
+// an actor are resumed in FIFO order — the explicit chain is what gives the same non-overlap +
+// enqueue-order guarantee the old serial DispatchQueue provided.
+private actor CPUSearchExecutor {
+    private var tail: Task<Void, Never>?
+
+    @discardableResult
+    func enqueue(_ work: @escaping () -> Void) -> Task<Void, Never> {
+        let previous = tail
+        let task = Task {
+            _ = await previous?.value
+            work()
+        }
+        tail = task
+        return task
+    }
+}
+
 class GameScene: SKScene {
     @AppStorage("highlightEnabled") private var highlightEnabled = true
     @AppStorage("soundEffectsEnabled") private var soundEffectsEnabled = true
     @AppStorage("lowMotionEnabled") private var lowMotionEnabled = false
-    
+
     let audioManager = AudioManager()
     var isVsCPU: Bool
     var isPassAndPlay: Bool
     var isOnlineMultiplayer: Bool
     var onRematch: (() -> Void)?
     //var variant: String = "Glinkski's"
-    
+
     var gameState: GameState! //not sure if we need this, but we need to define it anyway, might as well define an init gamestate
     var gameCPU: GameCPU!
     var hexPgn: [UInt8] = [0] //pretty sure this isn't needed if hexPgn is used via gameState.hexPgn...
 
     // Serial so a background ponder() pass and the real findMove/minimaxMove search can never run
     // concurrently on the shared gameCPU instance (both mutate its transposition table).
-    private let cpuSearchQueue = DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)
+    private let cpuSearchExecutor = CPUSearchExecutor()
     private var ponderToken: PonderCancellationToken?
 
     // AppStore.requestReview(in:) is presented from a UIWindowScene on iOS/Catalyst but from an
@@ -63,7 +84,7 @@ class GameScene: SKScene {
 
     // Starts a background pondering pass on the current position, intended to be called as soon
     // as it becomes the human's turn in a vs-CPU game. Cancelled via stopPondering() as soon as
-    // the human's move is made; the cancellation + serial cpuSearchQueue together guarantee the
+    // the human's move is made; the cancellation + serial cpuSearchExecutor together guarantee the
     // real search below never starts until pondering has actually stopped.
     //
     // `priorityFromSquare`, if set, is passed straight through to GameCPU.ponder so root moves
@@ -73,8 +94,11 @@ class GameScene: SKScene {
         let token = PonderCancellationToken()
         ponderToken = token
         let stateSnapshot: GameState = gameState
-        cpuSearchQueue.async { [gameCPU] in
-            gameCPU?.ponder(gameState: stateSnapshot, shouldCancel: { token.isCancelled }, priorityFromSquare: priorityFromSquare)
+        let cpu = gameCPU
+        Task {
+            await cpuSearchExecutor.enqueue {
+                cpu?.ponder(gameState: stateSnapshot, shouldCancel: { token.isCancelled }, priorityFromSquare: priorityFromSquare)
+            }
         }
     }
 
@@ -1165,9 +1189,10 @@ class GameScene: SKScene {
         
         if isVsCPU && gameState.currentPlayer == "black" {
             // The human's move was just made and the real search is about to start: stop any
-            // background pondering first. cpuSearchQueue is serial, so enqueueing the real search
-            // below guarantees it won't actually run until the ponder loop above has observed the
-            // cancellation and returned, even though we don't block waiting for it here.
+            // background pondering first. cpuSearchExecutor's explicit chain is serial, so
+            // enqueueing the real search below guarantees it won't actually run until the ponder
+            // loop above has observed the cancellation and returned, even though we don't block
+            // waiting for it here.
             stopPondering()
 
             // Only bother with the "Thinking…" status text if the search is actually expected to
@@ -1193,11 +1218,15 @@ class GameScene: SKScene {
             // concurrently with the main thread — that data race corrupted the array buffer and
             // trapped in unmakeMove (_ArrayBuffer._checkValidSubscriptMutating).
             let cpuSearchState: GameState = gameState
-            cpuSearchQueue.asyncAfter(deadline: .now() + delay) {
-                self.cpuMakeMove(searchState: cpuSearchState)
+            Task {
+                try? await Task.sleep(for: .seconds(delay))
+                let searchTask = await cpuSearchExecutor.enqueue {
+                    self.cpuMakeMove(searchState: cpuSearchState)
+                }
+                await searchTask.value
 
                 // Once the CPU move is complete, stop the thinking timer and reset the status text on the main thread
-                DispatchQueue.main.async {
+                await MainActor.run {
                     thinkingTimer?.invalidate() // Stop the timer, if it was started
                     self.whiteStatusTextUpdater?("") // Clear the status text
                 }
@@ -1223,7 +1252,7 @@ class GameScene: SKScene {
 
         // Node manipulation and gameState mutation must run on the main thread (SpriteKit is
         // not thread-safe). findMove ran on the background thread above; hop back to main here.
-        DispatchQueue.main.async { [weak self] in
+        Task { @MainActor [weak self] in
             guard let self = self else { return }
             guard let move = move else {
                 // Handle no valid moves (e.g., checkmate or stalemate)
@@ -1243,19 +1272,17 @@ class GameScene: SKScene {
                         // wall-clock delay: a hardcoded asyncAfter can fire before or after the
                         // slide has actually finished rendering if a frame drops elsewhere, which
                         // showed up as an occasional hitch right at the end of the CPU's move.
-                        cpuPieceNode.run(slideAction) { [weak self] in
+                        await cpuPieceNode.run(slideAction)
+                        self.endAnimationActivity()
+                        // endAnimationActivity() above triggers a SwiftUI @State change that
+                        // ramps preferredFramesPerSecond back down. Deferring the heavier
+                        // updateGameState (which runs a full isGameOver() legal-move scan) to
+                        // the next runloop turn keeps it from compounding with that ramp-down
+                        // in the same frame.
+                        Task { @MainActor [weak self] in
                             guard let self = self else { return }
-                            self.endAnimationActivity()
-                            // endAnimationActivity() above triggers a SwiftUI @State change that
-                            // ramps preferredFramesPerSecond back down. Deferring the heavier
-                            // updateGameState (which runs a full isGameOver() legal-move scan) to
-                            // the next runloop turn keeps it from compounding with that ramp-down
-                            // in the same frame.
-                            DispatchQueue.main.async { [weak self] in
-                                guard let self = self else { return }
-                                let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
-                                self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
-                            }
+                            let promotionPiece = move.promotion.map { Piece(color: "black", type: $0) }
+                            self.updateGameState(with: cpuPieceNode, at: move.destination, promotionPiece: promotionPiece)
                         }
                     }
                 } else {
@@ -1340,7 +1367,7 @@ class GameScene: SKScene {
                     pieceNode.run(slideAction) { [weak self] in
                         guard let self = self else { return }
                         self.endAnimationActivity()
-                        DispatchQueue.main.async { [weak self] in
+                        Task { @MainActor [weak self] in
                             guard let self = self else { return }
                             self.updateGameState(with: pieceNode, at: destinationPosition, promotionPiece: promotionPiece)
                         }
