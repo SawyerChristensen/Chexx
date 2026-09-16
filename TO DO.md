@@ -7,7 +7,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 ---
 
 ## Update 1.5 — Mac Port 💻
-- [~] Native Mac port — 🤖 agent · 👤 human
+- [~] Native Mac port — 👤 human
 - [~] "Now supports macOS" App Store update notice — 👤 human
 - [~] Remove "Designed for iPad" badge on Mac App Store — 👤 human
 - [~] App Store screenshots (iPad, Mac, localized) — 👤 human

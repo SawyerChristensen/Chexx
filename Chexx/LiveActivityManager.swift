@@ -10,10 +10,10 @@ import Foundation
 // the activity's UI is wired up separately, and move-detection callers are wired
 // up separately too.
 //
-// ActivityKit's `Activity`/`ActivityAuthorizationInfo` are unavailable on both
-// Mac Catalyst and native macOS, so start/update/end are no-ops there — callers
-// don't need their own platform checks.
-#if os(iOS) && !targetEnvironment(macCatalyst)
+// ActivityKit's `Activity`/`ActivityAuthorizationInfo` are unavailable on native
+// macOS, so start/update/end are no-ops there — callers don't need their own
+// platform checks.
+#if os(iOS)
 import ActivityKit
 
 enum LiveActivityManager {

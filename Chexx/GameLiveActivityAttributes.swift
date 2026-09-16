@@ -9,10 +9,9 @@ import Foundation
 // Island for an in-progress online game. The board-preview UI that renders this
 // content lives in a widget extension, added separately.
 //
-// ActivityKit's `Activity`/`ActivityAttributes` are unavailable on both Mac
-// Catalyst and native macOS, so this type (and its consumers) only exist on
-// true iOS/iPadOS.
-#if os(iOS) && !targetEnvironment(macCatalyst)
+// ActivityKit's `Activity`/`ActivityAttributes` are unavailable on native
+// macOS, so this type (and its consumers) only exist on iOS/iPadOS.
+#if os(iOS)
 import ActivityKit
 
 struct GameLiveActivityAttributes: ActivityAttributes {
