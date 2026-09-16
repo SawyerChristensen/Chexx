@@ -91,7 +91,7 @@ class AuthViewModel: ObservableObject {
                 let data = document.data()
                 //print(data!)
 
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.email = data?["email"] as? String ?? "none found on server" //this is only called if the data DOES exist, so the ?? should never be triggered
                     self.displayName = data?["displayName"] as? String ?? "none found on server"
                     self.userCountry = data?["country"] as? String ?? "none found on server"
@@ -108,7 +108,7 @@ class AuthViewModel: ObservableObject {
             } else {
                 //print("No Firestore document found for this user.")
                 //so make one!
-                DispatchQueue.main.async {
+                Task { @MainActor in
                     self.saveUserDataToFirestore()
 
                     //this is so the other local code waits to execute until after this funciton is finished

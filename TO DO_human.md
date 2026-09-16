@@ -11,7 +11,7 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 ## "Now supports macOS" App Store update notice
 - [ ] Run `scripts/upload_metadata.py --whats-new-only` to push the translated update notice to App Store Connect.
 
-## Confirm "Designed for iPad" badge removed on Mac App Store
+## Remove "Designed for iPad" badge on Mac App Store
 - [ ] After the next Mac submission, confirm the "Designed for iPad. Not verified for macOS" badge is gone from the live listing.
 
 ## App Store screenshots (iPad, Mac, localized)
