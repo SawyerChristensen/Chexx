@@ -684,7 +684,7 @@ struct ProfileView: View {
         }
         .onAppear {
             GameCenterManager.shared.loadGameCenterProfileImage { image in
-                DispatchQueue.main.async { // remember to switch to the main thread before updating SwiftUI state
+                Task { @MainActor in // remember to switch to the main thread before updating SwiftUI state
                     self.gameCenterImage = image
 
                     // Share it to Firestore so opponents without a Google photo of their own
