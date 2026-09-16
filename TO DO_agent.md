@@ -49,8 +49,21 @@ Notes:
 - [x] Implemented
 
 ## Replace DispatchQueue with Swift concurrency (Tasks)
+- [x] `Chexx/Game Logic/GameState.swift` — `saveGameStateToFile`'s `DispatchQueue.global(qos: .utility).async` → `Task.detached(priority: .utility)` (fire-and-forget file write, no shared state)
+- [ ] `Chexx/AuthViewModel.swift` — 2x `DispatchQueue.main.async` (lines ~94, ~111) → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/AppDelegate.swift` — 2x `DispatchQueue.main.async` (lines ~26, ~41) → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/User Interface/MainMenuView.swift` — 2x `DispatchQueue.main.async` (lines ~641, ~668) → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/User Interface/ProfileView.swift` — 1x `DispatchQueue.main.async` (line ~687) → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/User Interface/LeaderboardView.swift` — 1x `DispatchQueue.main.async` (line ~74) → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/Game Logic/MultiplayerManager.swift` — ~9x `DispatchQueue.main.async` wrapping Firestore/network completion handlers → `Task { @MainActor in }` / `MainActor.run`
+- [ ] `Chexx/Game Logic/GameScene.swift` — the risky one, do last:
+  - [ ] Replace the serial `cpuSearchQueue` (`DispatchQueue(label: "com.chexx.gamecpu.search", qos: .userInitiated)`) with an actor or a serialized `Task` chain that preserves today's ordering guarantee: background pondering and the real CPU search must still run strictly one-after-another, never overlapping (see the comments at lines ~66 and ~1168 explaining why)
+  - [ ] Convert the `cpuSearchQueue.asyncAfter(deadline:)` delayed-search call (line ~1196) to `Task` + `Task.sleep(for:)`
+  - [ ] Convert the remaining `DispatchQueue.main.async` call sites in this file (lines ~1200, ~1226, ~1254, ~1343) to `Task { @MainActor in }` / `MainActor.run`
 Notes:
-- Not started. Watch the serial `cpuSearchQueue` in GameScene: pondering and the real CPU search rely on serial ordering, so preserve those semantics (e.g. an actor or a serialized Task chain).
+- Each subtask above is its own file/concern and should be its own commit.
+- `DispatchQueue.main.async` → `Task { @MainActor in ... }` is the general pattern; use `await MainActor.run { ... }` instead where the enclosing function is already `async` and needs to wait for the hop to complete before continuing.
+- GameScene's `cpuSearchQueue` is the load-bearing one: pondering (background search while it's the human's turn) and the real CPU search after the human moves rely on strict serial ordering — the second must never start before the first (started earlier for pondering) has been cancelled/finished. An actor with an internal "current search task" property that cancels-and-replaces works, or a manually chained `Task` that awaits the prior one before starting the next. Test with the existing CPU/pondering tests plus a manual play-through before committing.
 
 ## Switch sound effects to PocketPoker's audio format
 Notes:

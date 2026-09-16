@@ -19,7 +19,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] iMessage "Waiting for opponent" reserved-space animation
 - [~] Haptics on check and game win — 👤 human
 - [x] Review prompt after 2nd CPU win
-- [ ] Replace DispatchQueue with Swift concurrency (Tasks)
+- [~] Replace DispatchQueue with Swift concurrency (Tasks) — 🤖 agent
 - [ ] Switch sound effects to PocketPoker's audio format
 
 ## Update 1.6 — CPU 🤖

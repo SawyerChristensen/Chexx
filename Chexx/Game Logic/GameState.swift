@@ -896,7 +896,7 @@ struct GameState: Codable {
 // hexPgn is a [UInt8] value copy, so encoding/writing it off the main thread is safe —
 // no shared state with the live GameState is touched.
 func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {
-    DispatchQueue.global(qos: .utility).async {
+    Task.detached(priority: .utility) {
         let saveData = HexPgnSaveData(date: Date(), hexPgn: hexPgn)
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601 // Standard format for date
