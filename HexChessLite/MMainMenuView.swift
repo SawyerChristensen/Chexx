@@ -10,7 +10,6 @@ import Messages
 
 struct MessagesMainMenuView: View {
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.locale) var locale //for language detection
     @ObservedObject var viewModel: MenuViewModel
     var onStartGame: () -> Void
     @State private var winCount = 0
@@ -31,7 +30,7 @@ struct MessagesMainMenuView: View {
                         .padding(.trailing, 5)
                     
                     Text("Hex Chess")
-                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.1, weight: .medium, design: .serif))
+                        .font(.system(viewModel.presentationStyle == .compact ? .title : .largeTitle, design: .serif).weight(.medium))
                         .foregroundColor(colorScheme == .dark ? Color.white : Color.black)
                 }
                 .frame(maxWidth: .infinity)
@@ -52,49 +51,32 @@ struct MessagesMainMenuView: View {
                         .rotationEffect(.degrees(viewModel.presentationStyle == .compact ? 15 : 0))
                     
                     // MARK:  Start Game Button
-                    if locale.language.languageCode?.identifier != "es" {
-                        Button(action: {
-                            onStartGame()
-                        }) {
-                            Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
-                                     //, fontSize: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11)
-                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.07 : screenWidth * 0.11, weight: .medium, design: .serif))
-                                .padding()
-                                .frame(
-                                    //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
-                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.52 : screenWidth * 0.9,
-                                    maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
-                                .background(Color("AccentColor"))
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                                .clipShape(HexagonEdgeRectangleShape())
-                                .position(
-                                    x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
-                                    y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
-                        }
-                    } else { //the alternative view for spanish:
-                        Button(action: {
-                            onStartGame()
-                        }) {
-                            Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
-                                .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.06 : screenWidth * 0.1, weight: .medium, design: .serif))
-                                .minimumScaleFactor(0.6)
-                                .padding()
-                                .frame(
-                                    //minWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.33 : screenWidth * 0.45,
-                                    maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.5 : screenWidth * 0.9,
-                                    maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
-                                .background(Color("AccentColor"))
-                                .foregroundColor(Color(uiColor: .systemBackground))
-                                .clipShape(HexagonEdgeRectangleShape())
-                                .position(
-                                    x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
-                                    y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
-                        }
+                    // One button for every language. "Start Game!" is 11 characters in English and
+                    // runs to 18 in Spanish (1.64x), 16 in Indonesian and 15 in Polish, Italian and
+                    // Bengali — so rather than a hardcoded size per locale, the text is held to one
+                    // line and allowed to scale down inside a fixed button.
+                    Button(action: {
+                        onStartGame()
+                    }) {
+                        Text(NSLocalizedString("Start Game!", comment: "iMessage Start Button"))
+                            .font(.system(viewModel.presentationStyle == .compact ? .title : .largeTitle, design: .serif).weight(.medium))
+                            .lineLimit(1)
+                            .minimumScaleFactor(0.6)
+                            .padding()
+                            .frame(
+                                maxWidth: viewModel.presentationStyle == .compact ? screenWidth * 0.52 : screenWidth * 0.9,
+                                maxHeight: viewModel.presentationStyle == .compact ? screenWidth * 0.1 : screenWidth * 0.15)
+                            .background(Color("AccentColor"))
+                            .foregroundColor(Color(uiColor: .systemBackground))
+                            .clipShape(HexagonEdgeRectangleShape())
+                            .position(
+                                x: viewModel.presentationStyle == .compact ? screenWidth * 0.7 : screenWidth * 0.5,
+                                y: viewModel.presentationStyle == .compact ? screenHeight * 0.1 : screenHeight * 0.15)
                     }
-                    
+
                     //if winCount > 0 { // hides the count if the user has no wins
                     Text("Total Wins: \(winCount)")
-                        .font(.system(size: viewModel.presentationStyle == .compact ? screenWidth * 0.05 : screenWidth * 0.07, weight: .light, design: .serif))
+                        .font(.system(viewModel.presentationStyle == .compact ? .title3 : .title, design: .serif).weight(.light))
                         .foregroundColor(colorScheme == .dark ? Color(white: 0.8) : Color(white: 0.3))
                         .frame(maxWidth: screenWidth * 0.5)
                         .lineLimit(nil)
@@ -107,6 +89,10 @@ struct MessagesMainMenuView: View {
             }
             .onAppear {
                 self.winCount = WinTracker.shared.getWinCount() }
+            // The button's height is fixed and the iMessage compact view has very little vertical
+            // room, so accessibility sizes are honoured up to a point and then capped rather than
+            // allowed to clip the label.
+            .dynamicTypeSize(...DynamicTypeSize.accessibility1)
         }
         .background(Color(uiColor: .systemBackground))
     }

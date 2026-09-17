@@ -183,8 +183,16 @@ Notes:
 - **Not visually verified.** Builds warning-free, and the reasoning is straightforward, but rendering an iMessage extension requires Messages.app and a conversation — this was not confirmed on screen at any locale. Filed for a human check.
 
 ## iMessage: start game button sizing hardcoded per screen and language
+- [x] Replaced the per-locale button with one adaptive button (needs 👤 visual confirmation)
 Notes:
-- Not started. `HexChessLite/MMainMenuView.swift` "Start Game!" button: the font size is hand-fitted per locale/screen size (a band-aid). Make it adapt to Dynamic Type and device size instead.
+- The band-aid was worse than the original note suggested: the view contained **two complete duplicate `Button` blocks**, selected by `locale.language.languageCode?.identifier != "es"`, differing only in font size (0.07/0.11 → 0.06/0.10 of screen width), `maxWidth` (0.52 → 0.5) and the Spanish branch having `.minimumScaleFactor(0.6)`.
+- Why Spanish specifically: "¡Comenzar partida!" is 18 characters against English's 11 (1.64x) — the longest of all 24. **But Indonesian (16), Polish, Italian and Bengali (15) are close behind and had no special case**, so they were presumably clipping too. A per-language branch could never have scaled.
+- Now: one button, `.lineLimit(1)` + `.minimumScaleFactor(0.6)` — the same floor the Spanish branch used, which covers the 1.64x worst case — so every language fits without a branch. 28 insertions, 42 deletions.
+- Fonts moved to Dynamic Type styles (`.title` compact / `.largeTitle` expanded; win counter `.title3`/`.title`). The compact/expanded distinction is kept: that is a real iMessage presentation-style difference, not a locale hack.
+- Added `.dynamicTypeSize(...DynamicTypeSize.accessibility1)` on the view. The button's height is a fixed fraction of screen width and the compact view has very little vertical room, so accessibility sizes are honoured up to a point and then capped rather than allowed to clip. `minimumScaleFactor` only solves width, not height — that is why the cap is needed as well.
+- Removed the now-unused `@Environment(\.locale)` property.
+- `.position(x:y:)` and the frame fractions were deliberately left alone — that is layout, not type, and redoing absolute positioning without being able to see the result would be a much riskier change.
+- **Not visually verified** — builds warning-free, but rendering the extension needs Messages.app. Note the macOS build does not cover this file at all, since HexChessLite is platform-filtered out of macOS.
 
 ## Main app target folder is grey in Xcode while the iMessage extension is blue
 - [x] **Diagnosed** (cause confirmed, fix not applied)

@@ -72,6 +72,10 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 ## Secure online games
 - [ ] Deploy `firestore.rules` (`firebase deploy --only firestore:rules`) and smoke-test create/join/move, leaderboard, matchmaking, and profile edits.
 
+## iMessage: start game button sizing hardcoded per screen and language
+- [ ] Check the "Start Game!" button in the iMessage extension, in **both compact and expanded** presentation, in Spanish (the longest translation at 1.64x English) and one of Indonesian/Polish/Italian. The Spanish-only duplicate button has been removed in favour of one that scales, so Spanish is now the real regression test.
+- [ ] Also worth a look at a large accessibility text size — the button height is fixed, so growth is capped at `accessibility1`. Confirm the label isn't clipped at that cap.
+
 ## iMessage: "Waiting for opponent" wraps badly in Spanish
 - [ ] Check the waiting badge on a device or simulator in a long locale — **French, Polish or Bengali**, not Spanish. Spanish turned out to be the mildest of the ten affected locales, so it's the weakest test. Confirm the pill stays inside the view and that the text size doesn't visibly jump as the animated dots cycle.
 
