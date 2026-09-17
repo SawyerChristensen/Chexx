@@ -3317,6 +3317,28 @@
         }
       }
     },
+    "ach_great_hexcape_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checkmate after being put in check 3 times"
+          }
+        }
+      }
+    },
+    "ach_great_hexcape_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The Great Hexcape"
+          }
+        }
+      }
+    },
     "ach_hex_machina_description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3623,6 +3645,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "機器終結者"
+          }
+        }
+      }
+    },
+    "ach_hexathon_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Win 26 games"
+          }
+        }
+      }
+    },
+    "ach_hexathon_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexathon"
           }
         }
       }
@@ -4247,6 +4291,28 @@
         }
       }
     },
+    "ach_hexceptional_morale_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Promote 3 pawns in a single game"
+          }
+        }
+      }
+    },
+    "ach_hexceptional_morale_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexceptional Morale"
+          }
+        }
+      }
+    },
     "ach_hexceptional_win_description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4553,6 +4619,28 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "精彩首勝"
+          }
+        }
+      }
+    },
+    "ach_hexclusion_zone_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deliver a smothered mate"
+          }
+        }
+      }
+    },
+    "ach_hexclusion_zone_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexclusion Zone"
           }
         }
       }
@@ -4867,6 +4955,50 @@
         }
       }
     },
+    "ach_hexhausted_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Have a game last over 100 turns"
+          }
+        }
+      }
+    },
+    "ach_hexhausted_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexhausted"
+          }
+        }
+      }
+    },
+    "ach_hexpect_the_unexpected_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open by moving your king"
+          }
+        }
+      }
+    },
+    "ach_hexpect_the_unexpected_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexpect the Unexpected"
+          }
+        }
+      }
+    },
     "ach_hexpedition_description" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5173,6 +5305,50 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "王之遠征"
+          }
+        }
+      }
+    },
+    "ach_hexperimenter_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Win with 10 different openings"
+          }
+        }
+      }
+    },
+    "ach_hexperimenter_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexperimenter"
+          }
+        }
+      }
+    },
+    "ach_hexplorer_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visit every tile in a single game"
+          }
+        }
+      }
+    },
+    "ach_hexplorer_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hexplorer"
           }
         }
       }
@@ -5793,6 +5969,72 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "王者一擊"
+          }
+        }
+      }
+    },
+    "ach_seasoned_hexpert_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Complete all other achievements"
+          }
+        }
+      }
+    },
+    "ach_seasoned_hexpert_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seasoned Hexpert"
+          }
+        }
+      }
+    },
+    "ach_tactical_hexcellence_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Checkmate without losing any pieces"
+          }
+        }
+      }
+    },
+    "ach_tactical_hexcellence_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tactical Hexcellence"
+          }
+        }
+      }
+    },
+    "ach_un_hexciting_finish_description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deliver a stalemate"
+          }
+        }
+      }
+    },
+    "ach_un_hexciting_finish_title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un-Hexciting Finish"
           }
         }
       }
@@ -6549,6 +6791,10 @@
           }
         }
       }
+    },
+    "Cancel" : {
+      "comment" : "A button title that cancels matchmaking.",
+      "isCommentAutoGenerated" : true
     },
     "Check!" : {
       "extractionState" : "manual",
@@ -13449,6 +13695,9 @@
         }
       }
     },
+    "Random Match" : {
+
+    },
     "Register" : {
       "localizations" : {
         "ar" : {
@@ -14194,6 +14443,9 @@
         }
       }
     },
+    "Searching for opponent" : {
+      "comment" : "Random matchmaking searching text"
+    },
     "Settings" : {
       "localizations" : {
         "ar" : {
@@ -14785,6 +15037,9 @@
           }
         }
       }
+    },
+    "Sign in to track your ELO rating" : {
+      "comment" : "Shown instead of an ELO change when the local player is signed in anonymously (guest)."
     },
     "Sign in with Google" : {
       "localizations" : {

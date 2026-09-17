@@ -122,7 +122,9 @@ Notes:
   - [x] `hexperimenter` / `Hexperimenter` — "Win with 10 different openings": persisted `Set<String>` of the player's own first move, added to on each win. Needs a stable opening key — the first `HexPgn` entry is the natural one.
   - [x] `seasoned_hexpert` / `SeasonedHexpert` (secret) — "Complete all other achievements": evaluate after every unlock; guard against it counting *itself*. Cleanest as a check inside `AchievementManager.unlockAchievement` once every other id is unlocked.
 - [x] Register all 11 in `AchievementManager.achievements` (the array at `AchievementManager.swift:29`) — nothing unlocks without an entry, since `unlockAchievement` does `guard let index = achievements.firstIndex(...) else { return }` and silently no-ops.
-- [ ] Add 22 new `ach_<id>_title` / `ach_<id>_description` keys to `Chexx/Localizable.xcstrings` for every locale (18 keys exist today for the 9 implemented ones; each key carries ~30 locale entries — script this, do not hand-edit).
+- [x] Added the 22 `ach_<id>_title` / `ach_<id>_description` keys to `Chexx/Localizable.xcstrings`, **English only** — the other 24 locales are left for a translator (👤, filed in TO DO_human.md) rather than machine-guessing 24 versions of a pun.
+  - Editing that file safely: it is JSON, but Xcode's formatting is specific. A writer using `json.dumps(indent=2, separators=(",", " : "), ensure_ascii=False, sort_keys=False)`, then `re.sub(r'\{\}', '{\n\n    }', out)`, and **no trailing newline**, round-trips it byte-identically — verify that before writing, then insert new keys in case-insensitive sorted position so the diff stays local. Done this way the change was 255 insertions and 0 deletions.
+  - A test (`testEveryRegisteredAchievementHasLocalizedTitleAndDescription`) now asserts all 20 achievement ids resolve to real strings, since `NSLocalizedString` silently returns the raw key when an entry is missing.
 - [ ] Add matching Game Center entries to `metadata.json` for `scripts/upload_metadata.py`.
 Notes:
 - **Group C landed. All 11 achievements are now implemented in code**; what remains for this feature is the 22 localization keys and the `metadata.json` entries.

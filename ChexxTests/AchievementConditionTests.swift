@@ -180,6 +180,32 @@ final class AchievementConditionTests: XCTestCase {
         XCTAssertEqual(state.turnCount, 2)
     }
 
+    // MARK: - Localization
+
+    // Achievement.title/description are NSLocalizedString lookups on "ach_<id>_title" /
+    // "ach_<id>_description", and NSLocalizedString returns the key itself when the string is
+    // missing — so a forgotten catalog entry shows up in the UI as a raw "ach_hexathon_title".
+    // This is the guard: every registered achievement must resolve to real text.
+    func testEveryRegisteredAchievementHasLocalizedTitleAndDescription() {
+        let ids = [
+            "hexceptional_win", "hex_machina", "hextra_power", "hexceeded_hexpectations",
+            "friendly_hexchange", "hexcalibur", "hexecutioner", "hexpedition", "hextreme_measures",
+            "tactical_hexcellence", "hexclusion_zone", "un_hexciting_finish", "hexceptional_morale",
+            "great_hexcape", "hexplorer", "hexpect_the_unexpected", "hexhausted", "hexathon",
+            "hexperimenter", "seasoned_hexpert",
+        ]
+
+        for id in ids {
+            let achievement = Achievement(id: id, isUnlocked: false)
+            XCTAssertNotEqual(achievement.title, "ach_\(id)_title",
+                              "missing Localizable.xcstrings entry for ach_\(id)_title")
+            XCTAssertNotEqual(achievement.description, "ach_\(id)_description",
+                              "missing Localizable.xcstrings entry for ach_\(id)_description")
+            XCTAssertFalse(achievement.title.isEmpty)
+            XCTAssertFalse(achievement.description.isEmpty)
+        }
+    }
+
     // MARK: - Group C cross-game progress
 
     // openingKey backs Hexperimenter ("win with 10 different openings"), so two different first
