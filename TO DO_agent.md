@@ -229,6 +229,24 @@ Notes:
 - Verification per step: warning-free build on **both** `iOS Simulator` and native `platform=macOS` (warnings differ per destination — see the Swift-concurrency feature's notes), plus the full `ChexxTests` suite. Note coverage is thin on the UI layer, so the tests will not catch a broken view wiring — launch the app too.
 - Do this in many small commits (one folder at a time), not one sweeping commit. The owner has asked for per-feature pushes so anything can be reverted cheaply, and a 30-file move is exactly where that matters.
 
+## Replace remaining width/height-scaled font sizes with standard text styles
+- [x] `HexChessLite/MGameView.swift` — 3 fonts (status text, both waiting-badge texts)
+- [x] `Chexx/User Interface/GameView.swift` — 6 fonts (status text, opponent name/label, turn indicator)
+- [ ] `HexChessLite/MMainMenuView.swift` — 4 fonts. **Do this as part of the "start game button sizing" item, not separately**: the fonts there are entangled with `.position(x:y:)` and `.frame(maxWidth:)` values that are also screen-fraction-derived, so changing text size without redoing the layout will move things. That file is the band-aid that item exists to remove.
+- [ ] `Chexx/User Interface/GameOverWindow.swift` — ~5 fonts, plus `WaveText(fontSize:)` and button frames tied to `screenHeight`
+- [ ] `HexChessLite/MGameOverWindow.swift` — same shape as the above; the two files are near-duplicates, so do them together and keep them consistent
+Notes:
+- Owner's framing: "change the width away from scaling geometry sizes. I didn't understand how font sizes worked. give them all normal sizes."
+- Rule applied: `…(size: geometry.size.height / N…)` → `.font(.system(.<style>, design: .serif).weight(.<w>))`, picking the standard style nearest the old rendered size on a ~844pt-tall phone. Keeping `design: .serif` preserves the look; using a semantic style buys Dynamic Type support, which is what the "start game button sizing" item asks for anyway.
+- Mapping used, for consistency in the remaining files: /20 → `.largeTitle`, /28 → `.title`, /32 and /36 → `.title2`, /40 → `.title3`.
+- **Known consequence: text is now smaller on iPad and Mac than it was.** The old sizes scaled with the screen, so a 1180pt-tall iPad rendered `/20` at 59pt; `.largeTitle` is 34pt. Dynamic Type scales with the user's accessibility setting, not with screen size. If large screens end up looking sparse, the fix is a size-class check (`@Environment(\.horizontalSizeClass)`) that bumps the style on `.regular`, not a return to geometry scaling. This overlaps with the existing "iPad/macOS/iPhone Duo UI refinement" item.
+- **Reevaluated the GeometryReaders, per the owner's question — none of the ones touched so far can be removed.** Fonts were never their only job:
+  - `MGameView`: `.onChange(of: geometry.size)` drives `renderScene(size:)` / `scene?.size`, and the badge cap uses the width. **Keep.**
+  - `GameView`: `createScene(size: geometry.size)`, `.onChange(of:)`, portrait detection (`height > width`), and two `.padding(.bottom, height * …)` offsets. **Keep.**
+  - `MMainMenuView`, `GameOverWindow`, `MGameOverWindow`: absolute `.position(x:y:)` and screen-fraction frames. **Keep**, though those layouts are the thing most worth revisiting later.
+  - `PromotionWindow`: geometry drives a text scale factor and centring, no font sizes. **Keep, nothing to do.**
+  - `ChexxWidgetsLiveActivity`: `tileSize = height / rows` is a board-geometry calculation, not a font. **Correct as-is, leave alone.**
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.

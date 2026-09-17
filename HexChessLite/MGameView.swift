@@ -49,11 +49,9 @@ struct MessagesGameView: View {
     @State private var waitingTimer: Timer?
     private let waitingForOpponentMaxWidthText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage") + "..."
 
-    // The badge's font size is derived from the view's width, but translations aren't: "Waiting for
-    // opponent" is 20 characters in English and 10 of the 24 localizations are longer — up to 34 in
-    // Bengali, with French and Polish at 1.3x and Spanish at 1.05x. The English string only just fit
-    // the iMessage view's width, so anything longer pushed the pill past the edges. These two let a
-    // long translation shrink to fit inside a bounded badge instead.
+    // "Waiting for opponent" is 20 characters in English and 10 of the 24 localizations are longer —
+    // up to 34 in Bengali, with French and Polish at 1.3x. These two keep a long translation inside
+    // a bounded badge: cap the width, and let the text scale down within it rather than overflow.
     private let waitingBadgeMaxWidthFraction: CGFloat = 0.9
     private let waitingBadgeMinimumScaleFactor: CGFloat = 0.5
 
@@ -69,7 +67,7 @@ struct MessagesGameView: View {
                 }
                 
                 Text(redStatusText)
-                    .font(.system(size: geometry.size.height / 20, weight: .semibold, design: .serif))
+                    .font(.system(.title, design: .serif).weight(.semibold))
                     .foregroundColor(.red)
                     .shadow(color: .red, radius: 5, x: 0, y: 0)
                     .padding(.bottom, geometry.size.height * 0.8) //5% away from the top
@@ -83,7 +81,7 @@ struct MessagesGameView: View {
                         // Invisible placeholder sized for the widest dot-count state, reserving the badge's
                         // layout space up front so the pill doesn't jitter as the dot count animates.
                         Text(waitingForOpponentMaxWidthText)
-                            .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
+                            .font(.system(.title3, design: .serif).weight(.medium))
                             .lineLimit(1)
                             .minimumScaleFactor(waitingBadgeMinimumScaleFactor)
                             .padding()
@@ -94,7 +92,7 @@ struct MessagesGameView: View {
                             .opacity(waitingForOpponentBackgroundOpacity)
 
                         Text(waitingForOpponentText)
-                            .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
+                            .font(.system(.title3, design: .serif).weight(.medium))
                             .foregroundColor(.white)
                             .lineLimit(1)
                             .minimumScaleFactor(waitingBadgeMinimumScaleFactor)
