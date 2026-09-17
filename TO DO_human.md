@@ -43,7 +43,11 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 - [ ] **Decide: should the older achievements be fixed to match?** Hexecutioner and Hextreme Measures currently unlock when *either* side wins by that method — so the CPU delivering a smothered-king mate can award you the achievement. Every new achievement is gated on you being the winner. Left alone rather than silently changing long-standing behaviour.
 
 ## Review Stockfish & other engine techniques against our CPU
-- [ ] Review the technique comparison list when the agent produces it, and pick which (if any) are worth implementing for a hex board before any engine code is written.
+- [ ] **Read `CPU_ENGINE_TECHNIQUES.md`** (repo root) and pick what's worth building. Nothing from it has been implemented — it's a review-first deliverable.
+  - Headline finding: **there is no quiescence search**, so the search can stop in the middle of a capture sequence and score the position on material alone. That's the classic horizon effect, and it's the cheapest large strength gain available. It's also a prerequisite for trusting any evaluation work — which may explain why the learned-evaluation experiment cost 6–12× per node for a modest gain.
+  - Ordering is currently capture-only (every quiet move scores 0), so killer moves + history heuristic are cheap follow-ups.
+  - Things the doc recommends **against** for a hex board: magic bitboards, endgame tablebases, and (for now) bitboards generally.
+  - Also decide whether the transposition table needs a size cap — it's never cleared between moves, so it grows unbounded over a long game.
 
 ## Update the project to the most recent frameworks
 - [ ] Decide whether to raise the iOS/macOS deployment targets. That drops older devices, so it's a product call, not a cleanup.

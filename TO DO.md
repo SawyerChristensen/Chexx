@@ -33,7 +33,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Move CPU training & eval files to HexChessCollection
 - [x] CPU considers knight underpromotion
 - [x] Background pondering on the player's turn
-- [ ] Review Stockfish & other engine techniques against our CPU — 👤 human
+- [~] Review Stockfish & other engine techniques against our CPU — 👤 human
 
 ## Update 1.7 — More Achievements 🏅
 - [x] Game Center achievement translations (all locales)
@@ -66,7 +66,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] iMessage: memory while resizing the window — 👤 human
 - [ ] iMessage: "Waiting for opponent" wraps badly in Spanish
 - [ ] iMessage: start game button sizing hardcoded per screen and language
-- [ ] Main app target folder is grey in Xcode while the iMessage extension is blue — 👤 human
+- [ ] Main app target folder is grey in Xcode while the iMessage extension is blue
 - [ ] GameSceneInteractionTests.testTappingFarOutsideTheBoardDeselectsWithoutMoving fails
 
 ## 🗺️ Planned
@@ -76,7 +76,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] Option to play as Black against the CPU
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
 - [ ] Check for newly added Unicode flags
-- [ ] Update the project to the most recent frameworks — 👤 human
+- [ ] Update the project to the most recent frameworks
 - [ ] Move history above the board in chess.com-style notation — 👤 human
 - [ ] Whole-project folder reorganization (after both folders are blue) — 👤 human
 
