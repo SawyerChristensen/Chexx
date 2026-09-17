@@ -96,9 +96,30 @@ Notes:
 - `ChexxCPUBenchmarkHistory.md` had no internal path references, so it needed no edit.
 
 ## Implement remaining achievements
+11 to add. Grouped by the state each one needs, cheapest group first — do them in this order.
+
+- [ ] **Group A — derivable at checkmate from the final board, no new state.** Add to the existing `// MARK:` achievement block in `GameScene.swift` (~lines 1018–1045), next to Hexecutioner/Hextreme Measures:
+  - [ ] `tactical_hexcellence` / `TacticalHexcellence` — "Checkmate without losing any pieces": winner still has all 18 starting pieces (`gameState.getPieces(for: winnerColor).count == 18`). Confirm 18 is Glinski's per-side count before relying on it.
+  - [ ] `hexclusion_zone` / `HexclusionZone` — "Deliver a smothered mate": the mated king's every pseudo-legal destination is occupied by its *own* pieces, and the checking piece is a knight. Reuse the `validMovesForPiece(..., skipKingCheck: true)` call already used by Hextreme Measures.
+  - [ ] `un_hexciting_finish` / `UnHexcitingFinish` (secret) — "Deliver a stalemate": hook the stalemate branch, not the checkmate branch. Find it first — stalemate scoring (0.75/0.25) already exists from Update 1.8, so there is a branch to hang this on.
+- [ ] **Group B — needs per-game counters on `GameState`.** `GameState` is `Codable` and persisted (`saveGameStateToFile`), so give every new field a default and confirm the custom `init(from:)` at `GameState.swift:136` tolerates older saved games missing these keys (it decodes explicitly — use `decodeIfPresent`, or a save from a previous version will fail to load):
+  - [ ] `hexceptional_morale` / `HexceptionalMorale` — "Promote 3 pawns in a single game": per-color promotion counter, incremented at the existing promotion site (`GameScene.swift:832`, where `hextra_power` fires).
+  - [ ] `great_hexcape` / `TheGreatHexcape` — "Checkmate after being put in check 3 times": per-color "times I was put in check" counter, incremented wherever check is detected; award to the winner if their own counter >= 3.
+  - [ ] `hexhausted` / `Hexhausted` (secret) — "Have a game last over 100 turns": may not need a new field — `gameState.HexPgn` already records the move list, so turn count can likely be derived from it. Check before adding a counter.
+  - [ ] `hexplorer` / `Hexplorer` — "Visit every tile in a single game": needs a 91-bit visited-tile set (`UInt128`/`[Bool]`/`Set<Int>` keyed by `GameState.boardIndex(col:row:)`), marked on every move destination. Decide whether "visited" means by either player (assume yes) and whether starting squares count as visited (assume no — they must be moved to). **Ambiguous — flag for the owner rather than guessing silently.**
+  - [ ] `hexpect_the_unexpected` / `HexpectTheUnexpected` (secret) — "Open by moving your king": fires on the player's first move of the game being a king move. Derivable from `HexPgn` being empty at move time; no new field if so.
+- [ ] **Group C — needs cross-game persistence** (belongs in `AchievementManager`/UserDefaults + Firestore, not `GameState`):
+  - [ ] `hexathon` / `Hexathon` — "Win 26 games": a win counter. Decide whether CPU wins count (assume yes, matching `hexceptional_win` firing for both). Must survive reinstall → mirror to Firestore like `unlockAchievement` does.
+  - [ ] `hexperimenter` / `Hexperimenter` — "Win with 10 different openings": persisted `Set<String>` of the player's own first move, added to on each win. Needs a stable opening key — the first `HexPgn` entry is the natural one.
+  - [ ] `seasoned_hexpert` / `SeasonedHexpert` (secret) — "Complete all other achievements": evaluate after every unlock; guard against it counting *itself*. Cleanest as a check inside `AchievementManager.unlockAchievement` once every other id is unlocked.
+- [ ] Register all 11 in `AchievementManager.achievements` (the array at `AchievementManager.swift:29`) — nothing unlocks without an entry, since `unlockAchievement` does `guard let index = achievements.firstIndex(...) else { return }` and silently no-ops.
+- [ ] Add 22 new `ach_<id>_title` / `ach_<id>_description` keys to `Chexx/Localizable.xcstrings` for every locale (18 keys exist today for the 9 implemented ones; each key carries ~30 locale entries — script this, do not hand-edit).
+- [ ] Add matching Game Center entries to `metadata.json` for `scripts/upload_metadata.py`.
 Notes:
-- Not started. Spec is the Achievements table in `TO DO.md` › Reference. Unimplemented: Hexperimenter, Hexathon, Hexplorer, Hexceptional Morale, The Great Hexcape, Hexclusion Zone, Tactical Hexcellence, plus secret Hexpect the Unexpected, Hexhausted, Seasoned Hexpert, Un-Hexciting Finish.
-- Game Center localizations live in `metadata.json` and are pushed by `scripts/upload_metadata.py` (the push itself is a human step). New achievements also need App Store Connect entries and icons, which are human tasks.
+- Two-call pattern for every unlock, both required: `AchievementManager.shared.unlockAchievement(withID: "snake_case")` **and** `GameCenterManager.shared.reportAchievement(identifier: "CamelCase")`. The ids differ in case convention between the two systems — easy to get wrong.
+- `unlockAchievement` is idempotent (early-returns on the UserDefaults flag), so it is safe to call from a code path that can run more than once per game.
+- The App Store Connect achievement entries, the icons, and running the `upload_metadata.py` push are all 👤 human steps — the code can ship before them, it just won't report to Game Center until they exist.
+- Not yet verified: whether `GameCenterManager.reportAchievement` no-ops gracefully for an identifier that has no App Store Connect entry yet. Check this before shipping Group A, or the first build could log errors for all 11.
 
 ## New achievement icons
 Notes:
