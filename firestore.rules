@@ -40,7 +40,8 @@ service cloud.firestore {
       allow update: if isOwner(uid) &&
         onlyChangedFields([
           'displayName', 'country', 'eloScore', 'profileImageURL',
-          'gameCenterPhotoBase64', 'deviceToken', 'fcmToken', 'achievements'
+          'gameCenterPhotoBase64', 'deviceToken', 'fcmToken', 'achievements',
+          'achievementProgress'
         ]);
 
       allow delete: if isOwner(uid);

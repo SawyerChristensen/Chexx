@@ -180,6 +180,50 @@ final class AchievementConditionTests: XCTestCase {
         XCTAssertEqual(state.turnCount, 2)
     }
 
+    // MARK: - Group C cross-game progress
+
+    // openingKey backs Hexperimenter ("win with 10 different openings"), so two different first
+    // moves must produce two different keys, and the same move must produce the same key.
+    func testOpeningKeyDistinguishesDifferentFirstMoves() {
+        var a = GameState()
+        a.HexPgn.append(contentsOf: [10, 20])
+
+        var b = GameState()
+        b.HexPgn.append(contentsOf: [11, 21])
+
+        var sameAsA = GameState()
+        sameAsA.HexPgn.append(contentsOf: [10, 20])
+
+        XCTAssertNotNil(a.openingKey(for: "white"))
+        XCTAssertNotEqual(a.openingKey(for: "white"), b.openingKey(for: "white"))
+        XCTAssertEqual(a.openingKey(for: "white"), sameAsA.openingKey(for: "white"))
+    }
+
+    // White's opening sits at HexPgn[1...2] and Black's at [3...4], so Black has no key until it
+    // has actually moved — otherwise every Black win would record the same nil-ish opening.
+    func testOpeningKeyIsNilUntilThatColourHasMoved() {
+        var state = GameState()
+        XCTAssertNil(state.openingKey(for: "white"), "no moves yet")
+        XCTAssertNil(state.openingKey(for: "black"))
+
+        state.HexPgn.append(contentsOf: [10, 20])
+        XCTAssertNotNil(state.openingKey(for: "white"))
+        XCTAssertNil(state.openingKey(for: "black"), "Black still hasn't moved")
+
+        state.HexPgn.append(contentsOf: [30, 40])
+        XCTAssertNotNil(state.openingKey(for: "black"))
+    }
+
+    // The two colours read different byte pairs; a bug swapping the offsets would make both
+    // players' openings identical and quietly cap Hexperimenter's progress.
+    func testOpeningKeysForBothColoursAreReadFromDifferentMoves() {
+        var state = GameState()
+        state.HexPgn.append(contentsOf: [10, 20])
+        state.HexPgn.append(contentsOf: [30, 40])
+
+        XCTAssertNotEqual(state.openingKey(for: "white"), state.openingKey(for: "black"))
+    }
+
     // Hexplorer compares visited tiles against the full board, so the two must agree on size.
     func testVisitingEveryTileMatchesTheBoardSize() {
         var state = GameState()

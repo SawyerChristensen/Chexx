@@ -303,6 +303,15 @@ struct GameState: Codable {
         return max(0, (HexPgn.count - 1) / 2)
     }
 
+    /// A stable key for `color`'s opening move, or nil if that side hasn't moved yet. Same HexPgn
+    /// layout as `turnCount`: one variant byte, then two bytes per move, so White's first move sits
+    /// at 1...2 and Black's at 3...4. Backs the Hexperimenter achievement.
+    func openingKey(for color: String) -> String? {
+        let offset = color == "white" ? 1 : 3
+        guard HexPgn.count >= offset + 2 else { return nil }
+        return "\(HexPgn[offset])-\(HexPgn[offset + 1])"
+    }
+
     /// Pieces each side starts with in Glinski's: 9 pawns, 3 bishops, 2 rooks, 2 knights,
     /// 1 queen, 1 king. Kept next to `setInitialPiecePositions` so the two stay in sync —
     /// the Tactical Hexcellence achievement compares against it.

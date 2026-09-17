@@ -1101,6 +1101,13 @@ class GameScene: SKScene {
                     GameCenterManager.shared.reportAchievement(identifier: "HextremeMeasures")
                 }
 
+                // MARK: Cross-game progress (Hexathon, Hexperimenter)
+                // Recorded once per won game, here rather than at the several hexceptional_win
+                // call sites, so a win can't be double-counted.
+                if localUserWon {
+                    AchievementManager.shared.recordWin(openingKey: gameState.openingKey(for: winnerColor))
+                }
+
                 // MARK: The Great Hexcape Achievement
                 // Won despite having been put in check at least three times along the way. The
                 // mating check isn't counted — the winner isn't in check at checkmate.
@@ -1267,12 +1274,13 @@ class GameScene: SKScene {
                     }
                 }
                 
-                // MARK: Un-Hexciting Finish Achievement
+                // MARK: Un-Hexciting Finish Achievement + cross-game progress
                 // Stalemate is a win in this game (0.75/0.25), so "deliver a stalemate" means
-                // being the winner of a stalemate-ended game.
+                // being the winner of a stalemate-ended game, and it counts toward Hexathon too.
                 if localUserWon {
                     AchievementManager.shared.unlockAchievement(withID: "un_hexciting_finish")
                     GameCenterManager.shared.reportAchievement(identifier: "UnHexcitingFinish")
+                    AchievementManager.shared.recordWin(openingKey: gameState.openingKey(for: winnerColor))
                 }
 
                 whiteStatusTextUpdater?("")
