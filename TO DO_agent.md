@@ -95,6 +95,15 @@ Notes:
 - `meta.inputDataset` in the weights JSON is a provenance field recording which dataset produced those weights. It was rewritten to the new location rather than left pointing at a path that no longer exists — the dataset identity is unchanged, only where it lives. It is regenerated on the next training run anyway.
 - `ChexxCPUBenchmarkHistory.md` had no internal path references, so it needed no edit.
 
+## Review Stockfish & other engine techniques against our CPU
+Notes:
+- Not started. Owner's framing: "Review techniques Stockfish [uses] to power its chess engine, as well as other good chess engine techniques. Create a list and see if we already have them implemented in Hex Chess, or if they make sense to implement for hexagonal chess."
+- Deliverable is a **written comparison list first**, not code: technique → do we have it → does it even transfer to a hex board. Get that reviewed before implementing anything from it.
+- Already implemented per `TO DO.md` › Update 1.6, so these start as "have it": iterative deepening, null-move pruning, LMR, transposition table w/ Zobrist hashing, an opening book (Black's first move), deeper endgame search, background pondering. `GameCPU` is the file.
+- Things to explicitly assess for hex transferability — several standard techniques assume an 8x8 board or orthogonal/diagonal ray structure and may not port cleanly: bitboards (91 tiles needs `UInt128` or two words, and hex ray directions differ), magic bitboards, king safety/pawn-structure heuristics (hex pawns capture differently), SEE, aspiration windows, futility/razoring, singular extensions, counter-move & history heuristics, killer moves, syzygy-style tablebases (almost certainly not worth it for hex).
+- `~/HexChessCollection/ChexxCPUBenchmarkHistory.md` holds prior benchmark runs — use the same harness for any before/after claim rather than inventing a new one.
+- Related and already done: "CPU learned evaluation" (NNUE-style eval was researched there; don't redo that analysis — read it first).
+
 ## Implement remaining achievements
 11 to add. Grouped by the state each one needs, cheapest group first — do them in this order.
 
@@ -141,6 +150,26 @@ Notes:
 ## iMessage: start game button sizing hardcoded per screen and language
 Notes:
 - Not started. `HexChessLite/MMainMenuView.swift` "Start Game!" button: the font size is hand-fitted per locale/screen size (a band-aid). Make it adapt to Dynamic Type and device size instead.
+
+## Main app target folder is grey in Xcode while the iMessage extension is blue
+Notes:
+- Not started. Owner's framing: "see why the main app target folder is grey while the imessage extension is blue".
+- In the Xcode navigator, folder icon colour encodes the *kind* of reference: a blue folder is a real folder reference / synchronized folder, a plain-grey or yellow one is a legacy group whose on-disk layout is tracked manually in `project.pbxproj`. The likely story is that `HexChessLite/` was added as a synchronized folder (newer Xcode default) while `Chexx/` is still an old-style group — confirm by reading the `PBXFileSystemSynchronizedRootGroup` vs `PBXGroup` entries in `Chexx.xcodeproj/project.pbxproj` rather than guessing from the icon.
+- Converting the main target to a synchronized folder is the obvious fix but is NOT risk-free: it changes how files are enumerated into the build, and this project has per-platform filtering (extensions are excluded from macOS builds) plus target-membership subtleties already noted under "Switch sound effects to PocketPoker's audio format". Verify both an iphonesimulator and a native `platform=macOS` build, plus the full ChexxTests suite, before and after.
+- Note the working tree already had uncommitted `project.pbxproj` / `.xcscheme` edits when this was filed — check with the owner whether those are related before touching the project file.
+
+## Update the project to the most recent frameworks
+Notes:
+- Not started. Filed together with the folder-colour item ("make sure we have the most recent frameworks for our project") but kept separate because the fix is unrelated.
+- Scope to settle first: Swift language mode / tools version, iOS+macOS deployment targets, and the Firebase SPM package version (`Chexx.xcodeproj/project.xcworkspace` / `Package.resolved`). Firebase is the big one — a major bump there has historically needed code changes.
+- Raising the deployment target is a product decision (it drops older devices), so propose it, don't just do it.
+
+## Move history above the board in chess.com-style notation
+Notes:
+- Not started. Owner's framing: "add a move history above the game board in the standard chess notation chess.com uses".
+- Data source already exists: `GameState.HexPgn: [UInt8]` is the recorded move list, and `GameScene.applyHexPgn` reads it back. The work is a renderer + a notation mapping, not new game-logic state.
+- **Open question for the owner before building this:** chess.com displays SAN (`Nf3`, `Qxd5+`, `O-O`) on an 8x8 grid. Glinski's hex chess has 11 files (a–l, skipping j by convention) with variable column heights and no castling, so "the notation chess.com uses" can't be adopted literally — it has to be the hex analogue. Confirm the intended coordinate scheme; note `TO DO.md` › Ideas already has "Optional row/column labels (A–L, 1–11)", which is the same coordinate question and should probably be decided once for both.
+- Placement "above the board" needs a layout pass across iPhone/iPad/macOS and the iMessage extension (which has its own `MGameScene`/`MGameView` and much less vertical room). Check whether this is main-app-only.
 
 ## Option to play as Black against the CPU
 Notes:

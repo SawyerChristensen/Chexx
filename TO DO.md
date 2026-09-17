@@ -21,6 +21,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Review prompt after 2nd CPU win
 - [x] Replace DispatchQueue with Swift concurrency (Tasks)
 - [x] Switch sound effects to PocketPoker's audio format
+- [ ] Review StockFish and techniques it uses to run a normal chess engine. See if we can use them or if it makes sense to use them in Hexagonal Chess.
 
 ## Update 1.6 — CPU 🤖
 - [x] Default search depth 5
@@ -32,6 +33,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Move CPU training & eval files to HexChessCollection
 - [x] CPU considers knight underpromotion
 - [x] Background pondering on the player's turn
+- [ ] Review Stockfish & other engine techniques against our CPU
 
 ## Update 1.7 — More Achievements 🏅
 - [x] Game Center achievement translations (all locales)
@@ -64,6 +66,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] iMessage: memory while resizing the window — 👤 human
 - [ ] iMessage: "Waiting for opponent" wraps badly in Spanish
 - [ ] iMessage: start game button sizing hardcoded per screen and language
+- [ ] Main app target folder is grey in Xcode while the iMessage extension is blue
 
 ## 🗺️ Planned
 - [ ] iMessage: per-player animated captions live transcript layouts like in deckedout/pocketpoker
@@ -72,6 +75,8 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] Option to play as Black against the CPU
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
 - [ ] Check for newly added Unicode flags
+- [ ] Update the project to the most recent frameworks
+- [ ] Move history above the board in chess.com-style notation
 
 ## 💡 Ideas
 - [ ] Android version
