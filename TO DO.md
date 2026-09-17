@@ -29,7 +29,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Deeper endgame search
 - [x] Engine optimizations (iterative deepening, null-move pruning, LMR)
 - [~] CPU learned evaluation — 👤 human
-- [ ] Move CPU training & eval files to HexChessCollection
+- [x] Move CPU training & eval files to HexChessCollection
 - [x] CPU considers knight underpromotion
 - [x] Background pondering on the player's turn
 
@@ -75,7 +75,6 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 
 ## 💡 Ideas
 - [ ] Android version
-- [ ] Facebook sign-in
 - [ ] Apple Games app multiplayer invites
 - [ ] Game Center access point as the profile icon
 - [ ] Game history in profile

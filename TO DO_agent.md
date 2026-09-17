@@ -84,13 +84,16 @@ Notes:
 - [x] `Chexx/Game Logic/LearnedEvalWeights.swift` behind `GameCPU.useLearnedEvaluation` (default off) + tests
 - [x] Benchmark: 6–12× slower per node, won 24 of 25 decisive games vs material-only
 Notes:
-- Dataset and docs currently live in `~/DeckedOutCollection/Chexx*` (see the move-files feature).
+- Dataset and docs live in `~/HexChessCollection/Chexx*` (moved there by the move-files feature below).
 
 ## Move CPU training & eval files to HexChessCollection
+- [x] Moved all four files `~/DeckedOutCollection/` → `~/HexChessCollection/`: `ChexxCPUBenchmarkHistory.md`, `ChexxLearnedEvalWeights.json`, `ChexxSelfPlayDataset.jsonl`, `ChexxSelfPlayDataset.md` (`mv -n`, sizes verified, no name collisions at the destination; no `Chexx*` files remain in `DeckedOutCollection`)
+- [x] Updated the 7 in-repo path references: `scripts/train_eval_weights.py` (docstring line 5, usage example lines 18–19, the `--input`/`--output` argparse defaults lines 115–116, and the embedded `meta.description` string it writes into the output JSON line 144) and `Chexx/Game Logic/LearnedEvalWeights.swift` (header comment line 7). Repo now greps clean for `DeckedOutCollection` outside this file.
+- [x] Fixed stale self-references *inside* the moved files themselves (easy to miss — they point at their own old home): `ChexxSelfPlayDataset.md` lines 5/93/185, and `ChexxLearnedEvalWeights.json`'s `meta.description` plus its absolute `meta.inputDataset` provenance path
+- [x] Verified end to end: `python3 scripts/train_eval_weights.py --epochs 2` resolves the new default input path and trains on all 548 records (MSE 0.0755 → 0.0736); output JSON re-validated with `json.load`
 Notes:
-- Not started. Owner note: "relocate the ai eval files from the deckedout project to hex chess collection or here".
-- Files: `~/DeckedOutCollection/ChexxCPUBenchmarkHistory.md`, `ChexxLearnedEvalWeights.json`, `ChexxSelfPlayDataset.jsonl`, `ChexxSelfPlayDataset.md` → `~/HexChessCollection/`.
-- Update path references in `scripts/train_eval_weights.py` and `Chexx/Game Logic/LearnedEvalWeights.swift` (grep the repo for `DeckedOutCollection`).
+- `meta.inputDataset` in the weights JSON is a provenance field recording which dataset produced those weights. It was rewritten to the new location rather than left pointing at a path that no longer exists — the dataset identity is unchanged, only where it lives. It is regenerated on the next training run anyway.
+- `ChexxCPUBenchmarkHistory.md` had no internal path references, so it needed no edit.
 
 ## Implement remaining achievements
 Notes:

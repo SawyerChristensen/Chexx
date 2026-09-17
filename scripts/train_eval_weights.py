@@ -2,7 +2,7 @@
 """
 Trains a small linear piece-square-table (PST) evaluation function for GameCPU offline,
 using the self-play dataset produced by ChexxTests/SelfPlayGenerator.swift +
-TrainingDataExtractor.swift (see ~/DeckedOutCollection/ChexxSelfPlayDataset.md).
+TrainingDataExtractor.swift (see ~/HexChessCollection/ChexxSelfPlayDataset.md).
 
 No external ML framework — plain gradient descent over a table of
 weight[color][pieceType][squareIndex], one weight per piece/color/square (91 hex tiles,
@@ -15,8 +15,8 @@ a ~550-record dataset from overfitting into nonsense.
 
 Usage:
     python3 scripts/train_eval_weights.py \
-        --input ~/DeckedOutCollection/ChexxSelfPlayDataset.jsonl \
-        --output ~/DeckedOutCollection/ChexxLearnedEvalWeights.json
+        --input ~/HexChessCollection/ChexxSelfPlayDataset.jsonl \
+        --output ~/HexChessCollection/ChexxLearnedEvalWeights.json
 """
 
 import argparse
@@ -112,8 +112,8 @@ def train(records, weights, prior, temperature, epochs, lr, l2, seed):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--input", default=os.path.expanduser("~/DeckedOutCollection/ChexxSelfPlayDataset.jsonl"))
-    parser.add_argument("--output", default=os.path.expanduser("~/DeckedOutCollection/ChexxLearnedEvalWeights.json"))
+    parser.add_argument("--input", default=os.path.expanduser("~/HexChessCollection/ChexxSelfPlayDataset.jsonl"))
+    parser.add_argument("--output", default=os.path.expanduser("~/HexChessCollection/ChexxLearnedEvalWeights.json"))
     parser.add_argument("--epochs", type=int, default=300)
     parser.add_argument("--lr", type=float, default=0.02)
     parser.add_argument("--l2", type=float, default=0.0005)
@@ -141,7 +141,7 @@ def main():
         "meta": {
             "description": "Learned piece-square-table weights for GameCPU.evaluateGameState, "
                             "trained offline on Chexx self-play data. See "
-                            "~/DeckedOutCollection/ChexxSelfPlayDataset.md and TO DO.md's "
+                            "~/HexChessCollection/ChexxSelfPlayDataset.md and TO DO.md's "
                             "\"Add AI components to CPU?\" section for context.",
             "squareOrder": "GameState.boardIndex(col:row:) flat index, 0..90",
             "pieceTypes": PIECE_TYPES,

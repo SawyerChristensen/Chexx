@@ -4,7 +4,7 @@
 //
 //  Piece-square-table weights trained offline on Chexx self-play data, one weight per
 //  (color, pieceType, GameState.boardIndex(col:row:)). See the "Add AI components to CPU?"
-//  section of TO DO.md and ~/DeckedOutCollection/ChexxSelfPlayDataset.md for how these were
+//  section of TO DO.md and ~/HexChessCollection/ChexxSelfPlayDataset.md for how these were
 //  produced (scripts/train_eval_weights.py). Only used when GameCPU.useLearnedEvaluation is on;
 //  the default material-only evaluator is unaffected.
 //
