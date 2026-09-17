@@ -1102,6 +1102,18 @@ func isKingInCheckUsingKingSight(for color: String, in currentGameState: inout G
     return (true, "\(boardToHex([attackerPosition])[0]) \(piece.color) \(piece.type)")
 }
 
+/// The piece currently giving check to `color`'s king, or nil if that king isn't in check.
+/// Thin wrapper over the tuple-based king-sight core for callers outside this file, which can't
+/// reach the file-private `parsePosition`. Used by the Hexclusion Zone (smothered mate)
+/// achievement, which needs to know the checker is a knight.
+func checkingPiece(against color: String, in gameState: GameState) -> Piece? {
+    let kingPositionString = color == "white" ? gameState.whiteKingPosition : gameState.blackKingPosition
+    guard let kingPosition = parsePosition(kingPositionString) else { return nil }
+    let (inCheck, attackerPosition) = isKingInCheckUsingKingSight(for: color, at: kingPosition, in: gameState)
+    guard inCheck, let attackerPosition else { return nil }
+    return gameState.pieceAt(col: attackerPosition.0, row: attackerPosition.1)
+}
+
 // Tuple-based core: works directly off the king's (col,row) so callers that already have board
 // indices (e.g. isPinned, filterMovesThatExposeKing) never round-trip through algebraic notation.
 func isKingInCheckUsingKingSight(for color: String, at kingPosition: (Int, Int), in currentGameState: GameState) -> (Bool, (Int, Int)?) {

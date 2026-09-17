@@ -62,6 +62,18 @@ class AchievementManager: ObservableObject {
                         //title: "Hextreme Measures",
                         //description: "Checkmate using your own king",
                         isUnlocked: false),
+            Achievement(id: "tactical_hexcellence",
+                        //title: "Tactical Hexcellence",
+                        //description: "Checkmate without losing any pieces",
+                        isUnlocked: false),
+            Achievement(id: "hexclusion_zone",
+                        //title: "Hexclusion Zone",
+                        //description: "Deliver a smothered mate",
+                        isUnlocked: false),
+            Achievement(id: "un_hexciting_finish",
+                        //title: "Un-Hexciting Finish",
+                        //description: "Deliver a stalemate",
+                        isUnlocked: false),
         ]
 
     private let currentUserId: String

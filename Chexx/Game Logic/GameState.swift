@@ -261,6 +261,11 @@ struct GameState: Codable {
         return color == "white" ? whiteSliderCount : blackSliderCount
     }
 
+    /// Pieces each side starts with in Glinski's: 9 pawns, 3 bishops, 2 rooks, 2 knights,
+    /// 1 queen, 1 king. Kept next to `setInitialPiecePositions` so the two stay in sync —
+    /// the Tactical Hexcellence achievement compares against it.
+    static let startingPieceCountPerSide = 18
+
     mutating func setInitialPiecePositions() { //when enabling variants, this is private mutating func setGlinskisPiecePositions()
         let initialPositions: [((Int, Int), Piece)] = [
             ((1, 6), Piece(color: "black", type: "pawn")),

@@ -925,6 +925,20 @@ class GameScene: SKScene {
             let loserColor  = gameState.currentPlayer
             let winnerColor = (loserColor == "white") ? "black" : "white"
 
+            // Did the *local human* win? Achievements below are only awarded to them, not to
+            // whoever happens to be the winning colour. Online: compare against our own colour.
+            // vs CPU: the human is always White (see "Option to play as Black against the CPU"
+            // in TO DO.md — revisit this line when that ships). Pass-and-play: the human played
+            // both sides, so a win is always theirs.
+            let localUserWon: Bool
+            if isOnlineMultiplayer {
+                localUserWon = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
+            } else if isVsCPU {
+                localUserWon = (winnerColor == "white")
+            } else {
+                localUserWon = true
+            }
+
             switch gameStatus {
 
             case "checkmate":
@@ -1038,6 +1052,29 @@ class GameScene: SKScene {
                     //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
                     AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
                     GameCenterManager.shared.reportAchievement(identifier: "HextremeMeasures")
+                }
+
+                // MARK: Tactical Hexcellence Achievement
+                // Checkmate without losing a single piece: the winner still has everything it
+                // started with.
+                if localUserWon,
+                   gameState.getPieces(for: winnerColor).count == GameState.startingPieceCountPerSide {
+                    AchievementManager.shared.unlockAchievement(withID: "tactical_hexcellence")
+                    GameCenterManager.shared.reportAchievement(identifier: "TacticalHexcellence")
+                }
+
+                // MARK: Hexclusion Zone Achievement
+                // Smothered mate: the mated king has no pseudo-legal destination at all, and the
+                // piece giving check is a knight. validMovesForKing already drops squares held by
+                // the king's own colour, so an empty list here means every neighbouring tile is
+                // occupied by a friendly piece — i.e. the king is smothered rather than merely
+                // hemmed in by attacked squares (loserKingWouldBeValidMoves is computed with
+                // skipKingCheck: true above, so attacked-but-empty squares would still appear).
+                if localUserWon,
+                   loserKingWouldBeValidMoves.isEmpty,
+                   checkingPiece(against: loserColor, in: gameState)?.type == "knight" {
+                    AchievementManager.shared.unlockAchievement(withID: "hexclusion_zone")
+                    GameCenterManager.shared.reportAchievement(identifier: "HexclusionZone")
                 }
         
                 // MARK: Hex Machina Achievement
@@ -1175,6 +1212,14 @@ class GameScene: SKScene {
                     }
                 }
                 
+                // MARK: Un-Hexciting Finish Achievement
+                // Stalemate is a win in this game (0.75/0.25), so "deliver a stalemate" means
+                // being the winner of a stalemate-ended game.
+                if localUserWon {
+                    AchievementManager.shared.unlockAchievement(withID: "un_hexciting_finish")
+                    GameCenterManager.shared.reportAchievement(identifier: "UnHexcitingFinish")
+                }
+
                 whiteStatusTextUpdater?("")
                 //redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
