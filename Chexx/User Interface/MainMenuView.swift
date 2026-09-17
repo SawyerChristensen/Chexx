@@ -46,7 +46,13 @@ struct MainMenuView: View {
     @State private var hasSavedPassAndPlayGame: Bool = false
 
     var body: some View {
-        NavigationView {
+        // NavigationStack, not NavigationView. NavigationView's default style on native macOS is a
+        // two-column split: the menu becomes a sidebar and the detail column sits empty beside it,
+        // with a draggable divider. StackNavigationViewStyle would have collapsed that to one
+        // column, but it doesn't exist on macOS — hence the #if that used to sit at the bottom of
+        // this view, which left macOS on the split default. NavigationStack is single-column on
+        // every platform, and is the non-deprecated replacement besides.
+        NavigationStack {
             GeometryReader { geometry in
                 let screenHeight = geometry.size.height
                 let screenWidth = geometry.size.width
@@ -607,9 +613,6 @@ struct MainMenuView: View {
             }
             .background(Color(colorScheme == .dark ? Color.platformSystemGray6 : Color.white)) //change this to change main menu background color
         }
-        #if canImport(UIKit)
-        .navigationViewStyle(StackNavigationViewStyle()) // Ensure the NavigationView behaves well on iPad
-        #endif
     }
     
     // Jumps to the submenu matching a Home Screen quick action tap, then clears it.

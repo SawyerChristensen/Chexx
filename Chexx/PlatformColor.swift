@@ -30,6 +30,25 @@ extension View {
         #endif
     }
 
+    /// Strips macOS's system button bezel.
+    ///
+    /// Every button in this app supplies its own custom label — hexagon-clipped shapes that draw
+    /// their own background. On iOS those render flat, but macOS's `DefaultButtonStyle` draws a
+    /// system bezel *around* the label, so each one appears outlined. `.plain` removes the bezel
+    /// and leaves the custom label as the whole button.
+    ///
+    /// Applied once at the app root: SwiftUI propagates a button style to every descendant, and a
+    /// view that genuinely wants a system style (ProfileView's `.bordered`, say) overrides it
+    /// locally. iOS is deliberately left untouched.
+    @ViewBuilder
+    func customLabelButtonStyle() -> some View {
+        #if os(macOS)
+        self.buttonStyle(.plain)
+        #else
+        self
+        #endif
+    }
+
     /// `.textInputAutocapitalization(_:)` only applies to UIKit's on-screen
     /// keyboard — the `TextInputAutocapitalization` type itself doesn't exist
     /// on native macOS, so this is a no-op there.

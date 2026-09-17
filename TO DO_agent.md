@@ -269,6 +269,20 @@ Notes:
 - Gotcha worth remembering: taking an `NSLock` directly inside an `async` function warns "unavailable from asynchronous contexts" and is an **error under the Swift 6 language mode**. The locked read lives in a separate non-async `currentTail()` for that reason.
 - Suite now 42 tests, 0 failures (was 27 with 2 failing). Warning-free on both destinations.
 
+## macOS: empty draggable split-view pane beside the main menu
+- [x] Fixed — `NavigationView` → `NavigationStack`
+Notes:
+- Reported by the owner as "a weird section on the right that is blank", and confirmed by "I can drag the empty section back and forth" — a draggable divider means a split view, not a layout gap.
+- Cause: `MainMenuView` wrapped everything in `NavigationView`, whose **default style on macOS is a two-column split** — the menu becomes the sidebar, the detail column sits empty. The `.navigationViewStyle(StackNavigationViewStyle())` that would have collapsed it to one column was inside `#if canImport(UIKit)`, because `StackNavigationViewStyle` does not exist on macOS. So every platform except macOS got a single column, and macOS silently kept the split.
+- Fix: `NavigationStack`, which is single-column on every platform and is the non-deprecated replacement for `NavigationView`. The `#if` block is gone. Safe here because all 6 `NavigationLink`s use the plain `destination:` form, and the macOS deployment target is 14.0 (NavigationStack needs 13+).
+
+## macOS: system button bezel outlining every custom button
+- [x] Fixed — `.buttonStyle(.plain)` on macOS, applied once at the app root
+Notes:
+- Cause: every button in the app supplies a custom label — hexagon-clipped shapes drawing their own background. iOS renders those flat, but macOS's `DefaultButtonStyle` draws a system bezel *around* the label, so each button looked outlined.
+- Fix: `customLabelButtonStyle()` in `PlatformColor.swift`, following the existing `crossPlatformHoverEffect()` pattern, applied once to `MainMenuView` in the `WindowGroup`. SwiftUI propagates a button style to all descendants, so one application covers the app; a view that wants a system style (`ProfileView`'s `.bordered`) overrides it locally. iOS is untouched.
+- **Not visually verified** — builds clean on both destinations and the full suite passes, but confirming this needs the Mac app on screen.
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.

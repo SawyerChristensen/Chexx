@@ -178,6 +178,7 @@ struct ChexxApp: App {
     var body: some Scene {
         WindowGroup {
             MainMenuView()
+                .customLabelButtonStyle()
         }
         #if os(macOS)
         .defaultSize(width: 550, height: 550)
