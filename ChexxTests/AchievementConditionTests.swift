@@ -111,4 +111,83 @@ final class AchievementConditionTests: XCTestCase {
 
         XCTAssertNil(checkingPiece(against: "white", in: state))
     }
+
+    // MARK: - Group B per-game counters
+
+    // The migration hazard: GameState has a hand-written init(from:), and these counters were added
+    // after games were already being saved to disk. A save written before they existed must still
+    // load, with the counters defaulting rather than throwing.
+    func testGameStateDecodesSavesWrittenBeforeTheAchievementCountersExisted() throws {
+        let encoded = try JSONEncoder().encode(GameState())
+        var json = try XCTUnwrap(
+            try JSONSerialization.jsonObject(with: encoded) as? [String: Any]
+        )
+        for key in ["whitePromotionCount", "blackPromotionCount", "whiteTimesPutInCheck",
+                    "blackTimesPutInCheck", "visitedTileIndices"] {
+            XCTAssertNotNil(json[key], "\(key) should be persisted, otherwise it can't survive a reload")
+            json.removeValue(forKey: key)
+        }
+
+        let legacy = try JSONSerialization.data(withJSONObject: json)
+        let decoded = try JSONDecoder().decode(GameState.self, from: legacy)
+
+        XCTAssertEqual(decoded.whitePromotionCount, 0)
+        XCTAssertEqual(decoded.blackPromotionCount, 0)
+        XCTAssertEqual(decoded.whiteTimesPutInCheck, 0)
+        XCTAssertEqual(decoded.blackTimesPutInCheck, 0)
+        XCTAssertTrue(decoded.visitedTileIndices.isEmpty)
+    }
+
+    // The counters are the one bit of per-game state that can't be recomputed from the board, so
+    // unlike material/zobrist they genuinely have to round-trip.
+    func testAchievementCountersSurviveASaveAndReload() throws {
+        var state = GameState()
+        state.recordPromotion(for: "white")
+        state.recordPromotion(for: "white")
+        state.recordPutInCheck("black")
+        state.visitedTileIndices.insert(GameState.boardIndex(col: 3, row: 2))
+
+        let decoded = try JSONDecoder().decode(GameState.self, from: JSONEncoder().encode(state))
+
+        XCTAssertEqual(decoded.whitePromotionCount, 2)
+        XCTAssertEqual(decoded.blackPromotionCount, 0)
+        XCTAssertEqual(decoded.blackTimesPutInCheck, 1)
+        XCTAssertEqual(decoded.whiteTimesPutInCheck, 0)
+        XCTAssertEqual(decoded.visitedTileIndices, [GameState.boardIndex(col: 3, row: 2)])
+    }
+
+    func testPerColourCountersDoNotLeakIntoEachOther() {
+        var state = GameState()
+        state.recordPromotion(for: "black")
+        state.recordPutInCheck("white")
+
+        XCTAssertEqual(state.promotionCount(for: "black"), 1)
+        XCTAssertEqual(state.promotionCount(for: "white"), 0)
+        XCTAssertEqual(state.timesPutInCheck("white"), 1)
+        XCTAssertEqual(state.timesPutInCheck("black"), 0)
+    }
+
+    // turnCount backs Hexhausted and is derived from HexPgn's layout (one variant byte, then two
+    // bytes per move) rather than a stored counter — so it's worth pinning that arithmetic.
+    func testTurnCountDerivesFromTheHexPgnMoveList() {
+        var state = GameState()
+        XCTAssertEqual(state.turnCount, 0, "a fresh game has only the variant byte")
+
+        state.HexPgn.append(contentsOf: [10, 20])
+        XCTAssertEqual(state.turnCount, 1)
+
+        state.HexPgn.append(contentsOf: [30, 40])
+        XCTAssertEqual(state.turnCount, 2)
+    }
+
+    // Hexplorer compares visited tiles against the full board, so the two must agree on size.
+    func testVisitingEveryTileMatchesTheBoardSize() {
+        var state = GameState()
+        for index in 0..<GameState.tileCount {
+            state.visitedTileIndices.insert(index)
+        }
+
+        XCTAssertEqual(state.visitedTileIndices.count, GameState.tileCount)
+        XCTAssertEqual(GameState.tileCount, 91, "Glinski's board is 91 hexes")
+    }
 }

@@ -853,6 +853,20 @@ class GameScene: SKScene {
     }
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
+    /// Whether `color` is the side the local human is playing. Achievements are only awarded to
+    /// them, never to the CPU or a remote opponent. Online: our assigned colour. vs CPU: the human
+    /// is always White (see "Option to play as Black against the CPU" in TO DO.md — revisit when
+    /// that ships). Pass-and-play: the human plays both sides, so either colour is theirs.
+    func isLocalUser(_ color: String) -> Bool {
+        if isOnlineMultiplayer {
+            return color == MultiplayerManager.shared.currentPlayerColor
+        } else if isVsCPU {
+            return color == "white"
+        } else {
+            return true
+        }
+    }
+
     func finalizeMove(_ pieceNode: SKSpriteNode, _ color: String, _ type: String, _ originalPosition: String, _ hexagonName: String, _ originalColIndex: Int, _ originalRowIndex: Int, _ colIndex: Int, _ rowIndex: Int, promotionOffsetInt: UInt8) {
         
         let columns = hexColumns
@@ -862,7 +876,46 @@ class GameScene: SKScene {
         gameState[originalColIndex, originalRowIndex] = nil
         gameState[colIndex, rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
         
+        // Captured before addMoveToHexPgn appends this move: HexPgn is a variant byte plus two
+        // bytes per move, so White is making its first move at count 1 and Black at count 3.
+        let isMoversFirstMove = (color == "white" && gameState.HexPgn.count == 1)
+            || (color == "black" && gameState.HexPgn.count == 3)
+
         gameState.addMoveToHexPgn(from: originalPosition, to: hexagonName, promotionOffset: promotionOffsetInt)
+
+        gameState.visitedTileIndices.insert(GameState.boardIndex(col: colIndex, row: rowIndex))
+
+        if promotionOffsetInt >= 91 {
+            gameState.recordPromotion(for: color)
+        }
+
+        if isLocalUser(color) {
+            // MARK: Hexpect the Unexpected Achievement (secret)
+            if isMoversFirstMove && type == "king" {
+                AchievementManager.shared.unlockAchievement(withID: "hexpect_the_unexpected")
+                GameCenterManager.shared.reportAchievement(identifier: "HexpectTheUnexpected")
+            }
+
+            // MARK: Hexceptional Morale Achievement
+            if gameState.promotionCount(for: color) >= 3 {
+                AchievementManager.shared.unlockAchievement(withID: "hexceptional_morale")
+                GameCenterManager.shared.reportAchievement(identifier: "HexceptionalMorale")
+            }
+
+            // MARK: Hexplorer Achievement
+            // Every tile landed on at least once this game, by either player.
+            if gameState.visitedTileIndices.count == GameState.tileCount {
+                AchievementManager.shared.unlockAchievement(withID: "hexplorer")
+                GameCenterManager.shared.reportAchievement(identifier: "Hexplorer")
+            }
+
+            // MARK: Hexhausted Achievement (secret)
+            // "Turns" counted as each player's move, so 100 is 50 apiece.
+            if gameState.turnCount > 100 {
+                AchievementManager.shared.unlockAchievement(withID: "hexhausted")
+                GameCenterManager.shared.reportAchievement(identifier: "Hexhausted")
+            }
+        }
         
         if isOnlineMultiplayer { //send move to cloud if online multiplayer and is our turn/move to send
             MultiplayerManager.shared.sendMove(hexPgn: gameState.HexPgn, currentTurn: gameState.currentPlayer)
@@ -918,6 +971,12 @@ class GameScene: SKScene {
         
         // MARK: - Is the game over now?
         let (isGameOver, gameStatus) = gameState.isGameOver()
+
+        // currentPlayer was flipped to the opponent above, so a non-terminal "check by ..." status
+        // means *they* were just put in check. Tallied per colour for The Great Hexcape.
+        if !isGameOver && gameStatus.starts(with: "check") {
+            gameState.recordPutInCheck(gameState.currentPlayer)
+        }
         
         if isGameOver {
 
@@ -925,19 +984,7 @@ class GameScene: SKScene {
             let loserColor  = gameState.currentPlayer
             let winnerColor = (loserColor == "white") ? "black" : "white"
 
-            // Did the *local human* win? Achievements below are only awarded to them, not to
-            // whoever happens to be the winning colour. Online: compare against our own colour.
-            // vs CPU: the human is always White (see "Option to play as Black against the CPU"
-            // in TO DO.md — revisit this line when that ships). Pass-and-play: the human played
-            // both sides, so a win is always theirs.
-            let localUserWon: Bool
-            if isOnlineMultiplayer {
-                localUserWon = (winnerColor == MultiplayerManager.shared.currentPlayerColor)
-            } else if isVsCPU {
-                localUserWon = (winnerColor == "white")
-            } else {
-                localUserWon = true
-            }
+            let localUserWon = isLocalUser(winnerColor)
 
             switch gameStatus {
 
@@ -1052,6 +1099,14 @@ class GameScene: SKScene {
                     //print("Overlapping pseudo-legal moves: \(overlappingMoves)")
                     AchievementManager.shared.unlockAchievement(withID: "hextreme_measures")
                     GameCenterManager.shared.reportAchievement(identifier: "HextremeMeasures")
+                }
+
+                // MARK: The Great Hexcape Achievement
+                // Won despite having been put in check at least three times along the way. The
+                // mating check isn't counted — the winner isn't in check at checkmate.
+                if localUserWon, gameState.timesPutInCheck(winnerColor) >= 3 {
+                    AchievementManager.shared.unlockAchievement(withID: "great_hexcape")
+                    GameCenterManager.shared.reportAchievement(identifier: "TheGreatHexcape")
                 }
 
                 // MARK: Tactical Hexcellence Achievement

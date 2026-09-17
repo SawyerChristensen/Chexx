@@ -84,6 +84,18 @@ struct GameState: Codable {
     var whiteMaterial: Int = 0
     var blackMaterial: Int = 0
 
+    // Per-game achievement counters. Unlike material/slider/zobrist (recomputed from the board on
+    // load), these cannot be derived from a final position, so they are persisted in CodingKeys.
+    var whitePromotionCount: Int = 0
+    var blackPromotionCount: Int = 0
+    var whiteTimesPutInCheck: Int = 0
+    var blackTimesPutInCheck: Int = 0
+
+    /// Flat board indices (`GameState.boardIndex(col:row:)`) a piece has moved onto this game, by
+    /// either player. Starting squares are deliberately not pre-seeded: a tile counts as visited
+    /// only once something moves onto it. Backs the Hexplorer achievement.
+    var visitedTileIndices: Set<Int> = []
+
     // Running counts of sliding pieces (rook/bishop/queen), kept in sync by makeMove/unmakeMove so
     // check detection can cheaply skip ray scans for piece types an opponent no longer has
     var whiteSliderCount: Int = 0
@@ -130,6 +142,7 @@ struct GameState: Codable {
 
     private enum CodingKeys: String, CodingKey {
         case currentPlayer, gameStatus, board, whiteKingPosition, blackKingPosition, variant, HexPgn, whiteMaterial, blackMaterial
+        case whitePromotionCount, blackPromotionCount, whiteTimesPutInCheck, blackTimesPutInCheck, visitedTileIndices
     }
 
     init(from decoder: Decoder) throws {
@@ -141,6 +154,13 @@ struct GameState: Codable {
         blackKingPosition = try container.decode(String.self, forKey: .blackKingPosition)
         variant = try container.decodeIfPresent(String.self, forKey: .variant) ?? "Glinski's"
         HexPgn = try container.decodeIfPresent([UInt8].self, forKey: .HexPgn) ?? []
+
+        // decodeIfPresent throughout: a game saved before these counters existed must still load.
+        whitePromotionCount = try container.decodeIfPresent(Int.self, forKey: .whitePromotionCount) ?? 0
+        blackPromotionCount = try container.decodeIfPresent(Int.self, forKey: .blackPromotionCount) ?? 0
+        whiteTimesPutInCheck = try container.decodeIfPresent(Int.self, forKey: .whiteTimesPutInCheck) ?? 0
+        blackTimesPutInCheck = try container.decodeIfPresent(Int.self, forKey: .blackTimesPutInCheck) ?? 0
+        visitedTileIndices = try container.decodeIfPresent(Set<Int>.self, forKey: .visitedTileIndices) ?? []
 
         // Recompute from the decoded board rather than trusting persisted totals, so saves from
         // before material tracking was added (or any drift) always resolve to a correct value
@@ -259,6 +279,28 @@ struct GameState: Codable {
 
     func sliderCount(for color: String) -> Int {
         return color == "white" ? whiteSliderCount : blackSliderCount
+    }
+
+    mutating func recordPromotion(for color: String) {
+        if color == "white" { whitePromotionCount += 1 } else { blackPromotionCount += 1 }
+    }
+
+    func promotionCount(for color: String) -> Int {
+        return color == "white" ? whitePromotionCount : blackPromotionCount
+    }
+
+    mutating func recordPutInCheck(_ color: String) {
+        if color == "white" { whiteTimesPutInCheck += 1 } else { blackTimesPutInCheck += 1 }
+    }
+
+    func timesPutInCheck(_ color: String) -> Int {
+        return color == "white" ? whiteTimesPutInCheck : blackTimesPutInCheck
+    }
+
+    /// Turns taken so far, counting each player's move as one turn. HexPgn is a single variant
+    /// byte followed by two bytes per move, so this is just its move count.
+    var turnCount: Int {
+        return max(0, (HexPgn.count - 1) / 2)
     }
 
     /// Pieces each side starts with in Glinski's: 9 pawns, 3 bishops, 2 rooks, 2 knights,
