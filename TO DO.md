@@ -20,7 +20,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] Haptics on check and game win — 👤 human
 - [x] Review prompt after 2nd CPU win
 - [x] Replace DispatchQueue with Swift concurrency (Tasks)
-- [x] Switch sound effects to PocketPoker's audio format
+- [~] Switch sound effects to PocketPoker's audio format — 👤 human
 - [ ] Review StockFish and techniques it uses to run a normal chess engine. See if we can use them or if it makes sense to use them in Hexagonal Chess.
 
 ## Update 1.6 — CPU 🤖
@@ -33,12 +33,12 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Move CPU training & eval files to HexChessCollection
 - [x] CPU considers knight underpromotion
 - [x] Background pondering on the player's turn
-- [ ] Review Stockfish & other engine techniques against our CPU
+- [ ] Review Stockfish & other engine techniques against our CPU — 👤 human
 
 ## Update 1.7 — More Achievements 🏅
 - [x] Game Center achievement translations (all locales)
 - [x] Dutch Game Center achievements
-- [ ] Implement remaining achievements
+- [~] Implement remaining achievements — 👤 human
 - [~] New achievement icons — 👤 human
 
 ## Update 1.8 — Multiplayer v2 􀉬
@@ -66,7 +66,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] iMessage: memory while resizing the window — 👤 human
 - [ ] iMessage: "Waiting for opponent" wraps badly in Spanish
 - [ ] iMessage: start game button sizing hardcoded per screen and language
-- [ ] Main app target folder is grey in Xcode while the iMessage extension is blue
+- [ ] Main app target folder is grey in Xcode while the iMessage extension is blue — 👤 human
 - [ ] GameSceneInteractionTests.testTappingFarOutsideTheBoardDeselectsWithoutMoving fails
 
 ## 🗺️ Planned
@@ -76,9 +76,9 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] Option to play as Black against the CPU
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
 - [ ] Check for newly added Unicode flags
-- [ ] Update the project to the most recent frameworks
-- [ ] Move history above the board in chess.com-style notation
-- [ ] Whole-project folder reorganization (after both folders are blue)
+- [ ] Update the project to the most recent frameworks — 👤 human
+- [ ] Move history above the board in chess.com-style notation — 👤 human
+- [ ] Whole-project folder reorganization (after both folders are blue) — 👤 human
 
 ## 💡 Ideas
 - [ ] Android version
