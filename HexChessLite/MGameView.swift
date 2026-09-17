@@ -49,6 +49,14 @@ struct MessagesGameView: View {
     @State private var waitingTimer: Timer?
     private let waitingForOpponentMaxWidthText = NSLocalizedString("Waiting for opponent", comment: "Waiting text in iMessage") + "..."
 
+    // The badge's font size is derived from the view's width, but translations aren't: "Waiting for
+    // opponent" is 20 characters in English and 10 of the 24 localizations are longer — up to 34 in
+    // Bengali, with French and Polish at 1.3x and Spanish at 1.05x. The English string only just fit
+    // the iMessage view's width, so anything longer pushed the pill past the edges. These two let a
+    // long translation shrink to fit inside a bounded badge instead.
+    private let waitingBadgeMaxWidthFraction: CGFloat = 0.9
+    private let waitingBadgeMinimumScaleFactor: CGFloat = 0.5
+
     var body: some View {
         GeometryReader { geometry in
 
@@ -77,7 +85,7 @@ struct MessagesGameView: View {
                         Text(waitingForOpponentMaxWidthText)
                             .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
                             .lineLimit(1)
-                            .fixedSize(horizontal: true, vertical: false)
+                            .minimumScaleFactor(waitingBadgeMinimumScaleFactor)
                             .padding()
                             .opacity(0)
 
@@ -89,7 +97,12 @@ struct MessagesGameView: View {
                             .font(.system(size: geometry.size.width / 20, weight: .medium, design: .serif))
                             .foregroundColor(.white)
                             .lineLimit(1)
+                            .minimumScaleFactor(waitingBadgeMinimumScaleFactor)
                     }
+                    // Bounds the pill so a long translation can never reach the view's edges. The
+                    // invisible placeholder above still reserves the widest dot-state's width, so the
+                    // badge doesn't jitter as the dots animate — it just can't exceed this now.
+                    .frame(maxWidth: geometry.size.width * waitingBadgeMaxWidthFraction)
                     .cornerRadius(10)
                     .onAppear {
                         startWaitingTextAnimation()

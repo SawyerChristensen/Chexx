@@ -174,8 +174,13 @@ Notes:
 - [ ] Fix any real growth the human's Instruments profile finds (needs 👤: Profile memory in Instruments while repeatedly resizing the iMessage window in Messages.app. Note whether it really grows, and add what you saw here so the agent can fix it.)
 
 ## iMessage: "Waiting for opponent" wraps badly in Spanish
+- [x] Bounded the badge and let long translations scale down (needs 👤 visual confirmation)
 Notes:
-- Not started. The waiting badge is in `HexChessLite/MGameView.swift` (invisible max-width sizing text + animated dots).
+- **Not actually a Spanish bug — 10 of the 24 locales are affected.** "Waiting for opponent" is 20 characters in English; Bengali is 34 (1.70x), French and Polish 26 (1.30x), Italian 25, Dutch and Icelandic 23, and Spanish/Swedish/Armenian/Finnish 21 (1.05x). Spanish is the *mildest* of the ten, which means English only just fit and everything longer overflowed. Fixing it for Spanish specifically would have left eight worse cases broken.
+- Cause: the font is `geometry.size.width / 20` — scaled to the view — but the invisible sizing placeholder used `.fixedSize(horizontal: true, vertical: false)`, which makes a view adopt its ideal width and **ignore the parent's width constraint**, so the pill grew past the view's edges instead of being clipped or wrapped.
+- Fix: dropped the `fixedSize`, capped the badge at `geometry.size.width * 0.9`, and put `.minimumScaleFactor(0.5)` on both the placeholder and the visible text. The placeholder still reserves the widest dot-state so the pill doesn't jitter as the dots animate.
+- **Known residual, disclosed rather than hidden:** the visible text is shorter than the placeholder (fewer dots), so in a heavily-scaled locale it needs less shrinking and can render at a slightly larger font than the placeholder — meaning the *text* size can shift a little as dots animate, where previously only the width did. It cannot overflow the pill, since it is always shorter than the string the pill was sized for. If that shift is visible on a device, the deterministic fix is to stop using `minimumScaleFactor` and instead compute one font size from the longest string and apply it explicitly to both.
+- **Not visually verified.** Builds warning-free, and the reasoning is straightforward, but rendering an iMessage extension requires Messages.app and a conversation — this was not confirmed on screen at any locale. Filed for a human check.
 
 ## iMessage: start game button sizing hardcoded per screen and language
 Notes:

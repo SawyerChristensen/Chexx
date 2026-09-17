@@ -64,7 +64,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Mac Catalyst build break (ActivityKit)
 - [x] iMessage: opponent's move animating before the view settles
 - [~] iMessage: memory while resizing the window — 👤 human
-- [ ] iMessage: "Waiting for opponent" wraps badly in Spanish
+- [~] iMessage: "Waiting for opponent" wraps badly in Spanish — 👤 human
 - [ ] iMessage: start game button sizing hardcoded per screen and language
 - [ ] Main app target folder is grey in Xcode while the iMessage extension is blue
 - [ ] GameSceneInteractionTests.testTappingFarOutsideTheBoardDeselectsWithoutMoving fails

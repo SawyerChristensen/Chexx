@@ -72,5 +72,8 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 ## Secure online games
 - [ ] Deploy `firestore.rules` (`firebase deploy --only firestore:rules`) and smoke-test create/join/move, leaderboard, matchmaking, and profile edits.
 
+## iMessage: "Waiting for opponent" wraps badly in Spanish
+- [ ] Check the waiting badge on a device or simulator in a long locale — **French, Polish or Bengali**, not Spanish. Spanish turned out to be the mildest of the ten affected locales, so it's the weakest test. Confirm the pill stays inside the view and that the text size doesn't visibly jump as the animated dots cycle.
+
 ## iMessage: memory while resizing the window
 - [ ] Profile memory in Instruments while repeatedly resizing the iMessage window in Messages.app. Note whether it really grows, and add what you saw here so the agent can fix it.
