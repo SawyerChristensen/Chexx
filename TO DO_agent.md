@@ -188,6 +188,24 @@ Notes:
 - **Open question for the owner before building this:** chess.com displays SAN (`Nf3`, `Qxd5+`, `O-O`) on an 8x8 grid. Glinski's hex chess has 11 files (a–l, skipping j by convention) with variable column heights and no castling, so "the notation chess.com uses" can't be adopted literally — it has to be the hex analogue. Confirm the intended coordinate scheme; note `TO DO.md` › Ideas already has "Optional row/column labels (A–L, 1–11)", which is the same coordinate question and should probably be decided once for both.
 - Placement "above the board" needs a layout pass across iPhone/iPad/macOS and the iMessage extension (which has its own `MGameScene`/`MGameView` and much less vertical room). Check whether this is main-app-only.
 
+## Whole-project folder reorganization (after both folders are blue)
+Notes:
+- Not started. Owner's framing: "a total project organization/refactor after we have both folders as blue — when I started developing this app I was not familiar with normal folder organization labeling like services, models, design, etc. Analyze the entire app structure and then reorganize it into a good folder structure with different files, with the same exact end functionality."
+- **Hard dependency, and the owner is right to sequence it this way: do NOT start until "Main app target folder is grey in Xcode while the iMessage extension is blue" is fixed and `Chexx`/`ChexxTests` are `PBXFileSystemSynchronizedRootGroup`s.** In a legacy `PBXGroup` every file is enumerated by hand in `project.pbxproj`, so moving a file means rewriting its `PBXFileReference` + `PBXBuildFile` + group `children` + `Sources` phase entries. Doing that for ~30 files by hand is how this refactor silently drops a file from the build. Once the folders are synchronized, moving files on disk is the whole operation.
+- **Biggest risk: shared files.** `HexChessLite` compiles `GameState.swift` and `PieceRules.swift` from the main app group (and `MGameScene.swift` instantiates `AudioManager`), so several files are members of two targets. Synchronized folders assign membership by folder, with `PBXFileSystemSynchronizedBuildFileExceptionSet` for exceptions. Before moving anything, enumerate every dual-membership file (diff the two targets' `Sources` phases) and decide where shared code lives. **Recommended: a single `Shared/` (or `HexChessCore/`) folder, or a local SPM package, so the sharing is explicit rather than an exception set.** This is the part most likely to break the iMessage extension.
+- Current layout: `Chexx/` has 13 loose files at its root plus `Game Logic/`, `User Interface/` and `Audio/`. Suggested target shape, to be confirmed with the owner before any file moves:
+  - `App/` — `ChexxApp`, `AppDelegate`, `QuickActionManager`, `UIApplication+ActiveScene`
+  - `Models/` — `GameState`, `Piece`/`PieceNames`, `Achievement` (currently declared *inside* `AchievementManager.swift`, above a second mid-file `import` block — split it out), `LearnedEvalWeights`
+  - `Game/` — `PieceRules`, `GameCPU`, `GameScene`
+  - `Services/` — `MultiplayerManager`, `AuthViewModel`, `GameCenterManager`, `AchievementManager`, `ReviewRequestManager`, `LiveActivityManager`, `AudioManager`, `HapticManager`
+  - `Views/` (+ `Views/Components/` for `CachedAsyncImage` and friends) — the current `User Interface/` contents
+  - `Support/` — `PlatformColor`, `GameLiveActivityAttributes`, extensions
+  - `Resources/` — assets, audio, `Localizable.xcstrings`, the icon bundle
+- "With different files" means splitting oversized files is in scope — `GameScene.swift` is ~1500 lines and mixes SpriteKit scene setup, input handling, move finalization, achievement unlocks and game-over presentation. Good seams: extensions in separate files (`GameScene+Input`, `GameScene+GameOver`) rather than moving code between types, which keeps it mechanical.
+- **"Same exact end functionality" is the acceptance bar, so keep it mechanical**: moves, renames and `extension` splits only — no logic edits, no signature changes, no "while I'm here" fixes. Anything behavioural belongs in a separate commit so a regression can be bisected to it.
+- Verification per step: warning-free build on **both** `iOS Simulator` and native `platform=macOS` (warnings differ per destination — see the Swift-concurrency feature's notes), plus the full `ChexxTests` suite. Note coverage is thin on the UI layer, so the tests will not catch a broken view wiring — launch the app too.
+- Do this in many small commits (one folder at a time), not one sweeping commit. The owner has asked for per-feature pushes so anything can be reverted cheaply, and a 30-file move is exactly where that matters.
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.

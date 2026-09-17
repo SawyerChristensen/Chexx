@@ -78,6 +78,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] Check for newly added Unicode flags
 - [ ] Update the project to the most recent frameworks
 - [ ] Move history above the board in chess.com-style notation
+- [ ] Whole-project folder reorganization (after both folders are blue)
 
 ## 💡 Ideas
 - [ ] Android version
