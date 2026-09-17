@@ -10,17 +10,23 @@ import SpriteKit
 // shared interaction code path, standing in for manually playing a game on the native macOS
 // destination (not otherwise verifiable in this environment without a live, unlocked screen).
 final class GameSceneInteractionTests: XCTestCase {
-    override func setUp() {
-        super.setUp()
+    override func setUp() async throws {
+        try await super.setUp()
         // Pass & Play persists to "currentPassAndPlay" on every move; start from a clean slate
         // so a stray save from prior manual testing on this host app doesn't change the board
         // layout this test relies on.
+        //
+        // The flush is what makes this reliable between tests: saves are written off the main
+        // thread, so without draining the queue first, a save from the previous test could land
+        // after this delete and hand the next scene a half-played board.
+        await GameFileStore.shared.flush()
         deleteGameFile(filename: "currentPassAndPlay")
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
+        await GameFileStore.shared.flush()
         deleteGameFile(filename: "currentPassAndPlay")
-        super.tearDown()
+        try await super.tearDown()
     }
 
     private func makeLoadedScene() -> GameScene {

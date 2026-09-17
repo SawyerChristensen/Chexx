@@ -67,7 +67,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [~] iMessage: "Waiting for opponent" wraps badly in Spanish — 👤 human
 - [~] iMessage: start game button sizing hardcoded per screen and language — 👤 human
 - [ ] Main app target folder is grey in Xcode while the iMessage extension is blue
-- [ ] GameSceneInteractionTests.testTappingFarOutsideTheBoardDeselectsWithoutMoving fails
+- [x] GameSceneInteractionTests.testTappingFarOutsideTheBoardDeselectsWithoutMoving fails
 
 ## 🗺️ Planned
 - [ ] iMessage: per-player animated captions live transcript layouts like in deckedout/pocketpoker

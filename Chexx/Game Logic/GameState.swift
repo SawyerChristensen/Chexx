@@ -949,10 +949,56 @@ struct GameState: Codable {
     }
 }
 
+/// Serializes game-file writes so they can't outrace a delete issued after them.
+///
+/// `saveGameStateToFile` writes off the main thread while `deleteGameFile` removes the file
+/// synchronously, and nothing ordered the two. `finalizeMove` does both in a single pass — every
+/// move saves, and the game-over branch then deletes — so an in-flight save could land *after* the
+/// delete and leave a finished game on disk, to be offered as a resumable game on next launch.
+///
+/// Chains each operation onto the previous one through a stored "tail" task rather than relying on
+/// actor reentrancy: Swift makes no FIFO guarantee about the order suspended callers resume in, the
+/// same reason `GameScene`'s `CPUSearchExecutor` chains explicitly instead of using a bare actor.
+/// The lock only guards the tail pointer, so enqueuing is ordered by call order from any thread
+/// while the file I/O itself still happens off the main thread.
+final class GameFileStore: @unchecked Sendable {
+    static let shared = GameFileStore()
+
+    private let lock = NSLock()
+    private var tail: Task<Void, Never>?
+
+    private init() {}
+
+    func enqueue(_ work: @escaping @Sendable () -> Void) {
+        lock.lock()
+        let previous = tail
+        tail = Task.detached(priority: .utility) {
+            await previous?.value
+            work()
+        }
+        lock.unlock()
+    }
+
+    /// Waits for everything enqueued so far. Tests use this to make saves deterministic; without it
+    /// a save from one test can land in the middle of the next one.
+    func flush() async {
+        await currentTail()?.value
+    }
+
+    /// Deliberately synchronous: taking an NSLock directly inside an async function is unavailable
+    /// from asynchronous contexts and becomes an error under the Swift 6 language mode, so the
+    /// locked read is kept in its own non-async function and only the `await` happens above.
+    private func currentTail() -> Task<Void, Never>? {
+        lock.lock()
+        defer { lock.unlock() }
+        return tail
+    }
+}
+
 // hexPgn is a [UInt8] value copy, so encoding/writing it off the main thread is safe —
 // no shared state with the live GameState is touched.
 func saveGameStateToFile(hexPgn: [UInt8], to filename: String) {
-    Task.detached(priority: .utility) {
+    GameFileStore.shared.enqueue {
         let saveData = HexPgnSaveData(date: Date(), hexPgn: hexPgn)
         let encoder = JSONEncoder()
         encoder.dateEncodingStrategy = .iso8601 // Standard format for date
@@ -986,8 +1032,20 @@ func loadGameStateFromFile(from filename: String) -> GameState? {
 }
 
 func deleteGameFile(filename: String) {
+    // Removed twice, deliberately. The immediate removal keeps this function synchronous, so
+    // anything that checks for the file straight afterwards (e.g. whether to offer "continue")
+    // still sees it gone. The queued removal then runs after any save already in flight, so a
+    // late write can't resurrect the file.
+    removeGameFileNow(filename: filename)
+    GameFileStore.shared.enqueue {
+        removeGameFileNow(filename: filename)
+    }
+}
+
+private func removeGameFileNow(filename: String) {
     let url = getDocumentsDirectory().appendingPathComponent(filename)
-    
+    guard FileManager.default.fileExists(atPath: url.path) else { return }
+
     do {
         try FileManager.default.removeItem(at: url)
         //print("Successfully deleted game file: \(url.path)")
