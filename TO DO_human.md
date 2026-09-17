@@ -72,6 +72,10 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 ## Secure online games
 - [ ] Deploy `firestore.rules` (`firebase deploy --only firestore:rules`) and smoke-test create/join/move, leaderboard, matchmaking, and profile edits.
 
+## Replace remaining width/height-scaled font sizes with standard text styles
+- [ ] Look at the game-over card (main app and iMessage) once you next finish a game. Its `GeometryReader` was removed — it was only deriving font sizes — so the card's layout is worth one confirming glance. The two buttons are now the same width, where before they were 230 and 187 points.
+- [ ] Check in-game text on **iPad or Mac**. Fonts no longer scale with screen size, so text is smaller there than before — intentional, but if it looks sparse the fix is a size-class bump, not a return to geometry scaling.
+
 ## iMessage: start game button sizing hardcoded per screen and language
 - [ ] Check the "Start Game!" button in the iMessage extension, in **both compact and expanded** presentation, in Spanish (the longest translation at 1.64x English) and one of Indonesian/Polish/Italian. The Spanish-only duplicate button has been removed in favour of one that scales, so Spanish is now the real regression test.
 - [ ] Also worth a look at a large accessibility text size — the button height is fixed, so growth is capped at `accessibility1`. Confirm the label isn't clipped at that cap.

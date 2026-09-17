@@ -18,82 +18,86 @@ struct GameOverWindow: View {
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.presentationMode) var presentationMode
     
+    // WaveText animates per character and derives its amplitude and natural width from a concrete
+    // point size, so it needs a number rather than a text style. It scales itself down to fit, so a
+    // long translation is already handled. 34 matches .largeTitle, keeping it in step with the rest.
+    private let gameOverTitleFontSize: CGFloat = 34
+
+    // Both buttons previously took different hand-derived minimum widths (screenHeight / 3.66 and
+    // / 4.5 — about 230 and 187 points on a typical phone), which made them mismatched for no
+    // apparent reason. One shared width keeps the stack tidy at any text length.
+    private let gameOverButtonMinWidth: CGFloat = 200
+
     var body: some View {
-        GeometryReader { geometry in
-            let screenHeight = geometry.size.height
-            //let screenWidth = geometry.size.width
-            //let maxScreenDimension = max(screenHeight, screenWidth)
-            
-            ZStack {
-                Color.black.opacity(0.0001) //annoyingly cant get this to be completely clear
-                    .edgesIgnoringSafeArea(.all)
-                    .onTapGesture {
-                        presentationMode.wrappedValue.dismiss()}
+        ZStack {
+            Color.black.opacity(0.0001) //annoyingly cant get this to be completely clear
+                .edgesIgnoringSafeArea(.all)
+                .onTapGesture {
+                    presentationMode.wrappedValue.dismiss()}
                 
-                //the visible card
-                VStack() {
+            //the visible card
+            VStack() {
                     
-                    WaveText(text: NSLocalizedString("Game Over!", comment: ""), fontSize: screenHeight / 20) //should adapt later!
-                        .padding(.bottom, 5)
+                WaveText(text: NSLocalizedString("Game Over!", comment: ""), fontSize: gameOverTitleFontSize)
+                    .padding(.bottom, 5)
                     
-                    Text(
-                          String(
-                            format: NSLocalizedString("%@ wins by %@!", comment: "Game over message: {Winner Color} wins by {Method}!"),
-                            NSLocalizedString(winner, comment: "Winner color (white/black)"), //white/black show up as "stale" due to not being directly refereneced, but conditionally referenced here. it is safe to ignore them being "stale" in the localizable file. same with Checkmate/Stalemate:
-                            NSLocalizedString(method, comment: "Winning method (Checkmate, etc.)")
-                          )
-                        )
-                        .font(.system(size: screenHeight / 36, weight: .medium, design: .serif))
-                        .multilineTextAlignment(.center)
-                        .padding(.bottom, 5)
+                Text(
+                      String(
+                        format: NSLocalizedString("%@ wins by %@!", comment: "Game over message: {Winner Color} wins by {Method}!"),
+                        NSLocalizedString(winner, comment: "Winner color (white/black)"), //white/black show up as "stale" due to not being directly refereneced, but conditionally referenced here. it is safe to ignore them being "stale" in the localizable file. same with Checkmate/Stalemate:
+                        NSLocalizedString(method, comment: "Winning method (Checkmate, etc.)")
+                      )
+                    )
+                    .font(.system(.title2, design: .serif).weight(.medium))
+                    .multilineTextAlignment(.center)
+                    .padding(.bottom, 5)
                     
-                    if isOnlineMultiplayer { //show elo adjustment
-                        if !eloText.isEmpty { //this check probably isnt necessary
-                            Text(eloText)
-                                .font(.system(size: screenHeight / 36, weight: .medium, design: .serif))
-                                .multilineTextAlignment(.center)
-                                .padding(5)
-                        }
+                if isOnlineMultiplayer { //show elo adjustment
+                    if !eloText.isEmpty { //this check probably isnt necessary
+                        Text(eloText)
+                            .font(.system(.title2, design: .serif).weight(.medium))
+                            .multilineTextAlignment(.center)
+                            .padding(5)
                     }
+                }
                     
+                Button(action: {
+                    completion("viewBoard")
+                    presentationMode.wrappedValue.dismiss()
+                }) {
+                    Text("View Board")
+                        .font(.system(.title, design: .serif).weight(.semibold))
+                        .padding()
+                        .frame(minWidth: gameOverButtonMinWidth)
+                        .background(Color.accentColor)
+                        .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
+                        .clipShape(HexagonEdgeRectangleShape())
+                }
+                .crossPlatformHoverEffect()
+                .padding(5)
+
+                if !isOnlineMultiplayer {
                     Button(action: {
-                        completion("viewBoard")
+                        completion("rematch")
                         presentationMode.wrappedValue.dismiss()
                     }) {
-                        Text("View Board")
-                            .font(.system(size: screenHeight / 24, weight: .semibold, design: .serif))
+                        Text("Rematch")
+                            .font(.system(.title, design: .serif).weight(.semibold))
                             .padding()
-                            .frame(minWidth: screenHeight / 3.66, maxHeight: screenHeight / 20)
+                            .frame(minWidth: gameOverButtonMinWidth)
                             .background(Color.accentColor)
                             .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
                             .clipShape(HexagonEdgeRectangleShape())
                     }
                     .crossPlatformHoverEffect()
                     .padding(5)
-
-                    if !isOnlineMultiplayer {
-                        Button(action: {
-                            completion("rematch")
-                            presentationMode.wrappedValue.dismiss()
-                        }) {
-                            Text("Rematch")
-                                .font(.system(size: screenHeight / 24, weight: .semibold, design: .serif))
-                                .padding()
-                                .frame(minWidth: screenHeight / 4.5, maxHeight: screenHeight / 20)
-                                .background(Color.accentColor)
-                                .foregroundColor(colorScheme == .dark ? Color.black : Color.white)
-                                .clipShape(HexagonEdgeRectangleShape())
-                        }
-                        .crossPlatformHoverEffect()
-                        .padding(5)
-                    }
                 }
-                .padding()
-                .background(Color.platformSystemBackground)
-                .cornerRadius(15)
-                .shadow(radius: 10)
-                .padding(.horizontal, 40)
             }
+            .padding()
+            .background(Color.platformSystemBackground)
+            .cornerRadius(15)
+            .shadow(radius: 10)
+            .padding(.horizontal, 40)
         }
     }
 }

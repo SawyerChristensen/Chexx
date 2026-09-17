@@ -75,7 +75,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] Threefold repetition draw rule
 - [ ] Option to play as Black against the CPU
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
-- [ ] Replace remaining width/height-scaled font sizes with standard text styles
+- [~] Replace remaining width/height-scaled font sizes with standard text styles — 👤 human
 - [ ] Check for newly added Unicode flags
 - [ ] Update the project to the most recent frameworks
 - [ ] Move history above the board in chess.com-style notation — 👤 human

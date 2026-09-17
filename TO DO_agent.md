@@ -240,13 +240,16 @@ Notes:
 ## Replace remaining width/height-scaled font sizes with standard text styles
 - [x] `HexChessLite/MGameView.swift` — 3 fonts (status text, both waiting-badge texts)
 - [x] `Chexx/User Interface/GameView.swift` — 6 fonts (status text, opponent name/label, turn indicator)
-- [ ] `HexChessLite/MMainMenuView.swift` — 4 fonts. **Do this as part of the "start game button sizing" item, not separately**: the fonts there are entangled with `.position(x:y:)` and `.frame(maxWidth:)` values that are also screen-fraction-derived, so changing text size without redoing the layout will move things. That file is the band-aid that item exists to remove.
-- [ ] `Chexx/User Interface/GameOverWindow.swift` — ~5 fonts, plus `WaveText(fontSize:)` and button frames tied to `screenHeight`
-- [ ] `HexChessLite/MGameOverWindow.swift` — same shape as the above; the two files are near-duplicates, so do them together and keep them consistent
+- [x] `HexChessLite/MMainMenuView.swift` — 4 fonts, done with the start-game-button item. **Do this as part of the "start game button sizing" item, not separately**: the fonts there are entangled with `.position(x:y:)` and `.frame(maxWidth:)` values that are also screen-fraction-derived, so changing text size without redoing the layout will move things. That file is the band-aid that item exists to remove.
+- [x] `Chexx/User Interface/GameOverWindow.swift` — fonts converted, **`GeometryReader` removed entirely**
+- [x] `HexChessLite/MGameOverWindow.swift` — same, done in the same pass so the two stay identical
 Notes:
 - Owner's framing: "change the width away from scaling geometry sizes. I didn't understand how font sizes worked. give them all normal sizes."
 - Rule applied: `…(size: geometry.size.height / N…)` → `.font(.system(.<style>, design: .serif).weight(.<w>))`, picking the standard style nearest the old rendered size on a ~844pt-tall phone. Keeping `design: .serif` preserves the look; using a semantic style buys Dynamic Type support, which is what the "start game button sizing" item asks for anyway.
-- Mapping used, for consistency in the remaining files: /20 → `.largeTitle`, /28 → `.title`, /32 and /36 → `.title2`, /40 → `.title3`.
+- Mapping used: /20 → `.largeTitle`, /24 and /28 → `.title`, /32 and /36 → `.title2`, /40 → `.title3`.
+- **All font conversions are now done.** The two `GameOverWindow` files were the only ones where the `GeometryReader` turned out to be removable — it was doing nothing but deriving font and button sizes, with no scene sizing, orientation check or absolute positioning. Both readers are gone.
+- While converting those two: their buttons had *different* hand-derived minimum widths (`screenHeight / 3.66` and `/ 4.5`, roughly 230 and 187 points on a phone), which made a stacked pair mismatched for no evident reason — unified to one constant. The fixed `maxHeight: screenHeight / 20` was dropped, since a height cap becomes a clipping hazard once the font no longer shrinks with the screen.
+- `WaveText` keeps a numeric `fontSize`: it animates per character and computes amplitude and natural width from a concrete point size, and it already scales itself down to fit, so long translations were never its problem.
 - **Known consequence: text is now smaller on iPad and Mac than it was.** The old sizes scaled with the screen, so a 1180pt-tall iPad rendered `/20` at 59pt; `.largeTitle` is 34pt. Dynamic Type scales with the user's accessibility setting, not with screen size. If large screens end up looking sparse, the fix is a size-class check (`@Environment(\.horizontalSizeClass)`) that bumps the style on `.regular`, not a return to geometry scaling. This overlaps with the existing "iPad/macOS/iPhone Duo UI refinement" item.
 - **Reevaluated the GeometryReaders, per the owner's question — none of the ones touched so far can be removed.** Fonts were never their only job:
   - `MGameView`: `.onChange(of: geometry.size)` drives `renderScene(size:)` / `scene?.size`, and the badge cap uses the width. **Keep.**
