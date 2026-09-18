@@ -95,7 +95,7 @@ Notes:
 - `meta.inputDataset` in the weights JSON is a provenance field recording which dataset produced those weights. It was rewritten to the new location rather than left pointing at a path that no longer exists — the dataset identity is unchanged, only where it lives. It is regenerated on the next training run anyway.
 - `ChexxCPUBenchmarkHistory.md` had no internal path references, so it needed no edit.
 
-## Review Stockfish & other engine techniques against our CPU
+## Review StockFish and techniques it uses to run a normal chess engine. See if we can use them or if it makes sense to use them in Hexagonal Chess.
 - [x] Surveyed Stockfish/general engine techniques against `GameCPU.swift` and wrote up `CPU_ENGINE_TECHNIQUES.md` (repo root): a status table (have it / missing / doesn't transfer), the reasoning for each, and a suggested order.
 - [ ] Implement whatever the owner picks from it (needs 👤: read CPU_ENGINE_TECHNIQUES.md and choose). **Do not start implementing from the doc unprompted** — it was written as a review-first deliverable, and several entries are deliberate recommendations *against*.
 Notes:

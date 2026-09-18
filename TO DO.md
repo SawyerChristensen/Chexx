@@ -21,7 +21,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Review prompt after 2nd CPU win
 - [x] Replace DispatchQueue with Swift concurrency (Tasks)
 - [~] Switch sound effects to PocketPoker's audio format — 👤 human
-- [ ] Review StockFish and techniques it uses to run a normal chess engine. See if we can use them or if it makes sense to use them in Hexagonal Chess.
+- [~] Review StockFish and techniques it uses to run a normal chess engine. See if we can use them or if it makes sense to use them in Hexagonal Chess. — 👤 human
 
 ## Update 1.6 — CPU 🤖
 - [x] Default search depth 5
@@ -33,7 +33,6 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Move CPU training & eval files to HexChessCollection
 - [x] CPU considers knight underpromotion
 - [x] Background pondering on the player's turn
-- [~] Review Stockfish & other engine techniques against our CPU — 👤 human
 
 ## Update 1.7 — More Achievements 🏅
 - [x] Game Center achievement translations (all locales)
