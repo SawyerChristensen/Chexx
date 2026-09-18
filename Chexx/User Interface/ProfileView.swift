@@ -107,6 +107,7 @@ struct ProfileView: View {
         Country(code: "CD", emoji: "🇨🇩"),
         Country(code: "CG", emoji: "🇨🇬"),
         Country(code: "CR", emoji: "🇨🇷"),
+        Country(code: "CI", emoji: "🇨🇮"), // Côte d'Ivoire
         Country(code: "HR", emoji: "🇭🇷"), // Croatia
         Country(code: "CU", emoji: "🇨🇺"),
         Country(code: "CW", emoji: "🇨🇼"),
@@ -255,6 +256,8 @@ struct ProfileView: View {
         Country(code: "RE", emoji: "🇷🇪"),
 
         // S
+        Country(code: "KN", emoji: "🇰🇳"), // Saint Kitts & Nevis
+        Country(code: "LC", emoji: "🇱🇨"), // Saint Lucia
         Country(code: "WS", emoji: "🇼🇸"), // Samoa
         Country(code: "SM", emoji: "🇸🇲"),
         Country(code: "ST", emoji: "🇸🇹"),

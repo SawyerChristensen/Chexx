@@ -46,6 +46,10 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 - [ ] Translate three new strings in `Chexx/Localizable.xcstrings`: `Draw by %@!`, `Fifty-Move Rule`, `Threefold Repetition`. English only for now.
 - [ ] Decide whether a draw should have its own sound. It currently plays the loss stinger, because there is no neutral one — which may read as "you lost" for what is actually a draw.
 
+## Check for newly added Unicode flags
+- [ ] **Decide how broad the country list should be.** Three sovereign states were genuinely missing and have been added (Côte d'Ivoire, Saint Kitts & Nevis, Saint Lucia). Another 36 codes the OS recognises are still absent — mostly territories like Gibraltar, Greenland, Faroe Islands, Falklands, French Polynesia, US Virgin Islands. The list already includes territories selectively (Puerto Rico, Hong Kong, Taiwan, Cayman Islands), so this is a scope call, not a bug. Some of the 36 aren't countries at all (EU, UN, Antarctica) and a couple have no flag emoji (Bouvet, Heard & McDonald).
+- [ ] Optional: `VC` (Saint Vincent & Grenadines) is listed among the B's, between British Virgin Islands and Brunei — looks like a VG/VC slip, so it appears in the wrong place in the picker. Left as-is since reordering the picker is a visible change.
+
 ## Review Stockfish & other engine techniques against our CPU
 - [ ] **Read `CPU_ENGINE_TECHNIQUES.md`** (repo root) and pick what's worth building. Nothing from it has been implemented — it's a review-first deliverable.
   - Headline finding: **there is no quiescence search**, so the search can stop in the middle of a capture sequence and score the position on material alone. That's the classic horizon effect, and it's the cheapest large strength gain available. It's also a prerequisite for trusting any evaluation work — which may explain why the learned-evaluation experiment cost 6–12× per node for a modest gain.

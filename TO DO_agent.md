@@ -329,6 +329,17 @@ Notes:
 - `wasCapture` is read in `finalizeMove` *before* the destination square is overwritten — the capture is implicit in the assignment, so afterwards it cannot be recovered. En passant leaves the destination empty, but it is a pawn move, which resets the clock anyway.
 - **Depended on the derived-state fix.** `repetitionKey` uses `zobristHash`, which was stale outside CPU search until that landed. The original plan's "Zobrist already exists, just reuse it" would have produced silently wrong repetition detection.
 
+## Check for newly added Unicode flags
+- [x] Audited the country list against the OS region list; added the three **sovereign states** that were missing
+- [ ] Decide whether to add the remaining territories (needs 👤: see TO DO_human.md)
+Notes:
+- Method: extracted every `Country(code:)` from `ProfileView.countries`, then diffed against `Locale.Region.isoRegions` filtered to two-letter uppercase codes, via a throwaway Swift script. Worth repeating that way rather than eyeballing — the list is 220+ entries.
+- **The real finding: three sovereign UN member states were absent**, so users from them could not pick their own country — `CI` (Côte d'Ivoire), `KN` (Saint Kitts & Nevis), `LC` (Saint Lucia). Added.
+- 36 further codes the OS knows and the list lacks. Not added, because the list's scope is a product decision and it already includes territories selectively (`PR`, `HK`, `MO`, `GU`, `TW`, `KY`, `BM`… are all present). Full list: `AC AQ AX BL BQ BV CC CK CP CQ CX DG EA EU EZ FK FO GF GI GL GP HM IC IO MF PF PM QO SH SJ TA TC TF UM UN VI XK`. Several are not countries at all (`EU`, `UN`, `EZ`, `QO`, `AQ`), and some have no flag emoji (`BV`, `HM`).
+- Validated while there, and all clean: 224 entries, no duplicate codes, and **every** entry's emoji matches the regional-indicator pair derived from its own code, so no copy-paste mismatches.
+- Pre-existing oddity, deliberately left alone: `VC` (Saint Vincent & Grenadines) sits in the **B** block between British Virgin Islands and Brunei — most likely a `VG`/`VC` slip. It shows up in the wrong place in the picker. Cosmetic, and reordering is the owner's call.
+- The list is `private static` inside `ProfileView`, so a test can't reach it. The validation above was a one-off script; making the list internal would let it be pinned properly.
+
 ## Option to play as Black against the CPU
 - [x] Centralised the CPU's colour — groundwork, no behaviour change
 - [ ] Let the colour actually be chosen: a menu/settings option, persisted with the single-player save
