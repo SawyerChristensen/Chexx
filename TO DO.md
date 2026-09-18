@@ -81,7 +81,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
 - [~] Replace remaining width/height-scaled font sizes with standard text styles — 👤 human
 - [~] Check for newly added Unicode flags — 👤 human
-- [ ] Update the project to the most recent frameworks
+- [~] Update the project to the most recent frameworks — 👤 human
 - [ ] Move history above the board in chess.com-style notation — 👤 human
 - [ ] Whole-project folder reorganization (after both folders are blue) — 👤 human
 

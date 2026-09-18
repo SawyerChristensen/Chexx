@@ -205,8 +205,16 @@ Notes:
 - Note the working tree already had uncommitted `project.pbxproj` / `.xcscheme` edits when this was filed — check with the owner whether those are related before touching the project file.
 
 ## Update the project to the most recent frameworks
+- [x] Firebase 11.3.0 → **11.15.0** (twelve minor versions, inside the existing `upToNextMajorVersion` range)
+- [ ] Firebase 12.x — needs the version rule changed and is a major bump (👤 decision)
+- [ ] GoogleSignIn 8.0.0 → 10.x — two majors behind (👤 decision)
+- [ ] Swift 6 language mode — `SWIFT_VERSION` is still 5.0; a separate migration, not a framework bump
 Notes:
-- Not started. Filed together with the folder-colour item ("make sure we have the most recent frameworks for our project") but kept separate because the fix is unrelated.
+- **Resolving the packages does not update them on its own, and it lies convincingly.** Three separate traps hit in sequence here: SwiftPM used a cached clone with stale tags and reported "no changes"; the first resolve then *recreated* `Package.resolved` at the old version, so every later resolve honoured that pin; and the fix needed both `rm -rf ~/Library/Caches/org.swift.swiftpm/repositories` **and** deleting `Package.resolved`, in that order. The update only actually happened after raising `minimumVersion` in `project.pbxproj`.
+- Toolchain is not a constraint: Xcode 27 / Swift 6.4 installed, and both Firebase 11.3.0 and 11.15.0 declare `swift-tools-version:5.9`.
+- **Verified, because it would otherwise have been a shipping problem:** 11.15.0 pulls a new transitive package, `GoogleAdsOnDeviceConversion`. This app deliberately links `FirebaseAnalyticsWithoutAdIdSupport`, so an ads SDK appearing in the graph matters for the privacy label. Checked the built binary — `strings` and `otool -L` show **zero** references, so it resolves but never links. Re-check this if the Analytics product is ever switched to the full variant.
+- Also moved as transitive deps: `abseil-cpp-binary` 1.2024011602.0 → 1.2024072200.0, `grpc-binary` 1.65.1 → 1.69.1.
+- Verified: both destinations build, 55 tests pass. Note the suite barely exercises Firestore/Auth, so a real sign-in and online game are still worth a manual pass. Filed together with the folder-colour item ("make sure we have the most recent frameworks for our project") but kept separate because the fix is unrelated.
 - Scope to settle first: Swift language mode / tools version, iOS+macOS deployment targets, and the Firebase SPM package version (`Chexx.xcodeproj/project.xcworkspace` / `Package.resolved`). Firebase is the big one — a major bump there has historically needed code changes.
 - Raising the deployment target is a product decision (it drops older devices), so propose it, don't just do it.
 

@@ -59,6 +59,10 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 
 ## Update the project to the most recent frameworks
 - [ ] Decide whether to raise the iOS/macOS deployment targets. That drops older devices, so it's a product call, not a cleanup.
+- [ ] **Smoke-test sign-in and an online game.** Firebase moved 11.3.0 → 11.15.0. Both platforms build and all 55 tests pass, but the suite barely touches Firestore/Auth, so those paths are unverified.
+- [ ] Decide on **Firebase 12.x** (latest is 12.19.2). The project's rule allows only 11.x, so this needs the version requirement changed and is a major bump — historically the one that needs code changes.
+- [ ] Decide on **GoogleSignIn 10.x** (currently 8.0.0, two majors behind).
+- [ ] Decide on the **Swift 6 language mode**. `SWIFT_VERSION` is still 5.0. This is a real migration, not a framework bump — strict concurrency will surface errors (one was already hit: `NSLock` in an async context is an error under Swift 6).
 
 ## Move history above the board in chess.com-style notation
 - [ ] **Decide the notation.** chess.com shows SAN (`Nf3`, `Qxd5+`, `O-O`), which assumes an 8×8 board and castling — neither is true here, so it has to be a hex analogue. Pick the coordinate scheme. Note this is the same decision as "Optional row/column labels (A–L, 1–11)" in Ideas; settling it once covers both.
