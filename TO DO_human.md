@@ -73,6 +73,11 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 - [ ] Confirm the proposed layout (`App/`, `Models/`, `Game/`, `Services/`, `Views/`, `Support/`, `Resources/`, `Shared/`) before any files move.
 
 ## Main app target folder is grey in Xcode while the iMessage extension is blue
+- [ ] **Do the grey→blue conversion in Xcode yourself** (right-click `Chexx` and `ChexxTests` → convert to a synchronized folder). It is a one-click action there, and Xcode writes the cross-target exception sets correctly. Doing it by hand in `project.pbxproj` means guessing undocumented semantics, and a wrong guess drops the iMessage extension's resources — which fails at runtime, not at build time.
+- [ ] After converting, confirm these still belong to the extension targets. `Chexx/` is shared, so the conversion has to carry them across:
+  - HexChessLite: `AudioManager.swift`, `GameState.swift`, `HapticManager.swift`, `PieceNames.swift`, `PieceRules.swift`, `PlatformColor.swift`, `PromotionWindow.swift`, plus `Localizable.xcstrings` and the sound files.
+  - ChexxWidgets: `GameLiveActivityAttributes.swift`.
+- Good news: nothing new gets pulled into the build — all 40 compilable files under those folders are already members, so synchronizing adds no sources.
 - [ ] **Check an uncommitted change that was already in your working tree.** `project.pbxproj` had `platformFilters` on the "Embed Foundation Extensions" entries for both `HexChessLite.appex` and `ChexxWidgets.appex` changed from `(ios, ipados)` to `(ipados)`. Read literally that stops embedding the iMessage extension and widgets on iPhone while keeping them on iPad. It rode along in commit `a1b01fb` because it couldn't be separated from an unrelated edit to the same file. Confirm it was deliberate, or say the word and I'll revert just that hunk.
 
 ## Switch sound effects to PocketPoker's audio format
