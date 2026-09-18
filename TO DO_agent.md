@@ -330,8 +330,16 @@ Notes:
 - **Depended on the derived-state fix.** `repetitionKey` uses `zobristHash`, which was stale outside CPU search until that landed. The original plan's "Zobrist already exists, just reuse it" would have produced silently wrong repetition detection.
 
 ## Option to play as Black against the CPU
+- [x] Centralised the CPU's colour — groundwork, no behaviour change
+- [ ] Let the colour actually be chosen: a menu/settings option, persisted with the single-player save
+- [ ] Board orientation when the human plays Black (see the `isPassAndPlay`/online rotation at `GameScene` ~line 210 for the existing pattern)
+- [ ] Make the CPU move first when it plays White
+- [ ] `GameCPU.openingBookMove` is gated on `gameState.currentPlayer == "black"` and `HexPgn.count == 3` — it is *Black's* opening book, so it silently does nothing when the CPU plays White. Either generalise it or accept that the CPU has no book as White.
 Notes:
-- Not started. Promotion logic currently assumes the human is White.
+- The original note said "promotion logic assumes the human is White". It was broader than that: the assumption was spelled out as a literal `"black"`/`"white"` at **six** sites — the CPU turn trigger, auto-queen promotion, Hexpedition gating, `isLocalUser`, and the win/loss branch in both the checkmate and stalemate endings.
+- Now expressed once as `GameScene.cpuColor` (still `"black"`), with `humanColor` and `isCPUControlled(_:)` derived from it. **Deliberately a faithful translation — identical behaviour today**, so the risky part (choosing a colour, orientation, persistence) is isolated in its own change rather than mixed with a six-site refactor.
+- Left alone on purpose: the online `winnerColor == "white"` check at the Multiplayer Achievements block distinguishes the *joiner* from the *creator*, not the human's colour. Changing it would have broken Hexceeded Hexpectations / Friendly Hexchange.
+- When the option lands, `isLocalUser` picks up the achievement gating for free, since everything already routes through it.
 
 ## Threefold repetition draw rule — see the combined entry above
 Notes:

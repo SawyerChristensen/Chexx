@@ -812,7 +812,7 @@ class GameScene: SKScene {
             if (color == "white" && type == "pawn" && rowIndex == gameState.rowCount(forCol: colIndex) - 1)
                 || (color == "black" && type == "pawn" && rowIndex == 0) {
                 // CPU auto-queen
-                if isVsCPU && color == "black" {
+                if isCPUControlled(color) {
                     type = "queen"
                     finalizeMove(pieceNode, color, type, originalPosition, hexagonName,
                                  originalColIndex, originalRowIndex, colIndex, rowIndex,
@@ -853,6 +853,23 @@ class GameScene: SKScene {
     }
 
     //the only reason this function exists is because the user picking pawn promotion has to happen before the rest of this function executes. making the rest of updateGameState it's own function does this. you there is a way to freeze updateGameState from executing that could be another way of doing this
+    /// The colour the CPU plays in a single-player game.
+    ///
+    /// Always Black today, so the human is always White. It exists as one property rather than the
+    /// literal `"black"` spelled out at each site that needs it — the CPU turn trigger, auto-queen
+    /// promotion, achievement gating — because those scattered literals are what makes "play as
+    /// Black" awkward to add. Turning this into a real option means making it settable at game
+    /// creation and persisting it with the save; see TO DO.md.
+    let cpuColor: String = "black"
+
+    /// The colour the human plays in a single-player game.
+    var humanColor: String { cpuColor == "white" ? "black" : "white" }
+
+    /// True when `color` is played by the CPU rather than a person.
+    func isCPUControlled(_ color: String) -> Bool {
+        return isVsCPU && color == cpuColor
+    }
+
     /// Whether `color` is the side the local human is playing. Achievements are only awarded to
     /// them, never to the CPU or a remote opponent. Online: our assigned colour. vs CPU: the human
     /// is always White (see "Option to play as Black against the CPU" in TO DO.md — revisit when
@@ -861,7 +878,7 @@ class GameScene: SKScene {
         if isOnlineMultiplayer {
             return color == MultiplayerManager.shared.currentPlayerColor
         } else if isVsCPU {
-            return color == "white"
+            return color == humanColor
         } else {
             return true
         }
@@ -936,7 +953,7 @@ class GameScene: SKScene {
                 }
             } else if color == "black" {
                 gameState.blackKingPosition = "\(columns[colIndex])\(rowIndex + 1)"
-                if gameState.blackKingPosition == "g1" && !isVsCPU { //at least this makes sure the cpu cant unlock it...
+                if gameState.blackKingPosition == "g1" && !isCPUControlled(color) { //at least this makes sure the cpu cant unlock it...
                     AchievementManager.shared.unlockAchievement(withID: "hexpedition")
                     GameCenterManager.shared.reportAchievement(identifier: "Hexpedition")
                 }
@@ -1153,7 +1170,7 @@ class GameScene: SKScene {
         
                 // MARK: Hex Machina Achievement
                 if isVsCPU {
-                    if winnerColor == "white" {
+                    if winnerColor == humanColor {
                         if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                         HapticManager.playNotification(type: .success)
                         AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
@@ -1253,7 +1270,7 @@ class GameScene: SKScene {
                     
                 } else { //its a single player game
                     if isVsCPU {
-                        if winnerColor == "white" {
+                        if winnerColor == humanColor {
                             if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_win", fileType: "mp3")}
                             HapticManager.playNotification(type: .success)
                             AchievementManager.shared.unlockAchievement(withID: "hexceptional_win")
@@ -1386,7 +1403,7 @@ class GameScene: SKScene {
         
         updateGameStatusUI(gameStatus: gameStatus)
         
-        if isVsCPU && gameState.currentPlayer == "black" {
+        if isVsCPU && gameState.currentPlayer == cpuColor {
             // The human's move was just made and the real search is about to start: stop any
             // background pondering first. cpuSearchExecutor's explicit chain is serial, so
             // enqueueing the real search below guarantees it won't actually run until the ponder
