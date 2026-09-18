@@ -301,6 +301,15 @@ Notes:
 - Detection: compare the executed test count against what you expect, or check the symbol directly — `nm -gU <path>/ChexxTests.xctest/ChexxTests | grep <TestName>`.
 - Remedy: `touch` every edited source file before building. That resolved it both times.
 
+## macOS: rules/tutorial diagrams missing entirely
+- [x] Fixed — the seven Tutorial imagesets are now single-scale
+Notes:
+- Reported by the owner: tapping the rules icon on macOS showed the paragraphs but none of the example diagrams that appear between them on mobile.
+- **Cause: macOS has no @3x.** All seven `Assets.xcassets/Tutorial/*.imageset` declared 1x, 2x and 3x slots but filled **only 3x**. When building for macOS, `actool` strips 3x variants, so each imageset compiled to nothing and `Image("RookMovement")` resolved to an empty image. Nothing platform-specific in `TutorialSheet.swift` — the code was always fine.
+- Verified empirically rather than by reasoning, both before and after: `xcrun --sdk macosx assetutil --info <app>/Contents/Resources/Assets.car | grep -o '"Name" : "[^"]*"'`. Before the fix none of the seven names appeared in the macOS catalog; after, all seven do, and the iOS catalog still has all seven. **This is the way to check an asset actually shipped to a platform** — a successful build tells you nothing here.
+- Fix: single-scale universal (drop the `scale` key, one `filename`), which is valid at every scale on every platform. Safe for these specifically because `TutorialSheet` renders them `.resizable().scaledToFit()`, so the intrinsic size never matters — do **not** blanket-apply single-scale to assets whose natural size is load-bearing.
+- **Other imagesets have empty slots too but are NOT broken, so leave them alone:** `LaunchGrid`, `google_logo`, `marble_black`, `marble_white` are 1x-only, and `PieceImages/*` plus `king_stencil` fill 2x and 3x. Only a **3x-only** set vanishes on macOS. Confirmed present in the macOS catalog.
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.
