@@ -42,6 +42,10 @@ Each `##` heading matches a feature in `TO DO.md`. Check a box when it's done an
 - [ ] **Decide: does Hexplorer count a tile as visited when *either* player moves onto it, or only you?** Implemented as either-player, with starting squares not counting until something moves onto them. Say if you want it stricter — it's a one-line change.
 - [ ] **Decide: should the older achievements be fixed to match?** Hexecutioner and Hextreme Measures currently unlock when *either* side wins by that method — so the CPU delivering a smothered-king mate can award you the achievement. Every new achievement is gated on you being the winner. Left alone rather than silently changing long-standing behaviour.
 
+## 50-move and threefold repetition draw rules
+- [ ] Translate three new strings in `Chexx/Localizable.xcstrings`: `Draw by %@!`, `Fifty-Move Rule`, `Threefold Repetition`. English only for now.
+- [ ] Decide whether a draw should have its own sound. It currently plays the loss stinger, because there is no neutral one — which may read as "you lost" for what is actually a draw.
+
 ## Review Stockfish & other engine techniques against our CPU
 - [ ] **Read `CPU_ENGINE_TECHNIQUES.md`** (repo root) and pick what's worth building. Nothing from it has been implemented — it's a review-first deliverable.
   - Headline finding: **there is no quiescence search**, so the search can stop in the middle of a capture sequence and score the position on material alone. That's the classic horizon effect, and it's the cheapest large strength gain available. It's also a prerequisite for trusting any evaluation work — which may explain why the learned-evaluation experiment cost 6–12× per node for a modest gain.

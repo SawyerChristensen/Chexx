@@ -728,7 +728,10 @@ class MessagesGameScene: SKScene {
         let (theGameIsOver, gameStatus) = gameState.isGameOver()
         
         if theGameIsOver {
-            if !applyingUpdate { //you just won the game! (could also check this by comparing winnerColor & localPlayerColor)
+            // A draw is not a win. (Note this still counts a *loss* as a win — pre-existing, and
+            // left alone here rather than changed as a side effect of adding draw rules.)
+            let endedInADraw = gameStatus == "fiftyMoveRule" || gameStatus == "threefoldRepetition"
+            if !applyingUpdate && !endedInADraw { //you just won the game! (could also check this by comparing winnerColor & localPlayerColor)
                 WinTracker.shared.incrementWins()
                 HapticManager.playNotification(type: .success)
             }
@@ -764,6 +767,22 @@ class MessagesGameScene: SKScene {
                     }
                     //redStatusTextUpdater?("Stalemate!")
                 
+                case "fiftyMoveRule", "threefoldRepetition":
+                    self.presentGameOverOptions(
+                        winner: "",
+                        method: gameStatus == "fiftyMoveRule" ? "Fifty-Move Rule" : "Threefold Repetition",
+                        isDraw: true
+                    ) { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.gameDelegate?.requestRematch()
+                        default:
+                            break
+                        }
+                    }
+
                 default:
                     break //probably not needed
                 }
@@ -907,11 +926,11 @@ class MessagesGameScene: SKScene {
         }
     }
     
-    func presentGameOverOptions(winner: String, method: String, completion: @escaping (String) -> Void) {
+    func presentGameOverOptions(winner: String, method: String, isDraw: Bool = false, completion: @escaping (String) -> Void) {
         if let viewController = self.view?.window?.rootViewController {
             let presentBlock = {
                 let gameOverViewController = UIHostingController(
-                    rootView: MessagesGameOverWindow(winner: winner, method: method, completion: completion))
+                    rootView: MessagesGameOverWindow(winner: winner, method: method, isDraw: isDraw, completion: completion))
                 gameOverViewController.modalPresentationStyle = .overCurrentContext
                 gameOverViewController.view.backgroundColor = .clear
                 viewController.present(gameOverViewController, animated: true, completion: nil)

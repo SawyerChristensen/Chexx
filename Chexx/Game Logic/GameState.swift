@@ -1000,6 +1000,15 @@ struct GameState: Codable {
             return (true, "stalemate")
         }
 
+        // Checked only after checkmate and stalemate: a position that ends the game outright takes
+        // precedence over a draw that happens to become available on the same move.
+        if isThreefoldRepetition {
+            return (true, "threefoldRepetition")
+        }
+        if isFiftyMoveDraw {
+            return (true, "fiftyMoveRule")
+        }
+
         return (false, "")  //the game can still be continued
     }
     

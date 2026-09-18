@@ -75,8 +75,8 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 
 ## 🗺️ Planned
 - [ ] iMessage: per-player animated captions live transcript layouts like in deckedout/pocketpoker
-- [ ] 50-move no-capture draw rule
-- [ ] Threefold repetition draw rule
+- [x] 50-move no-capture draw rule
+- [x] Threefold repetition draw rule
 - [ ] Option to play as Black against the CPU
 - [ ] iPad/macOS/iPhone Duo UI refinement (country picker, fonts, achievement stars)
 - [~] Replace remaining width/height-scaled font sizes with standard text styles — 👤 human

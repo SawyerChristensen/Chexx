@@ -96,6 +96,57 @@ final class DrawRuleTests: XCTestCase {
         XCTAssertFalse(state.isThreefoldRepetition)
     }
 
+    // MARK: - Ending the game
+
+    func testFiftyMoveClockEndsTheGameAsADraw() {
+        var state = GameState()   // opening position: legal moves available, nobody in check
+        state.halfmoveClock = 100
+
+        let result = state.isGameOver()
+
+        XCTAssertTrue(result.0)
+        XCTAssertEqual(result.1, "fiftyMoveRule")
+    }
+
+    func testThreefoldRepetitionEndsTheGameAsADraw() {
+        var state = GameState()
+        state.positionHistory = Array(repeating: state.repetitionKey, count: 3)
+
+        let result = state.isGameOver()
+
+        XCTAssertTrue(result.0)
+        XCTAssertEqual(result.1, "threefoldRepetition")
+    }
+
+    // A position that ends the game outright must win over a draw that happens to be claimable on
+    // the same move — otherwise a long endgame would be reported as a draw instead of the stalemate
+    // (which this game scores as a win) that actually occurred. This is the ordering inside
+    // isGameOver, so it's worth pinning rather than trusting.
+    func testAnEndedPositionTakesPrecedenceOverAClaimableDraw() {
+        // Same stalemate position as ChexxTests.testCornerStalemate.
+        var state = GameState()
+        state.board = Array(repeating: nil, count: GameState.tileCount)
+        state.whiteSliderCount = 0
+        state.blackSliderCount = 0
+        state.currentPlayer = "black"
+        state.setPiece(Piece(color: "black", type: "king"), at: "a1")
+        state.blackKingPosition = "a1"
+        state.setPiece(Piece(color: "white", type: "king"), at: "l1")
+        state.whiteKingPosition = "l1"
+        state.setPiece(Piece(color: "white", type: "rook"), at: "c2")
+        state.setPiece(Piece(color: "white", type: "rook"), at: "b5")
+        state.setPiece(Piece(color: "white", type: "rook"), at: "c5")
+        state.whiteSliderCount = 3
+
+        // Both draws are simultaneously claimable.
+        state.halfmoveClock = 150
+        state.positionHistory = Array(repeating: state.repetitionKey, count: 5)
+
+        let result = state.isGameOver()
+
+        XCTAssertEqual(result.1, "stalemate", "stalemate must win over a claimable draw")
+    }
+
     // MARK: - Persistence
 
     // Same migration hazard as the achievement counters: GameState has a hand-written init(from:),

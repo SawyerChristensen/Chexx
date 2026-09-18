@@ -8278,6 +8278,17 @@
         }
       }
     },
+    "Draw by %@!" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Draw by %@!"
+          }
+        }
+      }
+    },
     "Email" : {
       "localizations" : {
         "ar" : {
@@ -8866,6 +8877,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "錯誤"
+          }
+        }
+      }
+    },
+    "Fifty-Move Rule" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fifty-Move Rule"
           }
         }
       }
@@ -17112,6 +17134,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "思考中"
+          }
+        }
+      }
+    },
+    "Threefold Repetition" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Threefold Repetition"
           }
         }
       }

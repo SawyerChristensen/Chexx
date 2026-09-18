@@ -313,7 +313,14 @@ Notes:
 ## 50-move no-capture draw rule
 ## Threefold repetition draw rule
 - [x] **Shared state landed** (both rules read the same two fields, so it was built once)
-- [ ] Detect the draws and end the game: `isGameOver()` returning a draw status, plus a game-over presentation that has no winner, Elo 0.5/0.5 for online, and a localized "Draw by ..." string
+- [x] Detect the draws and end the game — both rules are now complete
+Notes on the ending:
+- `isGameOver()` returns `"fiftyMoveRule"` / `"threefoldRepetition"`, checked **after** checkmate and stalemate so a position that ends outright wins over a draw claimable on the same move. Pinned by `testAnEndedPositionTakesPrecedenceOverAClaimableDraw`.
+- `GameOverWindow` and `MessagesGameOverWindow` gained `isDraw: Bool = false` and a `resultText` property: a draw has no winner, so "%@ wins by %@!" can't be reused with an empty colour. Defaulted, so every existing call site compiles unchanged.
+- Online draws score **0.5/0.5**, mirroring the stalemate branch's Elo/guest/cached-Elo handling rather than a parallel implementation. Note stalemate here is *not* a draw (0.75/0.25) — these two are the first genuine draws in the game.
+- **The iMessage extension had to be handled too.** Its switch ends with `default: break` but sets `isGameOver = true` regardless, so an unhandled status would have frozen the game with no window. It now has the same draw case.
+- While there: the extension incremented `WinTracker` for *any* game over. A draw is now excluded. It still counts a **loss** as a win — pre-existing, left alone rather than changed as a side effect of this feature. Worth its own item.
+- Three new strings (`Draw by %@!`, `Fifty-Move Rule`, `Threefold Repetition`) are English-only; translation is a 👤 task like the achievements.
 Notes:
 - `GameState` now carries `halfmoveClock` (plies since the last capture or pawn move) and `positionHistory` (repetition keys), both persisted with `decodeIfPresent`, plus `isFiftyMoveDraw`, `isThreefoldRepetition`, `repetitionKey` and `currentPositionRepetitionCount()`. `finalizeMove` records after the side-to-move flip so the key describes whose turn it now is.
 - **This only tracks state — nothing ends a game yet.** That is deliberate: the ending needs a draw presentation path that does not exist (`presentGameOverOptions` takes a `winner:`, and `GameOverWindow` formats "%@ wins by %@!"), so it is its own commit.

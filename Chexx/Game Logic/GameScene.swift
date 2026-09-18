@@ -1299,7 +1299,86 @@ class GameScene: SKScene {
                 //redStatusTextUpdater?("Stalemate!")
                 gameState.gameStatus = "ended"
                 return
-                
+
+            case "fiftyMoveRule", "threefoldRepetition":
+
+                // A real draw, unlike stalemate — which this game scores 0.75/0.25 as a win for the
+                // player delivering it. Nobody won here, so both sides score 0.5 and no achievement
+                // or win is recorded.
+                let drawMethod = gameStatus == "fiftyMoveRule" ? "Fifty-Move Rule" : "Threefold Repetition"
+
+                if isOnlineMultiplayer {
+                    let localUserId    = MultiplayerManager.shared.currentUserId
+                    let opponentUserId = MultiplayerManager.shared.opponentId ?? ""
+
+                    if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                    LiveActivityManager.end()
+
+                    MultiplayerManager.shared.adjustElo(localUserId: localUserId, localUserScore: 0.5, opponentUserId: opponentUserId) { oldLocalElo, newLocalElo in
+
+                        let eloText: String
+                        if let oldLocalElo, let newLocalElo {
+                            let diff = newLocalElo - oldLocalElo
+                            let sign = diff >= 0 ? "+\(diff)" : "\(diff)"
+
+                            eloText = String(
+                                format: NSLocalizedString(
+                                    "Your ELO rating changed from %d to %d (%@)",
+                                    comment: "Your ELO rating changed from {oldElo} to {newElo} ({+/- difference})."
+                                ),
+                                oldLocalElo,
+                                newLocalElo,
+                                sign
+                            )
+
+                            AuthViewModel.shared.eloScore = newLocalElo
+                            AuthViewModel.shared.saveUserDataToDevice()
+                        } else {
+                            eloText = NSLocalizedString(
+                                "Sign in to track your ELO rating",
+                                comment: "Shown instead of an ELO change when the local player is signed in anonymously (guest)."
+                            )
+                        }
+
+                        self.presentGameOverOptions(winner: "", method: drawMethod, eloText: eloText, isDraw: true
+                        ) { action in
+                            switch action {
+                            case "viewBoard":
+                                print("user decided to view the board")
+                            case "rematch":
+                                self.onRematch?()
+                            default:
+                                break
+                            }
+                        }
+
+                        MultiplayerManager.shared.finalizeGame()
+                    }
+
+                    UserDefaults.standard.removeObject(forKey: "mostRecentGameId")
+
+                } else {
+                    if soundEffectsEnabled {audioManager.playSoundEffect(fileName: "game_loss", fileType: "mp3")}
+                    if isVsCPU { deleteGameFile(filename: "currentSinglePlayer") }
+                    if isPassAndPlay { deleteGameFile(filename: "currentPassAndPlay") }
+
+                    self.presentGameOverOptions(winner: "", method: drawMethod, eloText: "", isDraw: true
+                    ) { action in
+                        switch action {
+                        case "viewBoard":
+                            print("user decided to view the board")
+                        case "rematch":
+                            self.onRematch?()
+                        default:
+                            break
+                        }
+                    }
+                }
+
+                whiteStatusTextUpdater?("")
+                gameState.gameStatus = "ended"
+                return
+
             default:
                 break
             }
@@ -1652,12 +1731,12 @@ class GameScene: SKScene {
         #endif
     }
 
-    func presentGameOverOptions(winner: String, method: String, eloText: String, completion: @escaping (String) -> Void) {
+    func presentGameOverOptions(winner: String, method: String, eloText: String, isDraw: Bool = false, completion: @escaping (String) -> Void) {
         #if canImport(UIKit)
         if let viewController = self.view?.window?.rootViewController {
             let presentBlock = {
                 let gameOverViewController = UIHostingController(
-                    rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
+                    rootView: GameOverWindow(winner: winner, method: method, isDraw: isDraw, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
                 )
                 gameOverViewController.modalPresentationStyle = .overCurrentContext
                 gameOverViewController.view.backgroundColor = .clear
@@ -1674,7 +1753,7 @@ class GameScene: SKScene {
         if let hostViewController = self.view?.window?.contentViewController {
             let presentBlock = {
                 let gameOverViewController = NSHostingController(
-                    rootView: GameOverWindow(winner: winner, method: method, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
+                    rootView: GameOverWindow(winner: winner, method: method, isDraw: isDraw, isOnlineMultiplayer: self.isOnlineMultiplayer, eloText: eloText, completion: completion)
                 )
                 hostViewController.presentAsSheet(gameOverViewController)
             }
