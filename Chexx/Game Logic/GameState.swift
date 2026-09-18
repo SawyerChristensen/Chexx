@@ -96,6 +96,17 @@ struct GameState: Codable {
     /// only once something moves onto it. Backs the Hexplorer achievement.
     var visitedTileIndices: Set<Int> = []
 
+    /// Plies since the last capture or pawn move, for the 50-move rule. Counted in plies, so the
+    /// rule triggers at 100 — fifty moves by each player.
+    var halfmoveClock: Int = 0
+
+    /// Repetition keys of the positions reached this game, for threefold repetition.
+    ///
+    /// Truncated alongside `halfmoveClock` on a capture or pawn move: those are irreversible, so no
+    /// position from before one can ever recur, and keeping earlier entries would only risk false
+    /// positives while growing without bound.
+    var positionHistory: [UInt64] = []
+
     // Running counts of sliding pieces (rook/bishop/queen), kept in sync by makeMove/unmakeMove so
     // check detection can cheaply skip ray scans for piece types an opponent no longer has
     var whiteSliderCount: Int = 0
@@ -143,6 +154,7 @@ struct GameState: Codable {
     private enum CodingKeys: String, CodingKey {
         case currentPlayer, gameStatus, board, whiteKingPosition, blackKingPosition, variant, HexPgn, whiteMaterial, blackMaterial
         case whitePromotionCount, blackPromotionCount, whiteTimesPutInCheck, blackTimesPutInCheck, visitedTileIndices
+        case halfmoveClock, positionHistory
     }
 
     init(from decoder: Decoder) throws {
@@ -161,6 +173,8 @@ struct GameState: Codable {
         whiteTimesPutInCheck = try container.decodeIfPresent(Int.self, forKey: .whiteTimesPutInCheck) ?? 0
         blackTimesPutInCheck = try container.decodeIfPresent(Int.self, forKey: .blackTimesPutInCheck) ?? 0
         visitedTileIndices = try container.decodeIfPresent(Set<Int>.self, forKey: .visitedTileIndices) ?? []
+        halfmoveClock = try container.decodeIfPresent(Int.self, forKey: .halfmoveClock) ?? 0
+        positionHistory = try container.decodeIfPresent([UInt64].self, forKey: .positionHistory) ?? []
 
         // Recompute from the decoded board rather than trusting persisted totals, so saves from
         // before material tracking was added (or any drift) always resolve to a correct value
@@ -317,6 +331,46 @@ struct GameState: Codable {
     /// byte followed by two bytes per move, so this is just its move count.
     var turnCount: Int {
         return max(0, (HexPgn.count - 1) / 2)
+    }
+
+    /// Identifies the current position for repetition purposes: the piece-placement hash with the
+    /// side to move folded in, since the same placement with the other player to move is a
+    /// different position. Matches the key `GameCPU` uses for its transposition table.
+    ///
+    /// Only meaningful while `zobristHash` is current — see `refreshDerivedState()`.
+    var repetitionKey: UInt64 {
+        return currentPlayer == "black" ? zobristHash ^ GameState.zobristBlackToMove : zobristHash
+    }
+
+    /// Records the position reached after a move. Call *after* the side to move has been flipped,
+    /// so the key describes whose turn it now is.
+    ///
+    /// A capture or pawn move is irreversible: it resets the 50-move counter and makes every
+    /// earlier position unreachable, so the history is cleared rather than appended to.
+    mutating func recordPositionAfterMove(wasCapture: Bool, wasPawnMove: Bool) {
+        if wasCapture || wasPawnMove {
+            halfmoveClock = 0
+            positionHistory.removeAll(keepingCapacity: true)
+        } else {
+            halfmoveClock += 1
+        }
+        positionHistory.append(repetitionKey)
+    }
+
+    /// How many times the current position has occurred this game.
+    func currentPositionRepetitionCount() -> Int {
+        let key = repetitionKey
+        return positionHistory.reduce(0) { $0 + ($1 == key ? 1 : 0) }
+    }
+
+    /// Fifty moves by each player with no capture and no pawn move.
+    var isFiftyMoveDraw: Bool {
+        return halfmoveClock >= 100
+    }
+
+    /// The current position has now occurred three times.
+    var isThreefoldRepetition: Bool {
+        return currentPositionRepetitionCount() >= 3
     }
 
     /// A stable key for `color`'s opening move, or nil if that side hasn't moved yet. Same HexPgn

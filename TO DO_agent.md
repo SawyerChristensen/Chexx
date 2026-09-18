@@ -310,13 +310,25 @@ Notes:
 - Fix: single-scale universal (drop the `scale` key, one `filename`), which is valid at every scale on every platform. Safe for these specifically because `TutorialSheet` renders them `.resizable().scaledToFit()`, so the intrinsic size never matters — do **not** blanket-apply single-scale to assets whose natural size is load-bearing.
 - **Other imagesets have empty slots too but are NOT broken, so leave them alone:** `LaunchGrid`, `google_logo`, `marble_black`, `marble_white` are 1x-only, and `PieceImages/*` plus `king_stencil` fill 2x and 3x. Only a **3x-only** set vanishes on macOS. Confirmed present in the macOS catalog.
 
+## 50-move no-capture draw rule
+## Threefold repetition draw rule
+- [x] **Shared state landed** (both rules read the same two fields, so it was built once)
+- [ ] Detect the draws and end the game: `isGameOver()` returning a draw status, plus a game-over presentation that has no winner, Elo 0.5/0.5 for online, and a localized "Draw by ..." string
+Notes:
+- `GameState` now carries `halfmoveClock` (plies since the last capture or pawn move) and `positionHistory` (repetition keys), both persisted with `decodeIfPresent`, plus `isFiftyMoveDraw`, `isThreefoldRepetition`, `repetitionKey` and `currentPositionRepetitionCount()`. `finalizeMove` records after the side-to-move flip so the key describes whose turn it now is.
+- **This only tracks state — nothing ends a game yet.** That is deliberate: the ending needs a draw presentation path that does not exist (`presentGameOverOptions` takes a `winner:`, and `GameOverWindow` formats "%@ wins by %@!"), so it is its own commit.
+- The 50-move threshold is **100 plies**, not 50 — fifty moves by *each* player. Pinned by a test, since an off-by-two here would halve every drawn endgame.
+- An irreversible move **clears** `positionHistory` rather than appending: no position before a capture or pawn move can recur, so retaining earlier keys would risk a false threefold and grow the array without bound.
+- `wasCapture` is read in `finalizeMove` *before* the destination square is overwritten — the capture is implicit in the assignment, so afterwards it cannot be recovered. En passant leaves the destination empty, but it is a pawn move, which resets the clock anyway.
+- **Depended on the derived-state fix.** `repetitionKey` uses `zobristHash`, which was stale outside CPU search until that landed. The original plan's "Zobrist already exists, just reuse it" would have produced silently wrong repetition detection.
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.
 
-## Threefold repetition draw rule
+## Threefold repetition draw rule — see the combined entry above
 Notes:
-- Not started. Zobrist hashing already exists in GameCPU for the transposition table and could be reused for repetition detection.
+- Merged with the 50-move rule: both read the same `GameState` fields, so the state was built once.
 
 ---
 

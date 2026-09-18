@@ -872,6 +872,11 @@ class GameScene: SKScene {
         let columns = hexColumns
         
         //MARK: - Move the piece
+        // Read first: the capture is implicit in the assignment below, so once the destination is
+        // overwritten there is no way to tell whether anything was taken. (En passant leaves the
+        // destination empty, but it's a pawn move, which resets the clock regardless.)
+        let wasCapture = gameState[colIndex, rowIndex] != nil
+
         //maybe use gamestate.movepiece function? rn this works
         gameState[originalColIndex, originalRowIndex] = nil
         gameState[colIndex, rowIndex] = Piece(color: gameState.currentPlayer, type: type, hasMoved: true)
@@ -958,10 +963,12 @@ class GameScene: SKScene {
 
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
-        //fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate
-        
         gameState.currentPlayer = opponentColor
         resetEnPassant(for: gameState.currentPlayer)
+
+        // After the side to move has flipped, so the recorded key describes whose turn it now is.
+        // Requires the refreshed zobristHash above.
+        gameState.recordPositionAfterMove(wasCapture: wasCapture, wasPawnMove: type == "pawn")
         
         if isPassAndPlay {
             if lowMotionEnabled {

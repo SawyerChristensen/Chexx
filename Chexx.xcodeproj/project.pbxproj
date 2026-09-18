@@ -86,6 +86,7 @@
 		BEF00A022F5B01A100000001 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = BEF00A012F5B01A100000001 /* InfoPlist.xcstrings */; };
 		BEF6E5922CEA59BB001B370A /* MultiplayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E5912CEA59AD001B370A /* MultiplayerManager.swift */; };
 		C33AE83D84947933DA22517A /* ReviewRequestManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */; };
+		B8C819439D71F9D776427393 /* DrawRuleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79DC97E1B4A6EB296EBE6A0 /* DrawRuleTests.swift */; };
 		ADE68C56FDB660DEACE18BCA /* AchievementConditionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4A567125D18916E4CB46F0B5 /* AchievementConditionTests.swift */; };
 		C5DA40C901162FCC43497E9A /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CFEADDBCC440480DE9DC570 /* WidgetKit.framework */; };
 		D29611E727F7D266EB9DF3AA /* CachedAsyncImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D61D176FC32EEEEF2F823095 /* CachedAsyncImage.swift */; };
@@ -134,6 +135,7 @@
 
 /* Begin PBXFileReference section */
 		14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = ReviewRequestManagerTests.swift; sourceTree = "<group>"; };
+		E79DC97E1B4A6EB296EBE6A0 /* DrawRuleTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DrawRuleTests.swift; sourceTree = "<group>"; };
 		4A567125D18916E4CB46F0B5 /* AchievementConditionTests.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = AchievementConditionTests.swift; sourceTree = "<group>"; };
 		1BAD7814AF114864DBE58241 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
 		25E8D9E8CB22417E94EF2C6B /* TrainingDataExtractor.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TrainingDataExtractor.swift; sourceTree = "<group>"; };
@@ -412,6 +414,7 @@
 				93A23629CDC3403A9FAABEC1 /* LearnedEvalWeightsTests.swift */,
 				3AC34B244716D0F3D6C39EFA /* GameRulesEdgeCaseTests.swift */,
 				14C81E761613F17D16555CD3 /* ReviewRequestManagerTests.swift */,
+				E79DC97E1B4A6EB296EBE6A0 /* DrawRuleTests.swift */,
 				4A567125D18916E4CB46F0B5 /* AchievementConditionTests.swift */,
 				F5600FE489F4D14E00E1DAE8 /* GameSceneInteractionTests.swift */,
 				C90D1EC0AF4C4009989E253C /* SelfPlayGenerator.swift */,
@@ -642,6 +645,7 @@
 				F054EA7075924585B3151F19 /* LearnedEvalWeightsTests.swift in Sources */,
 				6703496E974D5295DE9A22C6 /* GameRulesEdgeCaseTests.swift in Sources */,
 				C33AE83D84947933DA22517A /* ReviewRequestManagerTests.swift in Sources */,
+				B8C819439D71F9D776427393 /* DrawRuleTests.swift in Sources */,
 				ADE68C56FDB660DEACE18BCA /* AchievementConditionTests.swift in Sources */,
 				60961C55C80E5D7FFE05272B /* GameSceneInteractionTests.swift in Sources */,
 				5AF9437112C744A4B047BCFD /* SelfPlayGenerator.swift in Sources */,
