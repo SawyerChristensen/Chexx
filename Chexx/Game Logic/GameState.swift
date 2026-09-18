@@ -281,6 +281,22 @@ struct GameState: Codable {
         return color == "white" ? whiteSliderCount : blackSliderCount
     }
 
+    /// Recomputes the state derived from the board: the Zobrist hash, material totals and slider
+    /// counts.
+    ///
+    /// These are maintained incrementally by `makeMove`/`unmakeMove`, which only the CPU search
+    /// uses. Real moves go through `GameScene.finalizeMove`, which writes pieces through the board
+    /// subscript — and the subscript maintains none of them, so they drifted from the board for the
+    /// whole game. Only the two initialisers ever recomputed them.
+    ///
+    /// Cheap enough to call once per played move (a single pass over 91 tiles); the incremental
+    /// path still exists because search does this thousands of times per second.
+    mutating func refreshDerivedState() {
+        (whiteMaterial, blackMaterial) = GameState.computeMaterial(for: board)
+        (whiteSliderCount, blackSliderCount) = GameState.computeSliderCounts(for: board)
+        zobristHash = GameState.computeZobristHash(for: board)
+    }
+
     mutating func recordPromotion(for color: String) {
         if color == "white" { whitePromotionCount += 1 } else { blackPromotionCount += 1 }
     }

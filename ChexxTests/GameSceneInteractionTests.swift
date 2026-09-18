@@ -57,6 +57,31 @@ final class GameSceneInteractionTests: XCTestCase {
         XCTAssertNil(scene.gameState[5, 4], "f5 should be empty after the pawn moved away")
     }
 
+    // GameState carries derived state — zobristHash, material totals and slider counts — that is
+    // maintained incrementally by makeMove/unmakeMove during CPU search. Real moves go through
+    // GameScene.finalizeMove, which writes pieces through the board subscript, and the subscript
+    // maintains none of it. Decoding recomputes all three from the board, so a freshly decoded copy
+    // is the ground truth to compare the live value against.
+    func testDerivedStateStaysCorrectAfterAMovePlayedThroughTheScene() throws {
+        let scene = makeLoadedScene()
+        guard let fromHexagon = scene.hexagonsByName["f5"], let toHexagon = scene.hexagonsByName["f6"] else {
+            return XCTFail("expected f5/f6 hexagons to exist on a freshly-generated board")
+        }
+
+        scene.touchDown(atPoint: fromHexagon.position)
+        scene.touchUp(atPoint: toHexagon.position)
+
+        let encoded = try JSONEncoder().encode(scene.gameState)
+        let truth = try JSONDecoder().decode(GameState.self, from: encoded)
+
+        XCTAssertEqual(scene.gameState.zobristHash, truth.zobristHash,
+                       "zobristHash is stale after a move played through the scene")
+        XCTAssertEqual(scene.gameState.whiteMaterial, truth.whiteMaterial)
+        XCTAssertEqual(scene.gameState.blackMaterial, truth.blackMaterial)
+        XCTAssertEqual(scene.gameState.whiteSliderCount, truth.whiteSliderCount)
+        XCTAssertEqual(scene.gameState.blackSliderCount, truth.blackSliderCount)
+    }
+
     func testTappingFarOutsideTheBoardDeselectsWithoutMoving() {
         let scene = makeLoadedScene()
 

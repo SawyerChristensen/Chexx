@@ -951,6 +951,11 @@ class GameScene: SKScene {
         let newHexagonParent = hexagonsByName[hexagonName]
         newHexagonParent?.addPieceImage(named: "\(gameState.currentPlayer)_\(type)", identifier: pieceNode.name!, isBoardRotated: boardIsRotated)
         
+        // The move above was written straight through the board subscript, which maintains none of
+        // the state derived from the board. Resync before anything reads it — isGameOver's check
+        // detection consults the slider counts, and the CPU evaluates on the material totals.
+        gameState.refreshDerivedState()
+
         let opponentColor = gameState.currentPlayer == "white" ? "black" : "white"
         
         //fiftyMoveRule += 1 //still need to implement. should probably be apart of gamestate

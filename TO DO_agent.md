@@ -283,6 +283,23 @@ Notes:
 - Fix: `customLabelButtonStyle()` in `PlatformColor.swift`, following the existing `crossPlatformHoverEffect()` pattern, applied once to `MainMenuView` in the `WindowGroup`. SwiftUI propagates a button style to all descendants, so one application covers the app; a view that wants a system style (`ProfileView`'s `.bordered`) overrides it locally. iOS is untouched.
 - **Not visually verified** — builds clean on both destinations and the full suite passes, but confirming this needs the Mac app on screen.
 
+## Board-derived state (Zobrist hash, material, slider counts) went stale during real play
+- [x] Fixed — `GameState.refreshDerivedState()`, called from `finalizeMove`
+Notes:
+- Found while starting the threefold-repetition rule, whose plan assumed "Zobrist hashing already exists and could be reused". It exists, but **it was only correct inside CPU search.**
+- `zobristHash`, `whiteMaterial`/`blackMaterial` and `whiteSliderCount`/`blackSliderCount` are maintained incrementally by `makeMove`/`unmakeMove`, which only `GameCPU` calls. Real moves go through `GameScene.finalizeMove`, which writes pieces via the **board subscript — and the subscript's setter maintains none of them**. Only the two initialisers ever recomputed them, so all three drifted from the board for the rest of the game.
+- Proven, not assumed: `testDerivedStateStaysCorrectAfterAMovePlayedThroughTheScene` plays a move through the scene, then encodes and decodes the state — decoding recomputes all three from the board, so the decoded copy is ground truth. It failed on `zobristHash` before the fix.
+- Scope of the damage, stated precisely: **material and slider counts passed that test**, because the move was a non-capturing pawn push so the stale values still happened to match. A capture or promotion would have diverged them too. Move *selection* was likely unaffected — within one search every leaf shares the same stale base, so a constant offset cancels in minimax comparisons — but anything reading absolute values (slider-count fast paths in check detection, evaluation reported to a human, and any future repetition detection) was working from wrong numbers.
+- Fix is a full recompute per played move rather than making the subscript incremental: one pass over 91 tiles is nothing once per turn, and making the setter incremental would slow the search path that already does this correctly.
+- **This unblocks the threefold-repetition rule**, which cannot work until `zobristHash` is correct outside search.
+
+## Tooling gotcha: a source edit can silently fail to recompile
+Notes:
+- Hit twice this session, and it is dangerous because it fails *quietly*. After editing `ChexxTests/GameSceneInteractionTests.swift` with a script, `xcodebuild build-for-testing` reported success but the new test method was **absent from the built `.xctest` bundle**, so the suite ran 42 tests instead of 43 and reported success.
+- Worse, `-only-testing:` naming a method that isn't in the compiled bundle **exits 0 having run nothing** and prints `** TEST SUCCEEDED **`. A "passing" run can mean the test never existed.
+- Detection: compare the executed test count against what you expect, or check the symbol directly — `nm -gU <path>/ChexxTests.xctest/ChexxTests | grep <TestName>`.
+- Remedy: `touch` every edited source file before building. That resolved it both times.
+
 ## Option to play as Black against the CPU
 Notes:
 - Not started. Promotion logic currently assumes the human is White.

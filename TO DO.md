@@ -64,6 +64,7 @@ Auto-dev works top to bottom. It never starts anything in 💡 Ideas; move an it
 - [x] Mac Catalyst build break (ActivityKit)
 - [x] macOS: empty draggable split-view pane beside the main menu
 - [x] macOS: system button bezel outlining every custom button
+- [x] Board-derived state (Zobrist hash, material, slider counts) went stale during real play
 - [x] iMessage: opponent's move animating before the view settles
 - [~] iMessage: memory while resizing the window — 👤 human
 - [~] iMessage: "Waiting for opponent" wraps badly in Spanish — 👤 human
